@@ -1,0 +1,229 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  super_admin
+  admin
+  user
+  player
+  agent
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum SubscriptionType {
+  live_streaming
+  player_publication
+}
+
+model User {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  kindeId         String   @unique              // Add this 👈
+  email           String   @unique
+  firstName       String
+  lastName        String
+  password        String   // Can be a dummy string if using Kinde only
+  role            Role
+  subscribed      Boolean
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  orders          Order[]
+  subscriptions   Subscription[]
+  paymentMethods  PaymentMethod[]
+  pendingOrders   PendingOrder[]
+  Submission      Submission[]
+}
+
+
+
+enum SubscriptionPlan {
+  basic
+  standard
+  premium
+}
+
+model Subscription {
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String           @db.ObjectId
+  user      User             @relation(fields: [userId], references: [id])
+  type      SubscriptionType
+  plan      SubscriptionPlan
+  isActive  Boolean          @default(true)
+  startedAt DateTime         @default(now())
+  expiresAt DateTime
+}
+
+model Player {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName       String
+  lastName        String
+  dob             String
+  country         String
+  countryCode     String
+  position        String
+  height          String
+  weight          String
+  foot            String
+  email           String
+  phone           String
+  imageUrl        String[]
+  cvUrl           String
+  description     String
+  videoPrimary    String
+  videoAdditional String[]
+  featured        Boolean
+  playerOfTheWeek Boolean
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Product {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  price       Float
+  image       String[]
+  featured    Boolean
+  discount    Float
+  sizes       String[]
+  colors      String[]
+  stock       Int
+  category    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum PostStatus {
+  Draft
+  Published
+  Archived
+}
+model Post {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String
+  summary   String
+  author    String
+  category  String
+  imageUrl  String
+  status    PostStatus
+  featured  Boolean
+  tags      String[]
+  views     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PendingOrder {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  type   String
+  items  Json
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model PaymentMethod {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String   @db.ObjectId
+  stripePaymentMethodId String
+  stripeCustomerId      String
+  isDefault             Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Order {
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String         @db.ObjectId
+  user      User           @relation(fields: [userId], references: [id])
+  items     OrderItem[]    
+  status    OrderStatus    @default(pending)
+  createdAt DateTime       @default(now())
+}
+model OrderItem {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  orderId  String  @db.ObjectId
+  order    Order   @relation(fields: [orderId], references: [id])
+  name     String
+  quantity Int
+  price    Float
+}
+enum OrderStatus {
+  pending
+  completed
+  cancelled
+}
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String
+  subject   String
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Submission {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName         String
+  lastName          String
+  dob               String
+  country           String
+  countryCode       String
+  position          String
+  email             String
+  phone             String
+  height            String
+  weight            String
+  foot              String
+  imageUrl          String[]
+  cvUrl             String
+  videoPrimary      String
+  videoAdditional   String[]
+  featured          Boolean  @default(false)
+  playerOfTheWeek   Boolean  @default(false)
+  description       String
+  submittedAt       DateTime @default(now())
+  status            SubmissionStatus @default(PENDING)
+  rejectionReason   String?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  userId            String?  @db.ObjectId
+  user              User?    @relation(fields: [userId], references: [id])
+}
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model CartItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  
+  name      String
+  price     Float
+  quantity  Int
+  image     String
+  size      String?   // Optional
+  color     String?   // Optional
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

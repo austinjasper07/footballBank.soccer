@@ -1,26 +1,156 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ==========================
+   THEME VARIABLES
+   ========================== */
+@theme {
+  /* Primary palette */
+  --color-primary-bg: #F9FAFB;
+  --primary: 213 94% 68%; /* #1F6FEB */
+  /* --color-primary-secondary: #161B22; */
+  --color-primary-card: #FFFFFF;
+  --color-primary-text: #111827;
+  --color-primary-muted: #6B7280;
+
+  /* Accent colors */
+  --color-accent-blue: #1F6FEB;
+  --color-accent-green: #22C55E;
+  --color-accent-amber: #FACC15;
+  --color-accent-red: #EF4444;
+  --accent: #FACC15;
+  --accent-foreground: #111827;
+
+  /* Functional system colors */
+  --color-divider: #E5E7EB;
+
+  /* UI surface tokens */
+  --background: 0 0% 98%; /* hsl: very light bg */
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+
+  --destructive: 0 100% 50%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 214.3 31.8% 91.4%;
+  --border-admin: 220 13% 91%; /* #E5E7EB */
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+
+  --chart-1: 10 80% 55%;
+  --chart-2: 140 70% 45%;
+  --chart-3: 220 70% 55%;
+  --chart-4: 270 80% 70%;
+  --chart-5: 45 100% 51%;
+
+  /* Fonts */
+  --font-poppins: 'Poppins', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-sans: var(--font-inter);
+
+  /* Radii */
+  --radius: 0.5rem;
+
+  /* Border radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+
+
+   --radius: 0.5rem;
+
+    /* Sports betting theme colors - updated with new palette */
+    --sport-football: 0 84% 60%; /* #EF4444 for football */
+    --sport-tennis: 142 71% 45%; /* #22C55E for tennis */
+    --sport-basketball: 48 96% 53%; /* #FACC15 for basketball */
+    --sport-hockey: 213 94% 68%; /* #1F6FEB for hockey */
+    --sport-golf: 142 71% 45%; /* #22C55E for golf */
+    --sport-volleyball: 271 100% 50%; /* Keep purple for volleyball */
+    --sport-baseball: 48 96% 53%; /* #FACC15 for baseball */
+    --sport-snooker: 142 71% 45%; /* #22C55E for snooker */
+    
+    /* Betting brand colors - updated */
+    --nairabet: 213 94% 68%; /* #1F6FEB */
+    --oneXbet: 220 26% 14%; /* #111827 */
+    --betano: 0 84% 60%; /* #EF4444 */
+    --bet365: 142 71% 45%; /* #22C55E */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* ==========================
+   BASE STYLES
+   ========================== */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    font-family: var(--font-sans);
+  }
+
+  html, body {
+    @apply bg-primary-bg text-primary-text;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  html {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ==========================
+   UTILITIES
+   ========================== */
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-poppins);
+  }
+
+  .font-body {
+    font-family: var(--font-inter);
+  }
+
+  .accordion-down {
+    animation: accordion-down 0.2s ease-out;
+  }
+
+  .accordion-up {
+    animation: accordion-up 0.2s ease-out;
+  }
 }
+
+/* ==========================
+   KEYFRAMES
+   ========================== */
+@layer components {
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+
