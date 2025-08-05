@@ -31,7 +31,7 @@ export default async function HomePage() {
   return (
     <div className="bg-[#F9FAFB]">
       {/* HERO SECTION */}
-      <div className="relative min-h-[calc(100vh-64px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden px-6 lg:px-12 flex flex-col lg:flex-row justify-between pt-20">
+      <div className="relative h-[calc(100vh-64px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden px-6 lg:px-12 flex flex-col lg:flex-row justify-between items-center">
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[120px] -top-24 -left-20 opacity-30" />
           <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[100px] bottom-10 right-10 opacity-30" />
@@ -78,11 +78,11 @@ export default async function HomePage() {
         {/* PLAYER OF THE WEEK */}
         {playerOfTheWeek && (
           <section
-            className="relative z-10 w-full lg:w-[50%] h-full flex justify-center items-center p-4"
+            className="relative z-10 w-full lg:w-[50%] h-full flex justify-center items-center"
             data-aos="zoom-in"
             data-aos-delay="100"
           >
-            <div className="relative w-full h-2/3 max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-row-reverse gap-6 p-6">
+            <div className="relative w-full md:w-[80%] h-[80%] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-row-reverse gap-6 p-4">
               <div className="absolute top-4 right-4 z-20 bg-accent-red/90 text-white px-3 py-1 text-xs rounded-full shadow">
                 Star on the rise
               </div>
@@ -95,7 +95,7 @@ export default async function HomePage() {
                   className="object-cover w-full h-full rounded-xl"
                 />
               </div>
-              <div className="w-full">
+              <div className="w-full mt-4">
                 <h3 className="text-xl font-bold text-[#111827] font-poppins my-3">
                   {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName}
                 </h3>
