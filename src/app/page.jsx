@@ -1,69 +1,73 @@
+
+
 import Image from "next/image";
 import Link from "next/link";
+import "aos/dist/aos.css";
 import { getFeaturedPlayers, getFeaturedPosts } from "@/actions/publicActions";
-import { formatTimeAgo } from "@/utils/dateHelper";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { syncUserToDb } from "@/lib/syncUserToDb";
-import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
-
 
 export const metadata = {
-  title: "FootballBank | Global Football Representation Platform",
-  description:
-    "Empowering football talent worldwide through professional representation and global exposure.",
+  title: "FootballBank | Home",
+  description: "Connect with top football talent and opportunities globally."
 };
 
 export default async function HomePage() {
+  const { isAuthenticated, getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (user && (await isAuthenticated())) {
+    await syncUserToDb();
+  }
 
- const {isAuthenticated, getUser} = getKindeServerSession();
- const user = await getUser();
+  const featuredPosts = await getFeaturedPosts();
+  const featuredPlayers = await getFeaturedPlayers();
 
- if(user && (await isAuthenticated() )){
-  console.log(user);
-  await syncUserToDb();
- }
-
-  const featuredPosts = await getFeaturedPosts()
-  const featuredPlayers = await getFeaturedPlayers()
-
-  const playerOfTheWeek = featuredPlayers.find((player) => player.playerOfTheWeek === true);
-
+  const playerOfTheWeek = featuredPlayers.find((p) => p.playerOfTheWeek);
   const today = new Date();
   const age = playerOfTheWeek?.dob
-  ? today.getFullYear() - new Date(playerOfTheWeek.dob).getFullYear()
-  : "N/A";
-
+    ? today.getFullYear() - new Date(playerOfTheWeek.dob).getFullYear()
+    : "N/A";
 
   return (
     <div className="bg-[#F9FAFB]">
-      {/* Hero Section */}
-      <div className="relative min-h-screen md:h-screen w-full  bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-between">
-        {/* Color Blobs */}
+      {/* HERO SECTION */}
+      <div className="relative min-h-[calc(100vh-64px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden px-6 lg:px-12 flex flex-col lg:flex-row justify-between pt-20">
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[120px] -top-24 -left-20 opacity-30"></div>
-          <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[100px] bottom-10 right-10 opacity-30"></div>
+          <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[120px] -top-24 -left-20 opacity-30" />
+          <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[100px] bottom-10 right-10 opacity-30" />
         </div>
 
-        {/* Left Content */}
+        {/* LEFT CONTENT */}
         <section className="z-10 w-full lg:w-[50%] mt-8 md:mt-0 h-full flex items-center justify-center lg:justify-start text-center lg:text-left">
           <div className="max-w-2xl space-y-6 h-1/2">
-            <h1 className="font-poppins font-bold text-5xl lg:text-6xl leading-tight  text-primary-text bg-clip-text">
+            <h1
+              className="font-poppins font-bold text-[clamp(2.5rem,3.5vw,4rem)] leading-tight tracking-tight text-primary-text"
+              data-aos="fade-up"
+            >
               Empowering Football{" "}
               <span className="text-accent-red">Talent</span> Worldwide
             </h1>
-            <p className="text-primary-muted text-lg font-inter">
+            <p
+              className="text-primary-muted text-[clamp(1rem,2.5vw,1.25rem)] font-inter"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
               Connecting exceptional players with opportunities. Showcase your
               skills, get discovered, and take your football career to the next
               level.
             </p>
-            <div className="flex sm:flex-row gap-4 justify-center lg:justify-start">
+            <div
+              className="flex sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
               <Link href="/submit-profile">
-                <span className="bg-accent-red text-white px-6 py-3 rounded-md font-medium text-center transition-all hover:opacity-90 shadow-lg">
+                <span className="bg-accent-red text-white text-sm md:text-base px-4 py-2 md:px-6 md:py-3 rounded-md font-medium text-center transition-all hover:opacity-90 shadow-lg">
                   Submit Your Profile
                 </span>
               </Link>
               <Link href="/players">
-                <span className="border-2 border-accent-red text-accent-red px-6 py-3 rounded-md font-medium text-center transition hover:bg-accent-red hover:text-white shadow-sm">
+                <span className="border-2 border-accent-red text-accent-red text-sm md:text-base px-4 py-2 md:px-6 md:py-3 rounded-md font-medium text-center transition hover:bg-accent-red hover:text-white shadow-sm">
                   Browse Players
                 </span>
               </Link>
@@ -71,62 +75,66 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Player of the Moment Card */}
-        <section className="relative z-10 w-full lg:w-[50%] h-full flex justify-center items-center p-4">
-          <div className="relative w-full h-2/3 max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-row-reverse gap-6 p-6">
-            <div className="absolute inset-0 z-0 pointer-events-none">
-              <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[120px] -top-24 -left-20 opacity-30"></div>
-              <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[100px] bottom-10 right-10 opacity-30"></div>
+        {/* PLAYER OF THE WEEK */}
+        {playerOfTheWeek && (
+          <section
+            className="relative z-10 w-full lg:w-[50%] h-full flex justify-center items-center p-4"
+            data-aos="zoom-in"
+            data-aos-delay="100"
+          >
+            <div className="relative w-full h-2/3 max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-row-reverse gap-6 p-6">
+              <div className="absolute top-4 right-4 z-20 bg-accent-red/90 text-white px-3 py-1 text-xs rounded-full shadow">
+                Star on the rise
+              </div>
+              <div className="relative w-full h-full rounded-xl shadow-lg">
+                <Image
+                  src={playerOfTheWeek?.imageUrl?.[0] || "/placeholder.jpg"}
+                  alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
+                  width={340}
+                  height={340}
+                  className="object-cover w-full h-full rounded-xl"
+                />
+              </div>
+              <div className="w-full">
+                <h3 className="text-xl font-bold text-[#111827] font-poppins my-3">
+                  {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName}
+                </h3>
+                <p className="text-accent-red font-semibold mb-2">
+                  <span className="font-semibold text-primary-muted">
+                    Position:{" "}
+                  </span>
+                  {playerOfTheWeek?.position}
+                </p>
+                <p className="text-accent-red font-semibold mb-2">
+                  <span className="font-semibold text-primary-muted">
+                    Age:{" "}
+                  </span>
+                  {age}
+                </p>
+                <p className="text-accent-red font-semibold mb-2">
+                  <span className="font-semibold text-primary-muted">
+                    Foot:{" "}
+                  </span>
+                  {playerOfTheWeek?.foot}
+                </p>
+                <p className="text-gray-600 text-sm line-clamp-4">
+                  {playerOfTheWeek?.description?.slice(0, 180) ||
+                    "This player stands out for their dedication, talent and extraordinary performance on the pitch."}
+                </p>
+              </div>
             </div>
-            {/* Badge */}
-            <div className="absolute top-4 right-4 z-20 bg-accent-red/90 text-white px-3 py-1 text-xs rounded-full shadow">
-              Star on the rise
-            </div>
-
-            {/* Image */}
-            <div className="relative w-full h-full rounded-xl shadow-lg">
-              <Image
-                src={playerOfTheWeek?.imageUrl?.[0] || "/placeholder.jpg"}
-                alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
-                width={340}
-                height={340}
-                className="object-cover w-full h-full rounded-xl "
-              />
-            </div>
-
-            {/* Info */}
-            <div className="w-full">
-              <h3 className="text-xl font-bold text-[#111827] font-poppins my-3">
-                {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName}
-              </h3>
-              <p className="text-accent-red font-semibold mb-2">
-                <span className="font-semibold text-primary-muted">
-                  Position:{" "}
-                </span>
-                {playerOfTheWeek?.position}
-              </p>
-              <p className="text-accent-red font-semibold mb-2">
-                <span className="font-semibold text-primary-muted">Age: </span>
-                {age}
-              </p>
-              <p className="text-accent-red font-semibold mb-2">
-                <span className="font-semibold text-primary-muted">Foot: </span>
-                {playerOfTheWeek?.foot}
-              </p>
-              <p className="text-gray-600 text-sm line-clamp-4">
-                {playerOfTheWeek?.description?.slice(0, 180) ||
-                  "This player stands out for their dedication, talent and extraordinary performance on the pitch."}
-              </p>
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
       </div>
 
+      {/* WHY FOOTBALLBANK */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Why FootballBank */}
-        <section className="py-16 bg-[#F9FAFB]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-4xl font-poppins font-bold text-[#111827] mb-4">
+        <section className="py-16 bg-[#F9FAFB] ">
+          <div
+            className="max-w-7xl mx-auto text-center px-4"
+            data-aos="fade-up"
+          >
+            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold font-poppins text-[#111827] mb-4">
               Why FootballBank?
             </h2>
             <div className="w-24 h-1 bg-[#1F6FEB] mx-auto mb-10" />
@@ -147,10 +155,12 @@ export default async function HomePage() {
                   title: "Rapid Profile Visibility",
                   desc: "Fast-track your talent exposure to scouts and clubs worldwide within 48 hours.",
                 },
-              ].map(({ icon, title, desc }) => (
+              ].map(({ icon, title, desc }, i) => (
                 <div
                   key={title}
                   className="bg-white p-8 rounded-xl shadow-sm border border-[#E5E7EB] text-center hover:shadow-md transition-all group"
+                  data-aos="fade-up"
+                  data-aos-delay={i * 150}
                 >
                   <div className="w-16 h-16 bg-[#1F6FEB] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-[#1F6FEB]">
                     <i className={`fa-solid ${icon} text-white text-2xl`} />
@@ -165,201 +175,86 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Featured Players */}
-        <section className="py-16 bg-primary-bg">
-          <div className="container mx-auto px-4">
+        {/* FEATURED PLAYERS */}
+        <section className="py-16 bg-primary-bg" data-aos="fade-up">
+          <div className=" px-4">
             <div className="flex justify-between items-center mb-10">
-              <h2 className="font-poppins font-bold text-3xl text-primary-text">
+              <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold">
                 Featured Players
               </h2>
-              <Link
-                href="/players"
-                className="text-accent-red hover:text-blue-600 flex items-center gap-2 transition-colors"
-              >
-                View All <i className="fa-solid fa-arrow-right"></i>
+              <Link href="/players" className="text-accent-red hover:underline">
+                View All
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {featuredPlayers ? (
-                featuredPlayers.map((player) => (
-                  <div
-                    key={player.id}
-                    className="bg-primary-card rounded-lg overflow-hidden border border-divider shadow-sm"
-                  >
-                    <div className="relative aspect-[4/5]">
-                      <Image
-                        src={player.imageUrl[0]}
-                        alt={`Player ${player.firstName} ${player.lastName}`}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-poppins font-semibold text-xl mb-1 text-primary-text">
-                        {player.firstName} {player.lastName}
-                      </h3>
-                      <p className="text-primary-muted text-sm mb-4">
-                        {player?.description?.slice(0, 180)}
-                      </p>
-                      <Link href={`/players/player-${player.id}`}>
-                        <span className="block text-center bg-accent-red text-white py-2 rounded hover:bg-blue-600 transition-colors cursor-pointer">
-                          View Profile
-                        </span>
-                      </Link>
-                    </div>
+              {featuredPlayers.map((player) => (
+                <div
+                  key={player.id}
+                  className="bg-white rounded-lg shadow-md overflow-hidden h-[400px] flex flex-col justify-between"
+                  data-aos="fade-up"
+                >
+                  <div className="relative w-full h-48">
+                    <Image
+                      src={player.imageUrl[0]}
+                      alt={player.firstName}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                ))
-              ) : (
-                <h4>No Featured Players</h4>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* Live Scores Section */}
-        <section className="py-16 bg-primary-secondary border-y border-divider">
-          <div className="container mx-auto px-4">
-            <div className="flex justify-between items-center mb-10">
-              <h2 className="font-poppins font-bold text-3xl md:text-4xl text-primary-text">
-                Live Scores
-              </h2>
-              <Link
-                href="/livescore"
-                className="text-accent-red hover:text-accent-amber flex items-center gap-2 transition-colors"
-              >
-                View All <i className="fa-solid fa-arrow-right"></i>
-              </Link>
-            </div>
-            {false ? (
-              <div className="bg-primary-bg rounded-lg border border-divider p-6 shadow-lg space-y-6">
-                {[
-                  {
-                    league: "Premier League",
-                    teams: ["Manchester United", "Liverpool"],
-                    score: [2, 1],
-                    flags: ["gb-eng", "gb-eng"],
-                    minute: "65'",
-                  },
-                  {
-                    league: "La Liga",
-                    teams: ["Barcelona", "Real Madrid"],
-                    score: [0, 0],
-                    flags: ["es", "es"],
-                    minute: "32'",
-                  },
-                ].map(({ league, teams, score, flags, minute }, index) => (
-                  <div
-                    key={index}
-                    className="bg-primary-secondary rounded-lg p-4 border border-divider"
-                  >
-                    <div className="flex justify-between items-center text-xs mb-3">
-                      <span className="text-primary-muted">
-                        {league} • {minute}
-                      </span>
-                      <span className="bg-accent-amber/20 text-accent-amber px-2 py-1 rounded">
-                        LIVE
-                      </span>
-                    </div>
-                    {[0, 1].map((i) => (
-                      <div
-                        key={i}
-                        className="flex justify-between items-center mt-3"
-                      >
-                        <div className="flex items-center gap-3">
-                          <Image
-                            src={`https://flagcdn.com/w40/${flags[i]}.png`}
-                            alt={teams[i]}
-                            width={40}
-                            height={40}
-                            className="object-contain"
-                          />
-                          <span className="font-medium">{teams[i]}</span>
-                        </div>
-                        <span className="font-poppins font-bold text-xl">
-                          {score[i]}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <h3 className="font-poppins font-bold  text-primary-text text-center">
-                Coming Soon
-              </h3>
-            )}
-          </div>
-        </section>
-
-        {/* Affiliate CTA Banner */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="relative rounded-xl overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary-bg via-transparent to-primary-bg z-10"></div>
-              <Image
-                className="w-full h-64 object-cover"
-                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/1fe97496d6-4f61a53610d5c5887618.png"
-                alt="Affiliate"
-                fill
-                style={{ objectFit: "cover" }}
-              />
-              <div className="absolute inset-0 flex items-center z-20">
-                <div className="container mx-auto px-4">
-                  <div className="max-w-lg">
-                    <h2 className="font-poppins font-bold text-3xl md:text-4xl mb-4 text-white">
-                      Pro Equipment, Pro Performance
-                    </h2>
-                    <p className="text-blue-100 mb-6">
-                      Get 15% off on professional football gear with code:
-                      FOOTBALLBANK15
+                  <div className="p-4">
+                    <h3 className="font-semibold text-xl mb-1">
+                      {player.firstName} {player.lastName}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-3">
+                      {player.description?.slice(0, 180)}
                     </p>
-                    <Link href="/shop">
-                      <span className="inline-block bg-accent-amber hover:bg-opacity-80 text-primary-bg font-medium px-6 py-3 rounded-md transition-colors cursor-pointer">
-                        Shop Now
+                    <Link href={`/players/player-${player.id}`}>
+                      <span className="block bg-accent-red text-white text-center py-2 rounded hover:bg-red-600 transition">
+                        View Profile
                       </span>
                     </Link>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Blog Section */}
-        <section id="blog" className="py-20 bg-[#F9FAFB]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-poppins font-bold text-[#111827] mb-4">
-                From Our Blog
-              </h2>
-              <div className="w-24 h-1 bg-accent-red mx-auto" />
-            </div>
+        {/* BLOG */}
 
-            <div className="grid md:grid-cols-3 gap-8 mb-8">
+        <section className="py-20 bg-white" id="blog">
+          <div
+            className="max-w-7xl mx-auto px-4 text-center"
+            data-aos="fade-up"
+          >
+            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold mb-4">
+              From Our Blog
+            </h2>
+            <div className="w-24 h-1 bg-accent-red mx-auto mb-10" />
+            <div className="grid md:grid-cols-3 gap-8 text-left">
               {featuredPosts.map((post) => (
                 <article
                   key={post.id}
-                  className="bg-white rounded-xl shadow-sm border border-[#E5E7EB] overflow-hidden hover:shadow-md transition-all"
+                  className="bg-[#f9fafb] rounded-xl shadow hover:shadow-md transition"
+                  data-aos="fade-up"
                 >
                   <Image
-                    src={post?.imageUrl[0]}
+                    src={post.imageUrl[0]}
                     alt={post.title}
                     width={400}
                     height={200}
                     className="w-full h-48 object-cover"
                   />
                   <div className="p-6">
-                    <div className="text-sm text-[#6B7280] mb-2">
-                      {formatTimeAgo(post?.createdAt)}
+                    <div className="text-sm text-gray-500 mb-2">
+                      {formatTimeAgo(post.createdAt)}
                     </div>
-                    <h3 className="font-poppins font-semibold text-[#111827] mb-3">
-                      {post?.title}
-                    </h3>
-                    <p className="text-[#6B7280] text-sm mb-4">
-                      {post?.content.slice(0, 100)}
+                    <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                      {post.content.slice(0, 100)}
                     </p>
-                    <Link href={`/posts/${post?.id}`}>
-                      <span className="text-accent-red font-medium hover:underline cursor-pointer">
+                    <Link href={`/posts/${post.id}`}>
+                      <span className="text-accent-red hover:underline text-sm font-medium">
                         Read More
                       </span>
                     </Link>
@@ -367,10 +262,9 @@ export default async function HomePage() {
                 </article>
               ))}
             </div>
-
-            <div className="text-center">
+            <div className="mt-10">
               <Link href="/blog">
-                <span className="bg-accent-red text-white px-8 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors cursor-pointer">
+                <span className="bg-accent-red text-white px-6 py-3 rounded-lg hover:bg-red-700 transition font-medium">
                   Visit Blog
                 </span>
               </Link>
@@ -378,18 +272,21 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Partner CTA */}
-        <section className="py-20 mb-16 bg-accent-red/50 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-accent-red/80 to-accent-red/40" />
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-4xl font-poppins font-bold text-white mb-4">
+        {/* CTA SECTION */}
+        <section
+          className="py-20 bg-accent-red/50 relative"
+          data-aos="zoom-in-up"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-accent-red/80 to-accent-red/40 z-0" />
+          <div className="relative max-w-7xl mx-auto px-4 z-10 text-center text-white">
+            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold mb-4">
               Club or Brand Looking to Collaborate?
             </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
               We connect talent with trusted organizations.
             </p>
             <Link href="/contact">
-              <span className="bg-white text-accent-red px-8 py-4 rounded-lg font-medium hover:bg-gray-50 transition-colors cursor-pointer">
+              <span className="bg-white text-accent-red px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition">
                 Get in Touch
               </span>
             </Link>

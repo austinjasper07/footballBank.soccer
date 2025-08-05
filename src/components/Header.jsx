@@ -11,7 +11,6 @@ import { usePathname } from "next/navigation";
 import { FaShoppingCart, FaBars, FaTimes, FaUser } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
-import { ChevronDownIcon } from "lucide-react";
 import { UserHeader } from "./UserHeader";
 
 const navLinks = [
@@ -54,7 +53,7 @@ export default function Header() {
                 alt="FootballBank Logo"
                 width={32}
                 height={32}
-                className="object-contain h-12 w-12 md:h-16 md:w-16"
+                className="object-contain h-8 w-8 md:h-12 md:w-12"
               />
             </div>
           </Link>

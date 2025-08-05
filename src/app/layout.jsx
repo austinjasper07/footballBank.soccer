@@ -7,6 +7,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { KindeClientProvider } from "./KindeClientProvider";
 
 import { CartProvider } from "@/context/CartContext";
+import AOSProvider from "@/components/AOSProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -61,13 +62,15 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="font-sans bg-primary-bg text-primary-text">
-        <KindeClientProvider>
-          <AuthProvider>
-            <CartProvider>
-              <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
-            </CartProvider>
-          </AuthProvider>
-        </KindeClientProvider>
+        <AOSProvider>
+          <KindeClientProvider>
+            <AuthProvider>
+              <CartProvider>
+                <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
+              </CartProvider>
+            </AuthProvider>
+          </KindeClientProvider>
+        </AOSProvider>
       </body>
     </html>
   );
