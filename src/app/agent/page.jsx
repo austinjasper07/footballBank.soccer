@@ -190,7 +190,7 @@ const AboutAgent = () => {
     <main className="bg-primary-bg text-primary-text font-inter">
       {/* Hero Section */}
       <div className="py-12 text-center" data-aos="fade-up">
-        <h1 className="font-poppins font-bold text-[clamp(2.5rem,5vw,4rem)] mb-6">
+        <h1 className="font-poppins font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] mb-6">
           About Our Agent
         </h1>
         <p className="text-primary-muted text-[clamp(1rem,2.5vw,1.25rem)] max-w-2xl mx-auto mb-2">
