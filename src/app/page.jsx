@@ -38,7 +38,7 @@ export default async function HomePage() {
         </div>
 
         {/* LEFT CONTENT */}
-        <section className="z-10 w-full lg:w-[50%] mt-8 md:mt-0 h-full flex items-center justify-center lg:justify-start text-center lg:text-left">
+        <section className="z-10 w-full lg:w-[50%] h-full flex items-center justify-center lg:justify-start text-center lg:text-left">
           <div className="max-w-2xl space-y-6 h-1/2">
             <h1
               className="font-poppins font-bold text-[clamp(2.5rem,3.5vw,4rem)] leading-tight tracking-tight text-primary-text"
