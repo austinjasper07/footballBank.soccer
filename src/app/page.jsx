@@ -134,8 +134,9 @@ export default async function HomePage() {
         )}
       </div>
 
-      {/* WHY FOOTBALLBANK */}
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* WHY FOOTBALLBANK */}
         <section className="py-16 bg-[#F9FAFB] ">
           <div
             className="max-w-7xl mx-auto text-center px-4"

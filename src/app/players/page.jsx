@@ -155,7 +155,7 @@ export default function PlayerPortfolioPage() {
                       />
                       <div className="absolute top-4 left-4 bg-primary-card/95 rounded-full px-3 py-1 text-sm flex items-center gap-2 shadow-sm">
                         <Image
-                          src={`https://flagcdn.com/w20/${player.countryCode}.png`}
+                          src={`https://flagcdn.com/w20/${player.countryCode.toLowerCase()}.png`}
                           alt={player.country}
                           width={16}
                           height={16}
@@ -183,7 +183,7 @@ export default function PlayerPortfolioPage() {
                             new Date(player.dob).getFullYear()}
                         </span>
                       </div>
-                      <p className="text-primary-muted text-sm mb-4">
+                      <p className="text-primary-muted text-sm mb-4 line-clamp-4">
                         {player.description}
                       </p>
                       <button className="w-full bg-accent-red hover:bg-accent-red/90 text-white py-2 rounded-md font-medium transition-colors cursor-pointer">
