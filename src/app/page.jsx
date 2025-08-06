@@ -35,7 +35,7 @@ export default async function HomePage() {
   return (
     <div className="bg-[#F9FAFB]">
       {/* HERO SECTION */}
-      <div className="relative min-h-[calc(100vh-64px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden px-6 lg:px-12 flex flex-col lg:flex-row justify-between items-center">
+      <div className="relative min-h-[calc(100vh-64px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden py-16 px-6 lg:px-12 flex flex-col lg:flex-row justify-between items-center">
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[120px] -top-24 -left-20 opacity-30" />
           <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[100px] bottom-10 right-10 opacity-30" />
@@ -95,7 +95,7 @@ export default async function HomePage() {
                   src={playerOfTheWeek?.imageUrl?.[0] || "/placeholder.jpg"}
                   alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
                   width={340}
-                  height={340}
+                  height={540}
                   className="object-cover w-full h-full rounded-xl"
                 />
               </div>
