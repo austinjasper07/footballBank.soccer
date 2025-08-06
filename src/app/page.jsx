@@ -35,7 +35,8 @@ export default async function HomePage() {
   return (
     <div className="bg-[#F9FAFB]">
       {/* HERO SECTION */}
-      <div className="relative min-h-[calc(100vh-64px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden py-16 px-6 lg:px-12 flex flex-col lg:flex-row justify-between items-center">
+      <div className="relative h-[calc(100vh+100px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden pt-8 pb-16 lg:pb-2 lg:pt-0 px-6 lg:px-12 flex flex-col lg:flex-row justify-between gap-12 items-center">
+        
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[120px] -top-24 -left-20 opacity-30" />
           <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[100px] bottom-10 right-10 opacity-30" />
@@ -82,11 +83,12 @@ export default async function HomePage() {
         {/* PLAYER OF THE WEEK */}
         {playerOfTheWeek && (
           <section
-            className="relative z-10 w-full lg:w-[50%] h-full flex justify-center items-center"
+            className="relative z-10 w-full lg:w-[50%] flex items-center justify-center lg:h-[700px] "
             data-aos="zoom-in"
             data-aos-delay="100"
           >
-            <div className="relative w-full md:w-[80%] h-[80%] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-row-reverse gap-6 p-4">
+            <Link href={`/players/${playerOfTheWeek.id}`}>
+            <div className="relative w-full md:w-[80%] lg:h-[600px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-row-reverse gap-6 p-4 mx-auto">
               <div className="absolute top-4 right-4 z-20 bg-accent-red/90 text-white px-3 py-1 text-xs rounded-full shadow">
                 Star on the rise
               </div>
@@ -94,9 +96,9 @@ export default async function HomePage() {
                 <Image
                   src={playerOfTheWeek?.imageUrl?.[0] || "/placeholder.jpg"}
                   alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
-                  width={340}
-                  height={540}
-                  className="object-cover w-full h-full rounded-xl"
+                  width={500}
+                  height={500}
+                  className="object-cover w-full h-[350px] lg:h-full rounded-xl"
                 />
               </div>
               <div className="w-full mt-4">
@@ -121,12 +123,13 @@ export default async function HomePage() {
                   </span>
                   {playerOfTheWeek?.foot}
                 </p>
-                <p className="text-gray-600 text-sm line-clamp-4">
+                <p className="text-gray-600 text-sm line-clamp-6 md:line-clamp-8 lg:line-clamp-15">
                   {playerOfTheWeek?.description||
                     "This player stands out for their dedication, talent and extraordinary performance on the pitch."}
                 </p>
               </div>
             </div>
+            </Link>
           </section>
         )}
       </div>
@@ -212,7 +215,7 @@ export default async function HomePage() {
                     <p className="text-sm text-gray-600 mb-3 line-clamp-3">
                       {player.description?.slice(0, 180)}
                     </p>
-                    <Link href={`/players/player-${player.id}`}>
+                    <Link href={`/players/${player.id}`}>
                       <span className="block bg-accent-red text-white text-center py-2 rounded hover:bg-red-600 transition">
                         View Profile
                       </span>
