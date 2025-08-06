@@ -13,7 +13,6 @@ export default async function PlayerPage({ params }) {
     const data = await getPlayerById(playerId)
     if (!data) return notFound()
     player = data;
-    console.log(player)
   } catch (err) {
     return notFound()
   }
@@ -33,19 +32,19 @@ export default async function PlayerPage({ params }) {
       </Head>
       <main className="bg-primary-bg text-primary-text font-inter">
         {/* Hero */}
-        <section className="py-16 ">
+        <section className="pb-16 pt-8">
           <div className="absolute inset-0 z-0 pointer-events-none">
             <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[120px] -top-24 -left-20 opacity-30"></div>
             <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[100px] bottom-10 right-10 opacity-30"></div>
           </div>
-          <div className="container mx-auto px-4 max-w-6xl grid lg:grid-cols-2 gap-12 items-center">
+          <div className="flex lg:flex-row flex-col gap-12 items-center">
             <div className="shadow-md p-10 rounded-xl">
               <div className="flex gap-4 mb-6">
                 <span className="badge">Available</span>
                 <span className="badge-secondary">Featured Player</span>
               </div>
-              <h1 className="text-5xl font-poppins font-bold mb-4">
-                {player.firstName} {player.lastName}
+              <h1 className="text-[clamp(1.5rem,3.5vw,3.5rem)] font-poppins font-bold mb-4">
+                <span className="text-nowrap">{player.firstName}</span> {player.lastName}
               </h1>
               <div className="flex gap-6 mb-6">
                 <div className="flex items-center gap-2">
@@ -103,10 +102,10 @@ export default async function PlayerPage({ params }) {
               additional information.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href={'/contact'} className="text-white border border-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-white hover:text-accent-red transition-colors">
+              <Link href={'/contact'} className="text-accent-red bg-white border border-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-accent-red hover:text-white transition-colors">
                 <i className="fa-solid fa-envelope mr-2 "></i> Contact Agent
               </Link>
-              <button className="text-white border border-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-white hover:text-accent-red transition-colors">
+              <button className="text-accent-red bg-white border border-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-accent-red hover:text-white transition-colors">
                 <i className="fa-solid fa-calendar mr-2"></i> Schedule Meeting
               </button>
             </div>

@@ -20,12 +20,12 @@ export default function PlayerTabs({ player }) {
   return (
     <section className="py-16 border-y border-divider bg-primary-bg">
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="flex gap-4 border-b border-divider overflow-x-auto mb-8">
+        <div className="flex gap-2 lg:gap-4 border-b border-divider overflow-x-auto mb-8">
           {['stats', 'videos', 'availability'].map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-6 py-3 font-medium border-b-2 transition ${
+              className={`px-3 lg:px-6 py-3 font-medium border-b-2 transition text-sm lg:text-base ${
                 tab === t
                   ? 'text-accent-red border-accent-red'
                   : 'text-primary-muted border-transparent hover:text-accent-amber'
@@ -44,13 +44,13 @@ export default function PlayerTabs({ player }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <StatCard
               title="Career Total"
-              stats={{ Appearances: '156', Goals: '78', Assists: '32', Trophies: '5' }}
+              stats={{ Appearances: '0', Goals: '0', Assists: '0', Trophies: '0' }}
             />
             <StatCard
               title="Season"
-              stats={{ Appearances: '28', Goals: '15', Assists: '8', Minutes: '2340' }}
+              stats={{ Appearances: '0', Goals: '0', Assists: '0', Minutes: '0' }}
             />
-            <StatCard title="International" stats={{ Caps: '12', Goals: '6', Tournaments: '2' }} />
+            <StatCard title="International" stats={{ Caps: '0', Goals: '0', Tournaments: '0' }} />
           </div>
         )}
 
@@ -103,10 +103,10 @@ export default function PlayerTabs({ player }) {
                   <strong>Available From:</strong> Immediately
                 </p>
                 <p>
-                  <strong>Preferred Leagues:</strong> unavailable
+                  <strong>Preferred Leagues:</strong> {player.preferredLeagues !== "" ? player.preferredLeagues : 'unavailable'}
                 </p>
                 <p>
-                  <strong>Salary Expectation:</strong> unavailable
+                  <strong>Salary Expectation:</strong> {player.salaryExpectation !== "" ? `${player.salaryExpectation} USD` : 'unavailable'}
                 </p>
               </div>
             </div>
@@ -116,7 +116,7 @@ export default function PlayerTabs({ player }) {
               <p className="text-primary-muted mb-2">
                 <i className="fa-solid fa-user-tie mr-2"></i> Ayodeji Fatade
               </p>
-              <p className="text-primary-muted mb-2">
+              <p className="text-primary-muted mb-2 text-nowrap">
                 <i className="fa-solid fa-envelope mr-2"></i> ayodeji@footballbank.soccer
               </p>
               <p className="text-primary-muted mb-4">
