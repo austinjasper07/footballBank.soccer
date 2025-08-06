@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -41,6 +41,23 @@ export function BlogPostDialog({ open, onOpenChange, post, onSave }) {
   });
 
   const [tagsInput, setTagsInput] = useState(post?.tags?.join(", ") || "");
+
+  // Add this effect to update formData and tagsInput when post or dialog opens
+  useEffect(() => {
+    setFormData({
+      ...post,
+      title: post?.title || "",
+      author: post?.author || "Admin",
+      status: post?.status || "Draft",
+      summary: post?.summary || "",
+      content: post?.content || "",
+      imageUrl: post?.imageUrl || "",
+      tags: post?.tags || [],
+      featured: post?.featured || false,
+      views: post?.views || 0,
+    });
+    setTagsInput(post?.tags?.join(", ") || "");
+  }, [post, open]);
 
   const handleSave = async () => {
     if (

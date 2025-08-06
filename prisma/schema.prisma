@@ -27,25 +27,23 @@ enum SubscriptionType {
 }
 
 model User {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  kindeId         String   @unique              // Add this 👈
-  email           String   @unique
-  firstName       String
-  lastName        String
-  password        String   // Can be a dummy string if using Kinde only
-  role            Role
-  subscribed      Boolean
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  kindeId    String   @unique // Add this 👈
+  email      String   @unique
+  firstName  String
+  lastName   String
+  password   String // Can be a dummy string if using Kinde only
+  role       Role
+  subscribed Boolean
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  orders          Order[]
-  subscriptions   Subscription[]
-  paymentMethods  PaymentMethod[]
-  pendingOrders   PendingOrder[]
-  Submission      Submission[]
+  orders         Order[]
+  subscriptions  Subscription[]
+  paymentMethods PaymentMethod[]
+  pendingOrders  PendingOrder[]
+  Submission     Submission[]
 }
-
-
 
 enum SubscriptionPlan {
   basic
@@ -84,8 +82,21 @@ model Player {
   videoAdditional String[]
   featured        Boolean
   playerOfTheWeek Boolean
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+
+  // 🆕 Stats grouped by context
+  stats Json
+
+  // 🆕 Club history: array of { clubName, startDate, endDate, position }
+  clubHistory Json
+
+  // Status-related
+  contractStatus    String
+  availableFrom     String
+  preferredLeagues  String
+  salaryExpectation String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Product {
@@ -109,8 +120,9 @@ enum PostStatus {
   Published
   Archived
 }
+
 model Post {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   content   String
   summary   String
@@ -121,8 +133,8 @@ model Post {
   featured  Boolean
   tags      String[]
   views     Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model PendingOrder {
@@ -146,26 +158,29 @@ model PaymentMethod {
 }
 
 model Order {
-  id        String         @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String         @db.ObjectId
-  user      User           @relation(fields: [userId], references: [id])
-  items     OrderItem[]    
-  status    OrderStatus    @default(pending)
-  createdAt DateTime       @default(now())
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String      @db.ObjectId
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+  status    OrderStatus @default(pending)
+  createdAt DateTime    @default(now())
 }
+
 model OrderItem {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  orderId  String  @db.ObjectId
-  order    Order   @relation(fields: [orderId], references: [id])
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  orderId  String @db.ObjectId
+  order    Order  @relation(fields: [orderId], references: [id])
   name     String
   quantity Int
   price    Float
 }
+
 enum OrderStatus {
   pending
   completed
   cancelled
 }
+
 model Message {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
@@ -176,34 +191,54 @@ model Message {
 }
 
 model Submission {
-  id                String   @id @default(auto()) @map("_id") @db.ObjectId
-  firstName         String
-  lastName          String
-  dob               String
-  country           String
-  countryCode       String
-  position          String
-  email             String
-  phone             String
-  height            String
-  weight            String
-  foot              String
-  imageUrl          String[]
-  cvUrl             String
-  videoPrimary      String
-  videoAdditional   String[]
-  featured          Boolean  @default(false)
-  playerOfTheWeek   Boolean  @default(false)
-  description       String
-  submittedAt       DateTime @default(now())
-  status            SubmissionStatus @default(PENDING)
-  rejectionReason   String?
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  firstName   String
+  lastName    String
+  dob         String
+  country     String
+  countryCode String
+  position    String
+  email       String
+  phone       String
+  height      String
+  weight      String
+  foot        String
 
-  userId            String?  @db.ObjectId
-  user              User?    @relation(fields: [userId], references: [id])
+  imageUrl        String[]
+  cvUrl           String
+  videoPrimary    String
+  videoAdditional String[]
+  description     String
+
+  // 🆕 Availability
+  contractStatus    String
+  availableFrom     String
+  preferredLeagues  String
+  salaryExpectation String
+
+  // 🆕 Stats (career, season, international)
+  stats Json
+
+  // 🆕 Club history entries
+  clubHistory Json
+
+  // Flags
+  featured        Boolean @default(false)
+  playerOfTheWeek Boolean @default(false)
+
+  // Submission logic
+  submittedAt     DateTime         @default(now())
+  status          SubmissionStatus @default(PENDING)
+  rejectionReason String?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation to user
+  userId String? @db.ObjectId
+  user   User?   @relation(fields: [userId], references: [id])
 }
 
 enum SubmissionStatus {
@@ -213,17 +248,16 @@ enum SubmissionStatus {
 }
 
 model CartItem {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @db.ObjectId
-  
-  name      String
-  price     Float
-  quantity  Int
-  image     String
-  size      String?   // Optional
-  color     String?   // Optional
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+
+  name     String
+  price    Float
+  quantity Int
+  image    String
+  size     String? // Optional
+  color    String? // Optional
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-

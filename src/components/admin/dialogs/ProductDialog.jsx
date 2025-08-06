@@ -67,7 +67,7 @@ export function ProductDialog({
       setSizesInput((product.sizes || []).join(", "));
       setColorsInput((product.colors || []).join(", "));
     }
-  }, [product]);
+  }, [product, open]);
 
   const handleSave = async () => {
     if (!formData.name || !formData.price || formData.stock === undefined) {

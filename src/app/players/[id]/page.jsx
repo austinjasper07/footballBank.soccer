@@ -3,15 +3,17 @@ import { notFound } from "next/navigation"
 import PlayerTabs from "@/app/players/[id]/PlayerTabs"
 import Head from "next/head"
 import { getPlayerById } from "@/actions/publicActions"
+import Link from "next/link"
 
 export default async function PlayerPage({ params }) {
   const playerId = (await params).id
-  let player
+  let player= "";
 
   try {
     const data = await getPlayerById(playerId)
     if (!data) return notFound()
-    player = data
+    player = data;
+    console.log(player)
   } catch (err) {
     return notFound()
   }
@@ -70,7 +72,7 @@ export default async function PlayerPage({ params }) {
                 <button className="btn-primary">
                   <i className="fa-solid fa-envelope mr-2" /> Contact Agent
                 </button>
-                <a href={player.cvUrl} className="btn-outline" download>
+                <a href={player.cvUrl} className="btn-outline" download target="_blank">
                   <i className="fa-solid fa-download mr-2" /> Download CV
                 </a>
               </div>
@@ -83,7 +85,6 @@ export default async function PlayerPage({ params }) {
                 height={500}
                 className="object-cover w-full h-[500px]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary-bg via-transparent to-transparent" />
             </div>
           </div>
         </section>
@@ -102,10 +103,10 @@ export default async function PlayerPage({ params }) {
               additional information.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <button className="btn-light">
-                <i className="fa-solid fa-envelope mr-2"></i> Contact Agent
-              </button>
-              <button className="btn-outline">
+              <Link href={'/contact'} className="text-white border border-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-white hover:text-accent-red transition-colors">
+                <i className="fa-solid fa-envelope mr-2 "></i> Contact Agent
+              </Link>
+              <button className="text-white border border-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-white hover:text-accent-red transition-colors">
                 <i className="fa-solid fa-calendar mr-2"></i> Schedule Meeting
               </button>
             </div>

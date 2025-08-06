@@ -6,8 +6,10 @@ import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 
 export function UserHeader({slug, href}) {
-  const { user, isAuthenticated } = useKindeBrowserClient();
+  const { user, isAuthenticated, getClaim } = useKindeBrowserClient();
   const [open, setOpen] = useState(false);
+  const userRole = getClaim("role");
+  const isAdmin = userRole === "admin" || userRole === "super-admin";
 
   if (!isAuthenticated || !user) return null;
 
@@ -31,13 +33,13 @@ export function UserHeader({slug, href}) {
           onMouseLeave={closeDropdown}
         >
           <div className="py-1">
-            <Link
+            {isAdmin && <Link
               href={href}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               onClick={closeDropdown}
             >
               {slug}
-            </Link>
+            </Link>}
             <LogoutLink
               onClick={closeDropdown}
               className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"

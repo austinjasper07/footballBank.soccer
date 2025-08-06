@@ -4,10 +4,17 @@
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import  prisma  from './prisma';
 
+/**
+ * Synchronizes the authenticated Kinde user to the database.
+ * If the user does not exist, creates a new user record.
+ * No parameters.
+ * Returns a Promise that resolves when the operation is complete.
+ */
 export const syncUserToDb = async () => {
   const { getUser, getRoles } = getKindeServerSession();
   const kindeUser = await getUser();
-  const role = await getRoles() || "user";
+  const roles = await getRoles();
+  const role = Array.isArray(roles) && roles.length > 0 ? roles[0] : "user";
 
   if (!kindeUser?.id) {
     console.error('Kinde user not found or missing ID');
@@ -20,7 +27,7 @@ export const syncUserToDb = async () => {
     });
 
     if (!existing) {
-      await prisma.user.create({
+      const user = await prisma.user.create({
         data: {
           kindeId: kindeUser.id,
           email: kindeUser.email ?? '',
@@ -31,6 +38,7 @@ export const syncUserToDb = async () => {
           subscribed: false,
         },
       });
+      console.log('User created:', { id: user.id, email: user.email });
     }
   } catch (err) {
     console.error('User sync failed', err);

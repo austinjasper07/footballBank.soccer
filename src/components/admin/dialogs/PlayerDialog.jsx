@@ -1,4 +1,5 @@
 "use client";
+
 import { uploadFileWithProgress } from "@/lib/uploadWithProgress";
 import { useEffect, useState } from "react";
 import {
@@ -19,12 +20,20 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { FeaturedToggle } from "@/components/FeatureToggle";
-import { createPlayer, updatePlayer, getAllPlayers } from "@/actions/adminActions";
+import {
+  FeaturedToggle,
+  PlayerOfTheWeekToggle,
+} from "@/components/FeatureToggle";
+import { createPlayer, updatePlayer } from "@/actions/adminActions";
+import { countries } from "@/data/countries&code";
 
+/**
+ * PlayerDialog component for adding or editing a football player.
+ */
 export function PlayerDialog({ open, onOpenChange, player, onSave }) {
   const { toast } = useToast();
   const [uploadProgress, setUploadProgress] = useState({});
+  const uploading = Object.values(uploadProgress).some((p) => p < 100);
 
   const [formData, setFormData] = useState({
     ...player,
@@ -40,122 +49,222 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
     email: player?.email || "",
     phone: player?.phone || "",
     cvUrl: player?.cvUrl || "",
-    imageUrl: player?.imageUrl || [""],
+    imageUrl: player?.imageUrl || [],
     description: player?.description || "",
-    videoPrimary: player?.videoPrimary,
-    videoAdditional: player?.videoAdditional || [""],
+    videoPrimary: player?.videoPrimary || "",
+    videoAdditional: player?.videoAdditional || [],
     featured: player?.featured || false,
     playerOfTheWeek: player?.playerOfTheWeek || false,
+    contractStatus: player?.contractStatus || "",
+    availableFrom: player?.availableFrom || "",
+    preferredLeagues: player?.preferredLeagues || "",
+    salaryExpectation: player?.salaryExpectation || "",
+    stats: player?.stats || {
+      career: { Appearances: "", Goals: "", Assists: "", Trophies: "" },
+      season: { Appearances: "", Goals: "", Assists: "", Minutes: "" },
+      international: { Caps: "", Goals: "", Tournaments: "" },
+    },
+    clubHistory: player?.clubHistory || [
+      { clubName: "", startDate: "", endDate: "", position: "" },
+    ],
   });
 
   useEffect(() => {
-    getAllPlayers();
-  }, []);
+    setFormData({
+      ...player,
+      ...formDataDefaults(player),
+    });
+  }, [player, open]);
+
+  const formDataDefaults = (player = {}) => ({
+    firstName: player?.firstName || "",
+    lastName: player?.lastName || "",
+    dob: player?.dob || "",
+    country: player?.country || "",
+    countryCode: player?.countryCode || "",
+    position: player?.position || "",
+    height: player?.height || "",
+    weight: player?.weight || "",
+    foot: player?.foot || "",
+    email: player?.email || "",
+    phone: player?.phone || "",
+    cvUrl: player?.cvUrl || "",
+    imageUrl: player?.imageUrl || [],
+    description: player?.description || "",
+    videoPrimary: player?.videoPrimary || "",
+    videoAdditional: player?.videoAdditional || [],
+    featured: player?.featured || false,
+    playerOfTheWeek: player?.playerOfTheWeek || false,
+    contractStatus: player?.contractStatus || "",
+    availableFrom: player?.availableFrom || "",
+    preferredLeagues: player?.preferredLeagues || "",
+    salaryExpectation: player?.salaryExpectation || "",
+    stats: player?.stats || {
+      career: { Appearances: "", Goals: "", Assists: "", Trophies: "" },
+      season: { Appearances: "", Goals: "", Assists: "", Minutes: "" },
+      international: { Caps: "", Goals: "", Tournaments: "" },
+    },
+    clubHistory: player?.clubHistory || [
+      { clubName: "", startDate: "", endDate: "", position: "" },
+    ],
+  });
+
+  const updateClubHistory = (index, field, value) => {
+    const updated = [...formData.clubHistory];
+    updated[index][field] = value;
+    setFormData({ ...formData, clubHistory: updated });
+  };
 
   const handleSave = async () => {
-    if (!formData.firstName || !formData.lastName || !formData.position) {
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.position ||
+      !formData.videoPrimary
+    ) {
       toast({
         title: "Error",
-        description: "Please fill in all required fields",
+        description:
+          "Please fill in all required fields including primary video",
         variant: "destructive",
       });
       return;
     }
-
     try {
-      const message = player?.id
+      const result = player?.id
         ? await updatePlayer(player.id, formData)
         : await createPlayer(formData);
-
-      console.log(message);
-      onSave({ ...formData, id: player?.id });
+      const savedId = player?.id || result?.id;
+      onSave({ ...formData, id: savedId });
       onOpenChange(false);
-
-      toast({
-        title: "Success",
-        description: "Player saved successfully",
-      });
-    } catch (error) {
+      toast({ title: "Success", description: "Player saved successfully" });
+    } catch (err) {
       toast({
         title: "Error",
-        description: "Something went wrong while saving the player.",
+        description: "Failed to save player",
         variant: "destructive",
       });
     }
   };
 
+  const handleImageUpload = (files) => {
+    const toUpload = Array.from(files)
+      .slice(0, 3)
+      .filter((file) => {
+        const ok =
+          (file.type === "image/jpeg" || file.type === "image/png") &&
+          file.size <= 2 * 1024 * 1024;
+        if (!ok)
+          toast({
+            title: "Invalid file",
+            description: "Only JPG/PNG ≤2MB",
+            variant: "destructive",
+          });
+        return ok;
+      });
+    toUpload.forEach((file, i) => {
+      const path = `players/${formData.email || Date.now()}/images/${file.name}`;
+      uploadFileWithProgress(path, file, (p) =>
+        setUploadProgress((prev) => ({ ...prev, [`img-${i}`]: p }))
+      ).then((url) => {
+        setFormData((prev) => ({
+          ...prev,
+          imageUrl: [
+            ...prev.imageUrl.slice(0, i),
+            url,
+            ...prev.imageUrl.slice(i + 1),
+          ],
+        }));
+      });
+    });
+  };
+
+  const handleVideoPrimaryUpload = (file) => {
+    const path = `players/${formData.email || Date.now()}/videoPrimary/${file.name}`;
+    uploadFileWithProgress(path, file, (p) =>
+      setUploadProgress((prev) => ({ ...prev, videoPrimary: p }))
+    ).then((url) => setFormData((prev) => ({ ...prev, videoPrimary: url })));
+  };
+
+  const handleVideoAdditionalUpload = (files) => {
+    Array.from(files)
+      .slice(0, 3)
+      .forEach((file, i) => {
+        const path = `players/${formData.email || Date.now()}/videoAdditional/${file.name}`;
+        uploadFileWithProgress(path, file, (p) =>
+          setUploadProgress((prev) => ({ ...prev, [`vidadd-${i}`]: p }))
+        ).then((url) =>
+          setFormData((prev) => ({
+            ...prev,
+            videoAdditional: [
+              ...prev.videoAdditional.slice(0, i),
+              url,
+              ...prev.videoAdditional.slice(i + 1),
+            ],
+          }))
+        );
+      });
+  };
+
+  const handleCvUpload = (file) => {
+    const path = `players/${formData.email || Date.now()}/cv/${file.name}`;
+    uploadFileWithProgress(path, file, (p) =>
+      setUploadProgress((prev) => ({ ...prev, cv: p }))
+    ).then((url) => setFormData((prev) => ({ ...prev, cvUrl: url })));
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{player ? "Edit Player" : "Add New Player"}</DialogTitle>
+          <DialogTitle>{player ? "Edit Player" : "Add Player"}</DialogTitle>
         </DialogHeader>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InputField
+            label="First Name *"
+            value={formData.firstName}
+            onChange={(val) => setFormData({ ...formData, firstName: val })}
+          />
+          <InputField
+            label="Last Name *"
+            value={formData.lastName}
+            onChange={(val) => setFormData({ ...formData, lastName: val })}
+          />
+          <InputField
+            label="Date of Birth"
+            type="date"
+            value={formData.dob}
+            onChange={(val) => setFormData({ ...formData, dob: val })}
+          />
+          {/* country select */}
           <div>
-            <Label htmlFor="firstName">First Name *</Label>
-            <Input
-              id="firstName"
-              value={formData.firstName}
-              onChange={(e) =>
-                setFormData({ ...formData, firstName: e.target.value })
-              }
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="lastName">Last Name *</Label>
-            <Input
-              id="lastName"
-              value={formData.lastName}
-              onChange={(e) =>
-                setFormData({ ...formData, lastName: e.target.value })
-              }
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="dob">Date of Birth</Label>
-            <Input
-              id="dob"
-              type="date"
-              value={formData.dob}
-              onChange={(e) =>
-                setFormData({ ...formData, dob: e.target.value })
-              }
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="country">Country</Label>
-            <Input
-              id="country"
-              value={formData.country}
-              onChange={(e) =>
-                setFormData({ ...formData, country: e.target.value })
-              }
-              placeholder="e.g. Spain"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="countryCode">Country Code</Label>
-            <Input
-              id="countryCode"
+            <Label>Country *</Label>
+            <Select
               value={formData.countryCode}
-              onChange={(e) =>
-                setFormData({ ...formData, countryCode: e.target.value })
-              }
-              placeholder="e.g. ES"
-            />
+              onValueChange={(code) => {
+                const country =
+                  countries.find((c) => c.code === code)?.name || "";
+                setFormData({ ...formData, countryCode: code, country });
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select country" />
+              </SelectTrigger>
+              <SelectContent>
+                {countries.map((c) => (
+                  <SelectItem key={c.code} value={c.code}>
+                    {c.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-
           <div>
-            <Label htmlFor="position">Position *</Label>
+            <Label>Position *</Label>
             <Select
               value={formData.position}
-              onValueChange={(value) =>
-                setFormData({ ...formData, position: value })
+              onValueChange={(val) =>
+                setFormData({ ...formData, position: val })
               }
             >
               <SelectTrigger>
@@ -169,45 +278,35 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
               </SelectContent>
             </Select>
           </div>
-
-          <div className="md:col-span-2">
+          <div className="flex justify-around col-span-1">
             <FeaturedToggle
-              value={formData.featured ?? false}
+              value={formData.featured}
               onChange={(val) =>
                 setFormData((prev) => ({ ...prev, featured: val }))
               }
             />
-          </div>
-
-          <div>
-            <Label htmlFor="height">Height (cm)</Label>
-            <Input
-              id="height"
-              value={formData.height}
-              onChange={(e) =>
-                setFormData({ ...formData, height: e.target.value })
+            <PlayerOfTheWeekToggle
+              value={formData.playerOfTheWeek}
+              onChange={(val) =>
+                setFormData((prev) => ({ ...prev, playerOfTheWeek: val }))
               }
             />
           </div>
-
+          <InputField
+            label="Height (cm)"
+            value={formData.height}
+            onChange={(val) => setFormData({ ...formData, height: val })}
+          />
+          <InputField
+            label="Weight (kg)"
+            value={formData.weight}
+            onChange={(val) => setFormData({ ...formData, weight: val })}
+          />
           <div>
-            <Label htmlFor="weight">Weight (kg)</Label>
-            <Input
-              id="weight"
-              value={formData.weight}
-              onChange={(e) =>
-                setFormData({ ...formData, weight: e.target.value })
-              }
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="foot">Preferred Foot</Label>
+            <Label>Preferred Foot</Label>
             <Select
               value={formData.foot}
-              onValueChange={(value) =>
-                setFormData({ ...formData, foot: value })
-              }
+              onValueChange={(val) => setFormData({ ...formData, foot: val })}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select foot" />
@@ -219,155 +318,216 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
               </SelectContent>
             </Select>
           </div>
+          <InputField
+            label="Email"
+            type="email"
+            value={formData.email}
+            onChange={(val) => setFormData({ ...formData, email: val })}
+          />
+          <InputField
+            label="Phone"
+            value={formData.phone}
+            onChange={(val) => setFormData({ ...formData, phone: val })}
+          />
+          <InputField
+            label="Contract Status"
+            value={formData.contractStatus}
+            onChange={(val) =>
+              setFormData({ ...formData, contractStatus: val })
+            }
+          />
+          <InputField
+            label="Available From"
+            type="date"
+            value={formData.availableFrom}
+            onChange={(val) => setFormData({ ...formData, availableFrom: val })}
+          />
+          <InputField
+            label="Preferred Leagues"
+            value={formData.preferredLeagues}
+            onChange={(val) =>
+              setFormData({ ...formData, preferredLeagues: val })
+            }
+          />
+          <InputField
+            label="Salary Expectation"
+            value={formData.salaryExpectation}
+            onChange={(val) =>
+              setFormData({ ...formData, salaryExpectation: val })
+            }
+          />
+        </div>
 
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="phone">Phone</Label>
-            <Input
-              id="phone"
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="images">Upload Images (max 3)</Label>
-            <Input
-              id="images"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(e) => {
-                const files = Array.from(e.target.files || []).slice(0, 3);
-                const uploadPromises = files.map((file, i) => {
-                  const path = `players/${formData.email || Date.now()}/images/${file.name}`;
-                  return uploadFileWithProgress(path, file, (p) => {
-                    setUploadProgress((prev) => ({
+        {/* Stats */}
+        <div className="mt-6">
+          <Label className="font-semibold mb-2">Player Stats</Label>
+          {Object.entries(formData.stats).map(([group, statSet]) => (
+            <div
+              key={group}
+              className="mb-4 grid grid-cols-2 md:grid-cols-4 gap-4"
+            >
+              <span className="col-span-full font-medium capitalize">
+                {group}
+              </span>
+              {Object.entries(statSet).map(([stat, value]) => (
+                <InputField
+                  key={stat}
+                  label={stat}
+                  type="number"
+                  value={value}
+                  onChange={(val) =>
+                    setFormData((prev) => ({
                       ...prev,
-                      [`image-${i}`]: p,
-                    }));
-                  });
-                });
+                      stats: {
+                        ...prev.stats,
+                        [group]: { ...prev.stats[group], [stat]: val },
+                      },
+                    }))
+                  }
+                />
+              ))}
+            </div>
+          ))}
+        </div>
 
-                Promise.all(uploadPromises).then((urls) => {
-                  setFormData((prev) => ({ ...prev, imageUrl: urls }));
-                });
-              }}
-            />
-            {[0, 1, 2].map((i) =>
-              uploadProgress[`image-${i}`] != null ? (
-                <ProgressBar key={i} progress={uploadProgress[`image-${i}`]} />
-              ) : null
-            )}
-          </div>
-
-          <div className="md:col-span-2">
+        {/* Club History */}
+        <div className="mt-6">
+          <Label className="font-semibold mb-2">Club History</Label>
+          {formData.clubHistory.map((club, i) => (
+            <div key={i} className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-2">
+              <InputField
+                label="Club Name"
+                value={club.clubName}
+                onChange={(val) => updateClubHistory(i, "clubName", val)}
+              />
+              <InputField
+                label="Start Date"
+                type="date"
+                value={club.startDate}
+                onChange={(val) => updateClubHistory(i, "startDate", val)}
+              />
+              <InputField
+                label="End Date"
+                type="date"
+                value={club.endDate}
+                onChange={(val) => updateClubHistory(i, "endDate", val)}
+              />
+              <InputField
+                label="Position"
+                value={club.position}
+                onChange={(val) => updateClubHistory(i, "position", val)}
+              />
+            </div>
+          ))}
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() =>
+              setFormData((prev) => ({
+                ...prev,
+                clubHistory: [
+                  ...prev.clubHistory,
+                  { clubName: "", startDate: "", endDate: "", position: "" },
+                ],
+              }))
+            }
+          >
+            + Add Club
+          </Button>
+          {/* Player Bio or Description */}
+          <div className="md:col-span-2 mt-6">
             <Label htmlFor="description">Player Bio</Label>
             <Textarea
               id="description"
               rows={3}
               value={formData.description}
               onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
+                setFormData((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
               }
             />
           </div>
-
-          <div className="md:col-span-2">
-            <Label htmlFor="videoPrimary">Upload Primary Video *</Label>
-            <Input
-              id="videoPrimary"
-              type="file"
-              accept="video/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (!file) return;
-                const path = `players/${formData.email || Date.now()}/videoPrimary/${file.name}`;
-                uploadFileWithProgress(path, file, (p) => {
-                  setUploadProgress((prev) => ({ ...prev, videoPrimary: p }));
-                }).then((url) => {
-                  setFormData((prev) => ({ ...prev, videoPrimary: url }));
-                });
-              }}
-            />
-            {uploadProgress.videoPrimary !== undefined && (
-              <ProgressBar progress={uploadProgress.videoPrimary} />
-            )}
-          </div>
-
-          <div className="md:col-span-2">
-            <Label htmlFor="videoAdditional">Upload Additional Videos (max 3)</Label>
-            <Input
-              id="videoAdditional"
-              type="file"
-              accept="video/*"
-              multiple
-              onChange={(e) => {
-                const files = Array.from(e.target.files || []).slice(0, 3);
-                const uploadPromises = files.map((file, i) => {
-                  const path = `players/${formData.email || Date.now()}/videoAdditional/${file.name}`;
-                  return uploadFileWithProgress(path, file, (p) => {
-                    setUploadProgress((prev) => ({
-                      ...prev,
-                      [`videoAdditional-${i}`]: p,
-                    }));
-                  });
-                });
-
-                Promise.all(uploadPromises).then((urls) => {
-                  setFormData((prev) => ({ ...prev, videoAdditional: urls }));
-                });
-              }}
-            />
-            {[0, 1, 2].map((i) =>
-              uploadProgress[`videoAdditional-${i}`] != null ? (
-                <ProgressBar key={i} progress={uploadProgress[`videoAdditional-${i}`]} />
-              ) : null
-            )}
-          </div>
-
-          <div className="md:col-span-2">
-            <Label htmlFor="cvUpload">Upload CV</Label>
-            <Input
-              id="cvUpload"
-              type="file"
-              accept=".pdf,.doc,.docx"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (!file) return;
-                const path = `players/${formData.email || Date.now()}/cv/${file.name}`;
-                uploadFileWithProgress(path, file, (p) => {
-                  setUploadProgress((prev) => ({ ...prev, cv: p }));
-                }).then((url) => {
-                  setFormData((prev) => ({ ...prev, cvUrl: url }));
-                });
-              }}
-            />
-            {uploadProgress.cv !== undefined && (
-              <ProgressBar progress={uploadProgress.cv} />
-            )}
-          </div>
         </div>
 
-        <div className="flex justify-end gap-2 mt-6">
+        {/* Upload Sections */}
+        <div className="mt-6 space-y-4 md:mt-8">
+          <Label>Upload Images (max 3)</Label>
+          <Input
+            type="file"
+            accept="image/jpeg,image/png"
+            multiple
+            onChange={(e) => handleImageUpload(e.target.files)}
+          />
+          {[0, 1, 2].map(
+            (i) =>
+              uploadProgress[`img-${i}`] != null && (
+                <ProgressBar
+                  key={`img-${i}`}
+                  progress={uploadProgress[`img-${i}`]}
+                />
+              )
+          )}
+
+          <Label>Upload Primary Video *</Label>
+          <Input
+            type="file"
+            accept="video/*"
+            onChange={(e) =>
+              e.target.files?.[0] && handleVideoPrimaryUpload(e.target.files[0])
+            }
+          />
+          {uploadProgress.videoPrimary != null && (
+            <ProgressBar progress={uploadProgress.videoPrimary} />
+          )}
+
+          <Label>Upload Additional Videos (max 3)</Label>
+          <Input
+            type="file"
+            accept="video/*"
+            multiple
+            onChange={(e) => handleVideoAdditionalUpload(e.target.files)}
+          />
+          {[0, 1, 2].map(
+            (i) =>
+              uploadProgress[`vidadd-${i}`] != null && (
+                <ProgressBar
+                  key={`vidadd-${i}`}
+                  progress={uploadProgress[`vidadd-${i}`]}
+                />
+              )
+          )}
+
+          <Label>Upload CV (PDF/DOC)</Label>
+          <Input
+            type="file"
+            accept=".pdf,.doc,.docx"
+            onChange={(e) =>
+              e.target.files?.[0] && handleCvUpload(e.target.files[0])
+            }
+          />
+          {uploadProgress.cv != null && (
+            <ProgressBar progress={uploadProgress.cv} />
+          )}
+        </div>
+
+        <div className="flex justify-end gap-2 mt-8">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSave}>
-            {player ? "Update Player" : "Add Player"}
+          <Button
+            onClick={handleSave}
+            disabled={uploading}
+            title={
+              uploading ? "Please wait for all files to finish uploading" : ""
+            }
+          >
+            {uploading
+              ? "Uploading..."
+              : player
+                ? "Update Player"
+                : "Add Player"}
           </Button>
         </div>
       </DialogContent>
@@ -375,6 +535,21 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
   );
 }
 
+// InputField helper
+function InputField({ label, value, onChange, type = "text" }) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      <Input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
+  );
+}
+
+// Simple progress bar
 function ProgressBar({ progress }) {
   return (
     <div className="w-full bg-gray-200 rounded h-2 mt-1">

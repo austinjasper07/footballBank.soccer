@@ -15,7 +15,7 @@ export async function middleware(request) {
 
   const protectedRoutes = [
     '/api/player/profile-submission',
-    // '/submit-profile',
+    '/submit-profile',
   ];
 
   const adminRoutePrefixes = [
@@ -63,7 +63,7 @@ export const config = {
     '/api/:path*',
     '/api/admin/:path*',
     '/api/player/profile-submission',
-    // '/submit-profile',
+    '/submit-profile',
     '/admin'
   ],
 };

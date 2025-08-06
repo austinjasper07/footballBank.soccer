@@ -18,10 +18,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { createUser, updateUser, getAllUsers } from "@/actions/adminActions";
+import { createUser, updateUser } from "@/actions/adminActions";
 
 export function UserDialog({ open, onOpenChange, user, onSave }) {
   const { toast } = useToast();
+  const [saving, setSaving] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: user?.firstName || "",
@@ -32,12 +33,20 @@ export function UserDialog({ open, onOpenChange, user, onSave }) {
     subscribed: user?.subscribed ?? false,
   });
 
+  // Update formData when user or dialog opens
   useEffect(() => {
-    const fetchUser = async () => {
-      await getAllUsers();
-    };
-    fetchUser();
-  }, []);
+    setFormData({
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
+      email: user?.email || "",
+      password: user?.password || "",
+      role: user?.role || "user",
+      subscribed: user?.subscribed ?? false,
+    });
+  }, [user, open]);
+
+  // Basic email validation
+  const isEmailValid = formData.email && /\S+@\S+\.\S+/.test(formData.email);
 
   const handleSave = async () => {
     if (
@@ -55,19 +64,30 @@ export function UserDialog({ open, onOpenChange, user, onSave }) {
       return;
     }
 
+    if (!isEmailValid) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSaving(true);
     try {
-      if (formData.id) {
-        await updateUser(formData.id, formData);
+      let result;
+      if (user?.id) {
+        result = await updateUser(user.id, formData);
       } else {
-        await createUser(formData);
+        result = await createUser(formData);
       }
 
-      onSave({ ...formData, id: user?.id });
+      onSave({ ...formData, id: user?.id || result?.id });
       onOpenChange(false);
 
       toast({
         title: "Success",
-        description: `User ${formData.id ? "updated" : "created"} successfully`,
+        description: `User ${user?.id ? "updated" : "created"} successfully`,
       });
     } catch (error) {
       toast({
@@ -75,6 +95,8 @@ export function UserDialog({ open, onOpenChange, user, onSave }) {
         description: "Something went wrong while saving the user.",
         variant: "destructive",
       });
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -117,6 +139,7 @@ export function UserDialog({ open, onOpenChange, user, onSave }) {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
+              className={!isEmailValid && formData.email ? "border-red-500" : ""}
             />
           </div>
 
@@ -174,10 +197,10 @@ export function UserDialog({ open, onOpenChange, user, onSave }) {
         </div>
 
         <div className="flex justify-end gap-2 mt-6">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
             Cancel
           </Button>
-          <Button onClick={handleSave}>
+          <Button onClick={handleSave} disabled={saving || !isEmailValid}>
             {user?.id ? "Update User" : "Add User"}
           </Button>
         </div>

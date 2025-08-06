@@ -1,22 +1,37 @@
-"use client";
+'use client';
 
 import { useState } from "react";
-import { submitContactForm } from "./actions";
 import { useToast } from "@/hooks/use-toast";
 import { FaSpinner } from "react-icons/fa";
 import "aos/dist/aos.css";
+import { handleContactSubmit } from "@/actions/emailActions";
+
+// Define EmailError if not imported from elsewhere
+class EmailError extends Error {
+  constructor(error) {
+    super(error);
+    this.name = "EmailError";
+    this.error = error;
+  }
+}
 
 export default function ContactClient() {
   const { toast } = useToast();
   const [status, setStatus] = useState("idle");
 
+  /**
+   * Handles the contact form submission, sends form data via emailActions,
+   * displays toast notifications based on the result, and resets the form.
+   * @param {React.FormEvent<HTMLFormElement>} e - The form submit event.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("loading");
 
     const formData = new FormData(e.currentTarget);
     try {
-      const result = await submitContactForm(formData);
+      const result = await handleContactSubmit(formData);
+      
       if (result.success) {
         toast({
           title: "Message Sent",
@@ -24,7 +39,7 @@ export default function ContactClient() {
             "We have received your message and will respond shortly.",
         });
         setStatus("success");
-        e.currentTarget.reset();
+        e.target.reset();
       } else {
         setStatus("error");
         if (result.error instanceof Error) {
@@ -161,7 +176,7 @@ export default function ContactClient() {
                   name="subject"
                   className="w-full bg-primary-card border border-divider rounded-lg px-4 py-3"
                 >
-                  <option value="General Inquiry">Select a subject</option>
+                  <option value="">Select a subject</option>
                   <option value="Player Representation">
                     Player Representation
                   </option>

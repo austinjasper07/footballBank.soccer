@@ -1,5 +1,3 @@
-
-
 import Image from "next/image";
 import Link from "next/link";
 import "aos/dist/aos.css";
@@ -9,14 +7,20 @@ import { syncUserToDb } from "@/lib/syncUserToDb";
 
 export const metadata = {
   title: "FootballBank | Home",
-  description: "Connect with top football talent and opportunities globally."
+  description: "Connect with top football talent and opportunities globally.",
 };
 
 export default async function HomePage() {
   const { isAuthenticated, getUser } = getKindeServerSession();
-  const user = await getUser();
-  if (user && (await isAuthenticated())) {
-    await syncUserToDb();
+
+  try {
+    const user = await getUser();
+
+    if (user && (await isAuthenticated())) {
+      await syncUserToDb();
+    }
+  } catch (error) {
+    console.error("Error fetching Kinde session:", error);
   }
 
   const featuredPosts = await getFeaturedPosts();
@@ -31,7 +35,7 @@ export default async function HomePage() {
   return (
     <div className="bg-[#F9FAFB]">
       {/* HERO SECTION */}
-      <div className="relative h-[calc(100vh-64px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden px-6 lg:px-12 flex flex-col lg:flex-row justify-between items-center">
+      <div className="relative min-h-[calc(100vh-64px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden px-6 lg:px-12 flex flex-col lg:flex-row justify-between items-center">
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[120px] -top-24 -left-20 opacity-30" />
           <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[100px] bottom-10 right-10 opacity-30" />
@@ -118,7 +122,7 @@ export default async function HomePage() {
                   {playerOfTheWeek?.foot}
                 </p>
                 <p className="text-gray-600 text-sm line-clamp-4">
-                  {playerOfTheWeek?.description?.slice(0, 180) ||
+                  {playerOfTheWeek?.description||
                     "This player stands out for their dedication, talent and extraordinary performance on the pitch."}
                 </p>
               </div>

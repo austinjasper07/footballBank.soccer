@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 
 export default function PlayerTabs({ player }) {
@@ -102,10 +103,10 @@ export default function PlayerTabs({ player }) {
                   <strong>Available From:</strong> Immediately
                 </p>
                 <p>
-                  <strong>Preferred Leagues:</strong> Premier League, La Liga, Serie A
+                  <strong>Preferred Leagues:</strong> unavailable
                 </p>
                 <p>
-                  <strong>Salary Expectation:</strong> €50k - €80k/week
+                  <strong>Salary Expectation:</strong> unavailable
                 </p>
               </div>
             </div>
@@ -113,15 +114,14 @@ export default function PlayerTabs({ player }) {
             <div className="bg-primary-bg rounded-lg p-6 border border-divider">
               <h3 className="font-semibold text-xl mb-4">Agent Contact</h3>
               <p className="text-primary-muted mb-2">
-                <i className="fa-solid fa-user-tie mr-2"></i> Agent Name
+                <i className="fa-solid fa-user-tie mr-2"></i> Ayodeji Fatade
               </p>
               <p className="text-primary-muted mb-2">
-                <i className="fa-solid fa-envelope mr-2"></i> {player.email}
+                <i className="fa-solid fa-envelope mr-2"></i> ayodeji@footballbank.soccer
               </p>
               <p className="text-primary-muted mb-4">
-                <i className="fa-solid fa-phone mr-2"></i> {player.phone}
+                <i className="fa-solid fa-phone mr-2"></i> +1 (862) 372-9817
               </p>
-              <button className="w-full btn-primary">Request Player Info</button>
             </div>
           </div>
         )}
