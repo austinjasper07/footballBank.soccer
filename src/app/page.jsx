@@ -35,7 +35,7 @@ export default async function HomePage() {
   return (
     <div className="bg-[#F9FAFB]">
       {/* HERO SECTION */}
-      <div className="relative h-[calc(100vh+100px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden pt-8 pb-16 lg:pb-2 lg:pt-0 px-6 lg:px-12 flex flex-col lg:flex-row justify-between gap-12 items-center">
+      <div className="relative min-h-[calc(100vh+100px)] md:h-[calc(100vh+100px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden pt-8 pb-16 lg:pb-2 lg:pt-0 px-6 lg:px-12 flex flex-col lg:flex-row justify-between gap-12 items-center">
         
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[120px] -top-24 -left-20 opacity-30" />
