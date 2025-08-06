@@ -4,12 +4,14 @@ import { ChevronDownIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { FaUser } from "react-icons/fa";
+import { useAuth } from "@/hooks/useAuth";
 
 export function UserHeader({slug, href}) {
-  const { user, isAuthenticated, getClaim } = useKindeBrowserClient();
+  //const { user, isAuthenticated, getClaim } = useKindeBrowserClient();
+  const { roles, isAuthenticated, user } = useAuth();
   const [open, setOpen] = useState(false);
-  const userRole = getClaim("role");
-  const isAdmin = userRole === "admin" || userRole === "super-admin";
+  
+  const isAdmin = roles && roles.includes("admin") || roles.includes("super-admin");
 
   if (!isAuthenticated || !user) return null;
 
