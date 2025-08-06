@@ -119,7 +119,7 @@ export default function PlayerSubmissionForm() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-12">
       {/* Step indicators */}
-      <div className="flex items-center justify-center gap-4 mb-8">
+      <div className="flex items-center justify-center gap-4 mb-8 flex-wrap">
         {["Details","Stats","Uploads","Complete"].map((l,i)=>
           <div key={l} className="flex items-center gap-2">
             <div className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium ${
