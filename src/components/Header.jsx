@@ -98,7 +98,7 @@ export default function Header() {
                 <UserHeader slug={"Dashboard"} href={"/admin"}/>
               ) : (
                 <LoginLink
-                  // postLoginRedirectURL={"/dashboard"} Use this if you want to redirect back to a specific page after login
+                  postLoginRedirectURL={"/"} //Use this if you want to redirect back to a specific page after login
                   className="hidden lg:block bg-accent-red hover:bg-opacity-90 text-white px-4 py-2 rounded-md font-medium text-nowrap"
                 >
                   Sign in
@@ -151,7 +151,7 @@ export default function Header() {
             ) : (
               <LoginLink
                 onClick={() => setMenuOpen(false)}
-                postLoginRedirectURL={"/dashboard"}
+                postLoginRedirectURL={"/"}
                 className="bg-accent-red text-white text-center py-2 rounded-md"
               >
                 Sign in
