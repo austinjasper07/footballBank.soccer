@@ -11,7 +11,9 @@ export const syncUserToDb = async () => {
   const { getUser, getRoles } = getKindeServerSession();
   const kindeUser = await getUser();
   const roles = await getRoles();
-  const role = Array.isArray(roles) && roles.length > 0 ? roles[0] : "user";
+  const role = Array.isArray(roles) && roles.length > 0 ? roles[0].key : "user";
+
+  console.log(role)
 
   if (!kindeUser?.id) {
     return;

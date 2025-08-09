@@ -8,10 +8,10 @@ import { useAuth } from "@/hooks/useAuth";
 
 export function UserHeader({slug, href}) {
   //const { user, isAuthenticated, getClaim } = useKindeBrowserClient();
-  const { roles, isAuthenticated, user } = useAuth();
+  const { role, isAuthenticated, user } = useAuth();
   const [open, setOpen] = useState(false);
-  
-  const isAdmin = roles && roles.includes("admin") || roles.includes("super-admin");
+
+  const isAdmin = role === "admin";
 
   if (!isAuthenticated || !user) return null;
 

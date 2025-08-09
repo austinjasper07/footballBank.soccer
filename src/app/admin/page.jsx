@@ -20,7 +20,7 @@ import SplashScreen from "@/components/SplashScreen";
 const AdminDashboard = () => {
   const [activeView, setActiveView] = useState("dashboard");
   const [collapsed, setCollapsed] = useState(false);
-  const { roles, isAuthenticated, isLoading } = useAuth();
+  const { role, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [checkedAuth, setCheckedAuth] = useState(false);
@@ -31,8 +31,8 @@ const AdminDashboard = () => {
   if (!isLoading && pathname) {
     if (!isAuthenticated) {
       router.replace(`/api/auth/login?post_login_redirect_url=${pathname}`);
-    } else if (roles && roles.length > 0) {
-      const isAdminUser = roles.includes("admin") || roles.includes("super-admin");
+    } else if (role ) {
+      const isAdminUser = role === "admin";
       if (!isAdminUser) {
         toast({
           title: "Access Denied",
@@ -45,7 +45,7 @@ const AdminDashboard = () => {
       }
     }
   }
-}, [isAuthenticated, isLoading, roles, pathname, router, toast]);
+}, [isAuthenticated, isLoading, role, pathname, router, toast]);
 
 
   if (isLoading || !checkedAuth) {

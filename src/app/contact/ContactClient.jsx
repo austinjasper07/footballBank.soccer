@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { FaSpinner } from "react-icons/fa";
 import "aos/dist/aos.css";
 import { handleContactSubmit } from "@/actions/emailActions";
+import Link from "next/link";
 
 // Define EmailError if not imported from elsewhere
 class EmailError extends Error {
@@ -241,28 +242,34 @@ export default function ContactClient() {
                 name: "Instagram",
                 icon: "instagram",
                 color: "red",
-                handle: "@FootballBankOfficial",
+                href: "https://www.instagram.com/footballbank.soccer",
+                handle: "@FootballBank.soccer",
               },
               {
                 name: "YouTube",
                 icon: "youtube",
                 color: "red",
-                handle: "FootballBank TV",
+                href: 'http://www.youtube.com/@footballbank.soccer',
+                handle: "FootballBank.soccer",
               },
               {
                 name: "Facebook",
                 icon: "facebook",
                 color: "blue",
+                href: "#",
                 handle: "FootballBank Global",
               },
               {
                 name: "LinkedIn",
                 icon: "linkedin",
                 color: "blue",
+                href: "#",
                 handle: "FootballBank International",
               },
-            ].map(({ name, icon, color, handle }) => (
-              <div
+            ].map(({ name, icon, color, handle, href }) => (
+              <Link
+                href={href}
+                target="_blank"
                 key={name}
                 className={`bg-primary-card rounded-xl p-6 border border-divider shadow-lg hover:border-accent-${color} transition-colors cursor-pointer`}
               >
@@ -271,7 +278,7 @@ export default function ContactClient() {
                 />
                 <p className="font-medium">{name}</p>
                 <p className="text-primary-muted text-sm">{handle}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
