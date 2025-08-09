@@ -26,7 +26,7 @@ const PaymentSuccess = () => {
                 </div>
               </div>
 
-              <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-4 text-accent-green">
+              <h1 className=" font-bold text-4xl md:text-5xl mb-4 text-accent-green">
                 Payment Successful!
               </h1>
               <p className="text-primary-muted text-lg md:text-xl">
@@ -38,7 +38,7 @@ const PaymentSuccess = () => {
           {/* Payment Summary */}
           <div className="bg-primary-secondary rounded-2xl border border-divider p-8 mb-8 max-w-2xl mx-auto shadow-2xl">
             <div className="flex items-center justify-between mb-8 pb-6 border-b border-divider">
-              <h2 className="font-poppins font-semibold text-2xl">
+              <h2 className=" font-semibold text-2xl">
                 Payment Confirmation
               </h2>
               <div className="flex items-center gap-2 bg-accent-green bg-opacity-20 px-4 py-2 rounded-full">
@@ -94,7 +94,7 @@ const PaymentSuccess = () => {
 
             {/* Items Purchased */}
             <div className="mb-8">
-              <h3 className="font-poppins font-semibold text-lg mb-4">
+              <h3 className=" font-semibold text-lg mb-4">
                 Items Purchased
               </h3>
               <div className="space-y-4">
@@ -173,7 +173,7 @@ const PaymentSuccess = () => {
           <div className="bg-primary-secondary rounded-xl border border-divider p-6 max-w-2xl mx-auto">
             <div className="flex items-center justify-center gap-3 mb-4">
               <i className="fa-solid fa-headset text-accent-amber text-xl"></i>
-              <h3 className="font-poppins font-semibold text-lg">Need Help?</h3>
+              <h3 className=" font-semibold text-lg">Need Help?</h3>
             </div>
             <p className="text-primary-muted mb-4">
               If you have any questions about your purchase or need assistance,

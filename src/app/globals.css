@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Funnel+Display:wght@300;400;500;600;700&display=swap');
+
 @import 'tailwindcss';
 
 /* ==========================
@@ -7,7 +9,6 @@
   /* Primary palette */
   --color-primary-bg: #F9FAFB;
   --primary: 213 94% 68%; /* #1F6FEB */
-  /* --color-primary-secondary: #161B22; */
   --color-primary-card: #FFFFFF;
   --color-primary-text: #111827;
   --color-primary-muted: #6B7280;
@@ -16,7 +17,7 @@
   --color-accent-blue: #1F6FEB;
   --color-accent-green: #22C55E;
   --color-accent-amber: #FACC15;
-  --color-accent-red: #EF4444;
+  --color-accent-red: red;
   --accent: #FACC15;
   --accent-foreground: #111827;
 
@@ -24,7 +25,7 @@
   --color-divider: #E5E7EB;
 
   /* UI surface tokens */
-  --background: 0 0% 98%; /* hsl: very light bg */
+  --background: 0 0% 98%;
   --foreground: 222.2 84% 4.9%;
   --card: 0 0% 100%;
   --card-foreground: 222.2 84% 4.9%;
@@ -55,36 +56,31 @@
   --chart-5: 45 100% 51%;
 
   /* Fonts */
-  --font-poppins: 'Poppins', sans-serif;
-  --font-inter: 'Inter', sans-serif;
-  --font-sans: var(--font-inter);
+  --font-heading: 'DM Serif Text', serif;
+  --font-body: 'Funnel Display', sans-serif;
+  --font-sans: var(--font-body);
 
   /* Radii */
   --radius: 0.5rem;
-
-  /* Border radius */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
 
-
-   --radius: 0.5rem;
-
-    /* Sports betting theme colors - updated with new palette */
-    --sport-football: 0 84% 60%; /* #EF4444 for football */
-    --sport-tennis: 142 71% 45%; /* #22C55E for tennis */
-    --sport-basketball: 48 96% 53%; /* #FACC15 for basketball */
-    --sport-hockey: 213 94% 68%; /* #1F6FEB for hockey */
-    --sport-golf: 142 71% 45%; /* #22C55E for golf */
-    --sport-volleyball: 271 100% 50%; /* Keep purple for volleyball */
-    --sport-baseball: 48 96% 53%; /* #FACC15 for baseball */
-    --sport-snooker: 142 71% 45%; /* #22C55E for snooker */
-    
-    /* Betting brand colors - updated */
-    --nairabet: 213 94% 68%; /* #1F6FEB */
-    --oneXbet: 220 26% 14%; /* #111827 */
-    --betano: 0 84% 60%; /* #EF4444 */
-    --bet365: 142 71% 45%; /* #22C55E */
+  /* Sports betting theme colors */
+  --sport-football: 0 84% 60%;
+  --sport-tennis: 142 71% 45%;
+  --sport-basketball: 48 96% 53%;
+  --sport-hockey: 213 94% 68%;
+  --sport-golf: 142 71% 45%;
+  --sport-volleyball: 271 100% 50%;
+  --sport-baseball: 48 96% 53%;
+  --sport-snooker: 142 71% 45%;
+  
+  /* Betting brand colors */
+  --nairabet: 213 94% 68%;
+  --oneXbet: 220 26% 14%;
+  --betano: 0 84% 60%;
+  --bet365: 142 71% 45%;
 }
 
 /* ==========================
@@ -92,11 +88,15 @@
    ========================== */
 @layer base {
   :root {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
   }
 
   html, body {
     @apply bg-primary-bg text-primary-text;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
   }
 
   ::-webkit-scrollbar {
@@ -114,11 +114,11 @@
    ========================== */
 @layer utilities {
   .font-heading {
-    font-family: var(--font-poppins);
+    font-family: var(--font-heading);
   }
 
   .font-body {
-    font-family: var(--font-inter);
+    font-family: var(--font-body);
   }
 
   .accordion-down {
@@ -152,5 +152,3 @@
     }
   }
 }
-
-

@@ -10,7 +10,7 @@ export default function MatchDetails() {
         return (
           <div className="space-y-8">
             <div className="bg-white rounded-xl p-6 border border-border shadow-sm">
-              <h3 className="font-poppins font-semibold text-lg mb-6 text-primary-text">
+              <h3 className=" font-semibold text-lg mb-6 text-primary-text">
                 Starting XI
               </h3>
               <div className="space-y-6">
@@ -69,7 +69,7 @@ export default function MatchDetails() {
       case "Events":
         return (
           <div className="bg-white rounded-xl p-6 border border-border shadow-sm">
-            <h3 className="font-poppins font-semibold text-xl mb-6 text-primary-text">
+            <h3 className=" font-semibold text-xl mb-6 text-primary-text">
               Match Events
             </h3>
             <div className="space-y-4">
@@ -129,7 +129,7 @@ export default function MatchDetails() {
       case "Stats":
         return (
           <div className="bg-white rounded-xl p-6 border border-border shadow-sm">
-            <h3 className="font-poppins font-semibold text-xl mb-6 text-primary-text">
+            <h3 className=" font-semibold text-xl mb-6 text-primary-text">
               Match Statistics
             </h3>
             <div className="space-y-6">
@@ -225,7 +225,7 @@ export default function MatchDetails() {
                           MU
                         </span>
                       </div>
-                      <h2 className="font-poppins font-semibold text-lg md:text-xl text-accent-blue">
+                      <h2 className=" font-semibold text-lg md:text-xl text-accent-blue">
                         Manchester United
                       </h2>
                     </div>
@@ -241,11 +241,11 @@ export default function MatchDetails() {
                         </span>
                       </div>
                       <div className="flex items-center justify-center gap-4">
-                        <span className="font-poppins font-bold text-4xl md:text-5xl text-primary-text">
+                        <span className=" font-bold text-4xl md:text-5xl text-primary-text">
                           2
                         </span>
                         <span className="text-primary-muted text-2xl">-</span>
-                        <span className="font-poppins font-bold text-4xl md:text-5xl text-primary-text">
+                        <span className=" font-bold text-4xl md:text-5xl text-primary-text">
                           1
                         </span>
                       </div>
@@ -263,7 +263,7 @@ export default function MatchDetails() {
                           CHE
                         </span>
                       </div>
-                      <h2 className="font-poppins font-semibold text-lg md:text-xl text-accent-blue">
+                      <h2 className=" font-semibold text-lg md:text-xl text-accent-blue">
                         Chelsea
                       </h2>
                     </div>

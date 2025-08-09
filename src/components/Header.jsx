@@ -45,7 +45,7 @@ export default function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="font-poppins font-bold text-2xl text-accent-blue cursor-pointer flex items-center gap-2"
+            className=" font-bold text-2xl text-accent-red cursor-pointer flex items-center gap-2"
           >
             <div className="relative w-16 h-16 md:w-30 md:h-28 flex items-center">
               <Image
@@ -55,6 +55,9 @@ export default function Header() {
                 height={32}
                 className="object-contain h-8 w-8 md:h-12 md:w-12"
               />
+              <span className="text-xl md:text-2xl font-semibold text-accent-red">
+                FootballBank
+              </span>
             </div>
           </Link>
 

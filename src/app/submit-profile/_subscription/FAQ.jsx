@@ -12,7 +12,7 @@ const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   return (
     <section className="py-16 bg-primary-secondary">
           <div className="container mx-auto px-4 max-w-4xl">
-            <h2 className="text-center font-poppins font-bold text-4xl md:text-5xl mb-6">
+            <h2 className="text-center  font-bold text-4xl md:text-5xl mb-6">
               Frequently Asked Questions
             </h2>
             <p className="text-xl text-primary-muted text-center mb-12">
@@ -47,7 +47,7 @@ const [openFAQ, setOpenFAQ] = useState<number | null>(null);
                     className="flex justify-between items-center cursor-pointer"
                     onClick={() => toggleFAQ(id)}
                   >
-                    <h3 className="font-poppins font-semibold text-lg">
+                    <h3 className=" font-semibold text-lg">
                       {question}
                     </h3>
                     <i

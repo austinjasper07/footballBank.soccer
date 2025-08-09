@@ -1,6 +1,6 @@
 // app/layout.tsx
 import "./globals.css";
-import { Inter, Poppins } from "next/font/google";
+import { DM_Serif_Text, Funnel_Display } from "next/font/google";
 import Script from "next/script";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 import { AuthProvider } from "@/context/AuthContext";
@@ -9,16 +9,18 @@ import { KindeClientProvider } from "./KindeClientProvider";
 import { CartProvider } from "@/context/CartContext";
 import AOSProvider from "@/components/AOSProvider";
 
-const inter = Inter({
+const funnelDisplay = Funnel_Display({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-funnel-display",
   display: "swap",
 });
 
-const poppins = Poppins({
+const dmSerifText = DM_Serif_Text({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-poppins",
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--font-dm-serif-text",
   display: "swap",
 });
 
@@ -29,7 +31,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
+    <html
+      lang="en"
+      className={`${funnelDisplay.variable} ${dmSerifText.variable}`}
+    >
       <head>
         <link
           rel="apple-touch-icon"
@@ -48,7 +53,7 @@ export default function RootLayout({ children }) {
           sizes="16x16"
           href="/favicon-16x16.png"
         />
-        <link rel="manifest" href="/site.webmanifest"></link>
+        <link rel="manifest" href="/site.webmanifest" />
         <script
           dangerouslySetInnerHTML={{
             __html: `window.FontAwesomeConfig = { autoReplaceSvg: 'nest' };`,
@@ -61,6 +66,17 @@ export default function RootLayout({ children }) {
           strategy="afterInteractive"
         />
       </head>
+      <body className="font-body bg-primary-bg text-primary-text">
+        <Analytics />
+        <AOSProvider>
+          <KindeClientProvider>
+            <AuthProvider>
+              <CartProvider>
+                <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
+              </CartProvider>
+            </AuthProvider>
+          </KindeClientProvider>
+        </AOSProvider>
       <body className="font-sans bg-primary-bg text-primary-text">
         
           <AOSProvider>

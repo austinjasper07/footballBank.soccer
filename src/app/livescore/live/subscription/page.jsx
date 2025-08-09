@@ -112,7 +112,7 @@ const StreamingPricingPage = () => {
       {/* Pricing */}
       <section id="pricing-section" className="py-24 px-4">
         <div className="max-w-7xl mx-auto text-center mb-16">
-          <h2 className="font-poppins font-bold text-4xl mb-4">Choose Your Streaming Plan</h2>
+          <h2 className=" font-bold text-4xl mb-4">Choose Your Streaming Plan</h2>
           <p className="text-primary-muted text-lg max-w-2xl mx-auto">
             Flexible options to fit your football viewing needs. All plans include HD streaming and mobile support.
           </p>
@@ -132,7 +132,7 @@ const StreamingPricingPage = () => {
                 <div className={`${plan.iconBg} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4`}>
                   <i className={`fa-solid ${plan.icon} ${plan.iconColor} text-2xl`}></i>
                 </div>
-                <h3 className="font-poppins font-bold text-xl mb-2">{plan.title}</h3>
+                <h3 className=" font-bold text-xl mb-2">{plan.title}</h3>
                 <div className="mb-6">
                   <span className="text-4xl font-bold">{plan.price}</span>
                   <span className="text-primary-muted">/{plan.period}</span>
@@ -160,7 +160,7 @@ const StreamingPricingPage = () => {
       {/* Comparison */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <h3 className="font-poppins font-bold text-2xl text-center mb-12">Compare All Features</h3>
+          <h3 className=" font-bold text-2xl text-center mb-12">Compare All Features</h3>
           <div className="bg-primary-card rounded-2xl border border-divider shadow-sm overflow-x-auto">
             <table className="w-full min-w-[600px]">
               <thead className="bg-primary-bg">
@@ -195,7 +195,7 @@ const StreamingPricingPage = () => {
       {/* Testimonials */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <h3 className="font-poppins font-bold text-2xl text-center mb-12">What Our Viewers Say</h3>
+          <h3 className=" font-bold text-2xl text-center mb-12">What Our Viewers Say</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map(({ quote, name, role, avatar }, idx) => (
               <div key={idx} className="bg-primary-card rounded-2xl p-6 border border-divider shadow-sm">
@@ -227,7 +227,7 @@ const StreamingPricingPage = () => {
       {/* FAQ Placeholder */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto text-center text-primary-muted">
-          <h3 className="font-poppins font-bold text-2xl mb-6 text-primary-text">Frequently Asked Questions</h3>
+          <h3 className=" font-bold text-2xl mb-6 text-primary-text">Frequently Asked Questions</h3>
           <p>Coming soon...</p>
         </div>
       </section>

@@ -43,7 +43,7 @@ export default async function PlayerPage({ params }) {
                 <span className="badge">Available</span>
                 <span className="badge-secondary">Featured Player</span>
               </div>
-              <h1 className="text-[clamp(1.5rem,3.5vw,3.5rem)] font-poppins font-bold mb-4">
+              <h1 className="text-[clamp(1.5rem,3.5vw,3.5rem)]  font-bold mb-4">
                 <span className="text-nowrap">{player.firstName}</span> {player.lastName}
               </h1>
               <div className="flex gap-6 mb-6">
@@ -94,7 +94,7 @@ export default async function PlayerPage({ params }) {
         {/* Contact CTA */}
         <section className="py-16 mb-16 bg-gradient-to-r from-accent-red to-accent-red/80 text-white">
           <div className="container mx-auto px-4 max-w-4xl text-center">
-            <h2 className="text-4xl font-poppins font-bold mb-6">
+            <h2 className="text-4xl  font-bold mb-6">
               Ready to Scout {player.firstName}?
             </h2>
             <p className="mb-8 opacity-90">

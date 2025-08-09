@@ -23,19 +23,44 @@ export const getUserById = async (id) => {
 
 export async function createUser(data) {
   try {
-    await prisma.user.create({ data });
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: data.email },
+          { kindeId: data.kindeId }
+        ]
+      }
+    });
 
-    return await getAllUsers();
+    if (existingUser) {
+      throw new Error("User with this email or Kinde ID already exists");
+    }
+
+    await prisma.user.create({ data });
+    
   } catch (err) {
     console.error("Error creating user:", err);
-    return null;
+    return err;
   }
 }
+
 
 export async function updateUser(userId, data) {
   try {
     // Remove id, createdAt, kindeId, updatedAt from data before updating
     const { id, createdAt, kindeId, updatedAt, ...updateData } = data;
+    if (updateData.email) {
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          email: updateData.email,
+          id: { not: userId } // Ensure we're not checking the same user
+        }
+      });
+
+      if (existingUser) {
+        throw new Error("User with this email already exists");
+      }
+    }
     await prisma.user.update({
       where: { id: userId },
       data: updateData,
@@ -112,10 +137,19 @@ export async function getAllPlayers() {
 
 export async function createPlayer(data) {
   try {
+    // Check if player with same email already exists
+    const existingPlayer = await prisma.player.findFirst({
+      where: { email: data.email }
+    });
+
+    if (existingPlayer) {
+      throw new Error("Player with this email already exists");
+    }
+    // Create new player
     return await prisma.player.create({ data });
   } catch (err) {
     console.error("Error creating player:", err);
-    return null;
+    return err;
   }
 }
 

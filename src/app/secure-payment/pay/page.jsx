@@ -11,7 +11,7 @@ export default function Payment() {
       {/* Hero */}
       <section id="payment-hero" className="py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-6 text-primary-text">Secure Payment</h1>
+          <h1 className=" font-bold text-4xl md:text-5xl mb-6 text-primary-text">Secure Payment</h1>
           <p className="text-primary-muted text-lg max-w-2xl mx-auto mb-8">
             Complete your payment securely to unlock premium features and boost your football career.
           </p>
@@ -25,7 +25,7 @@ export default function Payment() {
             {/* Payment Form */}
             <div id="payment-form-container">
               <div className="bg-primary-secondary rounded-xl p-8 border border-divider shadow-sm">
-                <h2 className="font-poppins font-bold text-2xl mb-6 text-primary-text">Payment Details</h2>
+                <h2 className=" font-bold text-2xl mb-6 text-primary-text">Payment Details</h2>
 
                 {/* Payment Method */}
                 <div className="mb-8">
@@ -144,7 +144,7 @@ export default function Payment() {
             {/* Order Summary */}
             <div id="order-summary-container">
               <div className="bg-primary-secondary rounded-xl p-8 border border-divider shadow-sm mb-8">
-                <h2 className="font-poppins font-bold text-2xl mb-6 text-primary-text">Order Summary</h2>
+                <h2 className=" font-bold text-2xl mb-6 text-primary-text">Order Summary</h2>
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between items-center py-3 border-b border-divider">
                     <div>
@@ -177,7 +177,7 @@ export default function Payment() {
 
               {/* Secure Info */}
               <div id="security-features" className="bg-primary-secondary rounded-xl p-6 border border-divider shadow-sm">
-                <h3 className="font-poppins font-semibold text-lg mb-4 text-primary-text">Secure Payment</h3>
+                <h3 className=" font-semibold text-lg mb-4 text-primary-text">Secure Payment</h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <FaShieldAlt className="text-accent-green" />

@@ -12,10 +12,10 @@ const AboutAgent = () => {
   
 
   return (
-    <main className="bg-primary-bg text-primary-text font-inter min-h-screen">
+    <main className="bg-primary-bg text-primary-text min-h-screen">
       {/* Hero Section */}
       <div className="py-12 text-center" data-aos="fade-up">
-        <h1 className="font-poppins font-bold text-[clamp(1.8rem,3vw,2.5rem)] mb-6">
+        <h1 className="font-bold text-[clamp(1.8rem,3vw,2.5rem)] mb-6">
           About Our Agent
         </h1>
         <p className="text-primary-muted text-[clamp(1rem,2.5vw,1.25rem)] max-w-2xl mx-auto mb-2">
@@ -37,7 +37,7 @@ const AboutAgent = () => {
                 className="rounded-full border-4 border-accent-red object-cover"
               />
               <div className="text-center md:text-left flex-1">
-                <h2 className="font-poppins font-bold text-[clamp(1.75rem,4vw,2.5rem)] mb-4">
+                <h2 className="font-bold text-[clamp(1.75rem,4vw,2.5rem)] mb-4">
                   Ayodeji Fatade
                 </h2>
                 <p className="text-accent-red font-semibold text-lg mb-4">
@@ -61,13 +61,13 @@ const AboutAgent = () => {
                   unlock global opportunities.
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <span className="bg-accent-red/10 text-accent-red px-3 py-1 rounded-full text-sm border border-accent-red/20">
+                  <span className="bg-accent-red/5 text-accent-red px-3 py-1 rounded-full text-sm border border-accent-red/20">
                     FIFA Licensed (Minors & Adults)
                   </span>
-                  <span className="bg-accent-green/10 text-accent-green px-3 py-1 rounded-full text-sm border border-accent-green/20">
+                  <span className="bg-accent-green/10 text-accent-red px-3 py-1 rounded-full text-sm border border-accent-green/20">
                     25+ Years in Football
                   </span>
-                  <span className="bg-accent-amber/10 text-accent-amber px-3 py-1 rounded-full text-sm border border-accent-amber/20">
+                  <span className="bg-accent-amber/10 text-accent-red px-3 py-1 rounded-full text-sm border border-accent-amber/20">
                     Global Club Network
                   </span>
                 </div>
@@ -80,7 +80,7 @@ const AboutAgent = () => {
       {/* Career Timeline */}
       <section className="pb-16 md:pb-24" data-aos="fade-up">
         <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="font-poppins font-bold text-[clamp(1.75rem,4vw,2.5rem)] text-center mb-12">
+          <h2 className="font-bold text-[clamp(1.75rem,4vw,2.5rem)] text-center mb-12">
             Career Timeline
           </h2>
           <div className="relative">
@@ -97,14 +97,14 @@ const AboutAgent = () => {
                 date: "2009 - 2017",
                 title: "Youth Talent Spotter & Football Writer",
                 desc: "Began contributing to football publications and working with local academies, identifying young prospects and sharing insight through analysis.",
-                dotColor: "bg-accent-green",
+                dotColor: "bg-accent-red",
                 alignRight: true,
               },
               {
                 date: "2018 - 2021",
                 title: "Certified Football Scout",
                 desc: "Earned PFSA certification in the UK and scouted players across African academies, building key relationships with international clubs.",
-                dotColor: "bg-accent-amber",
+                dotColor: "bg-accent-red",
                 alignRight: false,
               },
               {
@@ -128,10 +128,10 @@ const AboutAgent = () => {
                   className={`ml-12 md:ml-0 md:w-1/2 ${alignRight ? "md:pl-8" : "md:pr-8"}`}
                 >
                   <div className="bg-primary-card rounded-xl p-6 border border-divider shadow-lg">
-                    <span className="text-accent-amber font-semibold text-sm">
+                    <span className="text-accent-red font-semibold text-sm">
                       {date}
                     </span>
-                    <h3 className="font-poppins font-semibold text-xl mb-2">
+                    <h3 className="font-semibold text-xl mb-2">
                       {title}
                     </h3>
                     <p className="text-primary-muted">{desc}</p>
@@ -146,7 +146,7 @@ const AboutAgent = () => {
       {/* Core Values */}
       <section className="pb-16 md:pb-24" data-aos="fade-up">
         <div className="container mx-auto px-4 max-w-6xl">
-          <h2 className="font-poppins font-bold text-[clamp(1.75rem,4vw,2.5rem)] text-center mb-12">
+          <h2 className="font-bold text-[clamp(1.75rem,4vw,2.5rem)] text-center mb-12">
             Our Core Values
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -160,13 +160,13 @@ const AboutAgent = () => {
               {
                 title: "Opportunity",
                 icon: "fa-door-open",
-                color: "green",
+                color: "red",
                 desc: "We unlock doors to international clubs, academies, and trials—connecting talent to the world stage.",
               },
               {
                 title: "Development",
                 icon: "fa-chart-line",
-                color: "amber",
+                color: "red",
                 desc: "From grassroots to global, we prioritize player growth with coaching, mentorship, and career planning.",
               },
             ].map(({ title, icon, color, desc }, i) => (
@@ -184,7 +184,7 @@ const AboutAgent = () => {
                   />
                 </div>
                 <h3
-                  className={`font-poppins font-semibold text-2xl mb-4 text-accent-${color}`}
+                  className={`font-semibold text-2xl mb-4 text-accent-${color}`}
                 >
                   {title}
                 </h3>
@@ -198,15 +198,15 @@ const AboutAgent = () => {
       {/* CTA Section */}
       <section className="pb-16 md:pb-24  " data-aos="zoom-in-up">
         <div className="container mx-auto px-4  max-w-4xl ">
-          <div className="bg-gradient-to-r from-accent-red to-accent-green rounded-xl p-8 md:p-12 text-center shadow-lg h-full flex flex-col ">
-            <h2 className="font-poppins font-bold text-[clamp(1.75rem,4vw,2.5rem)] mb-6 text-white">
+          <div className="bg-accent-red  rounded-xl p-8 md:p-12 text-center shadow-lg h-full flex flex-col ">
+            <h2 className="font-bold text-[clamp(1.75rem,4vw,2.5rem)] mb-6 text-white">
               Ready to Take the Next Step?
             </h2>
             <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
               Whether you're a rising star or a seasoned player, FootballBank is
               here to represent you with purpose, precision, and global reach.
             </p>
-            <div className="flex flex-col md:flex-row gap-8 md:gap-4 w-full">
+            <div className="flex flex-col md:flex-row gap-8 md:gap-4 w-full items-center justify-center">
               <Link href="/contact">
                 <span className="bg-white text-accent-red px-4 md:px-8 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors text-nowrap">
                   Schedule Consultation

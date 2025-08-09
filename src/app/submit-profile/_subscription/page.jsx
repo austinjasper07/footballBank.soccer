@@ -18,7 +18,7 @@ const buttonClassMap = {
 export default function ProfileSubmission() {
   return (
     <main className="bg-primary-bg text-primary-text font-inter text-center py-16">
-      <h1 className="font-poppins font-bold text-5xl mb-6 bg-gradient-to-r from-accent-red to-accent-amber bg-clip-text text-transparent">
+      <h1 className=" font-bold text-5xl mb-6 bg-gradient-to-r from-accent-red to-accent-amber bg-clip-text text-transparent">
         Submit Your Profile to Be Discovered
       </h1>
       <p className="text-xl text-primary-muted mb-8">
@@ -95,7 +95,7 @@ export default function ProfileSubmission() {
               )}
 
               <div className="text-center mb-8">
-                <h3 className="font-poppins font-bold text-2xl mb-2">{title}</h3>
+                <h3 className=" font-bold text-2xl mb-2">{title}</h3>
                 <div className="flex justify-center items-center mb-4">
                   <span className={`text-5xl font-bold ${colorMap[color] || ''}`}>{price}</span>
                   <span className="text-primary-muted ml-2">/submission</span>
@@ -135,7 +135,7 @@ export default function ProfileSubmission() {
       <section id="testimonials" className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="font-poppins font-bold text-4xl md:text-5xl mb-4">
+            <h2 className=" font-bold text-4xl md:text-5xl mb-4">
               Success Stories
             </h2>
             <p className="text-xl text-primary-muted">
@@ -181,7 +181,7 @@ export default function ProfileSubmission() {
                   height={80}
                   className="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-accent-green object-cover"
                 />
-                <h3 className="font-poppins font-semibold text-lg mb-2">{name}</h3>
+                <h3 className=" font-semibold text-lg mb-2">{name}</h3>
                 <div className="flex items-center justify-center gap-2 mb-4">
                   <span className="text-2xl">{flag}</span>
                   <span className="text-primary-muted">{club}</span>
@@ -199,7 +199,7 @@ export default function ProfileSubmission() {
         className="py-16 md:py-24 bg-gradient-to-r from-accent-red to-accent-amber"
       >
         <div className="container mx-auto px-4 text-center">
-          <h2 className="font-poppins font-bold text-4xl md:text-5xl mb-6 text-white">
+          <h2 className=" font-bold text-4xl md:text-5xl mb-6 text-white">
             Ready to Showcase Your Talent?
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
