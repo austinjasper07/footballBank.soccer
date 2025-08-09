@@ -73,7 +73,7 @@ model Player {
   height          String
   weight          String
   foot            String
-  email           String
+  email           String @unique
   phone           String
   imageUrl        String[]
   cvUrl           String

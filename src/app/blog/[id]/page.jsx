@@ -48,7 +48,7 @@ export default async function BlogArticlePage({ params }) {
                   <span>📅 {formatFullDate(post.createdAt)}</span>
                   <span>🕒 {formatTimeAgo(post.createdAt)}</span>
                 </div>
-                <h1 className="text-3xl md:text-5xl font-poppins font-bold mb-6">
+                <h1 className="text-3xl md:text-5xl font-bold mb-6">
                   {post.title}
                 </h1>
               </header>

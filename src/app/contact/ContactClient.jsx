@@ -66,7 +66,7 @@ export default function ContactClient() {
   return (
     <main className="bg-primary-bg text-primary-text font-inter">
       <section className="py-16 text-center">
-        <h1 className="text-primary-text font-poppins font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] md:text-5xl mb-4">
+        <h1 className="text-primary-text  font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] md:text-5xl mb-4">
           Contact Us
         </h1>
         <p className="text-primary-muted text-lg max-w-2xl mx-auto mb-4">
@@ -83,21 +83,21 @@ export default function ContactClient() {
                 {
                   title: "Company Name",
                   icon: "fa-building",
-                  color: "blue",
+                  color: "red",
                   text: "Soccer Bank Sports Management",
                   subtitle: "Official Name",
                 },
                 {
                   title: "Email",
                   icon: "fa-envelope",
-                  color: "green",
+                  color: "red",
                   text: "info@footballbank.soccer",
                   subtitle: "Our inbox is always open",
                 },
                 {
                   title: "Global Branches",
                   icon: "fa-globe",
-                  color: "amber",
+                  color: "red",
                   text: "Africa, US, UK, Europe",
                   subtitle: "We operate worldwide",
                 },
@@ -111,7 +111,7 @@ export default function ContactClient() {
                 {
                   title: "Licensing",
                   icon: "fa-id-card",
-                  color: "blue",
+                  color: "red",
                   text: "FIFA Licensed Agent, Certified Scout",
                   subtitle: "Accredited & Verified",
                 },
@@ -125,7 +125,7 @@ export default function ContactClient() {
                     />
                   </div>
                   <div>
-                    <h3 className="font-poppins font-semibold text-xl mb-2">
+                    <h3 className=" font-semibold text-xl mb-2">
                       {title}
                     </h3>
                     <p className="text-primary-muted mb-1">{subtitle}</p>
@@ -138,7 +138,7 @@ export default function ContactClient() {
             </div>
          
           <div className="bg-primary-card rounded-xl border border-divider shadow-lg px-4 py-8 md:px-8 md:py-12 w-full md:w-2/3" data-aos="flip-left">
-            <h2 className="font-poppins font-bold text-2xl md:text-3xl mb-8">
+            <h2 className=" font-bold text-2xl md:text-3xl mb-8">
               Send Us a Message
             </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -228,7 +228,7 @@ export default function ContactClient() {
 
       <section className="pb-16 md:pb-24">
         <div className="container mx-auto px-4 max-w-4xl text-center">
-          <h2 className="font-poppins font-bold text-3xl mb-8">
+          <h2 className=" font-bold text-3xl mb-8">
             Follow Our Journey
           </h2>
           <p className="text-primary-muted text-lg mb-12">

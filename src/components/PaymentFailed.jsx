@@ -23,7 +23,7 @@ export default function PaymentFailedPage() {
                     <i className="fa-solid fa-exclamation text-white text-sm"></i>
                   </div>
                 </div>
-                <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-4 text-accent-red">
+                <h1 className=" font-bold text-4xl md:text-5xl mb-4 text-accent-red">
                   Payment Failed
                 </h1>
                 <p className="text-primary-muted text-lg md:text-xl">
@@ -34,7 +34,7 @@ export default function PaymentFailedPage() {
               {/* Details Card */}
               <div className="bg-primary-secondary rounded-2xl border border-divider p-8 mb-8 text-left shadow-2xl">
                 <div className="flex items-center justify-between mb-8 pb-6 border-b border-divider">
-                  <h2 className="font-poppins font-semibold text-2xl">Transaction Details</h2>
+                  <h2 className=" font-semibold text-2xl">Transaction Details</h2>
                   <div className="flex items-center gap-2 bg-accent-red bg-opacity-20 px-4 py-2 rounded-full">
                     <i className="fa-solid fa-circle-xmark text-accent-red"></i>
                     <span className="text-accent-red font-medium">Failed</span>
@@ -85,7 +85,7 @@ export default function PaymentFailedPage() {
                   <div className="flex items-start gap-4">
                     <i className="fa-solid fa-circle-exclamation text-accent-red text-xl mt-1"></i>
                     <div>
-                      <h3 className="font-poppins font-semibold text-lg mb-2 text-accent-red">
+                      <h3 className=" font-semibold text-lg mb-2 text-accent-red">
                         Payment Declined
                       </h3>
                       <p className="text-primary-text mb-3">
@@ -109,7 +109,7 @@ export default function PaymentFailedPage() {
 
                 {/* Purchase Summary */}
                 <div className="mb-8">
-                  <h3 className="font-poppins font-semibold text-lg mb-4">Attempted Purchase</h3>
+                  <h3 className=" font-semibold text-lg mb-4">Attempted Purchase</h3>
                   <div className="space-y-4">
                     <PurchaseItem
                       icon="fa-crown"
@@ -148,7 +148,7 @@ export default function PaymentFailedPage() {
               <div className="bg-primary-secondary rounded-xl border border-divider p-6 mb-6 text-center">
                 <div className="flex items-center justify-center gap-3 mb-4">
                   <i className="fa-solid fa-headset text-accent-amber text-xl"></i>
-                  <h3 className="font-poppins font-semibold text-lg">Still Having Issues?</h3>
+                  <h3 className=" font-semibold text-lg">Still Having Issues?</h3>
                 </div>
                 <p className="text-primary-muted mb-4">
                   If you continue to experience payment problems, our support team can help you complete your purchase.
@@ -160,7 +160,7 @@ export default function PaymentFailedPage() {
 
               {/* Alt Payments */}
               <div className="bg-primary-secondary rounded-xl border border-divider p-6 mt-6 text-center">
-                <h3 className="font-poppins font-semibold text-lg mb-4">Try Alternative Payment Methods</h3>
+                <h3 className=" font-semibold text-lg mb-4">Try Alternative Payment Methods</h3>
                 <div className="flex flex-wrap justify-center gap-4">
                   {[
                     ['fa-paypal', 'PayPal', 'text-accent-blue'],

@@ -33,7 +33,7 @@ export default function BlogGrid({ posts, featuredPost }) {
                 {formatTimeAgo(featuredPost[0].createdAt)}
               </span>
             </div>
-            <h2 className="font-poppins font-bold text-2xl lg:text-3xl mb-4">
+            <h2 className=" font-bold text-2xl lg:text-3xl mb-4">
               {featuredPost[0].title}
             </h2>
             <p className="text-primary-muted mb-6">
@@ -70,7 +70,7 @@ export default function BlogGrid({ posts, featuredPost }) {
               <div className="flex items-center gap-3 mb-3 text-sm text-primary-muted">
                 <span>{formatTimeAgo(post.createdAt)}</span>
               </div>
-              <h3 className="font-poppins font-semibold text-lg mb-3 text-primary-text">
+              <h3 className=" font-semibold text-lg mb-3 text-primary-text">
                 {post.title}
               </h3>
               <p className="text-primary-muted text-sm mb-4">

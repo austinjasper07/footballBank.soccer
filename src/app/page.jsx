@@ -38,15 +38,15 @@ export default async function HomePage() {
       <div className="relative min-h-[calc(100vh+100px)] md:h-[calc(100vh+100px)] w-full bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] overflow-hidden pt-8 pb-16 lg:pb-2 lg:pt-0 px-6 lg:px-12 flex flex-col lg:flex-row justify-between gap-12 items-center">
         
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[120px] -top-24 -left-20 opacity-30" />
-          <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[100px] bottom-10 right-10 opacity-30" />
+          <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[200px] -top-24 -left-20 opacity-25" />
+          <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[120px] bottom-10 right-10 opacity-30" />
         </div>
 
         {/* LEFT CONTENT */}
         <section className="z-10 w-full lg:w-[50%] h-full flex items-center justify-center lg:justify-start text-center lg:text-left">
           <div className="max-w-2xl space-y-6 h-1/2">
             <h1
-              className="font-poppins font-bold text-[clamp(2.5rem,3.5vw,4rem)] leading-tight tracking-tight text-primary-text"
+              className=" font-bold text-[clamp(2.5rem,3.5vw,4rem)] leading-tight tracking-tight text-primary-text"
               data-aos="fade-up"
             >
               Empowering Football{" "}
@@ -102,7 +102,7 @@ export default async function HomePage() {
                 />
               </div>
               <div className="w-full mt-4">
-                <h3 className="text-xl font-bold text-[#111827] font-poppins my-3">
+                <h3 className="text-xl font-bold text-[#111827]  my-3">
                   {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName}
                 </h3>
                 <p className="text-accent-red font-semibold mb-2">
@@ -142,10 +142,10 @@ export default async function HomePage() {
             className="max-w-7xl mx-auto text-center px-4"
             data-aos="fade-up"
           >
-            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold font-poppins text-[#111827] mb-4">
+            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold  text-[#111827] mb-4">
               Why FootballBank?
             </h2>
-            <div className="w-24 h-1 bg-[#1F6FEB] mx-auto mb-10" />
+            <div className="w-24 h-1 bg-accent-red/80 mx-auto mb-10" />
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
@@ -170,10 +170,10 @@ export default async function HomePage() {
                   data-aos="fade-up"
                   data-aos-delay={i * 150}
                 >
-                  <div className="w-16 h-16 bg-[#1F6FEB] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-[#1F6FEB]">
+                  <div className="w-16 h-16 bg-accent-red/80 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-accent-red">
                     <i className={`fa-solid ${icon} text-white text-2xl`} />
                   </div>
-                  <h3 className="text-xl font-poppins font-semibold text-[#111827] mb-4">
+                  <h3 className="text-xl  font-semibold text-[#111827] mb-4">
                     {title}
                   </h3>
                   <p className="text-[#6B7280] leading-relaxed">{desc}</p>

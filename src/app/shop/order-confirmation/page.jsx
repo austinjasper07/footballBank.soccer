@@ -21,13 +21,13 @@ const OrderConfirmedPage = () => {
                 <div className="w-24 h-24 bg-accent-green/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="fa-solid fa-check text-accent-green text-4xl"></i>
                 </div>
-                <h1 className="font-poppins font-bold text-3xl md:text-4xl mb-4">Your Order is Confirmed!</h1>
+                <h1 className=" font-bold text-3xl md:text-4xl mb-4">Your Order is Confirmed!</h1>
                 <p className="text-primary-muted text-lg">Thank you for your purchase. We&apos;ve received your order and will process it shortly.</p>
               </div>
 
               <div className="bg-primary-secondary rounded-xl border border-divider p-8 mb-8 text-left shadow-lg">
                 <div className="flex items-center justify-between mb-6 pb-6 border-b border-divider">
-                  <h2 className="font-poppins font-semibold text-xl">Order Summary</h2>
+                  <h2 className=" font-semibold text-xl">Order Summary</h2>
                   <span className="text-accent-green font-medium">
                     <i className="fa-solid fa-circle-check mr-2"></i>
                     Confirmed
@@ -122,7 +122,7 @@ const OrderConfirmedPage = () => {
               </div>
 
               <div className="mt-12 p-6 bg-primary-secondary rounded-xl border border-divider">
-                <h3 className="font-poppins font-semibold text-lg mb-4">What&apos;s Next?</h3>
+                <h3 className=" font-semibold text-lg mb-4">What&apos;s Next?</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div className="flex items-center gap-3">
                     <i className="fa-solid fa-envelope text-accent-red"></i>

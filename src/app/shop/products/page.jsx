@@ -78,7 +78,7 @@ export default function ShopPage() {
     // <main className="bg-primary-bg font-inter text-primary-text">
     //   <section className="py-16 text-center">
     //     <div className="container mx-auto px-4">
-    //       <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-6">
+    //       <h1 className=" font-bold text-4xl md:text-5xl mb-6">
     //         Football Gear Shop
     //       </h1>
     //       <p className="text-primary-muted text-lg mb-8">
@@ -138,7 +138,7 @@ export default function ShopPage() {
     //                 />
     //               </div>
     //               <div className="p-6">
-    //                 <h3 className="font-poppins font-semibold text-lg mb-2">
+    //                 <h3 className=" font-semibold text-lg mb-2">
     //                   {product.name}
     //                 </h3>
     //                 <p className="text-primary-muted text-sm mb-4">
@@ -161,7 +161,7 @@ export default function ShopPage() {
     //         </div>
     //       ) : (
     //         <div className="w-full flex flex-col items-center justify-center h-32">
-    //           <h3 className="font-poppins font-semibold text-lg mb-2">
+    //           <h3 className=" font-semibold text-lg mb-2">
     //             No Product Found
     //           </h3>
     //         </div>

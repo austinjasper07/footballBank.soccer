@@ -24,20 +24,20 @@ export default function LiveMatchPage() {
                   className="rounded-full object-cover"
                 />
                 <div className="text-center">
-                  <div className="font-poppins font-bold text-2xl">Real Madrid</div>
+                  <div className=" font-bold text-2xl">Real Madrid</div>
                   <div className="text-primary-muted text-sm">HOME</div>
                 </div>
               </div>
 
               <div className="mx-6 text-center">
-                <div className="font-poppins font-bold text-4xl text-accent-green">2 - 1</div>
+                <div className=" font-bold text-4xl text-accent-green">2 - 1</div>
                 <div className="text-accent-amber text-sm">78' LIVE</div>
               </div>
 
               {/* Away */}
               <div className="flex items-center gap-4">
                 <div className="text-center">
-                  <div className="font-poppins font-bold text-2xl">Barcelona</div>
+                  <div className=" font-bold text-2xl">Barcelona</div>
                   <div className="text-primary-muted text-sm">AWAY</div>
                 </div>
                 <Image
@@ -91,7 +91,7 @@ export default function LiveMatchPage() {
 
             {/* Timeline */}
             <div className="bg-primary-secondary rounded-xl p-6">
-              <h3 className="font-poppins font-bold text-xl mb-4">Match Timeline</h3>
+              <h3 className=" font-bold text-xl mb-4">Match Timeline</h3>
               <div className="space-y-4">
                 {[
                   ["78'", "Goal! Benzema scores for Real Madrid", "fa-futbol", "text-accent-green"],
@@ -110,7 +110,7 @@ export default function LiveMatchPage() {
 
             {/* Stats */}
             <div className="bg-primary-secondary rounded-xl p-6">
-              <h3 className="font-poppins font-bold text-xl mb-4">Match Statistics</h3>
+              <h3 className=" font-bold text-xl mb-4">Match Statistics</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
@@ -142,7 +142,7 @@ export default function LiveMatchPage() {
             {/* Chat */}
             <div className="bg-primary-secondary rounded-xl p-4 h-96 flex flex-col">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-poppins font-bold">Live Chat</h3>
+                <h3 className=" font-bold">Live Chat</h3>
                 <span className="text-accent-green text-sm">1,247 watching</span>
               </div>
               <div className="flex-1 overflow-y-auto space-y-3">
@@ -171,7 +171,7 @@ export default function LiveMatchPage() {
 
             {/* Upcoming */}
             <div className="bg-primary-secondary rounded-xl p-4">
-              <h3 className="font-poppins font-bold mb-4">Upcoming Streams</h3>
+              <h3 className=" font-bold mb-4">Upcoming Streams</h3>
               {[
                 ["Man City vs Arsenal", "20:00", "Premier League"],
                 ["PSG vs Bayern", "21:00", "Champions League"],
@@ -193,7 +193,7 @@ export default function LiveMatchPage() {
       {/* Related Highlights */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <h2 className="font-poppins font-bold text-3xl mb-8">Related Highlights</h2>
+          <h2 className=" font-bold text-3xl mb-8">Related Highlights</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               ["El Clásico Best Goals", "2.1M views • 2 days ago", "from-accent-blue/20 to-accent-green/20"],

@@ -97,7 +97,7 @@ export default function ProductDetailsClient() {
 
           {/* Product Info */}
           <div className="space-y-6">
-            <h1 className="font-poppins font-bold text-3xl md:text-4xl">{product.name}</h1>
+            <h1 className=" font-bold text-3xl md:text-4xl">{product.name}</h1>
 
             <div className="flex items-center gap-4">
               <span className="text-accent-red font-bold text-3xl">£{finalPrice}</span>

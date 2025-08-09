@@ -64,7 +64,7 @@ export default function PlayerPortfolioPage() {
   return (
     <main className="container mx-auto px-4">
       <section className="py-10 text-center">
-        <h1 className="font-poppins font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] mb-4 text-primary-text/80">
+        <h1 className=" font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] mb-4 text-primary-text/80">
           Player Portfolio
         </h1>
         <p className="text-primary-muted text-base md:text-lg max-w-2xl mx-auto">
@@ -170,7 +170,7 @@ export default function PlayerPortfolioPage() {
                       </div>
                     </div>
                     <div className="p-6">
-                      <h3 className="font-poppins font-semibold text-xl mb-2 text-primary-text">
+                      <h3 className=" font-semibold text-xl mb-2 text-primary-text">
                         {fullName}
                       </h3>
                       <div className="flex items-center justify-between mb-4">

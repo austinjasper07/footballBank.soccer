@@ -4,16 +4,20 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 export default function Footer() {
-
   return (
     <footer className="bg-primary-card max-w-full px-4 lg:px-12 pt-16 mt-20 pb-8 border-t border-divider">
       <div className=" mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div>
-            <span className="font-poppins font-bold text-2xl mb-4 inline-block cursor-pointer">
-              <span className="text-accent-blue">Football</span>
-              <span className="text-accent-red">Bank</span> 
-            </span>
+            <div className="flex flex-col mb-4 ">
+              <Link href={"/"} className="font-bold text-2xl inline-block cursor-pointer text-accent-red">
+                FootballBank
+              </Link>
+              <div>
+
+              <span className="text-primary-muted text-sm"> powered by </span> <span className="text-primary-muted font-bold text-base inline-block cursor-pointer">Dojo & FAM</span>
+              </div>
+            </div>
             <p className="text-primary-muted mb-6">
               Empowering football talent worldwide through visibility and
               opportunity.
@@ -21,12 +25,17 @@ export default function Footer() {
             <div className="flex space-x-4">
               {[
                 { name: "twitter", href: "#" },
-                { name: "instagram", href: "https://www.instagram.com/footballbank.soccer" },
+                {
+                  name: "instagram",
+                  href: "https://www.instagram.com/footballbank.soccer",
+                },
                 { name: "facebook", href: "#" },
-                { name: "youtube", href: "http://www.youtube.com/@footballbank.soccer" },
+                {
+                  name: "youtube",
+                  href: "http://www.youtube.com/@footballbank.soccer",
+                },
               ].map((brand) => (
                 <Link
-                 
                   href={brand.href}
                   key={brand.name}
                   className="text-primary-muted hover:text-accent-red transition-colors cursor-pointer"
@@ -37,16 +46,16 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h3 className="font-poppins font-semibold text-lg mb-4 text-primary-text">
+            <h3 className=" font-semibold text-lg mb-4 text-primary-text">
               Quick Links
             </h3>
             <ul className="flex flex-col space-y-2">
               {[
-                {title:"Home", href: "/"},
-                {title:"Players", href: "/players"},
-                {title:"Live Scores", href: "/live-scores"},
-                {title:"Submit Profile", href: "/submit-profile"},
-                {title:"About Us", href: "/about"},
+                { title: "Home", href: "/" },
+                { title: "Players", href: "/players" },
+                { title: "Live Scores", href: "/live-scores" },
+                { title: "Submit Profile", href: "/submit-profile" },
+                { title: "About Us", href: "/about" },
               ].map((link) => (
                 <Link
                   data-aos="fade-up"
@@ -60,16 +69,16 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="font-poppins font-semibold text-lg mb-4 text-primary-text">
+            <h3 className=" font-semibold text-lg mb-4 text-primary-text">
               Resources
             </h3>
             <ul className="flex flex-col space-y-2">
               {[
-                {title: "Blog", href: "/blog"},
-                {title: "Career Tips", href: "/career-tips"},
-                {title: "Success Stories", href: "/success-stories"},
-                {title: "Training Resources", href: "/training-resources"},
-                {title: "FAQ", href: "/faq"},
+                { title: "Blog", href: "/blog" },
+                { title: "Career Tips", href: "/career-tips" },
+                { title: "Success Stories", href: "/success-stories" },
+                { title: "Training Resources", href: "/training-resources" },
+                { title: "FAQ", href: "/faq" },
               ].map((link) => (
                 <Link
                   data-aos="fade-up"
@@ -83,7 +92,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="font-poppins font-semibold text-lg mb-4 text-primary-text">
+            <h3 className=" font-semibold text-lg mb-4 text-primary-text">
               Contact
             </h3>
             <ul className="flex flex-col space-y-2">
@@ -95,7 +104,7 @@ export default function Footer() {
                 "Terms of Service",
               ].map((item) => (
                 <li
-                data-aos="fade-up"
+                  data-aos="fade-up"
                   key={item}
                   className="text-primary-muted hover:text-accent-red transition-colors cursor-pointer"
                 >
@@ -107,8 +116,7 @@ export default function Footer() {
         </div>
         <div className="border-t border-divider pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-primary-muted text-sm">
-            © {new Date().getFullYear()} FootballBank. All rights
-            reserved.
+            © {new Date().getFullYear()} FootballBank. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0 text-sm">
             {["Privacy", "Terms", "Cookies"].map((item) => (
