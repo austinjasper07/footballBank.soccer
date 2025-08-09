@@ -5,7 +5,7 @@ import Script from "next/script";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 import { AuthProvider } from "@/context/AuthContext";
 import { KindeClientProvider } from "./KindeClientProvider";
-//import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/next";
 import { CartProvider } from "@/context/CartContext";
 import AOSProvider from "@/components/AOSProvider";
 
@@ -77,18 +77,6 @@ export default function RootLayout({ children }) {
             </AuthProvider>
           </KindeClientProvider>
         </AOSProvider>
-      <body className="font-sans bg-primary-bg text-primary-text">
-        
-          <AOSProvider>
-            <KindeClientProvider>
-              <AuthProvider>
-                <CartProvider>
-                  <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
-                </CartProvider>
-              </AuthProvider>
-            </KindeClientProvider>
-          </AOSProvider>
-      
       </body>
     </html>
   );
