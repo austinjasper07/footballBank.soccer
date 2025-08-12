@@ -99,7 +99,7 @@ export default function PlayerSubmissionForm() {
       ].forEach((k) => !formData[k] && errs.push(k));
     }
     if (step === 3) {
-      if (!formData.videoPrimary) errs.push("videoPrimary");
+      // if (!formData.videoPrimary) errs.push("videoPrimary");
       if (!formData.cvUrl) errs.push("cvUrl");
       if (formData.imageUrl.length === 0) errs.push("imageUrl");
     }

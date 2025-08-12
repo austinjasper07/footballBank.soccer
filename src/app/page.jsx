@@ -16,7 +16,7 @@ export default async function HomePage() {
   try {
     const user = await getUser();
 
-    if (user && (await isAuthenticated())) {
+    if (user) {
       await syncUserToDb();
     }
   } catch (error) {

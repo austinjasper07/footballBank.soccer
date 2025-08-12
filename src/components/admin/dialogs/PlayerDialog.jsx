@@ -119,8 +119,7 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
     if (
       !formData.firstName ||
       !formData.lastName ||
-      !formData.position ||
-      !formData.videoPrimary
+      !formData.position
     ) {
       toast({
         title: "Error",
