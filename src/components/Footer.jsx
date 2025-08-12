@@ -15,7 +15,7 @@ export default function Footer() {
               </Link>
               <div>
 
-              <span className="text-primary-muted text-sm"> powered by </span> <span className="text-primary-muted font-bold text-base inline-block cursor-pointer">Dojo & FAM</span>
+              <span className="text-primary-muted text-sm"> powered by </span> <span className="text-primary-muted font-bold text-base inline-block cursor-pointer">Soccerbank Int'l</span>
               </div>
             </div>
             <p className="text-primary-muted mb-6">
