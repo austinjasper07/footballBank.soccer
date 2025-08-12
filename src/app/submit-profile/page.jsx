@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -6,7 +6,13 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { uploadFileWithProgress } from "@/lib/uploadWithProgress";
@@ -29,23 +35,39 @@ export default function PlayerSubmissionForm() {
   const [checkedAuth, setCheckedAuth] = useState(false);
 
   const [formData, setFormData] = useState({
-    firstName: "", lastName: "", dob: "",
-    country: "", countryCode: "",
-    position: "", foot: "",
-    height: "", weight: "", email: "", phone: "",
-    description: "", contractStatus: "", availableFrom: "",
-    preferredLeagues: "", salaryExpectation: "",
+    firstName: "",
+    lastName: "",
+    dob: "",
+    country: "",
+    countryCode: "",
+    position: "",
+    foot: "",
+    height: "",
+    weight: "",
+    email: "",
+    phone: "",
+    description: "",
+    contractStatus: "",
+    availableFrom: "",
+    preferredLeagues: "",
+    salaryExpectation: "",
     stats: {
       career: { Appearances: "", Goals: "", Assists: "", Trophies: "" },
       season: { Appearances: "", Goals: "", Assists: "", Minutes: "" },
       international: { Caps: "", Goals: "", Tournaments: "" },
     },
     clubHistory: [{ clubName: "", startDate: "", endDate: "", position: "" }],
-    featured: false, playerOfTheWeek: false,
-    imageUrl: [], videoPrimary: "", videoAdditional: [], cvUrl: ""
+    featured: false,
+    playerOfTheWeek: false,
+    imageUrl: [],
+    videoPrimary: "",
+    videoAdditional: [],
+    cvUrl: "",
   });
 
-  const uploading = Object.values(uploadProgress).some(p => p != null && p < 100);
+  const uploading = Object.values(uploadProgress).some(
+    (p) => p != null && p < 100
+  );
 
   useEffect(() => {
     if (!isLoading) {
@@ -63,8 +85,18 @@ export default function PlayerSubmissionForm() {
   const validateStep = () => {
     const errs = [];
     if (step === 1) {
-      ["firstName","lastName","dob","country","position","height","weight","foot","email","phone"]
-        .forEach(k => !formData[k] && errs.push(k));
+      [
+        "firstName",
+        "lastName",
+        "dob",
+        "country",
+        "position",
+        "height",
+        "weight",
+        "foot",
+        "email",
+        "phone",
+      ].forEach((k) => !formData[k] && errs.push(k));
     }
     if (step === 3) {
       if (!formData.videoPrimary) errs.push("videoPrimary");
@@ -75,89 +107,138 @@ export default function PlayerSubmissionForm() {
     return errs.length === 0;
   };
 
-  const nextStep = () => { if (validateStep()) setStep(step + 1) };
+  const nextStep = () => {
+    if (validateStep()) setStep(step + 1);
+  };
   const prevStep = () => setStep(step - 1);
 
   const submitForm = async () => {
     try {
-      await createSubmission({ ...formData, submittedAt: new Date(), userId: submittingUser?.id });
+      await createSubmission({
+        ...formData,
+        submittedAt: new Date(),
+        userId: submittingUser?.id,
+      });
       setSubmitted(true);
       setStep(4);
-      toast({ title: "Success", description: "Profile submitted successfully." });
+      toast({
+        title: "Success",
+        description: "Profile submitted successfully.",
+      });
     } catch {
-      toast({ title: "Error", description: "Failed to submit profile.", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to submit profile.",
+        variant: "destructive",
+      });
     }
   };
 
   const updateClub = (i, f, v) => {
     const arr = [...formData.clubHistory];
     arr[i][f] = v;
-    setFormData(prev => ({ ...prev, clubHistory: arr }));
+    setFormData((prev) => ({ ...prev, clubHistory: arr }));
   };
-  const addClub = () => setFormData(prev => ({
-    ...prev,
-    clubHistory: [...prev.clubHistory, { clubName:"", startDate:"", endDate:"", position:"" }]
-  }));
+  const addClub = () =>
+    setFormData((prev) => ({
+      ...prev,
+      clubHistory: [
+        ...prev.clubHistory,
+        { clubName: "", startDate: "", endDate: "", position: "" },
+      ],
+    }));
 
   const multiUpload = (files, field) => {
-    Array.from(files).slice(0,3).forEach((file,i) => {
-      const ref = `players/${formData.email || Date.now()}/${field}/${file.name}`;
-      uploadFileWithProgress(ref, file, p => setUploadProgress(prev => ({...prev, [`${field}-${i}`]: p})))
-        .then(url => setFormData(prev => ({
-          ...prev,
-          [field]: [...(prev[field]||[]), url]
-        })));
-    });
+    Array.from(files)
+      .slice(0, 3)
+      .forEach((file, i) => {
+        const ref = `players/${formData.email || Date.now()}/${field}/${file.name}`;
+        uploadFileWithProgress(ref, file, (p) =>
+          setUploadProgress((prev) => ({ ...prev, [`${field}-${i}`]: p }))
+        ).then((url) =>
+          setFormData((prev) => ({
+            ...prev,
+            [field]: [...(prev[field] || []), url],
+          }))
+        );
+      });
   };
 
   const singleUpload = (file, field) => {
     const ref = `players/${formData.email || Date.now()}/${field}/${file.name}`;
-    uploadFileWithProgress(ref, file, p => setUploadProgress(prev => ({...prev, [field]: p})))
-      .then(url => setFormData(prev => ({ ...prev, [field]: url})));
+    uploadFileWithProgress(ref, file, (p) =>
+      setUploadProgress((prev) => ({ ...prev, [field]: p }))
+    ).then((url) => setFormData((prev) => ({ ...prev, [field]: url })));
   };
 
   return (
     <section className="max-w-4xl mx-auto px-4 py-12">
       {/* Step indicators */}
       <div className="flex items-center justify-center gap-4 mb-8 flex-wrap">
-        {["Details","Stats","Uploads","Complete"].map((l,i)=>
+        {["Details", "Stats", "Uploads", "Complete"].map((l, i) => (
           <div key={l} className="flex items-center gap-2">
-            <div className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium ${
-              step > i+1 ? "bg-accent-red text-white" :
-              step === i+1 ? "bg-accent-red text-white" :
-              "bg-primary-secondary border border-divider text-primary-muted"
-            }`}>{step > i+1 ? "✔" : i+1}</div>
-            <span className={step>=i+1?"text-primary-text":"text-primary-muted"}>{l}</span>
-            {i<3 && <div className="w-12 h-px bg-divider"/>}
+            <div
+              className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium ${
+                step > i + 1
+                  ? "bg-accent-red text-white"
+                  : step === i + 1
+                    ? "bg-accent-red text-white"
+                    : "bg-primary-secondary border border-divider text-primary-muted"
+              }`}
+            >
+              {step > i + 1 ? "✔" : i + 1}
+            </div>
+            <span
+              className={
+                step >= i + 1 ? "text-primary-text" : "text-primary-muted"
+              }
+            >
+              {l}
+            </span>
+            {i < 3 && <div className="w-12 h-px bg-divider" />}
           </div>
-        )}
+        ))}
       </div>
 
       {/* Step 1: Details */}
-      {step===1 && (
+      {step === 1 && (
         <div className="bg-white p-8 rounded-xl">
           <h2 className="text-xl mb-6">Personal & Availability</h2>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              {label:"First Name", field:"firstName"},
-              {label:"Last Name", field:"lastName"},
-              {label:"Date of Birth", field:"dob", type:"date"},
-              {label:"Email", field:"email", type:"email"},
-              {label:"Phone", field:"phone"},
-            ].map(({label,field,type})=>(
-              <InputField key={field} label={label} value={formData[field]} type={type} onChange={val=>setFormData({...formData,[field]:val})}/>
+              { label: "First Name", field: "firstName" },
+              { label: "Last Name", field: "lastName" },
+              { label: "Date of Birth", field: "dob", type: "date" },
+              { label: "Email", field: "email", type: "email" },
+              { label: "Phone", field: "phone" },
+            ].map(({ label, field, type }) => (
+              <InputField
+                key={field}
+                label={label}
+                value={formData[field]}
+                type={type}
+                onChange={(val) => setFormData({ ...formData, [field]: val })}
+              />
             ))}
             {/* country select */}
             <div>
               <Label>Country *</Label>
-              <Select value={formData.countryCode} onValueChange={(code)=> {
-                const country = countries.find(c=>c.code===code)?.name || "";
-                setFormData({...formData, countryCode:code, country});
-              }}>
-                <SelectTrigger><SelectValue placeholder="Select country"/></SelectTrigger>
+              <Select
+                value={formData.countryCode}
+                onValueChange={(code) => {
+                  const country =
+                    countries.find((c) => c.code === code)?.name || "";
+                  setFormData({ ...formData, countryCode: code, country });
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select country" />
+                </SelectTrigger>
                 <SelectContent>
-                  {countries.map(c=>(
-                    <SelectItem key={c.code} value={c.code}>{c.name}</SelectItem>
+                  {countries.map((c) => (
+                    <SelectItem key={c.code} value={c.code}>
+                      {c.name}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -165,40 +246,99 @@ export default function PlayerSubmissionForm() {
             {/* position */}
             <div>
               <Label>Position *</Label>
-              <Select value={formData.position} onValueChange={val=>setFormData({...formData, position:val})}>
-                <SelectTrigger><SelectValue placeholder="Select position"/></SelectTrigger>
+              <Select
+                value={formData.position}
+                onValueChange={(val) =>
+                  setFormData({ ...formData, position: val })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select position" />
+                </SelectTrigger>
                 <SelectContent>
-                  {["Goalkeeper","Defender","Midfielder","Forward"].map(opt=>(
-                    <SelectItem key={opt} value={opt}>{opt}</SelectItem>
-                  ))}
+                  {["Goalkeeper", "Defender", "Midfielder", "Forward"].map(
+                    (opt) => (
+                      <SelectItem key={opt} value={opt}>
+                        {opt}
+                      </SelectItem>
+                    )
+                  )}
                 </SelectContent>
               </Select>
             </div>
             {/* foot */}
             <div>
               <Label>Preferred Foot *</Label>
-              <Select value={formData.foot} onValueChange={val=>setFormData({...formData, foot:val})}>
-                <SelectTrigger><SelectValue placeholder="Select foot"/></SelectTrigger>
+              <Select
+                value={formData.foot}
+                onValueChange={(val) => setFormData({ ...formData, foot: val })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select foot" />
+                </SelectTrigger>
                 <SelectContent>
-                  {["Left","Right","Both"].map(opt=>(
-                    <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                  {["Left", "Right", "Both"].map((opt) => (
+                    <SelectItem key={opt} value={opt}>
+                      {opt}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             {/* availability */}
-            <InputField label="Height (cm)" value={formData.height} onChange={val=>setFormData({...formData,height:val})}/>
-            <InputField label="Weight (kg)" value={formData.weight} onChange={val=>setFormData({...formData,weight:val})}/>
-            <InputField label="Contract Status" value={formData.contractStatus} onChange={val=>setFormData({...formData,contractStatus:val})}/>
-            <InputField label="Available From" type="date" value={formData.availableFrom} onChange={val=>setFormData({...formData,availableFrom:val})}/>
-            <InputField label="Preferred Leagues" value={formData.preferredLeagues} onChange={val=>setFormData({...formData,preferredLeagues:val})}/>
-            <InputField label="Salary Expectation" value={formData.salaryExpectation} onChange={val=>setFormData({...formData,salaryExpectation:val})}/>
+            <InputField
+              label="Height (cm)"
+              value={formData.height}
+              onChange={(val) => setFormData({ ...formData, height: val })}
+            />
+            <InputField
+              label="Weight (kg)"
+              value={formData.weight}
+              onChange={(val) => setFormData({ ...formData, weight: val })}
+            />
+            <InputField
+              label="Contract Status"
+              value={formData.contractStatus}
+              onChange={(val) =>
+                setFormData({ ...formData, contractStatus: val })
+              }
+            />
+            <InputField
+              label="Available From"
+              type="date"
+              value={formData.availableFrom}
+              onChange={(val) =>
+                setFormData({ ...formData, availableFrom: val })
+              }
+            />
+            <InputField
+              label="Preferred Leagues"
+              value={formData.preferredLeagues}
+              onChange={(val) =>
+                setFormData({ ...formData, preferredLeagues: val })
+              }
+            />
+            <InputField
+              label="Salary Expectation"
+              value={formData.salaryExpectation}
+              onChange={(val) =>
+                setFormData({ ...formData, salaryExpectation: val })
+              }
+            />
             <div className="md:col-span-2">
               <Label>Description</Label>
-              <Textarea rows={3} value={formData.description} onChange={e=>setFormData({...formData,description:e.target.value})}/>
+              <Textarea
+                rows={3}
+                value={formData.description}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+              />
             </div>
           </div>
-          <div className="flex justify-end mt-6"><Button onClick={nextStep}>Next</Button></div>
+          <div className="flex justify-end mt-6">
+            <Button onClick={nextStep}>Next</Button>
+          </div>
         </div>
       )}
 
@@ -236,16 +376,41 @@ export default function PlayerSubmissionForm() {
             {formData.clubHistory.map((c, i) => (
               <div key={i} className="grid md:grid-cols-4 gap-4 mb-2">
                 {["clubName", "startDate", "endDate", "position"].map(
-                  (field) => (
-                    <div key={field}>
-                      <Label>{field.replace(/([A-Z])/g, " $1")}</Label>
-                      <Input
-                        type={field.includes("Date") ? "date" : "text"}
-                        value={c[field]}
-                        onChange={(e) => updateClub(i, field, e.target.value)}
-                      />
-                    </div>
-                  )
+                  (field) =>
+                    typeof field === "string" && field === "position" ? (
+                      <div>
+                        <Label>Position</Label>
+                        <Select
+                          value={c.position}
+                          onValueChange={(val) =>
+                            updateClub(i, field, val)
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select position" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Goalkeeper">
+                              Goalkeeper
+                            </SelectItem>
+                            <SelectItem value="Defender">Defender</SelectItem>
+                            <SelectItem value="Midfielder">
+                              Midfielder
+                            </SelectItem>
+                            <SelectItem value="Forward">Forward</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    ) : (
+                      <div key={field}>
+                        <Label>{field.replace(/([A-Z])/g, " $1")}</Label>
+                        <Input
+                          type={field.includes("Date") ? "date" : "text"}
+                          value={c[field]}
+                          onChange={(e) => updateClub(i, field, e.target.value)}
+                        />
+                      </div>
+                    )
                 )}
               </div>
             ))}
@@ -381,7 +546,6 @@ function ProgressBar({ progress }) {
     </div>
   );
 }
-
 
 // InputField helper
 function InputField({ label, value, onChange, type = "text" }) {

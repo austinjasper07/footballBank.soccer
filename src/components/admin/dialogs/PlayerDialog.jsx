@@ -412,11 +412,23 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
                 value={club.endDate}
                 onChange={(val) => updateClubHistory(i, "endDate", val)}
               />
-              <InputField
-                label="Position"
-                value={club.position}
-                onChange={(val) => updateClubHistory(i, "position", val)}
-              />
+              <div>
+                <Label>Position</Label>
+                <Select
+                  value={club.position}
+                  onValueChange={(val) => updateClubHistory(i, "position", val)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select position" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Goalkeeper">Goalkeeper</SelectItem>
+                    <SelectItem value="Defender">Defender</SelectItem>
+                    <SelectItem value="Midfielder">Midfielder</SelectItem>
+                    <SelectItem value="Forward">Forward</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           ))}
           <Button
