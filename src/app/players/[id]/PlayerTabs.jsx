@@ -1,68 +1,100 @@
-'use client'
-
-import Link from 'next/link'
-import { useState } from 'react'
+"use client"
+import { useEffect, useState } from "react"
+import Image from "next/image"
 
 export default function PlayerTabs({ player }) {
-  const [tab, setTab] = useState('stats')
-  const [selectedVideo, setSelectedVideo] = useState(player.videoPrimary || '')
-
-  console.log(selectedVideo)
+  const [tab, setTab] = useState("gallery")
+  const [selectedVideo, setSelectedVideo] = useState(player.videoPrimary || "")
+  const [showModal, setShowModal] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   const videoTitles = {
-    [player.videoPrimary]: 'Primary Highlights',
+    [player.videoPrimary]: "Primary Highlights",
   }
-
   player.videoAdditional.forEach((video, index) => {
     videoTitles[video] = `Additional Video ${index + 1}`
   })
 
+  // Lock/unlock body scroll when modal is open
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+  }, [showModal])
+
+  const openModal = (index) => {
+    setCurrentIndex(index)
+    setShowModal(true)
+  }
+
+  const closeModal = () => setShowModal(false)
+
+  const prevImage = () =>
+    setCurrentIndex((prev) => (prev - 1 + player.imageUrl.length) % player.imageUrl.length)
+
+  const nextImage = () =>
+    setCurrentIndex((prev) => (prev + 1) % player.imageUrl.length)
+
   return (
     <section className="py-16 border-y border-divider bg-primary-bg">
       <div className="container mx-auto px-4 max-w-6xl">
+        {/* Tabs */}
         <div className="flex gap-2 lg:gap-4 border-b border-divider overflow-x-auto mb-8">
-          {['stats', 'videos', 'availability'].map((t) => (
+          {["gallery", "videos", "availability"].map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
               className={`px-3 lg:px-6 py-3 font-medium border-b-2 transition text-sm lg:text-base ${
                 tab === t
-                  ? 'text-accent-red border-accent-red'
-                  : 'text-primary-muted border-transparent hover:text-accent-amber'
+                  ? "text-accent-red border-accent-red"
+                  : "text-primary-muted border-transparent hover:text-accent-amber"
               }`}
             >
-              {t === 'stats'
-                ? 'Career Stats'
-                : t === 'videos'
-                ? 'Highlight Videos'
-                : 'Availability'}
+              {t === "gallery"
+                ? "Photo Gallery"
+                : t === "videos"
+                ? "Highlight Videos"
+                : "Availability"}
             </button>
           ))}
         </div>
 
-        {tab === 'stats' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <StatCard
-              title="Career Total"
-              stats={{ Appearances: '0', Goals: '0', Assists: '0', Trophies: '0' }}
-            />
-            <StatCard
-              title="Season"
-              stats={{ Appearances: '0', Goals: '0', Assists: '0', Minutes: '0' }}
-            />
-            <StatCard title="International" stats={{ Caps: '0', Goals: '0', Tournaments: '0' }} />
+        {/* Gallery Tab */}
+        {tab === "gallery" && (
+          <div
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
+            data-aos="fade-up"
+          >
+            {player.imageUrl.map((img, idx) => (
+              <div
+                key={img}
+                className="overflow-hidden rounded-lg border border-divider cursor-pointer hover:scale-105 transition-transform"
+                onClick={() => openModal(idx)}
+              >
+                <Image
+                  src={img}
+                  alt={`Gallery image ${idx + 1}`}
+                  width={300}
+                  height={200}
+                  className="object-cover w-full h-40"
+                />
+              </div>
+            ))}
           </div>
         )}
 
-        {tab === 'videos' && (
-          <div className="grid lg:grid-cols-2 gap-8">
+        {/* Videos Tab */}
+        {tab === "videos" && (
+          <div className="grid lg:grid-cols-2 gap-8" data-aos="fade-up">
             <div className="bg-primary-bg rounded-lg overflow-hidden border border-divider">
               <div className="aspect-video">
                 <video src={selectedVideo} controls className="w-full h-full"></video>
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-lg mb-2">
-                  {videoTitles[selectedVideo] || 'Highlight Video'}
+                  {videoTitles[selectedVideo] || "Highlight Video"}
                 </h3>
               </div>
             </div>
@@ -72,7 +104,7 @@ export default function PlayerTabs({ player }) {
                 <div
                   key={url}
                   className={`cursor-pointer rounded-lg p-4 border ${
-                    selectedVideo === url ? 'border-accent-red' : 'border-divider'
+                    selectedVideo === url ? "border-accent-red" : "border-divider"
                   }`}
                   onClick={() => setSelectedVideo(url)}
                 >
@@ -91,8 +123,9 @@ export default function PlayerTabs({ player }) {
           </div>
         )}
 
-        {tab === 'availability' && (
-          <div className="grid lg:grid-cols-2 gap-8">
+        {/* Availability Tab */}
+        {tab === "availability" && (
+          <div className="grid lg:grid-cols-2 gap-8" data-aos="fade-up">
             <div className="bg-primary-bg rounded-lg p-6 border border-divider">
               <h3 className="font-semibold text-xl mb-4">Availability</h3>
               <div className="space-y-4 text-sm">
@@ -103,10 +136,14 @@ export default function PlayerTabs({ player }) {
                   <strong>Available From:</strong> Immediately
                 </p>
                 <p>
-                  <strong>Preferred Leagues:</strong> {player.preferredLeagues !== "" ? player.preferredLeagues : 'unavailable'}
+                  <strong>Preferred Leagues:</strong>{" "}
+                  {player.preferredLeagues || "unavailable"}
                 </p>
                 <p>
-                  <strong>Salary Expectation:</strong> {player.salaryExpectation !== "" ? `${player.salaryExpectation} USD` : 'unavailable'}
+                  <strong>Salary Expectation:</strong>{" "}
+                  {player.salaryExpectation
+                    ? `${player.salaryExpectation} USD`
+                    : "unavailable"}
                 </p>
               </div>
             </div>
@@ -126,22 +163,37 @@ export default function PlayerTabs({ player }) {
           </div>
         )}
       </div>
-    </section>
-  )
-}
 
-function StatCard({ title, stats }) {
-  return (
-    <div className="bg-primary-bg rounded-lg p-6 border border-divider shadow-md">
-      <h4 className="font-semibold text-xl mb-4">{title}</h4>
-      <div className="space-y-3">
-        {Object.entries(stats).map(([label, value]) => (
-          <div className="flex justify-between" key={label}>
-            <span className="text-primary-muted">{label}</span>
-            <span className="font-medium">{value}</span>
-          </div>
-        ))}
-      </div>
-    </div>
+      {/* Modal Carousel */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50">
+          <button
+            onClick={closeModal}
+            className="absolute top-5 right-5 text-white text-2xl"
+          >
+            ✕
+          </button>
+          <button
+            onClick={prevImage}
+            className="absolute left-5 text-white text-3xl"
+          >
+            ‹
+          </button>
+          <Image
+            src={player.imageUrl[currentIndex]}
+            alt="Full Image"
+            width={800}
+            height={600}
+            className="rounded-lg max-w-[80vw] max-h-[90vh] object-contain"
+          />
+          <button
+            onClick={nextImage}
+            className="absolute right-5 text-white text-3xl"
+          >
+            ›
+          </button>
+        </div>
+      )}
+    </section>
   )
 }

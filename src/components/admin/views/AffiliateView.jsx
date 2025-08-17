@@ -1,509 +1,295 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { Plus, Pencil, Trash2, Eye } from "lucide-react";
+import Image from "next/image";
+
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-  Users,
-  DollarSign,
-  TrendingUp,
-  Link,
-  Copy,
-  Eye,
-  Plus,
-  Search,
-  Filter,
-  Download,
-  Mail,
-  Target
-} from "lucide-react";
+import { SearchBar } from "@/components/admin/SearchBar";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
+import {
+  getAffiliateProducts,
+  deleteAffiliateProduct,
+} from "@/actions/adminActions";
+import AffiliateDialog from "@/components/admin/dialogs/AffiliateDialog";
+
+const ITEMS_PER_PAGE = 5;
 
 export function AffiliateView() {
   const { toast } = useToast();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("all");
 
-  const affiliateStats = [
-    {
-      title: "Total Affiliates",
-      value: "247",
-      icon: Users,
-      change: "+12 this month",
-      positive: true,
-      variant: "blue"
-    },
-    {
-      title: "Total Commissions",
-      value: "$15,420",
-      icon: DollarSign,
-      change: "+23% this month",
-      positive: true,
-      variant: "green"
-    },
-    {
-      title: "Conversion Rate",
-      value: "3.2%",
-      icon: TrendingUp,
-      change: "+0.8% this month",
-      positive: true,
-      variant: "amber"
-    },
-    {
-      title: "Active Links",
-      value: "1,834",
-      icon: Link,
-      change: "156 new this week",
-      positive: true,
-      variant: "red"
-    }
-  ];
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const affiliates = [
-    {
-      id: 1,
-      name: "John Smith",
-      email: "john@example.com",
-      status: "active",
-      joinDate: "2024-01-15",
-      totalEarnings: "$2,340",
-      clicks: 1250,
-      conversions: 48,
-      conversionRate: "3.8%",
-      referralCode: "JOHN2024"
-    },
-    {
-      id: 2,
-      name: "Sarah Johnson",
-      email: "sarah@example.com",
-      status: "active",
-      joinDate: "2024-02-20",
-      totalEarnings: "$1,890",
-      clicks: 980,
-      conversions: 32,
-      conversionRate: "3.3%",
-      referralCode: "SARAH2024"
-    },
-    {
-      id: 3,
-      name: "Mike Wilson",
-      email: "mike@example.com",
-      status: "pending",
-      joinDate: "2024-07-10",
-      totalEarnings: "$0",
-      clicks: 0,
-      conversions: 0,
-      conversionRate: "0%",
-      referralCode: "MIKE2024"
-    }
-  ];
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const commissionTiers = [
-    { sales: "0-10", rate: "5%" },
-    { sales: "11-25", rate: "7%" },
-    { sales: "26-50", rate: "10%" },
-    { sales: "51+", rate: "15%" }
-  ];
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await getAffiliateProducts();
+        setProducts(res);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load affiliate products.",
+          variant: "destructive",
+        });
+      }
+    };
 
-  const getVariantClasses = (variant) => {
-    switch (variant) {
-      case 'blue':
-        return {
-          iconColor: 'text-white',
-          iconBg: 'bg-accent-blue',
-          textColor: 'text-accent-blue'
-        };
-      case 'green':
-        return {
-          iconColor: 'text-white',
-          iconBg: 'bg-accent-green',
-          textColor: 'text-accent-green'
-        };
-      case 'amber':
-        return {
-          iconColor: 'text-white',
-          iconBg: 'bg-accent-amber',
-          textColor: 'text-accent-amber'
-        };
-      case 'red':
-        return {
-          iconColor: 'text-white',
-          iconBg: 'bg-accent-red',
-          textColor: 'text-accent-red'
-        };
-      default:
-        return {
-          iconColor: 'text-white',
-          iconBg: 'bg-primary',
-          textColor: 'text-primary'
-        };
-    }
-  };
+    fetchProducts();
+  }, [toast]);
 
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-    toast({
-      title: "Copied!",
-      description: "Referral code copied to clipboard",
+  // 📌 Get unique categories
+  const categories = useMemo(() => {
+    const unique = new Set(products.map((p) => p.category));
+    return ["all", ...Array.from(unique)];
+  }, [products]);
+
+  // 🔎 Search + Filter
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const search = searchQuery.toLowerCase();
+      const description = product.description?.toLowerCase() || "";
+      const category = product.category?.toLowerCase() || "";
+
+      return (
+        (description.includes(search) || category.includes(search)) &&
+        (categoryFilter === "all" || category === categoryFilter.toLowerCase())
+      );
     });
-  };
+  }, [products, searchQuery, categoryFilter]);
 
-  const getStatusBadge = (status) => {
-    switch (status) {
-      case 'active':
-        return <Badge className="bg-accent-green text-white">Active</Badge>;
-      case 'pending':
-        return <Badge className="bg-accent-amber text-white">Pending</Badge>;
-      case 'suspended':
-        return <Badge className="bg-accent-red text-white">Suspended</Badge>;
-      default:
-        return <Badge variant="secondary">{status}</Badge>;
+  // 📑 Pagination
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProducts.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
+
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+
+  // 🗑 Delete
+  const handleDelete = async (id) => {
+    try {
+      await deleteAffiliateProduct(String(id));
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+      toast({
+        title: "Deleted",
+        description: "Affiliate product deleted successfully.",
+      });
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to delete product.",
+        variant: "destructive",
+      });
     }
   };
 
-  const filteredAffiliates = affiliates.filter((affiliate) => {
-    const matchesSearch =
-      affiliate.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      affiliate.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      affiliate.referralCode.toLowerCase().includes(searchTerm.toLowerCase());
+  // ✏️ Edit
+  const handleEdit = (product) => {
+    setSelectedProduct(product);
+    setDialogOpen(true);
+  };
 
-    const matchesStatus = selectedStatus === "all" || affiliate.status === selectedStatus;
-
-    return matchesSearch && matchesStatus;
-  });
+  // ➕ Add
+  const handleAdd = () => {
+    setSelectedProduct(null);
+    setDialogOpen(true);
+  };
 
   return (
-    <div className="space-y-8 font-[var(--body)]">
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {affiliateStats.map((stat, index) => {
-          const Icon = stat.icon;
-          const variantClasses = getVariantClasses(stat.variant);
-          return (
-            <Card key={index} className="border-0 shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <p className="text-sm text-[hsl(var(--muted-foreground))] font-medium">{stat.title}</p>
-                    <p className="text-3xl font-bold font-[(var(--heading))]">{stat.value}</p>
-                  </div>
-                  <div className={`p-3 rounded-lg ${variantClasses.iconBg}`}>
-                    <Icon className={`h-6 w-6 ${variantClasses.iconColor}`} />
-                  </div>
-                </div>
-                <div className="flex items-center gap-1">
-                  <TrendingUp className={`h-4 w-4 ${stat.positive ? 'text-accent-green' : 'text-accent-red'}`} />
-                  <p className={`text-sm font-medium ${stat.positive ? 'text-accent-green' : 'text-accent-red'}`}>
-                    {stat.change}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+    <div className="space-y-6">
+      {/* 🔍 Search + Filter + Add */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row gap-4 md:items-center">
+          <SearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search products..."
+            className="w-40 md:w-80"
+          />
+
+          {/* 🏷 Category Filter */}
+          <select
+            value={categoryFilter}
+            onChange={(e) => {
+              setCategoryFilter(e.target.value);
+              setCurrentPage(1); // reset pagination
+            }}
+            className="border rounded-md px-4 py-2 text-sm"
+          >
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <Button onClick={handleAdd} className="bg-blue-600 text-white">
+          <Plus className="h-4 w-4 mr-2" />
+          Add Product
+        </Button>
       </div>
 
-      <Tabs defaultValue="affiliates" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="affiliates">Affiliates</TabsTrigger>
-          <TabsTrigger value="commissions">Commissions</TabsTrigger>
-          <TabsTrigger value="links">Tracking Links</TabsTrigger>
-          <TabsTrigger value="materials">Marketing Materials</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="affiliates" className="space-y-6">
-          <Card className="border-0 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="font-[(var(--heading))]">Affiliate Management</CardTitle>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Affiliate
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Add New Affiliate</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="name">Name</Label>
-                      <Input id="name" placeholder="Enter affiliate name" />
-                    </div>
-                    <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" placeholder="Enter email address" />
-                    </div>
-                    <div>
-                      <Label htmlFor="referralCode">Referral Code</Label>
-                      <Input id="referralCode" placeholder="Custom referral code (optional)" />
-                    </div>
-                    <div>
-                      <Label htmlFor="commissionRate">Commission Rate (%)</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select commission rate" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="5">5%</SelectItem>
-                          <SelectItem value="7">7%</SelectItem>
-                          <SelectItem value="10">10%</SelectItem>
-                          <SelectItem value="15">15%</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Button className="w-full">Add Affiliate</Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </CardHeader>
-            <CardContent>
-              {/* Filters */}
-              <div className="flex gap-4 mb-6">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-[hsl(var(--muted-foreground))]" />
-                  <Input
-                    placeholder="Search affiliates..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-                <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                  <SelectTrigger className="w-48">
-                    <Filter className="w-4 h-4 mr-2" />
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="suspended">Suspended</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Button variant="outline">
-                  <Download className="w-4 h-4 mr-2" />
-                  Export
-                </Button>
-              </div>
-
-              {/* Affiliates Table */}
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Affiliate</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Join Date</TableHead>
-                    <TableHead>Earnings</TableHead>
-                    <TableHead>Clicks</TableHead>
-                    <TableHead>Conversions</TableHead>
-                    <TableHead>Rate</TableHead>
-                    <TableHead>Referral Code</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredAffiliates.map((affiliate) => (
-                    <TableRow key={affiliate.id}>
-                      <TableCell>
+      {/* 📊 Table */}
+      <Card className="border-0 shadow-md">
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-[hsl(var(--muted))]/50">
+                <tr>
+                  <th className="text-left p-4 font-medium">Product</th>
+                  <th className="text-left p-4 font-medium">Category</th>
+                  <th className="text-left p-4 font-medium">Price</th>
+                  <th className="text-left p-4 font-medium">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedProducts.map((product) => (
+                  <tr
+                    key={product.id}
+                    className="border-t border-border hover:bg-[hsl(var(--muted))]/50"
+                  >
+                    {/* Product */}
+                    <td className="p-4">
+                      <div className="flex items-center gap-3">
+                        <Image
+                          src={product.image}
+                          alt={product.description}
+                          width={60}
+                          height={60}
+                          className="w-14 h-14 rounded-md object-cover"
+                        />
                         <div>
-                          <p className="font-medium">{affiliate.name}</p>
-                          <p className="text-sm text-[hsl(var(--muted-foreground))]">{affiliate.email}</p>
+                          <p className="font-medium">{product.description}</p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            As an Amazon Associate I earn from qualifying
+                            purchases.
+                          </p>
                         </div>
-                      </TableCell>
-                      <TableCell>{getStatusBadge(affiliate.status)}</TableCell>
-                      <TableCell>{affiliate.joinDate}</TableCell>
-                      <TableCell className="font-medium">{affiliate.totalEarnings}</TableCell>
-                      <TableCell>{affiliate.clicks.toLocaleString()}</TableCell>
-                      <TableCell>{affiliate.conversions}</TableCell>
-                      <TableCell>{affiliate.conversionRate}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-[hsl(var(--muted))] px-2 py-1 rounded text-sm">
-                            {affiliate.referralCode}
-                          </code>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyToClipboard(affiliate.referralCode)}
-                          >
-                            <Copy className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex gap-2">
-                          <Button variant="ghost" size="sm">
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            <Mail className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                      </div>
+                    </td>
 
-        <TabsContent value="commissions" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="border-0 shadow-sm">
-              <CardHeader>
-                <CardTitle className="font-[(var(--heading))]">Commission Structure</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Monthly Sales</TableHead>
-                      <TableHead>Commission Rate</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {commissionTiers.map((tier, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{tier.sales}</TableCell>
-                        <TableCell className="font-medium text-accent-green">{tier.rate}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+                    {/* Category */}
+                    <td className="p-4">
+                      <Badge variant="secondary">{product.category}</Badge>
+                    </td>
 
-            <Card className="border-0 shadow-sm">
-              <CardHeader>
-                <CardTitle className="font-[var(--heading)]">Pending Payouts</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center p-4 bg-[hsl(var(--muted))]/50 rounded-lg">
-                    <div>
-                      <p className="font-medium">John Smith</p>
-                      <p className="text-sm text-[hsl(var(--muted-foreground))]">Commission earned</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-accent-green">$234.50</p>
-                      <p className="text-sm text-[hsl(var(--muted-foreground))]">Due: July 30</p>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-4 bg-[hsl(var(--muted))]/50  rounded-lg">
-                    <div>
-                      <p className="font-medium">Sarah Johnson</p>
-                      <p className="text-sm text-[hsl(var(--muted-foreground))]">Commission earned</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-accent-green">$189.25</p>
-                      <p className="text-sm text-[hsl(var(--muted-foreground))]">Due: July 30</p>
-                    </div>
-                  </div>
-                  <Button className="w-full">Process All Payouts</Button>
-                </div>
-              </CardContent>
-            </Card>
+                    {/* Price */}
+                    <td className="p-4 text-primary font-semibold">
+                      ${product.price.toFixed(2)}
+                    </td>
+
+                    {/* Actions */}
+                    <td className="p-4">
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => window.open(product.url, "_blank")}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(product)}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDelete(product.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+
+                {paginatedProducts.length === 0 && (
+                  <tr>
+                    <td
+                      colSpan={4}
+                      className="p-6 text-center text-muted-foreground"
+                    >
+                      No affiliate products found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
-        </TabsContent>
+        </CardContent>
+      </Card>
 
-        <TabsContent value="links" className="space-y-6">
-          <Card className="border-0 shadow-sm">
-            <CardHeader>
-              <CardTitle className="font-[var(--heading)]">Tracking Links Generator</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="affiliate-select">Select Affiliate</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Choose an affiliate" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {affiliates.map((affiliate) => (
-                          <SelectItem key={affiliate.id} value={affiliate.id.toString()}>
-                            {affiliate.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="campaign">Campaign (Optional)</Label>
-                    <Input id="campaign" placeholder="e.g., summer-sale" />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="destination">Destination URL</Label>
-                  <Input id="destination" placeholder="https://yoursite.com/product" />
-                </div>
-                <Button>
-                  <Link className="w-4 h-4 mr-2" />
-                  Generate Tracking Link
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+      {/* 📄 Pagination */}
+      {totalPages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <PaginationItem key={i}>
+                <PaginationLink
+                  href="#"
+                  isActive={i + 1 === currentPage}
+                  onClick={() => setCurrentPage(i + 1)}
+                >
+                  {i + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
 
-        <TabsContent value="materials" className="space-y-6">
-          <Card className="border-0 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="font-[(var(--heading))]">Marketing Materials</CardTitle>
-              <Button className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90">
-                <Plus className="w-4 h-4 mr-2" />
-                Add Material
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="border rounded-lg p-4">
-                  <div className="aspect-video bg-[hsl(var(--muted))] rounded mb-4 flex items-center justify-center">
-                    <Target className="w-8 h-8 text-[hsl(var(--muted-foreground))]" />
-                  </div>
-                  <h3 className="font-medium mb-2">Banner Ad - Large</h3>
-                  <p className="text-sm text-[hsl(var(--muted-foreground))] mb-4">728x90 pixels</p>
-                  <Button variant="outline" size="sm" className="w-full">
-                    <Download className="w-4 h-4 mr-2" />
-                    Download
-                  </Button>
-                </div>
-                <div className="border rounded-lg p-4">
-                  <div className="aspect-video bg-[hsl(var(--muted))] rounded mb-4 flex items-center justify-center">
-                    <Target className="w-8 h-8 text-[hsl(var(--muted-foreground))]" />
-                  </div>
-                  <h3 className="font-medium mb-2">Social Media Post</h3>
-                  <p className="text-sm text-[hsl(var(--muted-foreground))] mb-4">1080x1080 pixels</p>
-                  <Button variant="outline" size="sm" className="w-full">
-                    <Download className="w-4 h-4 mr-2" />
-                    Download
-                  </Button>
-                </div>
-                <div className="border rounded-lg p-4">
-                  <div className="aspect-video bg-[hsl(var(--muted))] rounded mb-4 flex items-center justify-center">
-                    <Target className="w-8 h-8 text-[hsl(var(--muted-foreground))]" />
-                  </div>
-                  <h3 className="font-medium mb-2">Email Template</h3>
-                  <p className="text-sm text-[hsl(var(--muted-foreground))] mb-4">HTML format</p>
-                  <Button variant="outline" size="sm" className="w-full">
-                    <Download className="w-4 h-4 mr-2" />
-                    Download
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+      {/* ➕ Add/Edit Dialog */}
+      <AffiliateDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        product={selectedProduct}
+        onSave={(newProduct) => {
+          if (selectedProduct) {
+            setProducts((prev) =>
+              prev.map((p) => (p.id === newProduct.id ? newProduct : p))
+            );
+          } else {
+            setProducts((prev) => [newProduct, ...prev]);
+          }
+        }}
+      />
     </div>
   );
 }

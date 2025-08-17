@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useState } from 'react';
-import { Plus, Edit, Trash2 } from 'lucide-react';
-import Image from 'next/image';
+import { useEffect, useMemo, useState } from "react";
+import { Plus, Edit, Trash2 } from "lucide-react";
+import Image from "next/image";
 
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { SearchBar } from '@/components/admin/SearchBar';
-import { PlayerDialog } from '@/components/admin/dialogs/PlayerDialog';
-import { useToast } from '@/hooks/use-toast';
+} from "@/components/ui/select";
+import { SearchBar } from "@/components/admin/SearchBar";
+import { PlayerDialog } from "@/components/admin/dialogs/PlayerDialog";
+import { useToast } from "@/hooks/use-toast";
 import {
   Pagination,
   PaginationContent,
@@ -24,19 +24,24 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
+} from "@/components/ui/pagination";
 
-import { getAllPlayers, updatePlayer, deletePlayer } from '@/actions/adminActions';
-import { calculateAge } from '@/utils/dateHelper';
+import {
+  getAllPlayers,
+  updatePlayer,
+  deletePlayer,
+} from "@/actions/adminActions";
+import { calculateAge } from "@/utils/dateHelper";
+import { countries } from "@/data/countries&code";
 
 const ITEMS_PER_PAGE = 5;
 
 export default function PlayersView() {
   const { toast } = useToast();
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [countryFilter, setCountryFilter] = useState('all');
-  const [positionFilter, setPositionFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [countryFilter, setCountryFilter] = useState("all");
+  const [positionFilter, setPositionFilter] = useState("all");
   const [playerDialogOpen, setPlayerDialogOpen] = useState(false);
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +53,7 @@ export default function PlayersView() {
         const response = await getAllPlayers();
         setPlayers(response);
       } catch (error) {
-        console.error('Error fetching players:', error);
+        console.error("Error fetching players:", error);
       }
     };
     fetchPlayers();
@@ -57,17 +62,18 @@ export default function PlayersView() {
   const filteredPlayers = useMemo(() => {
     return players.filter((player) => {
       const search = searchQuery.toLowerCase();
-      const firstName = player.firstName?.toLowerCase() || '';
-      const lastName = player.lastName?.toLowerCase() || '';
-      const country = player.country?.toLowerCase() || '';
-      const position = player.position?.toLowerCase() || '';
+      const firstName = player.firstName?.toLowerCase() || "";
+      const lastName = player.lastName?.toLowerCase() || "";
+      const country = player.country?.toLowerCase() || "";
+      const position = player.position?.toLowerCase() || "";
 
       return (
         (firstName.includes(search) ||
           lastName.includes(search) ||
           country.includes(search)) &&
-        (countryFilter === 'all' || country.includes(countryFilter.toLowerCase())) &&
-        (positionFilter === 'all' || position === positionFilter.toLowerCase())
+        (countryFilter === "all" ||
+          country.includes(countryFilter.toLowerCase())) &&
+        (positionFilter === "all" || position === positionFilter.toLowerCase())
       );
     });
   }, [players, searchQuery, countryFilter, positionFilter]);
@@ -83,16 +89,16 @@ export default function PlayersView() {
     try {
       await deletePlayer(id);
       toast({
-        title: 'Player Deleted',
-        description: 'The player has been removed successfully.',
+        title: "Player Deleted",
+        description: "The player has been removed successfully.",
       });
       const updated = await getAllPlayers();
       setPlayers(updated);
     } catch {
       toast({
-        title: 'Error',
-        description: 'Failed to delete player.',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to delete player.",
+        variant: "destructive",
       });
     }
   };
@@ -105,9 +111,9 @@ export default function PlayersView() {
   const handleAddOrUpdatePlayer = async (data) => {
     if (!data.id) {
       toast({
-        title: 'Error',
-        description: 'New player creation is not implemented yet.',
-        variant: 'destructive',
+        title: "Error",
+        description: "New player creation is not implemented yet.",
+        variant: "destructive",
       });
       return;
     }
@@ -117,8 +123,8 @@ export default function PlayersView() {
     setPlayers(updated);
 
     toast({
-      title: 'Success',
-      description: 'Player updated successfully.',
+      title: "Success",
+      description: "Player updated successfully.",
     });
   };
 
@@ -138,10 +144,11 @@ export default function PlayersView() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Countries</SelectItem>
-              <SelectItem value="brazil">Brazil</SelectItem>
-              <SelectItem value="argentina">Argentina</SelectItem>
-              <SelectItem value="spain">Spain</SelectItem>
-              <SelectItem value="france">France</SelectItem>
+              {countries.map((c) => (
+                <SelectItem key={c.name} value={c.name}>
+                  {c.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
@@ -212,15 +219,23 @@ export default function PlayersView() {
                     <td className="p-4">{player.country}</td>
                     <td className="p-4">
                       <Badge
-                        variant={player.featured ? 'default' : 'secondary'}
-                        className={player.featured ? 'bg-green-500 hover:bg-green-600' : ''}
+                        variant={player.featured ? "default" : "secondary"}
+                        className={
+                          player.featured
+                            ? "bg-green-500 hover:bg-green-600"
+                            : ""
+                        }
                       >
-                        {player.featured ? 'Featured' : 'Normal'}
+                        {player.featured ? "Featured" : "Normal"}
                       </Badge>
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => handleEditPlayer(player)}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditPlayer(player)}
+                        >
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button
@@ -263,7 +278,9 @@ export default function PlayersView() {
             <PaginationItem>
               <PaginationNext
                 href="#"
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
               />
             </PaginationItem>
           </PaginationContent>

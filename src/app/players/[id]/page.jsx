@@ -38,7 +38,7 @@ export default async function PlayerPage({ params }) {
             <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[100px] bottom-10 right-10 opacity-30"></div>
           </div>
           <div className="flex lg:flex-row flex-col gap-12 items-center">
-            <div className="shadow-md p-10 rounded-xl">
+            <div className="shadow-md p-10 rounded-xl lg:w-[60%]">
               <div className="flex gap-4 mb-6">
                 <span className="badge">Available</span>
                 <span className="badge-secondary">Featured Player</span>

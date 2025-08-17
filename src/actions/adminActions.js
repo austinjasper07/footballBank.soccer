@@ -1,6 +1,8 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
+
 
 // USERS
 export const getAllUsers = async () => {
@@ -290,5 +292,56 @@ export async function getAllOrders() {
   } catch (err) {
     console.error("Error fetching orders:", err);
     return [];
+  }
+}
+
+
+//Affiliate Products
+export async function getAffiliateProducts() {
+  try {
+    const products = await prisma.affiliateProduct.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return products;
+  } catch (error) {
+    console.error("❌ Error fetching affiliate products:", error);
+    throw new Error("Failed to fetch affiliate products");
+  }
+}
+
+export async function createAffiliateProduct(data) {
+  try {
+    const product = await prisma.affiliateProduct.create({
+      data,
+    });
+    return product;
+  } catch (error) {
+    console.error("❌ Error creating affiliate product:", error);
+    throw new Error("Failed to create affiliate product");
+  }
+}
+
+export async function updateAffiliateProduct(id, data) {
+  try {
+    const product = await prisma.affiliateProduct.update({
+      where: { id },
+      data,
+    });
+    return product;
+  } catch (error) {
+    console.error("❌ Error updating affiliate product:", error);
+    throw new Error("Failed to update affiliate product");
+  }
+}
+
+export async function deleteAffiliateProduct(id) {
+  try {
+    await prisma.affiliateProduct.delete({
+      where: { id },
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("❌ Error deleting affiliate product:", error);
+    throw new Error("Failed to delete affiliate product");
   }
 }

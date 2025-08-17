@@ -20,7 +20,7 @@ export default function ClientLayoutWrapper({ children }) {
         !isAdminPage && <Header />
       }
       
-      <main className={`${isAdminPage || isHomePage ? 'max-w-full' : 'max-w-6xl px-4 lg:px-0'} mx-auto `}>
+      <main className={`${isAdminPage || isHomePage ? 'max-w-full' : 'max-w-7xl px-6 lg:px-4'} mx-auto `}>
         {children}
       </main>
       {
