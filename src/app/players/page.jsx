@@ -177,7 +177,7 @@ export default function PlayerPortfolioPage() {
                             height={14}
                             className="rounded-full"
                           />
-                          <span className="text-primary-text">
+                          <span className="text-primary-text hidden md:flex">
                             {player.country}
                           </span>
                         </div>
@@ -258,7 +258,6 @@ export default function PlayerPortfolioPage() {
             </div>
           </div>
         )}
-        {/* Sidebar ads for lg+ only */}
         {/* Right Sidebar Ads (desktop only) */}
         <aside className="hidden lg:block w-64 border-gray-200 border-[0.5px] p-4 space-y-4">
           <AmazonAd />
