@@ -194,14 +194,14 @@ export default async function HomePage() {
                 View All
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               {featuredPlayers.map((player) => (
                 <div
                   key={player.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden h-[400px] flex flex-col justify-between"
+                  className="bg-white rounded-lg shadow-md overflow-hidden h-[300px] lg:h-[400px] flex flex-col lg:justify-between"
                   data-aos="fade-up"
                 >
-                  <div className="relative w-full h-48">
+                  <div className="relative w-full h-40 lg:h-48">
                     <Image
                       src={player.imageUrl[0]}
                       alt={player.firstName}

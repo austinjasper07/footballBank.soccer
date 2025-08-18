@@ -122,6 +122,9 @@ export default function PlayersView() {
     const updated = await getAllPlayers();
     setPlayers(updated);
 
+    setPlayerDialogOpen(false);
+    setEditingPlayer(null);
+
     toast({
       title: "Success",
       description: "Player updated successfully.",

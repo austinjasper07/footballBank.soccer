@@ -102,10 +102,10 @@ export default function LiveScores() {
 
       {/* Main Content */}
       <main className="flex-1 p-4">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">⚽ Live Scores</h1>
+        <h1 className="text-lg lg:text-2xl font-bold text-red-600 mb-4">Live Scores</h1>
 
         {/* Tabs */}
-        <div className="flex space-x-2 mb-6">
+        <div className="flex space-x-2 mb-4 lg:mb-6">
           {["ALL", "LIVE", "FINISHED", "SCHEDULED"].map((tab) => (
             <button
               key={tab}

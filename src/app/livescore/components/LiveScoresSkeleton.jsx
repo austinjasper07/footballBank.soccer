@@ -3,7 +3,7 @@ export default function LiveScoresSkeleton() {
   return (
     <div className="min-h-screen bg-gray-50 flex animate-pulse">
       {/* Left Sidebar Skeleton */}
-      <aside className="hidden lg:block w-56 bg-white border-r p-4 space-y-3">
+      <aside className="hidden lg:block w-56 bg-white p-4 space-y-3">
         <div className="h-4 w-24 bg-gray-300 rounded"></div>
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="h-3 w-32 bg-gray-200 rounded"></div>
@@ -35,7 +35,7 @@ export default function LiveScoresSkeleton() {
             {Array.from({ length: 2 }).map((_, j) => (
               <div
                 key={j}
-                className="flex items-center justify-between px-4 py-3 border-b"
+                className="flex items-center justify-between px-4 py-3 "
               >
                 {/* Time */}
                 <div className="h-4 w-10 bg-gray-200 rounded"></div>
@@ -61,7 +61,7 @@ export default function LiveScoresSkeleton() {
       </main>
 
       {/* Right Sidebar Skeleton */}
-      <aside className="hidden lg:block w-64 bg-white border-l p-4 space-y-4">
+      <aside className="hidden lg:block w-64 bg-white p-4 space-y-4">
         {Array.from({ length: 3 }).map((_, i) => (
           <div key={i} className="h-32 bg-gray-200 rounded-md"></div>
         ))}

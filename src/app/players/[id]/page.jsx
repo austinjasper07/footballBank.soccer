@@ -1,23 +1,23 @@
-import Image from "next/image"
-import { notFound } from "next/navigation"
-import PlayerTabs from "@/app/players/[id]/PlayerTabs"
-import Head from "next/head"
-import { getPlayerById } from "@/actions/publicActions"
-import Link from "next/link"
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import PlayerTabs from "@/app/players/[id]/PlayerTabs";
+import Head from "next/head";
+import { getPlayerById } from "@/actions/publicActions";
+import Link from "next/link";
 
 export default async function PlayerPage({ params }) {
-  const playerId = (await params).id
-  let player= "";
+  const playerId = (await params).id;
+  let player = "";
 
   try {
-    const data = await getPlayerById(playerId)
-    if (!data) return notFound()
+    const data = await getPlayerById(playerId);
+    if (!data) return notFound();
     player = data;
   } catch (err) {
-    return notFound()
+    return notFound();
   }
 
-  const age = new Date().getFullYear() - new Date(player.dob).getFullYear()
+  const age = new Date().getFullYear() - new Date(player.dob).getFullYear();
 
   return (
     <>
@@ -33,18 +33,19 @@ export default async function PlayerPage({ params }) {
       <main className="bg-primary-bg text-primary-text font-inter">
         {/* Hero */}
         <section className="pb-16 pt-8">
-          <div className="absolute inset-0 z-0 pointer-events-none">
-            <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[120px] -top-24 -left-20 opacity-30"></div>
-            <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[100px] bottom-10 right-10 opacity-30"></div>
-          </div>
-          <div className="flex lg:flex-row flex-col gap-12 items-center">
-            <div className="shadow-md p-10 rounded-xl lg:w-[60%]">
+          <div className="flex lg:flex-row flex-col-reverse gap-12 items-center">
+            <div className="shadow-md p-10 rounded-xl lg:w-[60%] relative">
+              <div className="absolute inset-0 z-0 pointer-events-none">
+                <div className="absolute w-96 h-96 bg-[#f47474] rounded-full blur-[120px] -top-24 -left-20 opacity-30"></div>
+                <div className="absolute w-80 h-80 bg-[#86fcd1] rounded-full blur-[100px] bottom-10 right-10 opacity-30"></div>
+              </div>
               <div className="flex gap-4 mb-6">
                 <span className="badge">Available</span>
                 <span className="badge-secondary">Featured Player</span>
               </div>
               <h1 className="text-[clamp(1.5rem,3.5vw,3.5rem)]  font-bold mb-4">
-                <span className="text-nowrap">{player.firstName}</span> {player.lastName}
+                <span className="text-nowrap">{player.firstName}</span>{" "}
+                {player.lastName}
               </h1>
               <div className="flex gap-6 mb-6">
                 <div className="flex items-center gap-2">
@@ -71,9 +72,9 @@ export default async function PlayerPage({ params }) {
                 <button className="btn-primary">
                   <i className="fa-solid fa-envelope mr-2" /> Contact Agent
                 </button>
-                <a href={player.cvUrl} className="btn-outline" download target="_blank">
+                {/* <a href={player.cvUrl} className="btn-outline" download target="_blank">
                   <i className="fa-solid fa-download mr-2" /> Download CV
-                </a>
+                </a> */}
               </div>
             </div>
             <div className="relative rounded-2xl overflow-hidden border border-divider">
@@ -102,7 +103,10 @@ export default async function PlayerPage({ params }) {
               additional information.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href={'/contact'} className="text-accent-red bg-white border border-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-accent-red hover:text-white transition-colors">
+              <Link
+                href={"/contact"}
+                className="text-accent-red bg-white border border-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-accent-red hover:text-white transition-colors"
+              >
                 <i className="fa-solid fa-envelope mr-2 "></i> Contact Agent
               </Link>
               <button className="text-accent-red bg-white border border-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-accent-red hover:text-white transition-colors">
@@ -113,7 +117,7 @@ export default async function PlayerPage({ params }) {
         </section>
       </main>
     </>
-  )
+  );
 }
 
 function DetailCard({ label, value }) {
@@ -122,5 +126,5 @@ function DetailCard({ label, value }) {
       <span className="text-primary-muted text-sm">{label}</span>
       <p className="font-semibold text-lg">{value}</p>
     </div>
-  )
+  );
 }
