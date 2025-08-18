@@ -13,6 +13,13 @@ export default function LiveScores() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("LIVE");
   const [selectedLeague, setSelectedLeague] = useState(null);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth > 1024) {
+      setIsLargeScreen(true);
+    }
+  }, []);
 
   // Fetch matches
   useEffect(() => {
@@ -222,8 +229,8 @@ export default function LiveScores() {
 
                 {/* Mobile + md ads: insert after every few competitions */}
                 {index % 2 === 1 && (
-                  <div className="my-4">
-                    <AmazonAd />
+                  <div className="my-4 w-full">
+                    <AmazonAd displayInContent={isLargeScreen}/>
                   </div>
                   
                 )}

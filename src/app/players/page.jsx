@@ -17,8 +17,6 @@ import "aos/dist/aos.css";
 import { getAllPlayers } from "@/actions/publicActions";
 import AmazonAd from "@/components/AmazonAd";
 
-
-
 export default function PlayerPortfolioPage() {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +26,14 @@ export default function PlayerPortfolioPage() {
   const [selectedPosition, setSelectedPosition] = useState("");
   const [showMobileAds, setShowMobileAds] = useState(false);
   const router = useRouter();
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth > 1024) {
+      setIsLargeScreen(true);
+    }
+  }, []);
+
   const perPage = 6;
 
   useEffect(() => {
@@ -131,9 +137,7 @@ export default function PlayerPortfolioPage() {
       </section>
 
       {/* Mobile ad after filters */}
-      <div className="lg:hidden">
-        {showMobileAds && <AmazonAd/>}
-      </div>
+      <div className="lg:hidden">{showMobileAds && <AmazonAd />}</div>
 
       {/* Main content */}
       <section className="py-16 grid lg:grid-cols-[3fr_1fr] gap-8">
@@ -141,7 +145,6 @@ export default function PlayerPortfolioPage() {
           <div className="text-center text-primary-muted">
             Loading players...
           </div>
-          
         ) : paginatedPlayers.length === 0 ? (
           <div className="text-center text-primary-muted">
             No players found.
@@ -174,7 +177,9 @@ export default function PlayerPortfolioPage() {
                             height={14}
                             className="rounded-full"
                           />
-                          <span className="text-primary-text">{player.country}</span>
+                          <span className="text-primary-text">
+                            {player.country}
+                          </span>
                         </div>
                         <div className="absolute top-3 right-3 bg-accent-green text-white rounded-full px-2 py-0.5 text-xs sm:text-sm font-medium">
                           Available
@@ -189,7 +194,9 @@ export default function PlayerPortfolioPage() {
                             {player.position}
                           </span>
                           <span className="text-primary-muted text-xs sm:text-sm">
-                            Age: {new Date().getFullYear() - new Date(player.dob).getFullYear()}
+                            Age:{" "}
+                            {new Date().getFullYear() -
+                              new Date(player.dob).getFullYear()}
                           </span>
                         </div>
                         <p className="text-primary-muted text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-3">
@@ -247,20 +254,17 @@ export default function PlayerPortfolioPage() {
               </Pagination>
 
               {/* Mobile ad after pagination */}
-              <div className="lg:hidden">
-                {showMobileAds && <AmazonAd />}
-              </div>
+              <div className="lg:hidden">{showMobileAds && <AmazonAd />}</div>
             </div>
-
-            
           </div>
         )}
         {/* Sidebar ads for lg+ only */}
-            <div className="hidden lg:block">
-              <div className="sticky top-20">
-                <AmazonAd />
-              </div>
-            </div>
+        {/* Right Sidebar Ads (desktop only) */}
+        <aside className="hidden lg:block w-64 border-gray-200 border-[0.5px] p-4 space-y-4">
+          <AmazonAd />
+          {/* <AdBlock /> */}
+          {/* <AmazonAd /> */}
+        </aside>
       </section>
 
       {/* Animation styles */}

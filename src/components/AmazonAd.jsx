@@ -33,7 +33,7 @@ export default function AmazonAd({displayInContent}) {
       <h2 className="text-lg font-bold text-center text-red-600 tracking-wide">
         🔥 Amazon Hot Picks
       </h2>
-      <p className="text-[11px] text-center text-gray-500">
+      <p className="text-[11px] text-center text-gray-500 mb-2">
         Curated deals just for you
       </p>
 
