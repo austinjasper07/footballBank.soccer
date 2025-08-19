@@ -112,12 +112,12 @@ export default function LiveScores() {
         <h1 className="text-lg lg:text-2xl font-bold text-red-600 mb-4">Live Scores</h1>
 
         {/* Tabs */}
-        <div className="flex space-x-2 mb-4 lg:mb-6">
+        <div className="flex space-x-2 mb-4 lg:mb-6 overflow-x-scroll">
           {["ALL", "LIVE", "FINISHED", "SCHEDULED"].map((tab) => (
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-4 py-1 rounded-md font-medium text-sm ${
+              className={`px-4 py-1 rounded-md font-medium text-xs md:text-sm ${
                 filter === tab
                   ? "bg-red-600 text-white"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
