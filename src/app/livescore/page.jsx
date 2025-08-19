@@ -80,7 +80,7 @@ export default function LiveScores() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row">
       {/* Left Sidebar */}
       <aside className="hidden lg:block w-56 bg-white border-r p-4 overflow-y-auto">
         <h2 className="font-bold mb-3 text-gray-700">📌 Leagues</h2>
