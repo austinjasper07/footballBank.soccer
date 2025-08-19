@@ -1,7 +1,7 @@
 "use client";
 export default function LiveScoresSkeleton() {
   return (
-    <div className="min-h-screen bg-gray-50 flex animate-pulse">
+    <div className="min-h-screen bg-gray-50 flex animate-pulse max-w-full">
       {/* Left Sidebar Skeleton */}
       <aside className="hidden lg:block w-56 bg-white p-4 space-y-3">
         <div className="h-4 w-24 bg-gray-300 rounded"></div>

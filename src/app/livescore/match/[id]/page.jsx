@@ -151,7 +151,7 @@ export default function MatchPage() {
 
             {/* Score */}
             <div className="flex flex-col items-center">
-              <span className="text-gray-500 text-sm">{match.date}</span>
+              <span className="text-gray-500 text-xs md:text-sm">{match.date}</span>
               <span className="text-xl md:text-2xl font-bold my-2">{match.score}</span>
               <span className="text-red-600 text-sm font-semibold">
                 {match.time} <span className="animate-pulse font-bold">'</span>
@@ -183,7 +183,7 @@ export default function MatchPage() {
 
         {/* Tabs */}
         <div>
-          <div className="flex border-b mb-4">
+          <div className="flex border-b mb-4 overflow-x-scroll">
             {TABS.map((tab) => (
               <button
                 key={tab}

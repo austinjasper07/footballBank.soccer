@@ -176,7 +176,7 @@ export default function PlayerSubmissionForm() {
       {/* Step indicators */}
       <div className="flex items-center justify-center gap-4 mb-8 flex-wrap">
         {["Details", "Stats", "Uploads", "Complete"].map((l, i) => (
-          <div key={l} className="flex items-center gap-2">
+          <div key={l} className="grid grid-cols-2 lg:grid-cols-4 gap-2">
             <div
               className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium ${
                 step > i + 1
