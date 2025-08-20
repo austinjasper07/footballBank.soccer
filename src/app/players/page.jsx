@@ -169,12 +169,13 @@ export default function PlayerPortfolioPage() {
                           fill
                           style={{ objectFit: "cover" }}
                         />
-                        <div className="absolute bottom-3 md:top-3 left-3 bg-primary-card/95 rounded-full px-2 py-0.5 text-xs sm:text-sm flex items-center gap-1 sm:gap-2 shadow-sm">
+                        <div className="absolute left-3 top-auto bottom-3 md:top-3 md:bottom-auto bg-primary-card/95 rounded-full px-2 py-0.5 text-xs sm:text-sm flex items-center gap-1 sm:gap-2 shadow-sm">
                           <Image
                             src={`https://flagcdn.com/w20/${player.countryCode.toLowerCase()}.png`}
                             alt={player.country}
                             width={14}
                             height={14}
+
                             className="rounded-full"
                           />
                           <span className="text-primary-text">

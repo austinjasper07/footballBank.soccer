@@ -15,7 +15,7 @@ export default function Footer() {
               </Link>
               <div>
 
-              <span className="text-primary-muted text-[12px]"> powered by </span> <span className="text-primary-muted font-bold text-sm inline-block cursor-pointer">Soccer Bank Management Sport</span>
+              <span className="text-primary-muted text-[12px]"> powered by </span> <span className="text-primary-muted font-bold text-sm inline-block cursor-pointer">Soccer Bank Sport Management</span>
               </div>
             </div>
             <p className="text-primary-muted mb-6">

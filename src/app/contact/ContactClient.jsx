@@ -92,7 +92,7 @@ export default function ContactClient() {
                   title: "Email",
                   icon: "fa-envelope",
                   color: "red",
-                  text: "info@footballbank.soccer",
+                  text: "contact@footballbank.soccer",
                   subtitle: "Our inbox is always open",
                 },
                 {
