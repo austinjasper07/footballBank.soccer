@@ -27,7 +27,6 @@ export default function LiveScores() {
       try {
         const res = await fetch("/api/livescore");
         const data = await res.json();
-        console.log(data)
 
         if (data.success) {
           setMatches(data.matches);
