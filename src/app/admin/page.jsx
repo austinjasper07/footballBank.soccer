@@ -13,7 +13,7 @@ import BlogView from "@/components/admin/views/BlogView";
 import { SettingsView } from "@/components/admin/views/SettingsView";
 import { AffiliateView } from "@/components/admin/views/AffiliateView";
 import UsersView from "@/components/admin/views/UsersView";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/context/NewAuthContext";
 import { useToast } from "@/hooks/use-toast";
 import SplashScreen from "@/components/SplashScreen";
 
@@ -30,7 +30,7 @@ const AdminDashboard = () => {
   useEffect(() => {
   if (!isLoading && pathname) {
     if (!isAuthenticated) {
-      router.replace(`/api/auth/login?post_login_redirect_url=${pathname}`);
+      router.replace(`/auth/login?redirect=${pathname}`);
     } else if (role ) {
       const isAdminUser = role === "admin";
       if (!isAdminUser) {

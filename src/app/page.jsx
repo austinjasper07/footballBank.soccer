@@ -2,8 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import "aos/dist/aos.css";
 import { getFeaturedPlayers, getFeaturedPosts } from "@/actions/publicActions";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { syncUserToDb } from "@/lib/syncUserToDb";
+import { getAuthUser } from "@/lib/oauth";
 
 export const metadata = {
   title: "FootballBank | Home",
@@ -11,16 +10,11 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const { isAuthenticated, getUser } = getKindeServerSession();
-
   try {
-    const user = await getUser();
-
-    if (user) {
-      await syncUserToDb();
-    }
+    const user = await getAuthUser();
+    // User sync is now handled automatically by the authentication system
   } catch (error) {
-    console.error("Error fetching Kinde session:", error);
+    console.error("Error getting user:", error);
   }
 
   const featuredPosts = await getFeaturedPosts();

@@ -3,17 +3,16 @@
 import { useState } from "react";
 import { Search, Bell, ChevronDown } from "lucide-react";
 import { FaUser } from "react-icons/fa";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { useAuth } from "@/context/NewAuthContext";
 import { UserHeader } from "../UserHeader";
 
 
 
 export function AdminHeader({ title, subtitle }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const { IsAuthenticated, getUser } = useKindeBrowserClient();
-  const user = getUser();
+  const { isAuthenticated, user } = useAuth();
 
-  if (!IsAuthenticated) {
+  if (!isAuthenticated) {
     // Handle unauthenticated state
   }
   // const userDisplayName = "Admin";

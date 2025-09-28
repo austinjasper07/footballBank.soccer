@@ -3,8 +3,7 @@ import "./globals.css";
 import { DM_Serif_Text, Funnel_Display } from "next/font/google";
 import Script from "next/script";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
-import { AuthProvider } from "@/context/AuthContext";
-import { KindeClientProvider } from "./KindeClientProvider";
+import { NewAuthProvider } from "@/context/NewAuthContext";
 import { Analytics } from "@vercel/analytics/next";
 import { CartProvider } from "@/context/CartContext";
 import AOSProvider from "@/components/AOSProvider";
@@ -69,13 +68,11 @@ export default function RootLayout({ children }) {
       <body className="font-body bg-primary-bg text-primary-text">
         <Analytics />
         <AOSProvider>
-          <KindeClientProvider>
-            <AuthProvider>
-              <CartProvider>
-                <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
-              </CartProvider>
-            </AuthProvider>
-          </KindeClientProvider>
+          <NewAuthProvider>
+            <CartProvider>
+              <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
+            </CartProvider>
+          </NewAuthProvider>
         </AOSProvider>
       </body>
     </html>

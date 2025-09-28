@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  LoginLink,
-  LogoutLink,
-} from "@kinde-oss/kinde-auth-nextjs/components";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { useAuth } from "@/context/NewAuthContext";
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -25,7 +21,7 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const { isAuthenticated, user, isLoading } = useKindeBrowserClient();
+  const { isAuthenticated, user, isLoading } = useAuth();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const { cart } = useCart();
@@ -100,12 +96,12 @@ export default function Header() {
               isAuthenticated ? (
                 <UserHeader slug={"Dashboard"} href={"/admin"}/>
               ) : (
-                <LoginLink
-                  postLoginRedirectURL={"/"} //Use this if you want to redirect back to a specific page after login
+                <Link
+                  href="/auth/login"
                   className="hidden lg:block bg-accent-red hover:bg-opacity-90 text-white px-4 py-2 rounded-md font-medium text-nowrap"
                 >
                   Sign in
-                </LoginLink>
+                </Link>
               )
             )}
             <button
@@ -145,20 +141,24 @@ export default function Header() {
           ))}
           {!isLoading && (
             isAuthenticated ? (
-              <LogoutLink
-                onClick={() => setMenuOpen(false)}
-                className="bg-accent-red text-white text-center py-2 rounded-md"
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  // Handle logout - you can call logout function from context
+                  window.location.href = '/auth/login';
+                }}
+                className="bg-accent-red text-white text-center py-2 rounded-md w-full"
               >
                 Logout
-              </LogoutLink>
+              </button>
             ) : (
-              <LoginLink
+              <Link
+                href="/auth/login"
                 onClick={() => setMenuOpen(false)}
-                postLoginRedirectURL={"/"}
-                className="bg-accent-red text-white text-center py-2 rounded-md"
+                className="bg-accent-red text-white text-center py-2 rounded-md block"
               >
                 Sign in
-              </LoginLink>
+              </Link>
             )
           )}
         </div>

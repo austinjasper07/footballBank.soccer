@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter, usePathname } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/context/NewAuthContext";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -72,13 +72,14 @@ export default function PlayerSubmissionForm() {
   useEffect(() => {
     if (!isLoading) {
       if (!isAuthenticated) {
-        router.replace(`/api/auth/login?post_login_redirect_url=${pathname}`);
+        // Redirect to our custom login page with redirect parameter
+        router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
       } else {
         setCheckedAuth(true);
         getUserById(user.id).then(setSubmittingUser);
       }
     }
-  }, [isLoading, isAuthenticated]);
+  }, [isLoading, isAuthenticated, pathname, router]);
 
   if (isLoading || !checkedAuth) return <SplashScreen />;
 

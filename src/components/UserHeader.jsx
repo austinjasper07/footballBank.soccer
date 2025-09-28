@@ -1,22 +1,32 @@
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { useAuth } from "@/context/NewAuthContext";
 import { ChevronDownIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { FaUser } from "react-icons/fa";
-import { useAuth } from "@/hooks/useAuth";
 
 export function UserHeader({slug, href}) {
-  //const { user, isAuthenticated, getClaim } = useKindeBrowserClient();
-  const { role, isAuthenticated, user } = useAuth();
+  const { role, isAuthenticated, user, logout } = useAuth();
   const [open, setOpen] = useState(false);
 
   const isAdmin = role === "admin";
+  const isPlayer = role === "player";
 
   if (!isAuthenticated || !user) return null;
 
   const toggleDropdown = () => setOpen((prev) => !prev);
   const closeDropdown = () => setOpen(false);
+
+  const getDashboardLink = () => {
+    if (isAdmin) return "/admin";
+    if (isPlayer) return "/player-profile";
+    return "/profile";
+  };
+
+  const getDashboardLabel = () => {
+    if (isAdmin) return "Admin Dashboard";
+    if (isPlayer) return "Player Profile";
+    return "My Profile";
+  };
 
   return (
     <div className="relative inline-block text-left">
@@ -35,19 +45,31 @@ export function UserHeader({slug, href}) {
           onMouseLeave={closeDropdown}
         >
           <div className="py-1">
-            {isAdmin && <Link
-              href={href}
+            <Link
+              href={getDashboardLink()}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               onClick={closeDropdown}
             >
-              {slug}
-            </Link>}
-            <LogoutLink
-              onClick={closeDropdown}
+              {getDashboardLabel()}
+            </Link>
+            {isAdmin && (
+              <Link
+                href={href}
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                onClick={closeDropdown}
+              >
+                {slug}
+              </Link>
+            )}
+            <button
+              onClick={() => {
+                closeDropdown();
+                logout();
+              }}
               className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
             >
               Logout
-            </LogoutLink>
+            </button>
           </div>
         </div>
       )}
