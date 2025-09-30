@@ -20,35 +20,46 @@ export async function GET(request) {
 
     console.log(`Fetching orders for user: ${user.id}`);
 
-    // Get user's orders
-    const orders = await prisma.order.findMany({
-      where: { userId: user.id },
-      orderBy: { createdAt: 'desc' },
-      skip,
-      take: limit,
-      include: {
-        items: {
-          include: {
-            product: true
+    try {
+      // Get user's orders
+      const orders = await prisma.order.findMany({
+        where: { userId: user.id },
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+        include: {
+          items: {
+            include: {
+              product: true
+            }
           }
         }
-      }
-    });
+      });
 
-    const totalOrders = await prisma.order.count({
-      where: { userId: user.id }
-    });
+      const totalOrders = await prisma.order.count({
+        where: { userId: user.id }
+      });
 
-    const totalPages = Math.ceil(totalOrders / limit);
+      const totalPages = Math.ceil(totalOrders / limit);
 
-    console.log(`Found ${orders.length} orders for user ${user.id}`);
+      console.log(`Found ${orders.length} orders for user ${user.id}`);
 
-    return NextResponse.json({
-      orders: orders || [],
-      totalPages,
-      currentPage: page,
-      totalOrders
-    });
+      return NextResponse.json({
+        orders: orders || [],
+        totalPages,
+        currentPage: page,
+        totalOrders
+      });
+    } catch (dbError) {
+      console.error("Database error fetching orders:", dbError);
+      // Return empty data if database is unavailable
+      return NextResponse.json({
+        orders: [],
+        totalPages: 0,
+        currentPage: page,
+        totalOrders: 0
+      });
+    }
   } catch (error) {
     console.error("Error getting user orders:", error);
     console.error("Error details:", error.message);

@@ -6,6 +6,8 @@ export async function getAuthUser() {
     // Only use OTP session (no NextAuth to avoid openid-client issues)
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get("session")?.value;
+    
+    console.log("🔍 getAuthUser - sessionToken:", sessionToken ? 'found' : 'not found');
 
     if (sessionToken) {
       try {
@@ -23,6 +25,12 @@ export async function getAuthUser() {
         });
 
         if (sessionRecord && sessionRecord.user) {
+          // Update last used timestamp
+          await prisma.session.update({
+            where: { id: sessionRecord.id },
+            data: { lastUsed: new Date() }
+          });
+
           return {
             id: sessionRecord.user.id,
             email: sessionRecord.user.email,

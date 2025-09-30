@@ -19,6 +19,9 @@ export async function middleware(request) {
     '/api/product',
     '/api/post',
     '/api/email', // Resend email API
+    '/subscriptions', // Subscription page should be accessible
+    '/secure-payment', // Payment page should be accessible
+    '/checkout', // Checkout page should be accessible
   ];
 
   // Check if route is public
@@ -26,9 +29,11 @@ export async function middleware(request) {
     pathname === route || pathname.startsWith(route + '/')
   );
 
-  if (isPublic) return NextResponse.next();
+  if (isPublic) {
+    return NextResponse.next();
+  }
 
-  // For all other routes, check authentication
+  // For protected routes, check authentication
   try {
     const user = await getAuthUser();
     
@@ -75,12 +80,13 @@ export async function middleware(request) {
 
 export const config = {
   matcher: [
-    '/api/:path*',
-    '/api/admin/:path*',
-    '/api/player/profile-submission',
-    '/submit-profile',
-    '/admin',
-    '/profile',
-    '/player-profile',
+    // Temporarily disable middleware for debugging
+    // '/api/:path*',
+    // '/api/admin/:path*',
+    // '/api/player/profile-submission',
+    // '/submit-profile',
+    // '/admin',
+    // '/profile',
+    // '/player-profile',
   ],
 };

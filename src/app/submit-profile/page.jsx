@@ -25,7 +25,10 @@ export default function PlayerSubmissionForm() {
   const { toast } = useToast();
   const router = useRouter();
   const pathname = usePathname();
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const authContext = useAuth();
+  const isAuthenticated = authContext?.isAuthenticated || false;
+  const user = authContext?.user || null;
+  const isLoading = authContext?.isLoading || true;
 
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState([]);
@@ -33,6 +36,8 @@ export default function PlayerSubmissionForm() {
   const [uploadProgress, setUploadProgress] = useState({});
   const [submittingUser, setSubmittingUser] = useState(null);
   const [checkedAuth, setCheckedAuth] = useState(false);
+  const [subscription, setSubscription] = useState(null);
+  const [checkingSubscription, setCheckingSubscription] = useState(true);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -69,6 +74,34 @@ export default function PlayerSubmissionForm() {
     (p) => p != null && p < 100
   );
 
+  const checkSubscription = async () => {
+    try {
+      const response = await fetch("/api/subscriptions/check");
+      const data = await response.json();
+      
+      if (data.subscription) {
+        setSubscription(data.subscription);
+        
+        // Check if user has reached submission limit
+        if (data.subscription.usedSubmissions >= data.subscription.maxSubmissions) {
+          // Redirect to subscription page
+          router.push("/subscriptions?limit_reached=true");
+          return;
+        }
+      } else {
+        // No active subscription, redirect to subscription page
+        router.push("/subscriptions?required=true");
+        return;
+      }
+    } catch (error) {
+      console.error("Error checking subscription:", error);
+      // On error, redirect to subscription page
+      router.push("/subscriptions?error=true");
+    } finally {
+      setCheckingSubscription(false);
+    }
+  };
+
   useEffect(() => {
     if (!isLoading) {
       if (!isAuthenticated) {
@@ -77,11 +110,12 @@ export default function PlayerSubmissionForm() {
       } else {
         setCheckedAuth(true);
         getUserById(user.id).then(setSubmittingUser);
+        checkSubscription();
       }
     }
   }, [isLoading, isAuthenticated, pathname, router]);
 
-  if (isLoading || !checkedAuth) return <SplashScreen />;
+  if (isLoading || !checkedAuth || checkingSubscription) return <SplashScreen />;
 
   const validateStep = () => {
     const errs = [];

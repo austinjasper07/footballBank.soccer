@@ -21,11 +21,9 @@ import {
 import Link from "next/link";
 // import { signIn } from "next-auth/react"; // Disabled to avoid openid-client issues
 import { sendLoginOTP, verifyLoginOTP } from "@/actions/authActions";
-import { useAuth } from "@/context/NewAuthContext";
 import "aos/dist/aos.css";
 
 export default function LoginPage() {
-  const { isAuthenticated, user, isLoading } = useAuth();
   const [step, setStep] = useState("email"); // "email" or "otp"
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -45,14 +43,7 @@ export default function LoginPage() {
     }
   }, [searchParams]);
 
-  // Redirect authenticated users away from login page
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      // If user is already authenticated, redirect them to their dashboard or the redirect URL
-      const dashboardUrl = redirectUrl || (user.role === 'admin' ? '/admin' : user.role === 'player' ? '/player-profile' : '/profile');
-      window.location.href = dashboardUrl;
-    }
-  }, [isAuthenticated, user, redirectUrl]);
+  // No need for client-side authentication checks - server-side layout handles redirects
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
@@ -86,9 +77,10 @@ export default function LoginPage() {
       
       if (result.success) {
         setMessage("Login successful! Redirecting...");
-        // Refresh the page to update authentication context
+        // Redirect directly without page reload to avoid redirect loop
         setTimeout(() => {
-          window.location.href = redirectUrl;
+          const dashboardUrl = redirectUrl || (result.user.role === 'admin' ? '/admin' : result.user.role === 'player' ? '/player-profile' : '/profile');
+          window.location.href = dashboardUrl;
         }, 1000);
       } else {
         setError(result.error);
@@ -125,17 +117,7 @@ export default function LoginPage() {
     }
   };
 
-  // Show loading while checking authentication
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-bg to-primary-card p-4">
-        <div className="text-center">
-          <RefreshCw className="w-8 h-8 animate-spin text-accent-red mx-auto mb-4" />
-          <p className="text-primary-muted">Checking authentication...</p>
-        </div>
-      </div>
-    );
-  }
+  // No need for loading states - server-side layout handles authentication
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-bg via-blue-50 to-indigo-50 flex items-center justify-center p-4">
