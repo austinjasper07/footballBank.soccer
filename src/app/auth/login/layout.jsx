@@ -16,3 +16,4 @@ export default async function LoginLayout({ children }) {
   // User is not authenticated, show the login page
   return children;
 }
+

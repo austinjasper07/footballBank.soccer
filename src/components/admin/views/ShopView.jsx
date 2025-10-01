@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/pagination';
 
 import { ProductDialog } from '@/components/admin/dialogs/ProductDialog';
+import { DeleteConfirmationModal } from '@/components/admin/dialogs/DeleteConfirmationModal';
 import { SearchBar } from '../SearchBar';
 import { getAllProducts } from '@/actions/publicActions';
 import { deleteProduct, updateProduct } from '@/actions/adminActions';
@@ -31,6 +32,9 @@ export default function ProductsView() {
   const [productDialogOpen, setProductDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -67,20 +71,33 @@ export default function ProductsView() {
   };
 
   const handleDeleteProduct = async (id) => {
+    const product = products.find(p => p.id === id);
+    setProductToDelete(product);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteProduct = async () => {
+    if (!productToDelete) return;
+    
     try {
-      await deleteProduct(id);
+      setIsDeleting(true);
+      await deleteProduct(productToDelete.id);
       toast({
         title: 'Product Deleted',
         description: 'The product has been removed successfully.',
       });
       const updated = await getAllProducts();
       setProducts(updated);
+      setDeleteDialogOpen(false);
+      setProductToDelete(null);
     } catch {
       toast({
         title: 'Error',
         description: 'Failed to delete product.',
         variant: 'destructive',
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -311,6 +328,16 @@ export default function ProductsView() {
         }}
         product={editingProduct || undefined}
         onSave={handleAddOrUpdateProduct}
+      />
+
+      <DeleteConfirmationModal
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDeleteProduct}
+        title="Delete Product"
+        description="This will permanently remove the product from the system."
+        itemName={productToDelete ? productToDelete.name : ''}
+        isLoading={isDeleting}
       />
     </div>
   );

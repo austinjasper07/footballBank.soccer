@@ -285,6 +285,15 @@ export async function rejectSubmission(id, reason) {
   }
 }
 
+export async function deleteSubmission(id) {
+  try {
+    return await prisma.submission.delete({ where: { id } });
+  } catch (err) {
+    console.error("Error deleting submission:", err);
+    return null;
+  }
+}
+
 // ORDERS
 export async function getAllOrders() {
   try {

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { SearchBar } from "@/components/admin/SearchBar";
 import { PlayerDialog } from "@/components/admin/dialogs/PlayerDialog";
+import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
 import { useToast } from "@/hooks/use-toast";
 import {
   Pagination,
@@ -46,6 +47,9 @@ export default function PlayersView() {
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [players, setPlayers] = useState([]);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [playerToDelete, setPlayerToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -86,20 +90,33 @@ export default function PlayersView() {
   const totalPages = Math.ceil(filteredPlayers.length / ITEMS_PER_PAGE);
 
   const handleDeletePlayer = async (id) => {
+    const player = players.find(p => p.id === id);
+    setPlayerToDelete(player);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeletePlayer = async () => {
+    if (!playerToDelete) return;
+    
     try {
-      await deletePlayer(id);
+      setIsDeleting(true);
+      await deletePlayer(playerToDelete.id);
       toast({
         title: "Player Deleted",
         description: "The player has been removed successfully.",
       });
       const updated = await getAllPlayers();
       setPlayers(updated);
+      setDeleteDialogOpen(false);
+      setPlayerToDelete(null);
     } catch {
       toast({
         title: "Error",
         description: "Failed to delete player.",
         variant: "destructive",
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -298,6 +315,16 @@ export default function PlayersView() {
         }}
         player={editingPlayer || undefined}
         onSave={handleAddOrUpdatePlayer}
+      />
+
+      <DeleteConfirmationModal
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDeletePlayer}
+        title="Delete Player"
+        description="This will permanently remove the player from the system."
+        itemName={playerToDelete ? `${playerToDelete.firstName} ${playerToDelete.lastName}` : ''}
+        isLoading={isDeleting}
       />
     </div>
   );

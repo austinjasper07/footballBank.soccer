@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/pagination";
 import { SearchBar } from "@/components/admin/SearchBar";
 import { BlogPostDialog } from "@/components/admin/dialogs/BlogPostDialog";
+import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
 
 import { getAllPosts } from "@/actions/publicActions";
 import { updatePost, deletePost } from "@/actions/adminActions";
@@ -31,6 +32,9 @@ export default function BlogView() {
   const [editingPost, setEditingPost] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [posts, setPosts] = useState([]);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [postToDelete, setPostToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -62,20 +66,33 @@ export default function BlogView() {
   const totalPages = Math.ceil(filteredPosts.length / ITEMS_PER_PAGE);
 
   const handleDeletePost = async (id) => {
+    const post = posts.find(p => p.id === id);
+    setPostToDelete(post);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeletePost = async () => {
+    if (!postToDelete) return;
+    
     try {
-      await deletePost(id);
+      setIsDeleting(true);
+      await deletePost(postToDelete.id);
       toast({
         title: "Post Deleted",
         description: "The blog post has been removed successfully.",
       });
       const updated = await getAllPosts();
       setPosts(updated);
+      setDeleteDialogOpen(false);
+      setPostToDelete(null);
     } catch {
       toast({
         title: "Error",
         description: "Failed to delete post.",
         variant: "destructive",
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -290,6 +307,16 @@ export default function BlogView() {
         }}
         post={editingPost || undefined}
         onSave={handleAddOrUpdatePost}
+      />
+
+      <DeleteConfirmationModal
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDeletePost}
+        title="Delete Blog Post"
+        description="This will permanently remove the blog post from the system."
+        itemName={postToDelete ? postToDelete.title : ''}
+        isLoading={isDeleting}
       />
     </div>
   );

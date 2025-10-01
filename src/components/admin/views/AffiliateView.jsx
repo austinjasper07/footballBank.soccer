@@ -23,6 +23,7 @@ import {
   deleteAffiliateProduct,
 } from "@/actions/adminActions";
 import AffiliateDialog from "@/components/admin/dialogs/AffiliateDialog";
+import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -36,6 +37,9 @@ export function AffiliateView() {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -85,19 +89,32 @@ export function AffiliateView() {
 
   // 🗑 Delete
   const handleDelete = async (id) => {
+    const product = products.find(p => p.id === id);
+    setProductToDelete(product);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteProduct = async () => {
+    if (!productToDelete) return;
+    
     try {
-      await deleteAffiliateProduct(String(id));
-      setProducts((prev) => prev.filter((p) => p.id !== id));
+      setIsDeleting(true);
+      await deleteAffiliateProduct(String(productToDelete.id));
+      setProducts((prev) => prev.filter((p) => p.id !== productToDelete.id));
       toast({
         title: "Deleted",
         description: "Affiliate product deleted successfully.",
       });
+      setDeleteDialogOpen(false);
+      setProductToDelete(null);
     } catch {
       toast({
         title: "Error",
         description: "Failed to delete product.",
         variant: "destructive",
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -289,6 +306,16 @@ export function AffiliateView() {
             setProducts((prev) => [newProduct, ...prev]);
           }
         }}
+      />
+
+      <DeleteConfirmationModal
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDeleteProduct}
+        title="Delete Affiliate Product"
+        description="This will permanently remove the affiliate product from the system."
+        itemName={productToDelete ? productToDelete.description : ''}
+        isLoading={isDeleting}
       />
     </div>
   );

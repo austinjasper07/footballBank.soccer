@@ -7,12 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SearchBar } from "@/components/admin/SearchBar";
 import { SubmissionDetailDialog } from "@/components/admin/dialogs/SubmissionDetailDialog";
+import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
 import { useToast } from "@/hooks/use-toast";
 import {
   approveSubmission,
   getAllSubmissions,
   getSubmissionsById,
   rejectSubmission,
+  deleteSubmission,
 } from "@/actions/adminActions";
 import { calculateAge, formatFullDate } from "@/utils/dateHelper";
 
@@ -23,6 +25,9 @@ export default function SubmissionsView() {
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [submissions, setSubmissions] = useState([]);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [submissionToDelete, setSubmissionToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchSubmissions = async () => {
@@ -88,6 +93,43 @@ const handleReject = useCallback(
   [toast]
 );
 
+const handleDeleteSubmission = useCallback(
+  async (id) => {
+    const submission = submissions.find(s => s.id === id);
+    setSubmissionToDelete(submission);
+    setDeleteDialogOpen(true);
+  },
+  [submissions]
+);
+
+const confirmDeleteSubmission = useCallback(
+  async () => {
+    if (!submissionToDelete) return;
+    
+    try {
+      setIsDeleting(true);
+      await deleteSubmission(submissionToDelete.id);
+      toast({
+        title: "Submission Deleted",
+        description: "The submission has been removed successfully.",
+      });
+      const updated = await getAllSubmissions();
+      setSubmissions(updated);
+      setDeleteDialogOpen(false);
+      setSubmissionToDelete(null);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete submission.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  },
+  [submissionToDelete, toast]
+);
+
 
   const handleViewDetails = async (id) => {
     const data = await getSubmissionsById(id);
@@ -125,6 +167,7 @@ const handleReject = useCallback(
           onApprove={handleApprove}
           onReject={handleReject}
           onView={handleViewDetails}
+          onDelete={handleDeleteSubmission}
           status="pending"
         />
         <SubmissionColumn
@@ -150,6 +193,16 @@ const handleReject = useCallback(
         onApprove={handleApprove}
         onReject={handleReject}
       />
+
+      <DeleteConfirmationModal
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDeleteSubmission}
+        title="Delete Submission"
+        description="This will permanently remove the submission from the system."
+        itemName={submissionToDelete ? `${submissionToDelete.firstName} ${submissionToDelete.lastName}` : ''}
+        isLoading={isDeleting}
+      />
     </div>
   );
 }
@@ -163,6 +216,7 @@ function SubmissionColumn({
   onApprove,
   onReject,
   onView,
+  onDelete,
 }) {
   return (
     <Card className="border-0 shadow-sm ">
@@ -237,6 +291,15 @@ function SubmissionColumn({
                     >
                       <X className="h-3 w-3 mr-1" />
                       Reject
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      onClick={() => onDelete?.(submission.id)}
+                    >
+                      <X className="h-3 w-3 mr-1" />
+                      Delete
                     </Button>
                   </div>
                 )}

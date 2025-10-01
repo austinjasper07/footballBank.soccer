@@ -16,3 +16,4 @@ export default async function SignupLayout({ children }) {
   // User is not authenticated, show the signup page
   return children;
 }
+

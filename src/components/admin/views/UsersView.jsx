@@ -23,6 +23,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { SearchBar } from '@/components/admin/SearchBar';
 import { useToast } from '@/hooks/use-toast';
 import { UserDialog } from '@/components/admin/dialogs/UserDialog';
+import { DeleteConfirmationModal } from '@/components/admin/dialogs/DeleteConfirmationModal';
 import {
   getAllUsers,
   updateUser,
@@ -40,6 +41,9 @@ export default function UsersView() {
   const [userDialogOpen, setUserDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -73,20 +77,33 @@ export default function UsersView() {
   const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
 
   const handleDeleteUser = async (id) => {
+    const user = users.find(u => u.id === id);
+    setUserToDelete(user);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteUser = async () => {
+    if (!userToDelete) return;
+    
     try {
-      await deleteUser(id);
+      setIsDeleting(true);
+      await deleteUser(userToDelete.id);
       toast({
         title: 'User Deleted',
         description: 'The user has been removed successfully.',
       });
       const updated = await getAllUsers();
       setUsers(updated);
+      setDeleteDialogOpen(false);
+      setUserToDelete(null);
     } catch {
       toast({
         title: 'Error',
         description: 'Failed to delete user.',
         variant: 'destructive',
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -243,6 +260,16 @@ export default function UsersView() {
         }}
         user={editingUser || undefined}
         onSave={handleAddOrUpdateUser}
+      />
+
+      <DeleteConfirmationModal
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDeleteUser}
+        title="Delete User"
+        description="This will permanently remove the user from the system."
+        itemName={userToDelete ? `${userToDelete.firstName} ${userToDelete.lastName}` : ''}
+        isLoading={isDeleting}
       />
     </div>
   );
