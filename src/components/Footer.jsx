@@ -64,7 +64,7 @@ export default function Footer() {
               {[
                 { title: "Home", href: "/" },
                 { title: "Players", href: "/players" },
-                { title: "Live Scores", href: "/live-scores" },
+                { title: "Live Scores", href: "/livescore" },
                 { title: "Submit Profile", href: "/submit-profile" },
                 { title: "About Us", href: "/about" },
               ].map((link) => (
@@ -87,8 +87,8 @@ export default function Footer() {
               {[
                 { title: "Blog", href: "/blog" },
                 { title: "Career Tips", href: "/career-tips" },
-                { title: "Success Stories", href: "/success-stories" },
-                { title: "Training Resources", href: "/training-resources" },
+                { title: "Shop", href: "/shop/products" },
+                { title: "Subscriptions", href: "/subscriptions" },
                 { title: "FAQ", href: "/faq" },
               ].map((link) => (
                 <Link
@@ -107,21 +107,29 @@ export default function Footer() {
               Contact
             </h3>
             <ul className="flex flex-col space-y-2">
-              {[
-                "contact@footballbank.soccer",
-                "+1 (862) 372-9817",
-                "New Jersey, United States",
-                "Privacy Policy",
-                "Terms of Service",
-              ].map((item) => (
-                <li
-                  data-aos="fade-up"
-                  key={item}
-                  className="text-primary-muted hover:text-accent-red transition-colors cursor-pointer"
-                >
-                  {item}
-                </li>
-              ))}
+              <li className="text-primary-muted">
+                <a href="mailto:contact@footballbank.soccer" className="hover:text-accent-red transition-colors">
+                  contact@footballbank.soccer
+                </a>
+              </li>
+              <li className="text-primary-muted">
+                <a href="tel:+18623729817" className="hover:text-accent-red transition-colors">
+                  +1 (862) 372-9817
+                </a>
+              </li>
+              <li className="text-primary-muted">
+                PO BOX 7268, Newark, NJ 07107
+              </li>
+              <li>
+                <Link href="/privacy-policy" className="text-primary-muted hover:text-accent-red transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms-of-service" className="text-primary-muted hover:text-accent-red transition-colors">
+                  Terms of Service
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

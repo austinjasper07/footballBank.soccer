@@ -11,13 +11,12 @@ import { UserHeader } from "./UserHeader";
 
 const navLinks = [
   { label: "Home", path: "/" },
+  { label: "About", path: "/about" },
   { label: "Players", path: "/players" },
   { label: "Live Scores", path: "/livescore" },
-  { label: "Submit Profile", path: "/submit-profile" },
-  { label: "Agent", path: "/agent" },
-  { label: "Contact", path: "/contact" },
   { label: "Blog", path: "/blog" },
   { label: "Shop", path: "/shop/products" },
+  { label: "Contact", path: "/contact" },
 ];
 
 export default function Header() {
@@ -115,7 +114,15 @@ export default function Header() {
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
+            {/* Submit Profile CTA */}
+            <Link
+              href="/submit-profile"
+              className="hidden md:block bg-gradient-to-r from-accent-red to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200 shadow-sm hover:shadow-md"
+            >
+              Submit Profile
+            </Link>
+            
             {isShopOrCart && (
               <Link href="/shop/cart" className="relative">
                 <FaShoppingCart
@@ -138,7 +145,7 @@ export default function Header() {
               ) : (
                 <Link
                   href="/auth/login"
-                  className="hidden lg:block bg-accent-red hover:bg-opacity-90 text-white px-4 py-2 rounded-md font-medium text-nowrap"
+                  className="hidden lg:block border border-accent-red text-accent-red hover:bg-accent-red hover:text-white px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200"
                 >
                   Sign in
                 </Link>
@@ -179,6 +186,16 @@ export default function Header() {
               {label}
             </Link>
           ))}
+          
+          {/* Mobile Submit Profile Button */}
+          <Link
+            href="/submit-profile"
+            onClick={() => setMenuOpen(false)}
+            className="bg-gradient-to-r from-accent-red to-red-600 text-white text-center py-3 rounded-md block font-medium"
+          >
+            Submit Profile
+          </Link>
+          
           {!isLoading && (
             isAuthenticated ? (
               <button
@@ -187,7 +204,7 @@ export default function Header() {
                   // Handle logout - you can call logout function from context
                   window.location.href = '/auth/login';
                 }}
-                className="bg-accent-red text-white text-center py-2 rounded-md w-full"
+                className="border border-accent-red text-accent-red text-center py-2 rounded-md w-full"
               >
                 Logout
               </button>
@@ -195,7 +212,7 @@ export default function Header() {
               <Link
                 href="/auth/login"
                 onClick={() => setMenuOpen(false)}
-                className="bg-accent-red text-white text-center py-2 rounded-md block"
+                className="border border-accent-red text-accent-red text-center py-2 rounded-md block"
               >
                 Sign in
               </Link>

@@ -96,18 +96,18 @@ export default function ContactClient() {
                   subtitle: "Our inbox is always open",
                 },
                 {
+                  title: "P.O Box",
+                  icon: "fa-envelope",
+                  color: "red",
+                  text: "PO BOX 7268, Newark, NJ, Zip: 07107",
+                  subtitle: "Mailing Address",
+                },
+                {
                   title: "Global Branches",
                   icon: "fa-globe",
                   color: "red",
                   text: "Africa, US, UK, Europe",
                   subtitle: "We operate worldwide",
-                },
-                {
-                  title: "Business Areas",
-                  icon: "fa-briefcase",
-                  color: "red",
-                  text: "Representation, Trials, Branding, Development, Legal",
-                  subtitle: "Our Expertise",
                 },
                 {
                   title: "Licensing",
