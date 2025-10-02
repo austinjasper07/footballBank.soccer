@@ -2,7 +2,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { getClientDictionary } from "@/lib/client-dictionaries";
 import Image from "next/image";
 import {
   Pagination,
@@ -25,14 +26,26 @@ export default function PlayerPortfolioPage() {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedPosition, setSelectedPosition] = useState("");
   const [showMobileAds, setShowMobileAds] = useState(false);
+  const [dict, setDict] = useState(null);
   const router = useRouter();
+  const pathname = usePathname();
   const [isLargeScreen, setIsLargeScreen] = useState(false);
+  
+  // Extract language from pathname - ensure it's always a string
+  const lang = pathname?.split('/')[1] || 'en';
 
   useEffect(() => {
-    if (window.innerWidth > 1024) {
+    if (typeof window !== 'undefined' && window.innerWidth > 1024) {
       setIsLargeScreen(true);
     }
   }, []);
+
+  useEffect(() => {
+    // Load translations when lang changes
+    if (lang) {
+      getClientDictionary(lang).then(setDict);
+    }
+  }, [lang]);
 
   const perPage = 6;
 

@@ -1,27 +1,33 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import CookieSettings from "@/components/CookieSettings";
+import { getClientDictionary } from "@/lib/client-dictionaries";
 
-export default function Footer() {
+export default function Footer({ lang = 'en' }) {
+  const [dict, setDict] = useState(null);
+
+  useEffect(() => {
+    getClientDictionary(lang).then(setDict);
+  }, [lang]);
+
+  if (!dict) return null;
   return (
     <footer className="bg-primary-card max-w-full px-4 lg:px-12 pt-16 mt-20 pb-8 border-t border-divider">
       <div className=" mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div>
             <div className="flex flex-col mb-4 ">
-              <Link href={"/"} className="font-bold text-2xl inline-block cursor-pointer text-accent-red">
+              <Link href={`/${lang}`} className="font-bold text-2xl inline-block cursor-pointer text-accent-red">
                 FootballBank
               </Link>
               <div>
-
-              <span className="text-primary-muted text-[12px]"> powered by </span> <span className="text-primary-muted font-bold text-sm inline-block cursor-pointer">Dojoglo&Fam</span>
+              <span className="text-primary-muted text-[12px]"> {dict.footer.poweredBy} </span> <span className="text-primary-muted font-bold text-sm inline-block cursor-pointer">Dojoglo&Fam</span>
               </div>
             </div>
             <p className="text-primary-muted mb-6">
-              Empowering football talent worldwide through visibility and
-              opportunity.
+              {dict.footer.description}
             </p>
             <div className="flex space-x-4">
               {[
@@ -58,15 +64,15 @@ export default function Footer() {
           </div>
           <div>
             <h3 className=" font-semibold text-lg mb-4 text-primary-text">
-              Quick Links
+              {dict.footer.quickLinks}
             </h3>
             <ul className="flex flex-col space-y-2">
               {[
-                { title: "Home", href: "/" },
-                { title: "Players", href: "/players" },
-                { title: "Live Scores", href: "/livescore" },
-                { title: "Submit Profile", href: "/submit-profile" },
-                { title: "About Us", href: "/about" },
+                { title: dict.footer.home, href: `/${lang}` },
+                { title: dict.footer.players, href: `/${lang}/players` },
+                { title: dict.footer.liveScores, href: `/${lang}/livescore` },
+                { title: dict.footer.submitProfile, href: `/${lang}/submit-profile` },
+                { title: dict.footer.aboutUs, href: `/${lang}/about` },
               ].map((link) => (
                 <Link
                   data-aos="fade-up"
@@ -81,15 +87,15 @@ export default function Footer() {
           </div>
           <div>
             <h3 className=" font-semibold text-lg mb-4 text-primary-text">
-              Resources
+              {dict.footer.resources}
             </h3>
             <ul className="flex flex-col space-y-2">
               {[
-                { title: "Blog", href: "/blog" },
-                { title: "Career Tips", href: "/career-tips" },
-                { title: "Shop", href: "/shop/products" },
-                { title: "Subscriptions", href: "/subscriptions" },
-                { title: "FAQ", href: "/faq" },
+                { title: dict.footer.blog, href: `/${lang}/blog` },
+                { title: dict.footer.careerTips, href: `/${lang}/career-tips` },
+                { title: dict.footer.shop, href: `/${lang}/shop/products` },
+                { title: dict.footer.subscriptions, href: `/${lang}/subscriptions` },
+                { title: dict.footer.faq, href: `/${lang}/faq` },
               ].map((link) => (
                 <Link
                   data-aos="fade-up"
@@ -104,7 +110,7 @@ export default function Footer() {
           </div>
           <div>
             <h3 className=" font-semibold text-lg mb-4 text-primary-text">
-              Contact
+              {dict.footer.contact}
             </h3>
             <ul className="flex flex-col space-y-2">
               <li className="text-primary-muted">
@@ -121,13 +127,13 @@ export default function Footer() {
                 PO BOX 7268, Newark, NJ 07107
               </li>
               <li>
-                <Link href="/privacy-policy" className="text-primary-muted hover:text-accent-red transition-colors">
-                  Privacy Policy
+                <Link href={`/${lang}/privacy-policy`} className="text-primary-muted hover:text-accent-red transition-colors">
+                  {dict.footer.privacyPolicy}
                 </Link>
               </li>
               <li>
-                <Link href="/terms-of-service" className="text-primary-muted hover:text-accent-red transition-colors">
-                  Terms of Service
+                <Link href={`/${lang}/terms-of-service`} className="text-primary-muted hover:text-accent-red transition-colors">
+                  {dict.footer.termsOfService}
                 </Link>
               </li>
             </ul>
@@ -135,25 +141,25 @@ export default function Footer() {
         </div>
         <div className="border-t border-divider pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-primary-muted text-sm">
-            © {new Date().getFullYear()} FootballBank. All rights reserved.
+            © {new Date().getFullYear()} FootballBank. {dict.footer.allRightsReserved}
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0 text-sm">
             <Link 
-              href="/privacy-policy"
+              href={`/${lang}/privacy-policy`}
               className="text-primary-muted hover:text-accent-red transition-colors cursor-pointer"
             >
-              Privacy
+              {dict.footer.privacy}
             </Link>
             <Link 
-              href="/terms-of-service"
+              href={`/${lang}/terms-of-service`}
               className="text-primary-muted hover:text-accent-red transition-colors cursor-pointer"
             >
-              Terms
+              {dict.footer.terms}
             </Link>
             <CookieSettings 
               trigger={
                 <span className="text-primary-muted hover:text-accent-red transition-colors cursor-pointer">
-                  Cookies
+                  {dict.footer.cookies}
                 </span>
               }
             />

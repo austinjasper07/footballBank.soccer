@@ -1,0 +1,272 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "view": "Ver",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "close": "Cerrar",
+    "open": "Abrir"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "players": "Jugadores",
+    "agent": "Agente",
+    "liveScores": "Marcadores en Vivo",
+    "blog": "Blog",
+    "shop": "Tienda",
+    "contact": "Contacto",
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "dashboard": "Panel",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "submitProfile": "Enviar Perfil"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Donde el futuro del fútbol se deposita",
+      "titleHighlight": "futuro",
+      "subtitle": "Conectando jugadores excepcionales con oportunidades. Muestra tus habilidades, sé descubierto y lleva tu carrera futbolística al siguiente nivel.",
+      "submitProfile": "Envía Tu Perfil",
+      "browsePlayers": "Explorar Jugadores",
+      "starOnTheRise": "Estrella en ascenso"
+    },
+    "whyFootballBank": {
+      "title": "¿Por qué FootballBank?",
+      "fifaCertified": {
+        "title": "Agente Certificado FIFA",
+        "description": "Representación profesional licenciada que garantiza el cumplimiento de las regulaciones futbolísticas internacionales."
+      },
+      "globalNetwork": {
+        "title": "Red Global de Clubes",
+        "description": "Conexiones extensas con los mejores clubes de Europa, Asia y las Américas."
+      },
+      "rapidVisibility": {
+        "title": "Visibilidad Rápida del Perfil",
+        "description": "Acelera la exposición de tu talento a ojeadores y clubes en todo el mundo en 48 horas."
+      }
+    },
+    "featuredPlayers": {
+      "title": "Jugadores Destacados",
+      "viewAll": "Ver Todos",
+      "viewProfile": "Ver Perfil"
+    },
+    "blog": {
+      "title": "Desde Nuestro Blog",
+      "readMore": "Leer Más",
+      "visitBlog": "Visitar Blog"
+    },
+    "cta": {
+      "title": "¿Club o Marca Buscando Colaborar?",
+      "subtitle": "Conectamos talento con organizaciones de confianza.",
+      "getInTouch": "Ponte en Contacto"
+    }
+  },
+  "playerProfile": {
+    "position": "Posición",
+    "age": "Edad",
+    "foot": "Pie",
+    "height": "Altura",
+    "weight": "Peso",
+    "country": "País",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "description": "Descripción",
+    "stats": "Estadísticas",
+    "clubHistory": "Historial de Clubes",
+    "contractStatus": "Estado del Contrato",
+    "availableFrom": "Disponible Desde",
+    "preferredLeagues": "Ligas Preferidas",
+    "salaryExpectation": "Expectativa Salarial"
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar Sesión",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "rememberMe": "Recordarme",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "createAccount": "Crear Cuenta",
+    "signInWithGoogle": "Iniciar sesión con Google",
+    "signInWithGithub": "Iniciar sesión con GitHub"
+  },
+  "footer": {
+    "description": "Empoderando el talento futbolístico mundial a través de la visibilidad y las oportunidades.",
+    "quickLinks": "Enlaces Rápidos",
+    "resources": "Recursos",
+    "contact": "Contacto",
+    "home": "Inicio",
+    "players": "Jugadores",
+    "liveScores": "Marcadores en Vivo",
+    "submitProfile": "Enviar Perfil",
+    "aboutUs": "Acerca de Nosotros",
+    "blog": "Blog",
+    "careerTips": "Consejos de Carrera",
+    "shop": "Tienda",
+    "subscriptions": "Suscripciones",
+    "faq": "Preguntas Frecuentes",
+    "privacyPolicy": "Política de Privacidad",
+    "termsOfService": "Términos de Servicio",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "cookies": "Cookies",
+    "allRightsReserved": "Todos los derechos reservados.",
+    "poweredBy": "desarrollado por"
+  },
+  "about": {
+    "title": "Acerca de FootballBank",
+    "subtitle": "Empoderando Sueños Futbolísticos en Todo el Mundo",
+    "description": "FootballBank es la plataforma líder que conecta jugadores de fútbol talentosos con ojeadores, clubes y oportunidades alrededor del mundo.",
+    "mission": "Nuestra Misión",
+    "missionText": "Democratizar el descubrimiento de talento futbolístico y brindar oportunidades equitativas para que los jugadores de todo el mundo muestren sus habilidades y alcancen sus sueños.",
+    "vision": "Nuestra Visión",
+    "visionText": "Un mundo donde cada jugador de fútbol talentoso tenga la oportunidad de ser descubierto y alcanzar su máximo potencial, sin importar su origen o ubicación.",
+    "values": "Nuestros Valores",
+    "valuesItems": {
+      "excellence": "Excelencia en todo lo que hacemos",
+      "integrity": "Integridad y transparencia en todos nuestros tratos",
+      "opportunity": "Oportunidad equitativa para todos los jugadores talentosos",
+      "innovation": "Innovación en el descubrimiento y desarrollo de talentos"
+    }
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "subtitle": "Ponte en contacto con nuestro equipo",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "subject": "Asunto",
+    "message": "Mensaje",
+    "send": "Enviar Mensaje",
+    "sending": "Enviando...",
+    "success": "¡Mensaje enviado exitosamente!",
+    "error": "Error al enviar el mensaje. Por favor intenta de nuevo.",
+    "required": "Este campo es obligatorio",
+    "invalidEmail": "Por favor ingresa un correo electrónico válido",
+    "contactInfo": "Información de Contacto",
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "businessHours": "Horario de Atención",
+    "mondayFriday": "Lunes - Viernes: 9:00 AM - 6:00 PM",
+    "weekend": "Fin de Semana: 10:00 AM - 4:00 PM"
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Encuentra respuestas a preguntas comunes sobre FootballBank",
+    "searchPlaceholder": "Buscar FAQ...",
+    "noResults": "No se encontraron resultados para tu búsqueda.",
+    "categories": {
+      "general": "General",
+      "players": "Para Jugadores",
+      "scouts": "Para Ojeadores",
+      "billing": "Facturación"
+    }
+  },
+  "blog": {
+    "title": "Blog de Fútbol",
+    "subtitle": "Últimas noticias, consejos e información del mundo del fútbol",
+    "readMore": "Leer Más",
+    "author": "Autor",
+    "publishedOn": "Publicado el",
+    "categories": "Categorías",
+    "tags": "Etiquetas",
+    "relatedPosts": "Artículos Relacionados",
+    "searchPlaceholder": "Buscar artículos...",
+    "noResults": "No se encontraron artículos.",
+    "loadMore": "Cargar Más Artículos"
+  },
+  "shop": {
+    "title": "Tienda de Fútbol",
+    "subtitle": "Equipo de fútbol premium y mercancía",
+    "addToCart": "Agregar al Carrito",
+    "buyNow": "Comprar Ahora",
+    "price": "Precio",
+    "size": "Talla",
+    "color": "Color",
+    "quantity": "Cantidad",
+    "inStock": "En Stock",
+    "outOfStock": "Agotado",
+    "cart": "Carrito de Compras",
+    "checkout": "Finalizar Compra",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "shipping": "Envío",
+    "tax": "Impuestos",
+    "remove": "Eliminar",
+    "continue": "Continuar Comprando",
+    "proceedToCheckout": "Proceder al Pago"
+  },
+  "profile": {
+    "title": "Mi Perfil",
+    "dashboard": "Panel",
+    "personalInfo": "Información Personal",
+    "orders": "Mis Pedidos",
+    "subscriptions": "Mis Suscripciones",
+    "settings": "Configuración",
+    "editProfile": "Editar Perfil",
+    "changePassword": "Cambiar Contraseña",
+    "notifications": "Notificaciones",
+    "privacy": "Configuración de Privacidad",
+    "orderHistory": "Historial de Pedidos",
+    "orderNumber": "Pedido #",
+    "orderDate": "Fecha del Pedido",
+    "orderStatus": "Estado",
+    "orderTotal": "Total",
+    "viewDetails": "Ver Detalles"
+  },
+  "players": {
+    "title": "Jugadores de Fútbol",
+    "subtitle": "Descubre jugadores de fútbol talentosos de todo el mundo",
+    "searchPlaceholder": "Buscar jugadores...",
+    "filterBy": "Filtrar por",
+    "position": "Posición",
+    "country": "País",
+    "age": "Edad",
+    "sortBy": "Ordenar por",
+    "newest": "Más Recientes",
+    "oldest": "Más Antiguos",
+    "alphabetical": "Alfabético",
+    "noResults": "No se encontraron jugadores que coincidan con tus criterios.",
+    "loadMore": "Cargar Más Jugadores",
+    "viewProfile": "Ver Perfil",
+    "featured": "Destacados",
+    "playerOfTheWeek": "Jugador de la Semana"
+  },
+  "subscriptions": {
+    "title": "Planes de Suscripción",
+    "subtitle": "Elige el plan perfecto para tus necesidades",
+    "monthly": "Mensual",
+    "yearly": "Anual",
+    "save": "Ahorrar",
+    "mostPopular": "Más Popular",
+    "features": "Características",
+    "subscribe": "Suscribirse Ahora",
+    "currentPlan": "Plan Actual",
+    "upgrade": "Actualizar",
+    "downgrade": "Degradar",
+    "cancel": "Cancelar Suscripción",
+    "billing": "Información de Facturación",
+    "nextBilling": "Próxima Fecha de Facturación",
+    "paymentMethod": "Método de Pago"
+  },
+  "seo": {
+    "defaultTitle": "Plataforma Global de Talento Futbolístico",
+    "defaultDescription": "Descubre y muestra talento futbolístico en todo el mundo. Conecta jugadores con ojeadores, clubes y oportunidades a través de nuestra plataforma integral de banco de talentos."
+  }
+}

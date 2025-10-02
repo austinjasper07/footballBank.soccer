@@ -87,7 +87,7 @@ export default function RootLayout({ children }) {
         <AOSProvider>
           <NewAuthProvider>
             <CartProvider>
-              <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
+              {children}
             </CartProvider>
           </NewAuthProvider>
         </AOSProvider>

@@ -1,7 +1,6 @@
-'use client'
-
 import React from 'react'
 import Link from 'next/link'
+import { getDictionary } from '@/lib/dictionaries'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -24,27 +23,29 @@ import {
 } from 'lucide-react'
 import "aos/dist/aos.css"
 
-export default function AboutPage() {
+export default async function AboutPage({ params }) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
   const values = [
     {
       icon: Shield,
-      title: "Integrity",
-      description: "We operate with honesty, transparency, and accountability in all our dealings."
+      title: dict.about.valuesItems.integrity,
+      description: dict.about.valuesItems.integrity
     },
     {
       icon: Award,
-      title: "Excellence", 
-      description: "We are committed to high standards in talent promotion and client support."
+      title: dict.about.valuesItems.excellence, 
+      description: dict.about.valuesItems.excellence
     },
     {
       icon: Globe,
-      title: "Inclusion",
-      description: "We give a voice to players regardless of background or geography."
+      title: dict.about.valuesItems.opportunity,
+      description: dict.about.valuesItems.opportunity
     },
     {
       icon: Heart,
-      title: "Empowerment",
-      description: "We equip our clients with the tools and representation they need to succeed."
+      title: dict.about.valuesItems.innovation,
+      description: dict.about.valuesItems.innovation
     }
   ]
 
@@ -85,15 +86,14 @@ export default function AboutPage() {
               className="font-bold text-3xl lg:text-4xl leading-tight tracking-tight text-primary-text mb-6"
               data-aos="fade-up"
             >
-              About <span className="text-accent-red">FootballBank.soccer</span>
+              {dict.about.title}
             </h1>
             <p 
               className="text-base text-primary-muted mb-8 leading-relaxed max-w-3xl mx-auto"
               data-aos="fade-up"
               data-aos-delay="100"
             >
-              We are committed to bridging the gap between raw football talent and global opportunities. 
-              Founded with the mission to represent, promote, and elevate football players from diverse backgrounds.
+              {dict.about.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
               <Button 
@@ -101,9 +101,9 @@ export default function AboutPage() {
                 className="bg-accent-red hover:bg-red-700 text-white px-8 py-4 rounded-xl shadow-lg"
                 asChild
               >
-                <Link href="/submit-profile">
+                <Link href={`/${lang}/submit-profile`}>
                   <Users className="w-5 h-5 mr-2" />
-                  Join Our Platform
+                  {dict.navigation.submitProfile}
                 </Link>
               </Button>
               <Button 
@@ -131,13 +131,12 @@ export default function AboutPage() {
                 <Target className="w-8 h-8 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold text-primary-text mb-4">
-                Our Mission
+                {dict.about.mission}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-primary-muted leading-relaxed mb-6">
-                To be the world's most inclusive and accessible football talent gateway—connecting 
-                ambitious players with clubs, agents, and scouts across all continents.
+                {dict.about.missionText}
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
@@ -166,13 +165,12 @@ export default function AboutPage() {
                 <Eye className="w-8 h-8 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold text-primary-text mb-4">
-                Our Vision
+                {dict.about.vision}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-primary-muted leading-relaxed text-lg">
-                To be the world's most inclusive and accessible football talent gateway—connecting 
-                ambitious players with clubs, agents, and scouts across all continents.
+                {dict.about.visionText}
               </p>
             </CardContent>
           </Card>
@@ -223,7 +221,7 @@ export default function AboutPage() {
         <div className="mb-20" data-aos="fade-up">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-primary-text mb-4">
-              Our Values
+              {dict.about.values}
             </h2>
             <p className="text-base text-primary-muted max-w-3xl mx-auto">
               The principles that guide everything we do at FootballBank.soccer

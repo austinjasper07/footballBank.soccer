@@ -16,7 +16,7 @@ class EmailError extends Error {
   }
 }
 
-export default function ContactClient() {
+export default function ContactClient({ lang = 'en', dict }) {
   const { toast } = useToast();
   const [status, setStatus] = useState("idle");
 
@@ -35,9 +35,8 @@ export default function ContactClient() {
       
       if (result.success) {
         toast({
-          title: "Message Sent",
-          description:
-            "We have received your message and will respond shortly.",
+          title: dict?.contact?.success || "Message Sent",
+          description: dict?.contact?.success || "We have received your message and will respond shortly.",
         });
         setStatus("success");
         e.target.reset();
@@ -68,11 +67,10 @@ export default function ContactClient() {
     <main className="bg-primary-bg text-primary-text font-inter">
       <section className="py-16 text-center">
         <h1 className="text-primary-text  font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] md:text-5xl mb-4">
-          Contact Us
+          {dict?.contact?.title || "Contact Us"}
         </h1>
         <p className="text-primary-muted text-lg max-w-2xl mx-auto mb-4">
-          Elevate your football journey with our global expertise. Let’s
-          connect.
+          {dict?.contact?.subtitle || "Get in touch with our team"}
         </p>
       </section>
 
@@ -140,13 +138,13 @@ export default function ContactClient() {
          
           <div className="bg-primary-card rounded-xl border border-divider shadow-lg px-4 py-8 md:px-8 md:py-12 w-full md:w-2/3" data-aos="flip-left">
             <h2 className=" font-bold text-2xl md:text-3xl mb-8">
-              Send Us a Message
+              {dict?.contact?.send || "Send Us a Message"}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Full Name
+                    {dict?.contact?.name || "Full Name"}
                   </label>
                   <input
                     name="name"
@@ -158,7 +156,7 @@ export default function ContactClient() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Email Address
+                    {dict?.contact?.email || "Email Address"}
                   </label>
                   <input
                     name="email"
@@ -171,7 +169,7 @@ export default function ContactClient() {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Subject
+                  {dict?.contact?.subject || "Subject"}
                 </label>
                 <select
                   name="subject"
@@ -196,7 +194,7 @@ export default function ContactClient() {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Message
+                  {dict?.contact?.message || "Message"}
                 </label>
                 <textarea
                   name="message"
@@ -213,12 +211,12 @@ export default function ContactClient() {
                 {status === "loading" ? (
                   <div className="flex items-center justify-center">
                     <FaSpinner className="animate-spin mr-2" />
-                    Sending...
+                    {dict?.contact?.sending || "Sending..."}
                   </div>
                 ) : (
                   <div className="flex items-center justify-center">
                     <i className="fa-solid fa-paper-plane mr-2" />
-                    Send Message
+                    {dict?.contact?.send || "Send Message"}
                   </div>
                 )}
               </button>

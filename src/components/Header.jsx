@@ -1,25 +1,45 @@
 "use client";
 
 import { useAuth } from "@/context/NewAuthContext";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaShoppingCart, FaBars, FaTimes, FaUser } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import { UserHeader } from "./UserHeader";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { getClientDictionary } from "@/lib/client-dictionaries";
 
-const navLinks = [
-  { label: "Home", path: "/" },
-  { label: "About", path: "/about" },
-  { label: "Players", path: "/players" },
-  { label: "Live Scores", path: "/livescore" },
-  { label: "Blog", path: "/blog" },
-  { label: "Shop", path: "/shop/products" },
-  { label: "Contact", path: "/contact" },
-];
+export default function Header({ lang = 'en' }) {
+  const [dict, setDict] = useState(null);
 
-export default function Header() {
+  useEffect(() => {
+    getClientDictionary(lang).then(setDict);
+  }, [lang]);
+
+  // Fallback navigation with default English labels to prevent empty header
+  const defaultNavLinks = [
+    { label: "Home", path: `/${lang}` },
+    { label: "About", path: `/${lang}/about` },
+    { label: "Players", path: `/${lang}/players` },
+    { label: "Agent", path: `/${lang}/agent` },
+    { label: "Live Scores", path: `/${lang}/livescore` },
+    { label: "Blog", path: `/${lang}/blog` },
+    { label: "Shop", path: `/${lang}/shop/products` },
+    { label: "Contact", path: `/${lang}/contact` },
+  ];
+
+  const navLinks = dict ? [
+    { label: dict.navigation.home, path: `/${lang}` },
+    { label: dict.navigation.about, path: `/${lang}/about` },
+    { label: dict.navigation.players, path: `/${lang}/players` },
+    { label: dict.navigation.agent || "Agent", path: `/${lang}/agent` },
+    { label: dict.navigation.liveScores, path: `/${lang}/livescore` },
+    { label: dict.navigation.blog, path: `/${lang}/blog` },
+    { label: dict.navigation.shop, path: `/${lang}/shop/products` },
+    { label: dict.navigation.contact, path: `/${lang}/contact` },
+  ] : defaultNavLinks;
   const { isAuthenticated, user, isLoading } = useAuth();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -76,51 +96,58 @@ export default function Header() {
       </div>
       
       <div className="max-w-full mx-auto px-4 lg:px-12">
-        <div className=" flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Link
-            href="/"
-            className=" font-bold text-2xl text-accent-red cursor-pointer flex items-center gap-2"
-          >
-            <div className="relative w-16 h-16 md:w-30 md:h-28 flex items-center">
-              <Image
-                src="/logo.jpg"
-                alt="FootballBank Logo"
-                width={40}
-                height={40}
-                className="object-contain h-12 w-12 md:h-20 md:w-20"
-              />
-              <span className="text-xl md:text-2xl font-semibold text-accent-red">
-                FootballBank
-              </span>
-            </div>
-          </Link>
+        <div className="flex items-center h-16 md:h-20">
+          {/* Logo - Fixed width */}
+          <div className="flex-shrink-0">
+            <Link
+              href="/"
+              className="font-bold text-2xl text-accent-red cursor-pointer flex items-center gap-2"
+            >
+              <div className="relative w-16 h-16 md:w-30 md:h-28 flex items-center">
+                <Image
+                  src="/logo.jpg"
+                  alt="FootballBank Logo"
+                  width={40}
+                  height={40}
+                  className="object-contain h-12 w-12 md:h-20 md:w-20"
+                />
+                <span className="text-xl md:text-2xl font-semibold text-accent-red">
+                  FootballBank
+                </span>
+              </div>
+            </Link>
+          </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex space-x-6 text-nowrap">
-            {navLinks.map(({ label, path }) => (
-              <Link
-                key={path}
-                href={path}
-                className={`transition-colors ${
-                  pathname === path
-                    ? "text-accent-red font-semibold"
-                    : "text-primary-text hover:text-accent-red"
-                }`}
-              >
-                {label}
-              </Link>
-            ))}
+          {/* Desktop Navigation - Centered */}
+          <nav className="hidden lg:flex flex-1 justify-center">
+            <div className="flex space-x-6 text-nowrap">
+              {navLinks.map(({ label, path }) => (
+                <Link
+                  key={path}
+                  href={path}
+                  className={`transition-colors ${
+                    pathname === path
+                      ? "text-accent-red font-semibold"
+                      : "text-primary-text hover:text-accent-red"
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
           </nav>
 
-          {/* Right Actions */}
-          <div className="flex items-center space-x-3">
+          {/* Right Actions - Fixed width */}
+          <div className="flex items-center space-x-3 flex-shrink-0">
+            {/* Language Switcher */}
+            <LanguageSwitcher currentLang={lang} />
+            
             {/* Submit Profile CTA */}
             <Link
-              href="/submit-profile"
+              href={`/${lang}/submit-profile`}
               className="hidden md:block bg-gradient-to-r from-accent-red to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200 shadow-sm hover:shadow-md"
             >
-              Submit Profile
+              {dict?.navigation?.submitProfile || "Submit Profile"}
             </Link>
             
             {isShopOrCart && (
@@ -144,10 +171,10 @@ export default function Header() {
                 <UserHeader slug={"Dashboard"} href={"/admin"}/>
               ) : (
                 <Link
-                  href="/auth/login"
+                  href={`/${lang}/auth/login`}
                   className="hidden lg:block border border-accent-red text-accent-red hover:bg-accent-red hover:text-white px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200"
                 >
-                  Sign in
+                  {dict?.navigation?.signIn || "Sign in"}
                 </Link>
               )
             )}
@@ -189,11 +216,11 @@ export default function Header() {
           
           {/* Mobile Submit Profile Button */}
           <Link
-            href="/submit-profile"
+            href={`/${lang}/submit-profile`}
             onClick={() => setMenuOpen(false)}
             className="bg-gradient-to-r from-accent-red to-red-600 text-white text-center py-3 rounded-md block font-medium"
           >
-            Submit Profile
+            {dict?.navigation?.submitProfile || "Submit Profile"}
           </Link>
           
           {!isLoading && (
@@ -210,11 +237,11 @@ export default function Header() {
               </button>
             ) : (
               <Link
-                href="/auth/login"
+                href={`/${lang}/auth/login`}
                 onClick={() => setMenuOpen(false)}
                 className="border border-accent-red text-accent-red text-center py-2 rounded-md block"
               >
-                Sign in
+                {dict?.navigation?.signIn || "Sign in"}
               </Link>
             )
           )}
