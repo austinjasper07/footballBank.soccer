@@ -2,11 +2,9 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 
-export default function PlayerTabs({ player }) {
+export default function PlayerTabs({ player, onImageClick }) {
   const [tab, setTab] = useState("gallery")
   const [selectedVideo, setSelectedVideo] = useState(player.videoPrimary || "")
-  const [showModal, setShowModal] = useState(false)
-  const [currentIndex, setCurrentIndex] = useState(0)
 
   const videoTitles = {
     [player.videoPrimary]: "Primary Highlights",
@@ -15,29 +13,9 @@ export default function PlayerTabs({ player }) {
     videoTitles[video] = `Additional Video ${index + 1}`
   })
 
-  // Lock/unlock body scroll when modal is open
-  useEffect(() => {
-    if (showModal) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-  }, [showModal])
-
-  const openModal = (index) => {
-    setCurrentIndex(index)
-    setShowModal(true)
-  }
-
-  const closeModal = () => setShowModal(false)
-
-  const prevImage = () =>
-    setCurrentIndex((prev) => (prev - 1 + player.imageUrl.length) % player.imageUrl.length)
-
-  const nextImage = () =>
-    setCurrentIndex((prev) => (prev + 1) % player.imageUrl.length)
 
   return (
+    <>
     <section className="py-16 border-y border-divider bg-primary-bg">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Tabs */}
@@ -71,7 +49,7 @@ export default function PlayerTabs({ player }) {
               <div
                 key={img}
                 className="overflow-hidden rounded-lg border border-divider cursor-pointer hover:scale-105 transition-transform"
-                onClick={() => openModal(idx)}
+                onClick={() => onImageClick(idx)}
               >
                 <Image
                   src={img}
@@ -163,37 +141,7 @@ export default function PlayerTabs({ player }) {
           </div>
         )}
       </div>
-
-      {/* Modal Carousel */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50">
-          <button
-            onClick={closeModal}
-            className="absolute top-5 right-5 text-white text-2xl"
-          >
-            ✕
-          </button>
-          <button
-            onClick={prevImage}
-            className="absolute left-5 text-white text-3xl"
-          >
-            ‹
-          </button>
-          <Image
-            src={player.imageUrl[currentIndex]}
-            alt="Full Image"
-            width={800}
-            height={600}
-            className="rounded-lg max-w-[80vw] max-h-[90vh] object-contain"
-          />
-          <button
-            onClick={nextImage}
-            className="absolute right-5 text-white text-3xl"
-          >
-            ›
-          </button>
-        </div>
-      )}
     </section>
+    </>
   )
 }

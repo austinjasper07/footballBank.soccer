@@ -36,6 +36,46 @@ export default function Header() {
 
   return (
     <header className="bg-primary-card sticky top-0 z-50 border-b border-divider shadow-sm">
+      {/* Partner Logos Section */}
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 py-2">
+        <div className="max-w-full mx-auto px-4 lg:px-12">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <span className="text-xs text-gray-600 font-medium">Trusted Partners:</span>
+            </div>
+            <div className="flex items-center space-x-4 md:space-x-6">
+              <div className="flex items-center bg-white px-3 py-1 rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                <Image
+                  src="/partners/amazon-logo.svg"
+                  alt="Amazon"
+                  width={60}
+                  height={20}
+                  className="object-contain h-5"
+                />
+              </div>
+              <div className="flex items-center bg-white px-3 py-1 rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                <Image
+                  src="/partners/concacaf-logo.svg"
+                  alt="CONCACAF"
+                  width={60}
+                  height={20}
+                  className="object-contain h-5"
+                />
+              </div>
+              <div className="flex items-center bg-white px-3 py-1 rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                <Image
+                  src="/partners/pfa-logo.svg"
+                  alt="Professional Football Academy"
+                  width={60}
+                  height={20}
+                  className="object-contain h-5"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <div className="max-w-full mx-auto px-4 lg:px-12">
         <div className=" flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
@@ -45,11 +85,11 @@ export default function Header() {
           >
             <div className="relative w-16 h-16 md:w-30 md:h-28 flex items-center">
               <Image
-                src="/logo.png"
+                src="/logo.jpg"
                 alt="FootballBank Logo"
-                width={32}
-                height={32}
-                className="object-contain h-8 w-8 md:h-12 md:w-12"
+                width={40}
+                height={40}
+                className="object-contain h-12 w-12 md:h-20 md:w-20"
               />
               <span className="text-xl md:text-2xl font-semibold text-accent-red">
                 FootballBank

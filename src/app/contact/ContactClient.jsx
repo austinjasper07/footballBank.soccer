@@ -256,15 +256,22 @@ export default function ContactClient() {
                 name: "Facebook",
                 icon: "facebook",
                 color: "blue",
-                href: "#",
+                href: "https://www.facebook.com/profile.php?id=61580081775450",
                 handle: "FootballBank Global",
               },
               {
-                name: "LinkedIn",
-                icon: "linkedin",
+                name: "Twitter",
+                icon: "twitter",
                 color: "blue",
-                href: "#",
-                handle: "FootballBank International",
+                href: "https://x.com/footballbankhq?s=21&t=Ihzjw_SrtnHA4qE0nkgFfg",
+                handle: "@footballbankhq",
+              },
+              {
+                name: "TikTok",
+                icon: "tiktok",
+                color: "red",
+                href: "http://www.tiktok.com/@footballbank.soccer",
+                handle: "@footballbank.soccer",
               },
             ].map(({ name, icon, color, handle, href }) => (
               <Link

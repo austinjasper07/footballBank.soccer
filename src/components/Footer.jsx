@@ -24,15 +24,25 @@ export default function Footer() {
             </p>
             <div className="flex space-x-4">
               {[
-                { name: "twitter", href: "#" },
+                { 
+                  name: "twitter", 
+                  href: "https://x.com/footballbankhq?s=21&t=Ihzjw_SrtnHA4qE0nkgFfg" 
+                },
                 {
                   name: "instagram",
                   href: "https://www.instagram.com/footballbank.soccer",
                 },
-                { name: "facebook", href: "#" },
+                { 
+                  name: "facebook", 
+                  href: "https://www.facebook.com/profile.php?id=61580081775450" 
+                },
                 {
                   name: "youtube",
                   href: "http://www.youtube.com/@footballbank.soccer",
+                },
+                {
+                  name: "tiktok",
+                  href: "http://www.tiktok.com/@footballbank.soccer",
                 },
               ].map((brand) => (
                 <Link
