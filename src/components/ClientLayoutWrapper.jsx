@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Toaster } from './ui/toaster';
+import CookieConsent from "@/components/CookieConsent";
 
 export default function ClientLayoutWrapper({ children }) {
   const pathname = usePathname();
@@ -26,6 +27,9 @@ export default function ClientLayoutWrapper({ children }) {
       {
         !isAdminPage && <Footer />
       }
+      
+      {/* Cookie Consent Banner - Show on all pages except admin */}
+      {!isAdminPage && <CookieConsent />}
       
     </>
   );

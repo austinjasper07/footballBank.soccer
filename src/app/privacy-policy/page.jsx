@@ -75,10 +75,14 @@ export default function PrivacyPolicyPage() {
       title: "Cookies & Tracking Technologies",
       icon: Cookie,
       items: [
-        "We use cookies to enhance your experience",
-        "Analyze usage patterns and personalize content",
-        "You can control cookie settings through your browser",
-        "Essential cookies for site functionality",
+        "Essential Cookies: Required for basic site functionality and security",
+        "Analytics Cookies: Help us understand how visitors interact with our website",
+        "Functional Cookies: Remember your preferences and improve user experience",
+        "Performance Cookies: Analyze site performance and optimize loading times",
+        "You can control cookie settings through your browser preferences",
+        "Declining cookies may limit some website functionality",
+        "We use Google Analytics and similar services for website analytics",
+        "Cookie consent is requested when you first visit our website",
       ],
     },
     {

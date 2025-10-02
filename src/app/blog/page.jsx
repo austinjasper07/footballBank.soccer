@@ -1,10 +1,22 @@
 import  prisma  from "@/lib/prisma"
 import ClientSideFilterWrapper from "./components/ClientSideFilterWrapper"
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Blog | FootballBank",
-  description: "Insights, player spotlights, and football talent updates.",
-}
+export const metadata = generateSEOMetadata({
+  title: "Football Blog & News",
+  description: "Stay updated with the latest football insights, player spotlights, career tips, and industry news. Expert analysis and talent updates from FootballBank.",
+  keywords: [
+    "football blog",
+    "soccer news",
+    "player spotlights",
+    "football insights",
+    "career tips",
+    "football industry news",
+    "talent updates",
+    "football analysis"
+  ],
+  url: "/blog",
+});
 
 export default async function BlogPage() {
   'use server'

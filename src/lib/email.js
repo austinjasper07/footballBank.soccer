@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function sendEmail({ to, subject, html, text }) {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'FootballBank.soccer <noreply@footballbank.soccer>',
+      from: 'FootballBank.soccer <contact@footballbank.soccer>',
       to: [to],
       subject,
       html,

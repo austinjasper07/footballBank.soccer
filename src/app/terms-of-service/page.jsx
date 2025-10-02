@@ -241,7 +241,7 @@ export default function TermsOfServicePage() {
                 asChild 
                 className="bg-accent-red hover:bg-accent-red/90 text-white px-8 py-3"
               >
-                <a href="mailto:legal@footballbank.soccer">
+                <a href="mailto:contact@footballbank.soccer">
                   <Mail className="w-5 h-5 mr-2" />
                   Contact Legal Team
                 </a>

@@ -3,11 +3,23 @@ import Link from "next/link";
 import "aos/dist/aos.css";
 import { getFeaturedPlayers, getFeaturedPosts } from "@/actions/publicActions";
 import { getAuthUser } from "@/lib/oauth";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "FootballBank | Home",
-  description: "Connect with top football talent and opportunities globally.",
-};
+export const metadata = generateSEOMetadata({
+  title: "Global Football Talent Platform",
+  description: "Discover and showcase football talent worldwide. Connect players with scouts, clubs, and opportunities through our comprehensive talent banking platform.",
+  keywords: [
+    "football talent",
+    "soccer players", 
+    "football scouts",
+    "player profiles",
+    "football recruitment",
+    "soccer talent bank",
+    "football opportunities",
+    "player showcase"
+  ],
+  url: "/",
+});
 
 export default async function HomePage() {
   try {
@@ -43,8 +55,8 @@ export default async function HomePage() {
               className=" font-bold text-[clamp(2.5rem,3.5vw,4rem)] leading-tight tracking-tight text-primary-text"
               data-aos="fade-up"
             >
-              Empowering Football{" "}
-              <span className="text-accent-red">Talent</span> Worldwide
+              Where football's{" "}  
+              <span className="text-accent-red">future</span> is banked
             </h1>
             <p
               className="text-primary-muted text-[clamp(1rem,2.5vw,1.25rem)] font-inter"

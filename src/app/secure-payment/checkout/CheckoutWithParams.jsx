@@ -91,7 +91,7 @@ export default function CheckoutWithParams() {
               </div>
               <div>
                 <p className="text-primary-muted">Email</p>
-                <p>player@example.com</p>
+                <p>player@footballbank.soccer</p>
               </div>
               <div>
                 <p className="text-primary-muted">Billing</p>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import CookieSettings from "@/components/CookieSettings";
 
 export default function Footer() {
   return (
@@ -15,7 +16,7 @@ export default function Footer() {
               </Link>
               <div>
 
-              <span className="text-primary-muted text-[12px]"> powered by </span> <span className="text-primary-muted font-bold text-sm inline-block cursor-pointer">Soccer Bank Sport Management</span>
+              <span className="text-primary-muted text-[12px]"> powered by </span> <span className="text-primary-muted font-bold text-sm inline-block cursor-pointer">Dojoglo&Fam</span>
               </div>
             </div>
             <p className="text-primary-muted mb-6">
@@ -107,7 +108,7 @@ export default function Footer() {
             </h3>
             <ul className="flex flex-col space-y-2">
               {[
-                "info@footballbank.soccer",
+                "contact@footballbank.soccer",
                 "+1 (862) 372-9817",
                 "New Jersey, United States",
                 "Privacy Policy",
@@ -129,14 +130,25 @@ export default function Footer() {
             © {new Date().getFullYear()} FootballBank. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0 text-sm">
-            {["Privacy", "Terms", "Cookies"].map((item) => (
-              <span
-                key={item}
-                className="text-primary-muted hover:text-accent-red transition-colors cursor-pointer"
-              >
-                {item}
-              </span>
-            ))}
+            <Link 
+              href="/privacy-policy"
+              className="text-primary-muted hover:text-accent-red transition-colors cursor-pointer"
+            >
+              Privacy
+            </Link>
+            <Link 
+              href="/terms-of-service"
+              className="text-primary-muted hover:text-accent-red transition-colors cursor-pointer"
+            >
+              Terms
+            </Link>
+            <CookieSettings 
+              trigger={
+                <span className="text-primary-muted hover:text-accent-red transition-colors cursor-pointer">
+                  Cookies
+                </span>
+              }
+            />
           </div>
         </div>
       </div>

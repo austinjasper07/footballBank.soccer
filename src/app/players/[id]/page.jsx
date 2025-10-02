@@ -8,6 +8,8 @@ import { getPlayerById } from "@/actions/publicActions";
 import Link from "next/link";
 import PlayerCarousel from "@/components/PlayerCarousel";
 import { useEffect, useState } from "react";
+import { generateMetadata as generateSEOMetadata, generateStructuredData, generateBreadcrumbs } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/SEO";
 
 export default function PlayerPage({ params }) {
   const [player, setPlayer] = useState(null);
@@ -103,15 +105,50 @@ export default function PlayerPage({ params }) {
 
   const age = new Date().getFullYear() - new Date(player.dob).getFullYear();
 
+  // Generate SEO data
+  const playerMetadata = generateSEOMetadata({
+    title: `${player.firstName} ${player.lastName} - ${player.position}`,
+    description: `Discover ${player.firstName} ${player.lastName}, a talented ${player.position} from ${player.country}. View profile, stats, and highlights on FootballBank.`,
+    keywords: [
+      `${player.firstName} ${player.lastName}`,
+      player.position,
+      player.country,
+      "football player",
+      "soccer talent",
+      "player profile"
+    ],
+    image: player.imageUrl?.[0],
+    url: `/players/${player.id}`,
+    type: "profile"
+  });
+
+  const playerStructuredData = generateStructuredData("person", player);
+  const breadcrumbs = generateBreadcrumbs(`/players/${player.id}`, ["Players", `${player.firstName} ${player.lastName}`]);
+
   return (
     <>
       <Head>
-        <title>
-          {player.firstName} {player.lastName} | FootballBank.soccer
-        </title>
-        <meta
-          name="description"
-          content="Empowering football talent worldwide through visibility and opportunity."
+        <title>{playerMetadata.title}</title>
+        <meta name="description" content={playerMetadata.description} />
+        <meta name="keywords" content={playerMetadata.keywords} />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="profile" />
+        <meta property="og:title" content={playerMetadata.title} />
+        <meta property="og:description" content={playerMetadata.description} />
+        <meta property="og:url" content={`https://footballbank.soccer/players/${player.id}`} />
+        <meta property="og:image" content={player.imageUrl?.[0]} />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={playerMetadata.title} />
+        <meta name="twitter:description" content={playerMetadata.description} />
+        <meta name="twitter:image" content={player.imageUrl?.[0]} />
+        
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(playerStructuredData) }}
         />
       </Head>
       <main className="bg-primary-bg text-primary-text font-inter">
@@ -128,6 +165,11 @@ export default function PlayerPage({ params }) {
           {/* Overlay - Full screen width, first two sections height */}
           <div className="absolute left-0 right-0 top-0 bottom-0 z-5 bg-black/40 w-screen" style={{ marginLeft: 'calc(-50vw + 50%)' }}></div>
           
+          {/* Breadcrumbs */}
+          <div className="container mx-auto px-4 max-w-6xl relative z-10 pt-4">
+            <Breadcrumbs items={breadcrumbs} />
+          </div>
+
           {/* Hero */}
           <section className="pb-16 pt-8 relative z-10">
             <div className="flex lg:flex-row flex-col-reverse gap-12 items-center">

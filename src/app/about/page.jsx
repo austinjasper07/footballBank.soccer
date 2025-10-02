@@ -318,9 +318,9 @@ export default function AboutPage() {
               className="bg-accent-red hover:bg-red-700 text-white px-8 py-4 rounded-xl shadow-lg"
               asChild
             >
-              <a href="mailto:info@footballbank.soccer">
+              <a href="mailto:contact@footballbank.soccer">
                 <Mail className="w-5 h-5 mr-2" />
-                info@footballbank.soccer
+                contact@footballbank.soccer
               </a>
             </Button>
             <Button 

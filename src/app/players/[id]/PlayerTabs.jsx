@@ -132,7 +132,7 @@ export default function PlayerTabs({ player, onImageClick }) {
                 <i className="fa-solid fa-user-tie mr-2"></i> Ayodeji Fatade
               </p>
               <p className="text-primary-muted mb-2 text-nowrap">
-                <i className="fa-solid fa-envelope mr-2"></i> ayodeji@footballbank.soccer
+                <i className="fa-solid fa-envelope mr-2"></i> contact@footballbank.soccer
               </p>
               <p className="text-primary-muted mb-4">
                 <i className="fa-solid fa-phone mr-2"></i> +1 (862) 372-9817
