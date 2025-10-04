@@ -30,10 +30,10 @@ export default function PlayerCarousel({ images, interval = 5000 }) {
               src={image}
               alt={`Player image ${index + 1}`}
               fill
-              className="object-cover"
+              className="object-fill"
               priority={index === 0}
             />
-            <div className="absolute inset-0 bg-black/20"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
           </div>
         ))}
       </div>

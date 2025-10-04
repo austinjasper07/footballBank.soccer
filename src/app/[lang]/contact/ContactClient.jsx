@@ -80,39 +80,39 @@ export default function ContactClient({ lang = 'en', dict }) {
             <div className="flex flex-col gap-4 bg-primary-card rounded-xl p-8 border border-divider shadow-lg" data-aos="fade-down" >
               {[
                 {
-                  title: "Company Name",
+                  title: dict?.contact?.companyName || "Company Name",
                   icon: "fa-building",
                   color: "red",
                   text: "Soccer Bank Sports Management",
-                  subtitle: "Official Name",
+                  subtitle: dict?.contact?.officialName || "Official Name",
                 },
                 {
-                  title: "Email",
+                  title: dict?.contact?.email || "Email",
                   icon: "fa-envelope",
                   color: "red",
                   text: "contact@footballbank.soccer",
-                  subtitle: "Our inbox is always open",
+                  subtitle: dict?.contact?.ourInboxOpen || "Our inbox is always open",
                 },
                 {
                   title: "P.O Box",
                   icon: "fa-envelope",
                   color: "red",
                   text: "PO BOX 7268, Newark, NJ, Zip: 07107",
-                  subtitle: "Mailing Address",
+                  subtitle: dict?.contact?.mailingAddress || "Mailing Address",
                 },
                 {
-                  title: "Global Branches",
+                  title: dict?.contact?.globalBranches || "Global Branches",
                   icon: "fa-globe",
                   color: "red",
                   text: "Africa, US, UK, Europe",
-                  subtitle: "We operate worldwide",
+                  subtitle: dict?.contact?.weOperateWorldwide || "We operate worldwide",
                 },
                 {
-                  title: "Licensing",
+                  title: dict?.contact?.licensing || "Licensing",
                   icon: "fa-id-card",
                   color: "red",
                   text: "FIFA Licensed Agent, Certified Scout",
-                  subtitle: "Accredited & Verified",
+                  subtitle: dict?.contact?.accreditedVerified || "Accredited & Verified",
                 },
               ].map(({ title, icon, color, text, subtitle }) => (
                 <div key={title} className="flex gap-4 items-start rounded-xl p-8 border border-divider shadow-lg" data-aos="fade-left" data-aos-delay="300">
@@ -151,7 +151,7 @@ export default function ContactClient({ lang = 'en', dict }) {
                     type="text"
                     required
                     className="w-full bg-primary-card border border-divider rounded-lg px-4 py-3"
-                    placeholder="Your full name"
+                    placeholder={dict?.contact?.namePlaceholder || "Your full name"}
                   />
                 </div>
                 <div>
@@ -163,7 +163,7 @@ export default function ContactClient({ lang = 'en', dict }) {
                     type="email"
                     required
                     className="w-full bg-primary-card border border-divider rounded-lg px-4 py-3"
-                    placeholder="your@email.com"
+                    placeholder={dict?.contact?.emailPlaceholder || "your@email.com"}
                   />
                 </div>
               </div>
@@ -175,21 +175,21 @@ export default function ContactClient({ lang = 'en', dict }) {
                   name="subject"
                   className="w-full bg-primary-card border border-divider rounded-lg px-4 py-3"
                 >
-                  <option value="">Select a subject</option>
+                  <option value="">{dict?.contact?.selectSubject || "Select a subject"}</option>
                   <option value="Player Representation">
-                    Player Representation
+                    {dict?.contact?.playerRepresentation || "Player Representation"}
                   </option>
-                  <option value="Trial Request">Trial Request</option>
+                  <option value="Trial Request">{dict?.contact?.trialRequest || "Trial Request"}</option>
                   <option value="Career Consultation">
-                    Career Consultation
+                    {dict?.contact?.careerConsultation || "Career Consultation"}
                   </option>
-                  <option value="Business Inquiry">Business Inquiry</option>
-                  <option value="Fitness Branding">Fitness Branding</option>
-                  <option value="Transfer Inquiry">Transfer Inquiry</option>
+                  <option value="Business Inquiry">{dict?.contact?.businessInquiry || "Business Inquiry"}</option>
+                  <option value="Fitness Branding">{dict?.contact?.fitnessBranding || "Fitness Branding"}</option>
+                  <option value="Transfer Inquiry">{dict?.contact?.transferInquiry || "Transfer Inquiry"}</option>
                   <option value="Partnership Opportunity">
-                    Partnership Opportunity
+                    {dict?.contact?.partnershipOpportunity || "Partnership Opportunity"}
                   </option>
-                  <option value="General Question">General Question</option>
+                  <option value="General Question">{dict?.contact?.generalQuestion || "General Question"}</option>
                 </select>
               </div>
               <div>
@@ -201,7 +201,7 @@ export default function ContactClient({ lang = 'en', dict }) {
                   required
                   rows={6}
                   className="w-full bg-primary-card border border-divider rounded-lg px-4 py-3 resize-none"
-                  placeholder="Tell us about your goals, experience, and how we can help you..."
+                  placeholder={dict?.contact?.messagePlaceholder || "Tell us about your goals, experience, and how we can help you..."}
                 ></textarea>
               </div>
               <button
@@ -228,11 +228,10 @@ export default function ContactClient({ lang = 'en', dict }) {
       <section className="pb-16 md:pb-24">
         <div className="container mx-auto px-4 max-w-4xl text-center">
           <h2 className=" font-bold text-3xl mb-8">
-            Follow Our Journey
+            {dict?.contact?.followJourney || "Follow Our Journey"}
           </h2>
           <p className="text-primary-muted text-lg mb-12">
-            Connect with us on social media to stay up to date with global
-            football talent and opportunities.
+            {dict?.contact?.connectSocialMedia || "Connect with us on social media to stay up to date with global football talent and opportunities."}
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[

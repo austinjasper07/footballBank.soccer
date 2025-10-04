@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import PlayerTabs from "@/app/players/[id]/PlayerTabs";
+import PlayerTabs from "@/app/[lang]/players/[id]/PlayerTabs";
 import Head from "next/head";
 import { getPlayerById } from "@/actions/publicActions";
 import Link from "next/link";
-import PlayerCarousel from "@/components/PlayerCarousel";
 import { useEffect, useState } from "react";
 import { generateMetadata as generateSEOMetadata, generateStructuredData, generateBreadcrumbs } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/SEO";
@@ -152,18 +151,8 @@ export default function PlayerPage({ params }) {
         />
       </Head>
       <main className="bg-primary-bg text-primary-text font-inter">
-        {/* Container for first two sections with background carousel */}
+        {/* Container for first two sections */}
         <div className="relative py-16">
-          {/* Background Carousel - Full screen width, first two sections height */}
-          <div className="absolute left-0 right-0 top-0 bottom-0 z-0 w-screen" style={{ marginLeft: 'calc(-50vw + 50%)' }}>
-            <PlayerCarousel 
-              images={player.imageUrl || [player.imageUrl?.[0]]} 
-              interval={4000}
-            />
-          </div>
-          
-          {/* Overlay - Full screen width, first two sections height */}
-          <div className="absolute left-0 right-0 top-0 bottom-0 z-5 bg-black/40 w-screen" style={{ marginLeft: 'calc(-50vw + 50%)' }}></div>
           
           {/* Breadcrumbs */}
           <div className="container mx-auto px-4 max-w-6xl relative z-10 pt-4">

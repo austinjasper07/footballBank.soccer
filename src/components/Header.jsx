@@ -13,8 +13,10 @@ import { getClientDictionary } from "@/lib/client-dictionaries";
 
 export default function Header({ lang = 'en' }) {
   const [dict, setDict] = useState(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     getClientDictionary(lang).then(setDict);
   }, [lang]);
 
@@ -30,7 +32,8 @@ export default function Header({ lang = 'en' }) {
     { label: "Contact", path: `/${lang}/contact` },
   ];
 
-  const navLinks = dict ? [
+  // Use consistent navigation links to prevent hydration mismatch
+  const navLinks = (dict && mounted) ? [
     { label: dict.navigation.home, path: `/${lang}` },
     { label: dict.navigation.about, path: `/${lang}/about` },
     { label: dict.navigation.players, path: `/${lang}/players` },
@@ -40,23 +43,24 @@ export default function Header({ lang = 'en' }) {
     { label: dict.navigation.shop, path: `/${lang}/shop/products` },
     { label: dict.navigation.contact, path: `/${lang}/contact` },
   ] : defaultNavLinks;
+
   const { isAuthenticated, user, isLoading } = useAuth();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const { cart } = useCart();
 
   const isShopOrCart =
-    pathname.startsWith("/shop") ||
-    pathname === "/cart" ||
-    pathname === "/shop/cart";
-  const isCartPage = pathname === "/cart" || pathname === "/shop/cart";
+    pathname.includes("/shop") ||
+    pathname.endsWith("/cart") ||
+    pathname.includes("/shop/cart");
+  const isCartPage = pathname.endsWith("/cart") || pathname.includes("/shop/cart");
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
     <header className="bg-primary-card sticky top-0 z-50 border-b border-divider shadow-sm">
       {/* Partner Logos Section */}
-      <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 py-2">
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 py-2 px-4 md:px-8 lg:px-12">
         <div className="max-w-full mx-auto px-4 lg:px-12">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -83,8 +87,8 @@ export default function Header({ lang = 'en' }) {
               </div>
               <div className="flex items-center bg-white px-3 py-1 rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
                 <Image
-                  src="/partners/pfa-logo.svg"
-                  alt="Professional Football Academy"
+                  src="/partners/fifa-logo.svg"
+                  alt="FIFA"
                   width={60}
                   height={20}
                   className="object-contain h-5"
@@ -95,23 +99,23 @@ export default function Header({ lang = 'en' }) {
         </div>
       </div>
       
-      <div className="max-w-full mx-auto px-4 lg:px-12">
-        <div className="flex items-center h-16 md:h-20">
+      <div className="max-w-full mx-auto  lg:px-12">
+        <div className="flex items-center px-8 sm:px-6 lg:px-12 justify-between h-14 sm:h-16 md:h-20">
           {/* Logo - Fixed width */}
           <div className="flex-shrink-0">
             <Link
-              href="/"
+              href={`/${lang}`}
               className="font-bold text-2xl text-accent-red cursor-pointer flex items-center gap-2"
             >
-              <div className="relative w-16 h-16 md:w-30 md:h-28 flex items-center">
+              <div className="flex items-center gap-2">
                 <Image
                   src="/logo.jpg"
                   alt="FootballBank Logo"
                   width={40}
                   height={40}
-                  className="object-contain h-12 w-12 md:h-20 md:w-20"
+                  className="object-contain h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12"
                 />
-                <span className="text-xl md:text-2xl font-semibold text-accent-red">
+                <span className="text-lg sm:text-xl md:text-2xl font-semibold text-accent-red">
                   FootballBank
                 </span>
               </div>
@@ -120,12 +124,12 @@ export default function Header({ lang = 'en' }) {
 
           {/* Desktop Navigation - Centered */}
           <nav className="hidden lg:flex flex-1 justify-center">
-            <div className="flex space-x-6 text-nowrap">
+            <div className="flex space-x-4 xl:space-x-6 text-nowrap">
               {navLinks.map(({ label, path }) => (
                 <Link
                   key={path}
                   href={path}
-                  className={`transition-colors ${
+                  className={`transition-colors text-sm xl:text-base ${
                     pathname === path
                       ? "text-accent-red font-semibold"
                       : "text-primary-text hover:text-accent-red"
@@ -138,20 +142,20 @@ export default function Header({ lang = 'en' }) {
           </nav>
 
           {/* Right Actions - Fixed width */}
-          <div className="flex items-center space-x-3 flex-shrink-0">
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
             {/* Language Switcher */}
-            <LanguageSwitcher currentLang={lang} />
+            {mounted && <LanguageSwitcher currentLang={lang} />}
             
             {/* Submit Profile CTA */}
             <Link
               href={`/${lang}/submit-profile`}
-              className="hidden md:block bg-gradient-to-r from-accent-red to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200 shadow-sm hover:shadow-md"
+              className="hidden md:block bg-gradient-to-r from-accent-red to-red-600 hover:from-red-600 hover:to-red-700 text-white px-3 lg:px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200 shadow-sm hover:shadow-md text-sm lg:text-base"
             >
-              {dict?.navigation?.submitProfile || "Submit Profile"}
+              {(dict && mounted) ? dict?.navigation?.submitProfile : "Submit Profile"}
             </Link>
             
-            {isShopOrCart && (
-              <Link href="/shop/cart" className="relative">
+            {isShopOrCart && mounted && (
+              <Link href={`/${lang}/shop/cart`} className="relative">
                 <FaShoppingCart
                   className={`text-xl ${
                     isCartPage
@@ -166,7 +170,7 @@ export default function Header({ lang = 'en' }) {
                 )}
               </Link>
             )}
-            {!isLoading && (
+            {mounted && !isLoading && (
               isAuthenticated ? (
                 <UserHeader slug={"Dashboard"} href={"/admin"}/>
               ) : (
@@ -174,7 +178,7 @@ export default function Header({ lang = 'en' }) {
                   href={`/${lang}/auth/login`}
                   className="hidden lg:block border border-accent-red text-accent-red hover:bg-accent-red hover:text-white px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200"
                 >
-                  {dict?.navigation?.signIn || "Sign in"}
+                  {(dict && mounted) ? dict?.navigation?.signIn : "Sign in"}
                 </Link>
               )
             )}
@@ -193,63 +197,65 @@ export default function Header({ lang = 'en' }) {
       </div>
 
       {/* Mobile Menu */}
-      <div
-        className={`fixed top-0 right-0 h-full w-64 bg-primary-card z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
-          menuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex flex-col p-6 space-y-4 pt-24">
-          {navLinks.map(({ label, path }) => (
-            <Link
-              key={path}
-              href={path}
-              className={`text-base ${
-                pathname === path
-                  ? "text-accent-red font-semibold"
-                  : "text-primary-text hover:text-accent-red"
-              }`}
-              onClick={() => setMenuOpen(false)}
-            >
-              {label}
-            </Link>
-          ))}
-          
-          {/* Mobile Submit Profile Button */}
-          <Link
-            href={`/${lang}/submit-profile`}
-            onClick={() => setMenuOpen(false)}
-            className="bg-gradient-to-r from-accent-red to-red-600 text-white text-center py-3 rounded-md block font-medium"
-          >
-            {dict?.navigation?.submitProfile || "Submit Profile"}
-          </Link>
-          
-          {!isLoading && (
-            isAuthenticated ? (
-              <button
-                onClick={() => {
-                  setMenuOpen(false);
-                  // Handle logout - you can call logout function from context
-                  window.location.href = '/auth/login';
-                }}
-                className="border border-accent-red text-accent-red text-center py-2 rounded-md w-full"
-              >
-                Logout
-              </button>
-            ) : (
+      {mounted && (
+        <div
+          className={`fixed top-0 right-0 h-full w-72 sm:w-80 bg-primary-card z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+            menuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="flex flex-col p-4 sm:p-6 space-y-3 sm:space-y-4 pt-20 sm:pt-24">
+            {navLinks.map(({ label, path }) => (
               <Link
-                href={`/${lang}/auth/login`}
+                key={path}
+                href={path}
+                className={`text-base sm:text-lg py-2 px-3 rounded-md transition-colors ${
+                  pathname === path
+                    ? "text-accent-red font-semibold bg-red-50"
+                    : "text-primary-text hover:text-accent-red hover:bg-gray-50"
+                }`}
                 onClick={() => setMenuOpen(false)}
-                className="border border-accent-red text-accent-red text-center py-2 rounded-md block"
               >
-                {dict?.navigation?.signIn || "Sign in"}
+                {label}
               </Link>
-            )
-          )}
+            ))}
+            
+            {/* Mobile Submit Profile Button */}
+            <Link
+              href={`/${lang}/submit-profile`}
+              onClick={() => setMenuOpen(false)}
+              className="bg-gradient-to-r from-accent-red to-red-600 text-white text-center py-3 rounded-md block font-medium"
+            >
+              {(dict && mounted) ? dict?.navigation?.submitProfile : "Submit Profile"}
+            </Link>
+            
+            {!isLoading && (
+              isAuthenticated ? (
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    // Handle logout - you can call logout function from context
+                    window.location.href = '/auth/login';
+                  }}
+                  className="border border-accent-red text-accent-red text-center py-2 rounded-md w-full"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link
+                  href={`/${lang}/auth/login`}
+                  onClick={() => setMenuOpen(false)}
+                  className="border border-accent-red text-accent-red text-center py-2 rounded-md block"
+                >
+                  {(dict && mounted) ? dict?.navigation?.signIn : "Sign in"}
+                </Link>
+              )
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Backdrop */}
-      {menuOpen && (
+      {mounted && menuOpen && (
         <div
           className="fixed inset-0 bg-black/20 z-40"
           onClick={() => setMenuOpen(false)}
@@ -257,6 +263,4 @@ export default function Header({ lang = 'en' }) {
       )}
     </header>
   );
-}
-
-
+};

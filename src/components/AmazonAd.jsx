@@ -9,7 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-export default function AmazonAd({displayInContent}) {
+export function AmazonAdMobile() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function AmazonAd({displayInContent}) {
   };
 
   return (
-    <aside className={`${displayInContent ? "lg:w-full" : "lg:w-64"}"w-full border-gray-200 border-[0.4px] bg-gradient-to-b from-red-50 to-white rounded-lg shadow-lg p-3 space-y-4"`} data-aos="fade-down">
+    <aside className={`lg:hidden w-full border-gray-200 border-[0.4px] bg-gradient-to-b from-red-50 to-white rounded-lg shadow-lg p-3 space-y-4"`} data-aos="fade-down">
       {/* 🔥 Sidebar Title */}
       <h2 className="text-lg font-bold text-center text-red-600 tracking-wide">
         🔥 Amazon Hot Picks
@@ -38,7 +38,7 @@ export default function AmazonAd({displayInContent}) {
       </p>
 
       {/* 📱 Mobile & Tablet View (single swiper with groups of 3) */}
-      <div className={`${displayInContent ? "lg:block" : "lg:hidden"} block`}>
+      <div className={"lg:hidden block"}>
         <Swiper
           modules={[Autoplay, Pagination]}
           autoplay={{ delay: 4000, disableOnInteraction: false }}
@@ -61,7 +61,7 @@ export default function AmazonAd({displayInContent}) {
                     <img
                       src={p.image}
                       alt={p.description}
-                      className="w-full h-32 object-cover"
+                      className="w-full h-32 object-fit"
                     />
                     <div className="p-2 text-xs">
                       <p className="line-clamp-2 text-gray-800 font-medium">
@@ -79,8 +79,45 @@ export default function AmazonAd({displayInContent}) {
         </Swiper>
       </div>
 
+
+      {/* ⚠️ Disclaimer */}
+      <p className="text-[10px] text-gray-500 text-center mt-3 p-2 border-t-[0.3px] border-gray-300">
+        As an Amazon Associate I earn from qualifying purchases.
+      </p>
+    </aside>
+  );
+}
+
+export function AmazonAdDesktop() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    getAffiliateProducts().then(setProducts);
+  }, []);
+
+  const categories = [...new Set(products.map((p) => p.category))];
+
+  // 🧩 Utility: chunk array into groups of n
+  const chunkArray = (arr, size) => {
+    const chunks = [];
+    for (let i = 0; i < arr.length; i += size) {
+      chunks.push(arr.slice(i, i + size));
+    }
+    return chunks;
+  };
+
+  return (
+    <aside className={"hidden lg:block w-64 h-fit border-gray-200 border-[0.4px] bg-gradient-to-b from-red-50 to-white rounded-lg shadow-lg p-3 space-y-4"} data-aos="fade-down">
+      {/* 🔥 Sidebar Title */}
+      <h2 className="text-lg font-bold text-center text-red-600 tracking-wide">
+        🔥 Amazon Hot Picks
+      </h2>
+      <p className="text-[11px] text-center text-gray-500 mb-2">
+        Curated deals just for you
+      </p>
+
       {/* 💻 Desktop View (stacked by category) */}
-      <div className={`${displayInContent ? "hidden" : "lg:flex lg:flex-col gap-6"} hidden`}>
+      <div className={"lg:flex lg:flex-col gap-6 hidden"}>
         {categories.map((cat) => {
           const catProducts = products.filter((p) => p.category === cat);
           return (
@@ -113,7 +150,7 @@ export default function AmazonAd({displayInContent}) {
                       <img
                         src={p.image}
                         alt={p.description}
-                        className="w-full h-32 object-cover"
+                        className="w-full h-32 object-fit"
                       />
                       <div className="p-2 text-xs">
                         <p className="line-clamp-2 text-gray-800 font-medium group-hover:text-red-600">

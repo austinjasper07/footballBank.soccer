@@ -1,12 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 
 const CartPage = () => {
   const { cart, clearCart, addToCart, removeFromCart } = useCart();
   const router = useRouter();
+  const pathname = usePathname();
+  const lang = pathname?.split('/')[1] || 'en';
 
   const updateQuantity = (id, change) => {
     const item = cart.find(i => i.id === id);
@@ -29,7 +31,7 @@ const CartPage = () => {
           <div className="flex items-center space-x-2 text-sm">
             <span
               className="text-primary-muted hover:text-accent-red cursor-pointer"
-              onClick={() => router.push('/shop/products')}
+              onClick={() => router.push(`/${lang}/shop/products`)}
             >
               Shop
             </span>
@@ -105,7 +107,7 @@ const CartPage = () => {
                 {/* Continue Shopping */}
                 <div className="flex justify-between items-center pt-6 border-t border-divider">
                   <button
-                    onClick={() => router.push('/shop/products')}
+                    onClick={() => router.push(`/${lang}/shop/products`)}
                     className="flex items-center gap-2 text-accent-red hover:text-accent-amber cursor-pointer"
                   >
                     <i className="fa-solid fa-arrow-left" />
@@ -155,7 +157,7 @@ const CartPage = () => {
                 </div>
                 <button
                   disabled={cart.length === 0}
-                  onClick={() => router.push('/secure-payment/checkout?type=cart')}
+                  onClick={() => router.push(`/${lang}/secure-payment/checkout?type=cart`)}
                   className={`w-full mt-6 py-4 bg-accent-red text-white rounded-lg font-semibold text-lg hover:bg-opacity-90 transition ${
                     cart.length === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
                   }`}

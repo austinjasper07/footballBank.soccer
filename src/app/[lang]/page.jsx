@@ -63,9 +63,14 @@ export default async function HomePage({ params }) {
               className=" font-bold text-[clamp(2.5rem,3.5vw,4rem)] leading-tight tracking-tight text-primary-text"
               data-aos="fade-up"
             >
-              {dict.homepage.hero.title.replace('{highlight}', '')}
-              <span className="text-accent-red">{dict.homepage.hero.titleHighlight}</span>
-              {dict.homepage.hero.title.includes('banked') ? ' is banked' : ''}
+              {dict.homepage.hero.title.split(dict.homepage.hero.titleHighlight).map((part, index) => (
+                <span key={index}>
+                  {part}
+                  {index < dict.homepage.hero.title.split(dict.homepage.hero.titleHighlight).length - 1 && (
+                    <span className="text-accent-red">{dict.homepage.hero.titleHighlight}</span>
+                  )}
+                </span>
+              ))}
             </h1>
             <p
               className="text-primary-muted text-[clamp(1rem,2.5vw,1.25rem)] font-inter"
