@@ -178,7 +178,7 @@ export default function MatchPage() {
         </div>
         {/* Ads Placement */}
         <div className="lg:hidden my-4">
-          <AmazonAd />
+          <AmazonAd lang={lang} />
         </div>
 
         {/* Tabs */}
@@ -234,7 +234,7 @@ export default function MatchPage() {
 
                     {half.toLowerCase().includes("1st") && (
                       <div className="my-6">
-                        <AmazonAd displayInContent={isLargeScreen} />
+                        <AmazonAd lang={lang} displayInContent={isLargeScreen} />
                       </div>
                     )}
                   </div>
@@ -377,13 +377,13 @@ export default function MatchPage() {
         </div>
 
         <div className="my-4 hidden lg:block">
-          <AmazonAd displayInContent={isLargeScreen} />
+          <AmazonAd lang={lang} displayInContent={isLargeScreen} />
         </div>
       </div>
 
       {/* Sidebar */}
       <aside className="w-full md:w-72 mt-4">
-        <AmazonAd />
+        <AmazonAd lang={lang} />
       </aside>
     </div>
   );

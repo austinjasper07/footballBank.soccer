@@ -36,12 +36,12 @@
   --color-primary-text: #111827;
   --color-primary-muted: #6B7280;
 
-  /* Accent colors */
-  --color-accent-blue: #1F6FEB;
-  --color-accent-green: #22C55E;
-  --color-accent-amber: #FACC15;
-  --color-accent-red: red;
-  --accent: #FACC15;
+  /* Accent colors - Enhanced professional palette */
+  --color-accent-blue: #3B82F6;
+  --color-accent-green: #10B981;
+  --color-accent-amber: #F59E0B;
+  --color-accent-red: #EF4444;
+  --accent: #F59E0B;
   --accent-foreground: #111827;
 
   /* Functional system colors */

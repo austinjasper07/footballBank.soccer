@@ -17,6 +17,95 @@
     "close": "Close",
     "open": "Open"
   },
+  "amazonAds": {
+    "title": "Amazon Deals",
+    "subtitle": "Handpicked products for football enthusiasts",
+    "ctaTitle": "More Deals Available",
+    "ctaSubtitle": "Discover exclusive offers on Amazon",
+    "ctaButton": "Shop Now",
+    "disclosureLabel": "Affiliate Disclosure:",
+    "disclosureText": "We earn from qualifying purchases."
+  },
+  "agentPage": {
+    "metadata": {
+      "title": "About Our Agent | FootballBank.soccer",
+      "description": "Representing football talent globally with integrity, insight, and strategic vision."
+    },
+    "hero": {
+      "name": "Ayodeji Fatade",
+      "title": "Representing global football talents with vision, integrity, and developmental expertise.",
+      "description": "Ayodeji is an agent at FootballBank.soccer, an international organization dedicated to discovering, developing and representing talented players across the globe.",
+      "license": {
+        "title": "FIFA Licensed",
+        "id": "License ID: 202309-4469"
+      },
+      "stats": {
+        "experience": {
+          "title": "15+ Years Experience",
+          "subtitle": "In football industry"
+        },
+        "certification": {
+          "title": "PFSA Certified",
+          "subtitle": "Scouting qualification"
+        },
+        "network": {
+          "title": "Global Network",
+          "subtitle": "Africa, Europe, USA, Asia, South America"
+        },
+        "focus": {
+          "title": "Youth Focus",
+          "subtitle": "Player development"
+        }
+      },
+      "bio": "With a Certificate in Football Management (UK), he's an experienced agent focused on career growth, youth transfers, and transparent representation. He partners with clubs and academies across Africa, Europe, Asia, USA and South America to unlock global opportunities."
+    },
+    "coreValues": {
+      "title": "Our Core Values",
+      "subtitle": "The principles that guide our approach to representing football talent worldwide",
+      "values": [
+        {
+          "title": "Integrity",
+          "icon": "fa-handshake",
+          "color": "red",
+          "desc": "We uphold the highest standards of transparency and ethics in every representation, negotiation, and transfer.",
+          "features": ["Transparent Communication", "Ethical Practices", "Honest Representation"]
+        },
+        {
+          "title": "Opportunity",
+          "icon": "fa-door-open",
+          "color": "green",
+          "desc": "We unlock doors to international clubs, academies, and trials—connecting talent to the world stage.",
+          "features": ["Global Network Access", "International Trials", "Club Connections"]
+        },
+        {
+          "title": "Development",
+          "icon": "fa-chart-line",
+          "color": "amber",
+          "desc": "From grassroots to global, we prioritize player growth with coaching, mentorship, and career planning.",
+          "features": ["Career Planning", "Skill Development", "Mentorship Programs"]
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Take the Next Step?",
+      "subtitle": "Whether you're a rising star or a seasoned player, FootballBank is here to represent you with purpose, precision, and global reach.",
+      "consultation": {
+        "title": "Free Consultation",
+        "subtitle": "30-minute strategy session",
+        "description": "Discuss your career goals and get personalized advice on your football journey."
+      },
+      "profile": {
+        "title": "Profile Submission",
+        "subtitle": "Join our talent database",
+        "description": "Submit your profile to be considered for opportunities with our partner clubs."
+      },
+      "buttons": {
+        "consultation": "Schedule Consultation",
+        "profile": "Submit Your Profile"
+      },
+      "trust": "Trusted by players worldwide • FIFA Licensed • 25+ Years Experience"
+    }
+  },
   "navigation": {
     "home": "Home",
     "about": "About",
@@ -189,7 +278,7 @@
     "weekend": "Weekend: 10:00 AM - 4:00 PM"
   },
   "players": {
-    "title": "Player Portfolio"
+    "title": "Talent Showcase"
   },
   "faq": {
     "title": "Frequently Asked Questions",
@@ -256,7 +345,7 @@
     "viewDetails": "View Details"
   },
   "players": {
-    "title": "Football Players",
+    "title": "Talent Showcase",
     "subtitle": "Discover talented football players from around the world",
     "searchPlaceholder": "Search players...",
     "filterBy": "Filter by",

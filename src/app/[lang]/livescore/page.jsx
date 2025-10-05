@@ -229,7 +229,7 @@ export default function LiveScores() {
                 {/* Mobile + md ads: insert after every few competitions */}
                 {index % 2 === 1 && (
                   <div className="my-4 w-full">
-                    <AmazonAd displayInContent={isLargeScreen}/>
+                    <AmazonAd lang={lang} displayInContent={isLargeScreen}/>
                   </div>
                   
                 )}
@@ -243,7 +243,7 @@ export default function LiveScores() {
 
       {/* Right Sidebar Ads (desktop only) */}
       <aside className="hidden lg:block w-64 border-l p-4 space-y-4">
-        <AmazonAd />
+        <AmazonAd lang={lang} />
         {/* <AdBlock /> */}
         {/* <AmazonAd /> */}
         

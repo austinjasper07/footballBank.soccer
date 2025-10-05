@@ -17,6 +17,95 @@
     "close": "Cerrar",
     "open": "Abrir"
   },
+  "amazonAds": {
+    "title": "Ofertas de Amazon",
+    "subtitle": "Productos seleccionados para entusiastas del fútbol",
+    "ctaTitle": "Más Ofertas Disponibles",
+    "ctaSubtitle": "Descubre ofertas exclusivas en Amazon",
+    "ctaButton": "Comprar Ahora",
+    "disclosureLabel": "Divulgación de Afiliados:",
+    "disclosureText": "Ganamos con las compras calificadas."
+  },
+  "agentPage": {
+    "metadata": {
+      "title": "Sobre Nuestro Agente | FootballBank.soccer",
+      "description": "Representando talento futbolístico globalmente con integridad, visión y experiencia estratégica."
+    },
+    "hero": {
+      "name": "Ayodeji Fatade",
+      "title": "Representando talentos futbolísticos globales con visión, integridad y experiencia en desarrollo.",
+      "description": "Ayodeji es un agente en FootballBank.soccer, una organización internacional dedicada a descubrir, desarrollar y representar jugadores talentosos en todo el mundo.",
+      "license": {
+        "title": "Licenciado FIFA",
+        "id": "ID de Licencia: 202309-4469"
+      },
+      "stats": {
+        "experience": {
+          "title": "15+ Años de Experiencia",
+          "subtitle": "En la industria del fútbol"
+        },
+        "certification": {
+          "title": "Certificado PFSA",
+          "subtitle": "Calificación de scouting"
+        },
+        "network": {
+          "title": "Red Global",
+          "subtitle": "África, Europa, USA, Asia, Sudamérica"
+        },
+        "focus": {
+          "title": "Enfoque Juvenil",
+          "subtitle": "Desarrollo de jugadores"
+        }
+      },
+      "bio": "Con un Certificado en Gestión de Fútbol (Reino Unido), es un agente experimentado enfocado en el crecimiento profesional, transferencias juveniles y representación transparente. Se asocia con clubes y academias en África, Europa, Asia, USA y Sudamérica para desbloquear oportunidades globales."
+    },
+    "coreValues": {
+      "title": "Nuestros Valores Fundamentales",
+      "subtitle": "Los principios que guían nuestro enfoque para representar el talento futbolístico mundial",
+      "values": [
+        {
+          "title": "Integridad",
+          "icon": "fa-handshake",
+          "color": "red",
+          "desc": "Mantenemos los más altos estándares de transparencia y ética en cada representación, negociación y transferencia.",
+          "features": ["Comunicación Transparente", "Prácticas Éticas", "Representación Honesta"]
+        },
+        {
+          "title": "Oportunidad",
+          "icon": "fa-door-open",
+          "color": "green",
+          "desc": "Abrimos puertas a clubes internacionales, academias y pruebas—conectando talento con el escenario mundial.",
+          "features": ["Acceso a Red Global", "Pruebas Internacionales", "Conexiones con Clubes"]
+        },
+        {
+          "title": "Desarrollo",
+          "icon": "fa-chart-line",
+          "color": "amber",
+          "desc": "Desde las bases hasta lo global, priorizamos el crecimiento del jugador con entrenamiento, mentoría y planificación de carrera.",
+          "features": ["Planificación de Carrera", "Desarrollo de Habilidades", "Programas de Mentoría"]
+        }
+      ]
+    },
+    "cta": {
+      "title": "¿Listo para Dar el Siguiente Paso?",
+      "subtitle": "Ya seas una estrella en ascenso o un jugador experimentado, FootballBank está aquí para representarte con propósito, precisión y alcance global.",
+      "consultation": {
+        "title": "Consulta Gratuita",
+        "subtitle": "Sesión de estrategia de 30 minutos",
+        "description": "Discute tus objetivos profesionales y obtén consejos personalizados sobre tu viaje futbolístico."
+      },
+      "profile": {
+        "title": "Envío de Perfil",
+        "subtitle": "Únete a nuestra base de datos de talentos",
+        "description": "Envía tu perfil para ser considerado para oportunidades con nuestros clubes socios."
+      },
+      "buttons": {
+        "consultation": "Programar Consulta",
+        "profile": "Enviar Tu Perfil"
+      },
+      "trust": "Confiable por jugadores mundialmente • Licenciado FIFA • 25+ Años de Experiencia"
+    }
+  },
   "navigation": {
     "home": "Inicio",
     "about": "Acerca de",
@@ -256,7 +345,7 @@
     "viewDetails": "Ver Detalles"
   },
   "players": {
-    "title": "Jugadores de Fútbol",
+    "title": "Escaparate de Talento",
     "subtitle": "Descubre jugadores de fútbol talentosos de todo el mundo",
     "searchPlaceholder": "Buscar jugadores...",
     "filterBy": "Filtrar por",

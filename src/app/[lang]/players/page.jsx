@@ -97,7 +97,7 @@ export default function PlayerPortfolioPage() {
           {/* Page title */}
           <section className="py-8 text-center">
             <h1 className="font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] mb-4 text-white drop-shadow-lg">
-              {dict?.players?.title || "Player Portfolio"}
+              {dict?.players?.title || "Talent Showcase"}
             </h1>
           </section>
 
@@ -179,7 +179,7 @@ export default function PlayerPortfolioPage() {
 
           {/* Mobile ad after filters */}
           <div className="my-4">
-            <AmazonAdMobile />
+            <AmazonAdMobile lang={lang} />
           </div>
           
 
@@ -197,58 +197,78 @@ export default function PlayerPortfolioPage() {
               ) : (
                 <div>
                   {/* Player cards */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                     {paginatedPlayers.map((player) => {
                       const fullName = `${player.firstName} ${player.lastName}`;
+                      const playerAge = player.dob ? new Date().getFullYear() - new Date(player.dob).getFullYear() : 'N/A';
                       return (
                         <div
                           key={player.id}
-                          className="bg-primary-card rounded-xl cursor-pointer overflow-hidden border border-divider hover:border-accent-red transition-colors shadow-sm hover:shadow-md"
-                          onClick={() => router.push(`/players/${player.id}`)}
+                          className="group relative bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden border border-white/20 hover:border-white/30 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-3xl cursor-pointer"
+                          onClick={() => router.push(`/${lang}/players/${player.id}`)}
                         >
-                          <div className="relative w-full h-[200px] sm:h-[240px] md:h-[280px] lg:h-[300px]">
+                          {/* Full Player Image */}
+                          <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
                             <Image
                               src={player.imageUrl[0]}
                               alt={fullName}
                               fill
-                              style={{ objectFit: "cover" }}
+                              className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                             />
-                            <div className="absolute left-3 top-auto bottom-3 md:top-3 md:bottom-auto bg-primary-card/95 rounded-full px-2 py-0.5 text-xs sm:text-sm flex items-center gap-1 sm:gap-2 shadow-sm">
+                            {/* Gradient Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                            
+                            {/* Country Badge */}
+                            <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 text-xs font-semibold rounded-full flex items-center gap-2 shadow-lg">
                               <Image
                                 src={`https://flagcdn.com/w20/${player.countryCode.toLowerCase()}.png`}
                                 alt={player.country}
-                                width={14}
-                                height={14}
+                                width={16}
+                                height={16}
                                 className="rounded-full"
                               />
-                              <span className="text-primary-text">
-                                {player.country}
-                              </span>
+                              <span>{player.country}</span>
                             </div>
-                            <div className="absolute top-3 right-3 bg-accent-green text-white rounded-full px-2 py-0.5 text-xs sm:text-sm font-medium">
+                            
+                            {/* Available Badge */}
+                            <div className="absolute top-4 right-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1 text-xs font-semibold rounded-full shadow-lg">
                               Available
                             </div>
-                          </div>
-
-                          <div className="p-3 sm:p-4 md:p-6">
-                            <h3 className="font-semibold text-base sm:text-lg md:text-xl mb-1 sm:mb-2 text-primary-text">
-                              {fullName}
-                            </h3>
-                            <div className="flex items-center justify-between mb-2 sm:mb-4">
-                              <span className="bg-accent-red/10 text-accent-red px-2 sm:px-3 py-0.5 rounded-full text-xs sm:text-sm font-medium">
-                                {player.position}
-                              </span>
-                              <span className="text-primary-muted text-xs sm:text-sm">
-                                Age:{" "}
-                                {new Date().getFullYear() -
-                                  new Date(player.dob).getFullYear()}
-                              </span>
+                            
+                            {/* Player Info Overlay */}
+                            <div className="absolute bottom-0 left-0 right-0 p-4 lg:p-6">
+                              <h3 className="text-xl lg:text-2xl font-bold text-white mb-2 group-hover:text-red-300 transition-colors">
+                                {fullName}
+                              </h3>
+                              
+                              {/* Player Stats */}
+                              <div className="flex flex-wrap gap-2 mb-3">
+                                <span className="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
+                                  {player.position}
+                                </span>
+                                <span className="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
+                                  Age: {playerAge}
+                                </span>
+                                {player.foot && (
+                                  <span className="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
+                                    {player.foot}
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                            <p className="text-primary-muted text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-3">
-                              {player.description}
+                          </div>
+                          
+                          {/* Card Content */}
+                          <div className="p-4 lg:p-6 space-y-4">
+                            <p className="text-blue-200 text-sm leading-relaxed line-clamp-3">
+                              {player.description?.slice(0, 120)}...
                             </p>
-                            <button className="w-full bg-accent-red hover:bg-accent-red/90 text-white py-1.5 sm:py-2 rounded-md font-medium transition-colors cursor-pointer text-xs sm:text-sm">
+                            
+                            <button className="group/btn inline-flex items-center w-full justify-center bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 px-4 rounded-xl font-semibold hover:from-red-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 text-sm lg:text-base shadow-lg">
                               View Profile
+                              <svg className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
                             </button>
                           </div>
                         </div>
@@ -258,10 +278,11 @@ export default function PlayerPortfolioPage() {
 
                   {/* Pagination */}
                   <Pagination className="my-12">
-                    <PaginationContent>
+                    <PaginationContent className="gap-2">
                       <PaginationItem>
                         <PaginationPrevious
                           href="#"
+                          className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={(e) => {
                             e.preventDefault();
                             setCurrentPage((prev) => Math.max(prev - 1, 1));
@@ -274,6 +295,11 @@ export default function PlayerPortfolioPage() {
                           <PaginationLink
                             href="#"
                             isActive={currentPage === num}
+                            className={`${
+                              currentPage === num
+                                ? "bg-gradient-to-r from-red-500 to-pink-500 text-white border-red-500 shadow-lg"
+                                : "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:text-white"
+                            } transition-all duration-300 font-semibold`}
                             onClick={(e) => {
                               e.preventDefault();
                               setCurrentPage(num);
@@ -287,6 +313,7 @@ export default function PlayerPortfolioPage() {
                       <PaginationItem>
                         <PaginationNext
                           href="#"
+                          className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={(e) => {
                             e.preventDefault();
                             setCurrentPage((prev) =>
@@ -306,12 +333,12 @@ export default function PlayerPortfolioPage() {
 
               {/* Right Sidebar Ads (desktop only) */}
 
-              <AmazonAdDesktop />
+              <AmazonAdDesktop lang={lang} />
             </div>
           </section>
 
           <div className="my-4">
-            <AmazonAdMobile />
+            <AmazonAdMobile lang={lang} />
           </div>
 
           {/* Animation styles */}

@@ -1,14 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import "aos/dist/aos.css";
+import { getDictionary } from "@/lib/dictionaries";
 
-export const metadata = {
-  title: "About Our Agent | FootballBank.soccer",
-  description:
-    "Representing football talent globally with integrity, insight, and strategic vision.",
-};
+export async function generateMetadata({ params: { lang } }) {
+  const dict = await getDictionary(lang);
+  return {
+    title: dict.agentPage.metadata.title,
+    description: dict.agentPage.metadata.description,
+  };
+}
 
-const AboutAgent = () => {
+const AboutAgent = async ({ params: { lang } }) => {
+  const dict = await getDictionary(lang);
   
 
   return (
@@ -37,7 +41,7 @@ const AboutAgent = () => {
                   
                   {/* Enhanced name and credentials */}
                   <h2 className="font-bold text-3xl mb-3 text-primary-text">
-                    Ayodeji Fatade
+                    {dict.agentPage.hero.name}
                   </h2>
                   {/* <div className="bg-accent-red/10 text-accent-red px-4 py-2 rounded-full text-lg font-semibold mb-4 inline-block">
                     FIFA Licensed Agent
@@ -47,10 +51,10 @@ const AboutAgent = () => {
                   <div className="bg-gradient-to-r from-accent-green/10 to-accent-green/5 rounded-xl p-4 border border-accent-green/20">
                     <div className="flex items-center justify-center gap-3 mb-2">
                       <i className="fa-solid fa-certificate text-accent-green text-xl" />
-                      <span className="font-bold text-primary-text">FIFA Licensed</span>
+                      <span className="font-bold text-primary-text">{dict.agentPage.hero.license.title}</span>
                     </div>
                     <p className="text-sm text-primary-muted">
-                      License ID: 202309-4469
+                      {dict.agentPage.hero.license.id}
                     </p>
                   </div>
                 </div>
@@ -62,13 +66,13 @@ const AboutAgent = () => {
               <div className="space-y-8">
                 <div>
                   <h1 className="font-bold text-[clamp(1.5rem,5vw,2rem)] mb-6 leading-tight bg-gradient-to-r from-primary-text to-accent-red bg-clip-text text-transparent">
-                    Representing global football talents with vision, integrity, and developmental expertise.
+                    {dict.agentPage.hero.title}
                   </h1>
                 </div>
                 
                 <div className="bg-primary-card/50 rounded-2xl p-8 border border-divider/30 backdrop-blur-sm">
                   <p className="text-primary-muted leading-relaxed text-xl mb-6">
-                    Ayodeji is an agent at FootballBank.soccer, an international organization dedicated to discovering, developing and representing talented players across the globe.
+                    {dict.agentPage.hero.description}
                   </p>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
@@ -77,8 +81,8 @@ const AboutAgent = () => {
                         <i className="fa-solid fa-calendar text-accent-red"></i>
                       </div>
                       <div>
-                        <p className="font-semibold text-primary-text">15+ Years Experience</p>
-                        <p className="text-sm text-primary-muted">In football industry</p>
+                        <p className="font-semibold text-primary-text">{dict.agentPage.hero.stats.experience.title}</p>
+                        <p className="text-sm text-primary-muted">{dict.agentPage.hero.stats.experience.subtitle}</p>
                       </div>
                     </div>
                     
@@ -87,8 +91,8 @@ const AboutAgent = () => {
                         <i className="fa-solid fa-graduation-cap text-accent-green"></i>
                       </div>
                       <div>
-                        <p className="font-semibold text-primary-text">PFSA Certified</p>
-                        <p className="text-sm text-primary-muted">Scouting qualification</p>
+                        <p className="font-semibold text-primary-text">{dict.agentPage.hero.stats.certification.title}</p>
+                        <p className="text-sm text-primary-muted">{dict.agentPage.hero.stats.certification.subtitle}</p>
                       </div>
                     </div>
                     
@@ -97,8 +101,8 @@ const AboutAgent = () => {
                         <i className="fa-solid fa-globe text-accent-amber"></i>
                       </div>
                       <div>
-                        <p className="font-semibold text-primary-text">Global Network</p>
-                        <p className="text-sm text-primary-muted">Africa, Europe, USA, Asia, South America</p>
+                        <p className="font-semibold text-primary-text">{dict.agentPage.hero.stats.network.title}</p>
+                        <p className="text-sm text-primary-muted">{dict.agentPage.hero.stats.network.subtitle}</p>
                       </div>
                     </div>
                     
@@ -107,14 +111,14 @@ const AboutAgent = () => {
                         <i className="fa-solid fa-trophy text-accent-red"></i>
                       </div>
                       <div>
-                        <p className="font-semibold text-primary-text">Youth Focus</p>
-                        <p className="text-sm text-primary-muted">Player development</p>
+                        <p className="font-semibold text-primary-text">{dict.agentPage.hero.stats.focus.title}</p>
+                        <p className="text-sm text-primary-muted">{dict.agentPage.hero.stats.focus.subtitle}</p>
                       </div>
                     </div>
                   </div>
                   
                   <p className="text-primary-muted leading-relaxed text-lg">
-                    With a Certificate in Football Management (UK), he's an experienced agent focused on career growth, youth transfers, and transparent representation. He partners with clubs and academies across Africa, Europe, Asia, USA and South America to unlock global opportunities.
+                    {dict.agentPage.hero.bio}
                   </p>
                 </div>
               </div>
@@ -129,37 +133,15 @@ const AboutAgent = () => {
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-16">
             <h2 className="font-bold text-[clamp(2rem,4vw,3rem)] mb-4 bg-gradient-to-r from-primary-text to-accent-red bg-clip-text text-transparent">
-              Our Core Values
+              {dict.agentPage.coreValues.title}
             </h2>
             <p className="text-primary-muted text-xl max-w-3xl mx-auto">
-              The principles that guide our approach to representing football talent worldwide
+              {dict.agentPage.coreValues.subtitle}
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Integrity",
-                icon: "fa-handshake",
-                color: "red",
-                desc: "We uphold the highest standards of transparency and ethics in every representation, negotiation, and transfer.",
-                features: ["Transparent Communication", "Ethical Practices", "Honest Representation"]
-              },
-              {
-                title: "Opportunity",
-                icon: "fa-door-open",
-                color: "green",
-                desc: "We unlock doors to international clubs, academies, and trials—connecting talent to the world stage.",
-                features: ["Global Network Access", "International Trials", "Club Connections"]
-              },
-              {
-                title: "Development",
-                icon: "fa-chart-line",
-                color: "amber",
-                desc: "From grassroots to global, we prioritize player growth with coaching, mentorship, and career planning.",
-                features: ["Career Planning", "Skill Development", "Mentorship Programs"]
-              },
-            ].map(({ title, icon, color, desc, features }, i) => (
+            {dict.agentPage.coreValues.values.map(({ title, icon, color, desc, features }, i) => (
               <div
                 key={title}
                 className="group bg-primary-card rounded-2xl p-8 border border-divider/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-accent-red/30 backdrop-blur-sm"
@@ -198,11 +180,10 @@ const AboutAgent = () => {
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-12">
             <h2 className="font-bold text-[clamp(2.5rem,5vw,4rem)] mb-6 text-white leading-tight">
-              Ready to Take the Next Step?
+              {dict.agentPage.cta.title}
             </h2>
             <p className="text-white/90 text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
-              Whether you're a rising star or a seasoned player, FootballBank is
-              here to represent you with purpose, precision, and global reach.
+              {dict.agentPage.cta.subtitle}
             </p>
           </div>
           
@@ -213,12 +194,12 @@ const AboutAgent = () => {
                   <i className="fa-solid fa-calendar-check text-white text-xl"></i>
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-xl">Free Consultation</h3>
-                  <p className="text-white/80 text-sm">30-minute strategy session</p>
+                  <h3 className="font-bold text-white text-xl">{dict.agentPage.cta.consultation.title}</h3>
+                  <p className="text-white/80 text-sm">{dict.agentPage.cta.consultation.subtitle}</p>
                 </div>
               </div>
               <p className="text-white/90 text-sm">
-                Discuss your career goals and get personalized advice on your football journey.
+                {dict.agentPage.cta.consultation.description}
               </p>
             </div>
             
@@ -228,27 +209,27 @@ const AboutAgent = () => {
                   <i className="fa-solid fa-user-plus text-white text-xl"></i>
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-xl">Profile Submission</h3>
-                  <p className="text-white/80 text-sm">Join our talent database</p>
+                  <h3 className="font-bold text-white text-xl">{dict.agentPage.cta.profile.title}</h3>
+                  <p className="text-white/80 text-sm">{dict.agentPage.cta.profile.subtitle}</p>
                 </div>
               </div>
               <p className="text-white/90 text-sm">
-                Submit your profile to be considered for opportunities with our partner clubs.
+                {dict.agentPage.cta.profile.description}
               </p>
             </div>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link href="/contact" className="group">
+            <Link href={`/${lang}/contact`} className="group">
               <span className="bg-white text-accent-red px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/90 transition-all duration-300 inline-flex items-center gap-3 shadow-xl hover:shadow-2xl transform hover:scale-105">
                 <i className="fa-solid fa-calendar-plus"></i>
-                Schedule Consultation
+                {dict.agentPage.cta.buttons.consultation}
               </span>
             </Link>
-            <Link href="/submit-profile" className="group">
+            <Link href={`/${lang}/submit-profile`} className="group">
               <span className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent-red transition-all duration-300 inline-flex items-center gap-3 backdrop-blur-sm hover:shadow-xl transform hover:scale-105">
                 <i className="fa-solid fa-file-upload"></i>
-                Submit Your Profile
+                {dict.agentPage.cta.buttons.profile}
               </span>
             </Link>
           </div>
@@ -256,7 +237,7 @@ const AboutAgent = () => {
           <div className="mt-12 text-center">
             <p className="text-white/70 text-sm">
               <i className="fa-solid fa-shield-check mr-2"></i>
-              Trusted by players worldwide • FIFA Licensed • 25+ Years Experience
+              {dict.agentPage.cta.trust}
             </p>
           </div>
         </div>
