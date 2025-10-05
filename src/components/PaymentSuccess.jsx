@@ -11,7 +11,7 @@ const PaymentSuccess = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
-      <main className="bg-primary-bg font-inter text-primary-text min-h-screen">
+      <main className="bg-primary-bg text-primary-text min-h-screen">
         {/* Main content starts below */}
         <section className="py-16 md:py-24 min-h-[80vh]">
           <div className="container mx-auto px-4">

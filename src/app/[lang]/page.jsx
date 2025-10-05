@@ -73,7 +73,7 @@ export default async function HomePage({ params }) {
               ))}
             </h1>
             <p
-              className="text-primary-muted text-[clamp(1rem,2.5vw,1.25rem)] font-inter"
+              className="text-primary-muted text-[clamp(1rem,2.5vw,1.25rem)]"
               data-aos="fade-up"
               data-aos-delay="100"
             >

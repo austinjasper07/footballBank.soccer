@@ -11,7 +11,7 @@ const OrderConfirmedPage = () => {
         <meta charSet="UTF-8" />
       </Head>
 
-      <main className="bg-primary-bg font-inter text-primary-text min-h-screen">
+      <main className="bg-primary-bg text-primary-text min-h-screen">
        
         {/* Order Confirmation Content */}
         <section className="py-16 md:py-24 min-h-[80vh]">

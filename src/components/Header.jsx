@@ -59,85 +59,47 @@ export default function Header({ lang = 'en' }) {
 
   return (
     <header className="bg-primary-card sticky top-0 z-50 border-b border-divider shadow-sm">
-      {/* Partner Logos Section */}
-      <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 py-2 px-4 md:px-8 lg:px-12">
-        <div className="max-w-full mx-auto px-4 lg:px-12">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <span className="text-xs text-gray-600 font-medium">Trusted Partners:</span>
-            </div>
-            <div className="flex items-center space-x-4 md:space-x-6">
-              <div className="flex items-center bg-white px-3 py-1 rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-                <Image
-                  src="/partners/amazon-logo.svg"
-                  alt="Amazon"
-                  width={60}
-                  height={20}
-                  className="object-contain h-5"
-                />
-              </div>
-              <div className="flex items-center bg-white px-3 py-1 rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-                <Image
-                  src="/partners/concacaf-logo.svg"
-                  alt="CONCACAF"
-                  width={60}
-                  height={20}
-                  className="object-contain h-5"
-                />
-              </div>
-              <div className="flex items-center bg-white px-3 py-1 rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-                <Image
-                  src="/partners/fifa-logo.svg"
-                  alt="FIFA"
-                  width={60}
-                  height={20}
-                  className="object-contain h-5"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Partner Logos moved to Footer */}
       
-      <div className="max-w-full mx-auto  lg:px-12">
-        <div className="flex items-center px-8 sm:px-6 lg:px-12 justify-between h-14 sm:h-16 md:h-20">
+      <div className="max-w-full mx-auto px-3 sm:px-4 lg:px-12">
+        <div className="flex items-center justify-between h-12 sm:h-14 md:h-16">
           {/* Logo - Fixed width */}
           <div className="flex-shrink-0">
-            <Link
+          <Link
               href={`/${lang}`}
               className="font-bold text-2xl text-accent-red cursor-pointer flex items-center gap-2"
-            >
+          >
               <div className="flex items-center gap-2">
-                <Image
-                  src="/logo.jpg"
-                  alt="FootballBank Logo"
-                  width={40}
-                  height={40}
+              <Image
+                src="/logo.jpg"
+                alt="FootballBank Logo"
+                width={40}
+                height={40}
                   className="object-contain h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12"
-                />
+              />
                 <span className="text-lg sm:text-xl md:text-2xl font-semibold text-accent-red">
-                  FootballBank
-                </span>
-              </div>
-            </Link>
+                FootballBank
+              </span>
+            </div>
+          </Link>
           </div>
 
           {/* Desktop Navigation - Centered */}
           <nav className="hidden lg:flex flex-1 justify-center">
             <div className="flex space-x-4 xl:space-x-6 text-nowrap">
-              {navLinks.map(({ label, path }) => (
-                <Link
-                  key={path}
-                  href={path}
+            {navLinks.map(({ label, path }) => (
+              <Link
+                key={path}
+                href={path}
                   className={`transition-colors text-sm xl:text-base ${
-                    pathname === path
-                      ? "text-accent-red font-semibold"
-                      : "text-primary-text hover:text-accent-red"
-                  }`}
-                >
-                  {label}
-                </Link>
-              ))}
+                  pathname === path
+                    ? "text-accent-red font-semibold"
+                    : "text-primary-text hover:text-accent-red"
+                }`}
+              >
+                {label}
+              </Link>
+            ))}
             </div>
           </nav>
 
@@ -198,60 +160,60 @@ export default function Header({ lang = 'en' }) {
 
       {/* Mobile Menu */}
       {mounted && (
-        <div
+      <div
           className={`fixed top-0 right-0 h-full w-72 sm:w-80 bg-primary-card z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
-            menuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
+          menuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
           <div className="flex flex-col p-4 sm:p-6 space-y-3 sm:space-y-4 pt-20 sm:pt-24">
-            {navLinks.map(({ label, path }) => (
-              <Link
-                key={path}
-                href={path}
+          {navLinks.map(({ label, path }) => (
+            <Link
+              key={path}
+              href={path}
                 className={`text-base sm:text-lg py-2 px-3 rounded-md transition-colors ${
-                  pathname === path
+                pathname === path
                     ? "text-accent-red font-semibold bg-red-50"
                     : "text-primary-text hover:text-accent-red hover:bg-gray-50"
-                }`}
-                onClick={() => setMenuOpen(false)}
-              >
-                {label}
-              </Link>
-            ))}
-            
-            {/* Mobile Submit Profile Button */}
-            <Link
-              href={`/${lang}/submit-profile`}
+              }`}
               onClick={() => setMenuOpen(false)}
-              className="bg-gradient-to-r from-accent-red to-red-600 text-white text-center py-3 rounded-md block font-medium"
             >
-              {(dict && mounted) ? dict?.navigation?.submitProfile : "Submit Profile"}
+              {label}
             </Link>
-            
-            {!isLoading && (
-              isAuthenticated ? (
-                <button
-                  onClick={() => {
-                    setMenuOpen(false);
-                    // Handle logout - you can call logout function from context
-                    window.location.href = '/auth/login';
-                  }}
-                  className="border border-accent-red text-accent-red text-center py-2 rounded-md w-full"
-                >
-                  Logout
-                </button>
-              ) : (
-                <Link
+          ))}
+          
+          {/* Mobile Submit Profile Button */}
+          <Link
+              href={`/${lang}/submit-profile`}
+            onClick={() => setMenuOpen(false)}
+            className="bg-gradient-to-r from-accent-red to-red-600 text-white text-center py-3 rounded-md block font-medium"
+          >
+              {(dict && mounted) ? dict?.navigation?.submitProfile : "Submit Profile"}
+          </Link>
+          
+          {!isLoading && (
+            isAuthenticated ? (
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  // Handle logout - you can call logout function from context
+                  window.location.href = '/auth/login';
+                }}
+                className="border border-accent-red text-accent-red text-center py-2 rounded-md w-full"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
                   href={`/${lang}/auth/login`}
-                  onClick={() => setMenuOpen(false)}
-                  className="border border-accent-red text-accent-red text-center py-2 rounded-md block"
-                >
+                onClick={() => setMenuOpen(false)}
+                className="border border-accent-red text-accent-red text-center py-2 rounded-md block"
+              >
                   {(dict && mounted) ? dict?.navigation?.signIn : "Sign in"}
-                </Link>
-              )
-            )}
-          </div>
+              </Link>
+            )
+          )}
         </div>
+      </div>
       )}
 
       {/* Backdrop */}

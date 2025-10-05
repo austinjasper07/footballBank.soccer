@@ -13,63 +13,109 @@ const AboutAgent = () => {
 
   return (
     <main className="bg-primary-bg text-primary-text min-h-screen">
-      {/* Hero Section */}
-      <div className="py-12 text-center" data-aos="fade-up">
-        <h1 className="font-bold text-[clamp(1.8rem,3vw,2.5rem)] mb-6">
-          About Our Agent
-        </h1>
-        <p className="text-primary-muted text-[clamp(1rem,2.5vw,1.25rem)] max-w-2xl mx-auto mb-2">
-          Representing global football talent with vision, integrity, and
-          developmental expertise.
-        </p>
-      </div>
-
-      {/* Bio Section */}
-      <section className="pb-16" data-aos="fade-up">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="bg-primary-card rounded-xl p-8 md:p-12 border border-divider shadow-lg">
-            <div className="flex flex-col md:flex-row gap-8 items-center">
-              <Image
-                src="/FootballBank_agent.jpg"
-                alt="Ayodeji Fatade headshot"
-                width={192}
-                height={192}
-                className="rounded-full border-4 border-accent-red object-cover"
-              />
-              <div className="text-center md:text-left flex-1">
-                <h2 className="font-bold text-[clamp(1.75rem,4vw,2.5rem)] mb-4">
-                  Ayodeji Fatade
-                </h2>
-                <p className="text-accent-red font-semibold text-lg mb-4">
-                  FIFA Licensed Football Agent
-                </p>
-                <div className="bg-primary-bg rounded-lg p-4 mb-6 border border-divider flex justify-center md:justify-start items-center gap-3">
-                  <i className="fa-solid fa-certificate text-accent-green" />
-                  <span className="font-medium text-primary-text">
-                    FIFA License ID: 202309-4469
-                  </span>
+      {/* Hero Section with Enhanced Profile Layout */}
+      <section className="pb-12 pt-20 bg-gradient-to-br from-primary-bg to-primary-card/30" data-aos="fade-up">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="flex flex-col lg:flex-row gap-16 items-start">
+            {/* Left Side - Enhanced Profile Card */}
+            <div className="flex-shrink-0 w-full lg:w-auto">
+              <div className="bg-primary-card rounded-2xl p-8 shadow-xl border border-divider/50 backdrop-blur-sm">
+                <div className="text-center">
+                  <div className="relative inline-block mb-6">
+                    <Image
+                      src="/FootballBank_agent.jpg"
+                      alt="Ayodeji Fatade headshot"
+                      width={140}
+                      height={175}
+                      className="rounded-xl border-3 border-accent-red object-cover shadow-lg"
+                    />
+                    {/* Verification badge */}
+                    <div className="absolute -top-2 -right-2 bg-accent-green text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
+                      <i className="fa-solid fa-check text-sm"></i>
+                    </div>
+                  </div>
+                  
+                  {/* Enhanced name and credentials */}
+                  <h2 className="font-bold text-3xl mb-3 text-primary-text">
+                    Ayodeji Fatade
+                  </h2>
+                  {/* <div className="bg-accent-red/10 text-accent-red px-4 py-2 rounded-full text-lg font-semibold mb-4 inline-block">
+                    FIFA Licensed Agent
+                  </div> */}
+                  
+                  {/* Enhanced license display */}
+                  <div className="bg-gradient-to-r from-accent-green/10 to-accent-green/5 rounded-xl p-4 border border-accent-green/20">
+                    <div className="flex items-center justify-center gap-3 mb-2">
+                      <i className="fa-solid fa-certificate text-accent-green text-xl" />
+                      <span className="font-bold text-primary-text">FIFA Licensed</span>
+                    </div>
+                    <p className="text-sm text-primary-muted">
+                      License ID: 202309-4469
+                    </p>
+                  </div>
                 </div>
-                <p className="text-primary-muted leading-relaxed mb-6">
-                  Ayodeji Fatade is the founder of FootballBank, an
-                  international football agency dedicated to discovering and
-                  developing talented players, especially youth prospects. With
-                  25+ years in football, a PFSA scouting certification, and a
-                  Certificate in Football Management (Open University, UK), he’s
-                  an experienced agent focused on career growth, youth
-                  transfers, and transparent representation. He partners with
-                  clubs and academies across Africa, Europe, and the U.S. to
-                  unlock global opportunities.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <span className="bg-accent-red/5 text-accent-red px-3 py-1 rounded-full text-sm border border-accent-red/20">
-                    FIFA Licensed (Minors & Adults)
-                  </span>
-                  <span className="bg-accent-green/10 text-accent-red px-3 py-1 rounded-full text-sm border border-accent-green/20">
-                    25+ Years in Football
-                  </span>
-                  <span className="bg-accent-amber/10 text-accent-red px-3 py-1 rounded-full text-sm border border-accent-amber/20">
-                    Global Club Network
-                  </span>
+              </div>
+            </div>
+
+            {/* Right Side - Enhanced Content */}
+            <div className="flex-1 text-center lg:text-left">
+              <div className="space-y-8">
+                <div>
+                  <h1 className="font-bold text-[clamp(1.5rem,5vw,2rem)] mb-6 leading-tight bg-gradient-to-r from-primary-text to-accent-red bg-clip-text text-transparent">
+                    Representing global football talents with vision, integrity, and developmental expertise.
+                  </h1>
+                </div>
+                
+                <div className="bg-primary-card/50 rounded-2xl p-8 border border-divider/30 backdrop-blur-sm">
+                  <p className="text-primary-muted leading-relaxed text-xl mb-6">
+                    Ayodeji is an agent at FootballBank.soccer, an international organization dedicated to discovering, developing and representing talented players across the globe.
+                  </p>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-accent-red/10 rounded-full flex items-center justify-center">
+                        <i className="fa-solid fa-calendar text-accent-red"></i>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-primary-text">15+ Years Experience</p>
+                        <p className="text-sm text-primary-muted">In football industry</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-accent-green/10 rounded-full flex items-center justify-center">
+                        <i className="fa-solid fa-graduation-cap text-accent-green"></i>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-primary-text">PFSA Certified</p>
+                        <p className="text-sm text-primary-muted">Scouting qualification</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-accent-amber/10 rounded-full flex items-center justify-center">
+                        <i className="fa-solid fa-globe text-accent-amber"></i>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-primary-text">Global Network</p>
+                        <p className="text-sm text-primary-muted">Africa, Europe, USA, Asia, South America</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-accent-red/10 rounded-full flex items-center justify-center">
+                        <i className="fa-solid fa-trophy text-accent-red"></i>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-primary-text">Youth Focus</p>
+                        <p className="text-sm text-primary-muted">Player development</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <p className="text-primary-muted leading-relaxed text-lg">
+                    With a Certificate in Football Management (UK), he's an experienced agent focused on career growth, youth transfers, and transparent representation. He partners with clubs and academies across Africa, Europe, Asia, USA and South America to unlock global opportunities.
+                  </p>
                 </div>
               </div>
             </div>
@@ -77,78 +123,19 @@ const AboutAgent = () => {
         </div>
       </section>
 
-      {/* Career Timeline */}
-      <section className="pb-16 md:pb-24" data-aos="fade-up">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="font-bold text-[clamp(1.75rem,4vw,2.5rem)] text-center mb-12">
-            Career Timeline
-          </h2>
-          <div className="relative">
-            <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-accent-red"></div>
-            {[
-              {
-                date: "1999 - 2008",
-                title: "Amateur Football Career",
-                desc: "Active as an amateur player, developing a deep understanding of grassroots football and the player’s journey.",
-                dotColor: "bg-accent-red",
-                alignRight: false,
-              },
-              {
-                date: "2009 - 2017",
-                title: "Youth Talent Spotter & Football Writer",
-                desc: "Began contributing to football publications and working with local academies, identifying young prospects and sharing insight through analysis.",
-                dotColor: "bg-accent-red",
-                alignRight: true,
-              },
-              {
-                date: "2018 - 2021",
-                title: "Certified Football Scout",
-                desc: "Earned PFSA certification in the UK and scouted players across African academies, building key relationships with international clubs.",
-                dotColor: "bg-accent-red",
-                alignRight: false,
-              },
-              {
-                date: "2022 - Present",
-                title: "FIFA Licensed Agent & Founder of FootballBank",
-                desc: "Established FootballBank to formally represent players, manage transfers, and create opportunities globally with a focus on youth development.",
-                dotColor: "bg-accent-red",
-                alignRight: true,
-              },
-            ].map(({ date, title, desc, dotColor, alignRight }, i) => (
-              <div
-                key={i}
-                className={`relative flex items-center mb-12 ${alignRight ? "md:flex-row-reverse" : ""}`}
-                data-aos="fade-up"
-                data-aos-delay={i * 100}
-              >
-                <div
-                  className={`absolute left-2 md:left-1/2 md:-translate-x-1/2 w-4 h-4 ${dotColor} rounded-full border-4 border-primary-bg`}
-                />
-                <div
-                  className={`ml-12 md:ml-0 md:w-1/2 ${alignRight ? "md:pl-8" : "md:pr-8"}`}
-                >
-                  <div className="bg-primary-card rounded-xl p-6 border border-divider shadow-lg">
-                    <span className="text-accent-red font-semibold text-sm">
-                      {date}
-                    </span>
-                    <h3 className="font-semibold text-xl mb-2">
-                      {title}
-                    </h3>
-                    <p className="text-primary-muted">{desc}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Core Values */}
-      <section className="pb-16 md:pb-24" data-aos="fade-up">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <h2 className="font-bold text-[clamp(1.75rem,4vw,2.5rem)] text-center mb-12">
-            Our Core Values
-          </h2>
+      {/* Enhanced Core Values */}
+      <section className="py-12 bg-gradient-to-br from-primary-card/20 to-primary-bg" data-aos="fade-up">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="text-center mb-16">
+            <h2 className="font-bold text-[clamp(2rem,4vw,3rem)] mb-4 bg-gradient-to-r from-primary-text to-accent-red bg-clip-text text-transparent">
+              Our Core Values
+            </h2>
+            <p className="text-primary-muted text-xl max-w-3xl mx-auto">
+              The principles that guide our approach to representing football talent worldwide
+            </p>
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
@@ -156,68 +143,121 @@ const AboutAgent = () => {
                 icon: "fa-handshake",
                 color: "red",
                 desc: "We uphold the highest standards of transparency and ethics in every representation, negotiation, and transfer.",
+                features: ["Transparent Communication", "Ethical Practices", "Honest Representation"]
               },
               {
                 title: "Opportunity",
                 icon: "fa-door-open",
-                color: "red",
+                color: "green",
                 desc: "We unlock doors to international clubs, academies, and trials—connecting talent to the world stage.",
+                features: ["Global Network Access", "International Trials", "Club Connections"]
               },
               {
                 title: "Development",
                 icon: "fa-chart-line",
-                color: "red",
+                color: "amber",
                 desc: "From grassroots to global, we prioritize player growth with coaching, mentorship, and career planning.",
+                features: ["Career Planning", "Skill Development", "Mentorship Programs"]
               },
-            ].map(({ title, icon, color, desc }, i) => (
+            ].map(({ title, icon, color, desc, features }, i) => (
               <div
                 key={title}
-                className={`bg-primary-card rounded-xl p-8 border border-divider shadow-lg text-center hover:border-accent-${color} transition-colors`}
+                className="group bg-primary-card rounded-2xl p-8 border border-divider/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-accent-red/30 backdrop-blur-sm"
                 data-aos="fade-up"
-                data-aos-delay={i * 100}
+                data-aos-delay={i * 150}
               >
-                <div
-                  className={`w-16 h-16 bg-accent-${color}/10 rounded-full flex items-center justify-center mx-auto mb-6`}
-                >
-                  <i
-                    className={`fa-solid ${icon} text-accent-${color} text-2xl`}
-                  />
+                <div className="text-center mb-6">
+                  <div className={`w-16 h-16 bg-accent-${color}/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <i className={`fa-solid ${icon} text-accent-${color} text-2xl`} />
+                  </div>
+                  <h3 className={`font-bold text-2xl mb-3 text-accent-${color}`}>
+                    {title}
+                  </h3>
                 </div>
-                <h3
-                  className={`font-semibold text-2xl mb-4 text-accent-${color}`}
-                >
-                  {title}
-                </h3>
-                <p className="text-primary-muted leading-relaxed">{desc}</p>
+                
+                <p className="text-primary-muted leading-relaxed mb-6 text-center">
+                  {desc}
+                </p>
+                
+                <div className="space-y-2">
+                  {features.map((feature, idx) => (
+                    <div key={idx} className="flex items-center gap-3">
+                      <div className={`w-2 h-2 bg-accent-${color} rounded-full flex-shrink-0`}></div>
+                      <span className="text-sm text-primary-muted">{feature}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="pb-16 md:pb-24  " data-aos="zoom-in-up">
-        <div className="container mx-auto px-4  max-w-4xl ">
-          <div className="bg-accent-red  rounded-xl p-8 md:p-12 text-center shadow-lg h-full flex flex-col ">
-            <h2 className="font-bold text-[clamp(1.75rem,4vw,2.5rem)] mb-6 text-white">
+      {/* Enhanced CTA Section */}
+      <section className="py-20 bg-gradient-to-br from-accent-red to-red-600" data-aos="zoom-in-up">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="font-bold text-[clamp(2.5rem,5vw,4rem)] mb-6 text-white leading-tight">
               Ready to Take the Next Step?
             </h2>
-            <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
+            <p className="text-white/90 text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
               Whether you're a rising star or a seasoned player, FootballBank is
               here to represent you with purpose, precision, and global reach.
             </p>
-            <div className="flex flex-col md:flex-row gap-8 md:gap-4 w-full items-center justify-center">
-              <Link href="/contact">
-                <span className="bg-white text-accent-red px-4 md:px-8 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors text-nowrap">
-                  Schedule Consultation
-                </span>
-              </Link>
-              <Link href="/submit-profile">
-                <span className="border-2 border-white text-white px-4 md:px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-accent-red transition-colors">
-                  Submit Your Profile
-                </span>
-              </Link>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                  <i className="fa-solid fa-calendar-check text-white text-xl"></i>
+                </div>
+                <div>
+                  <h3 className="font-bold text-white text-xl">Free Consultation</h3>
+                  <p className="text-white/80 text-sm">30-minute strategy session</p>
+                </div>
+              </div>
+              <p className="text-white/90 text-sm">
+                Discuss your career goals and get personalized advice on your football journey.
+              </p>
             </div>
+            
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                  <i className="fa-solid fa-user-plus text-white text-xl"></i>
+                </div>
+                <div>
+                  <h3 className="font-bold text-white text-xl">Profile Submission</h3>
+                  <p className="text-white/80 text-sm">Join our talent database</p>
+                </div>
+              </div>
+              <p className="text-white/90 text-sm">
+                Submit your profile to be considered for opportunities with our partner clubs.
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <Link href="/contact" className="group">
+              <span className="bg-white text-accent-red px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/90 transition-all duration-300 inline-flex items-center gap-3 shadow-xl hover:shadow-2xl transform hover:scale-105">
+                <i className="fa-solid fa-calendar-plus"></i>
+                Schedule Consultation
+              </span>
+            </Link>
+            <Link href="/submit-profile" className="group">
+              <span className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent-red transition-all duration-300 inline-flex items-center gap-3 backdrop-blur-sm hover:shadow-xl transform hover:scale-105">
+                <i className="fa-solid fa-file-upload"></i>
+                Submit Your Profile
+              </span>
+            </Link>
+          </div>
+          
+          <div className="mt-12 text-center">
+            <p className="text-white/70 text-sm">
+              <i className="fa-solid fa-shield-check mr-2"></i>
+              Trusted by players worldwide • FIFA Licensed • 25+ Years Experience
+            </p>
           </div>
         </div>
       </section>

@@ -64,7 +64,7 @@ export default function ContactClient({ lang = 'en', dict }) {
   };
 
   return (
-    <main className="bg-primary-bg text-primary-text font-inter">
+    <main className="bg-primary-bg text-primary-text">
       <section className="py-16 text-center">
         <h1 className="text-primary-text  font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] md:text-5xl mb-4">
           {dict?.contact?.title || "Contact Us"}

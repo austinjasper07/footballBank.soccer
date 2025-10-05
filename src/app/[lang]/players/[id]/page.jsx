@@ -150,7 +150,7 @@ export default function PlayerPage({ params }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(playerStructuredData) }}
         />
       </Head>
-      <main className="bg-primary-bg text-primary-text font-inter">
+      <main className="bg-primary-bg text-primary-text">
         {/* Container for first two sections */}
         <div className="relative py-16">
           

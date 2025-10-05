@@ -75,7 +75,7 @@ export default function ShopPage() {
   // const totalPages = Math.ceil(filtered.length / itemsPerPage);
 
   return (
-    // <main className="bg-primary-bg font-inter text-primary-text">
+    // <main className="bg-primary-bg text-primary-text">
     //   <section className="py-16 text-center">
     //     <div className="container mx-auto px-4">
     //       <h1 className=" font-bold text-4xl md:text-5xl mb-6">

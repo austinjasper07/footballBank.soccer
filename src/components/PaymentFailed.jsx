@@ -9,7 +9,7 @@ export default function PaymentFailedPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
-      <main className="bg-primary-bg font-inter text-primary-text">
+      <main className="bg-primary-bg text-primary-text">
         <section className="py-16 md:py-24 min-h-[80vh]">
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto text-center">

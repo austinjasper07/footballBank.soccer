@@ -1,6 +1,6 @@
 // app/layout.tsx
 import "./globals.css";
-import { DM_Serif_Text, Funnel_Display } from "next/font/google";
+import { DM_Serif_Text, Oswald } from "next/font/google";
 import Script from "next/script";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 import { NewAuthProvider } from "@/context/NewAuthContext";
@@ -9,10 +9,10 @@ import { CartProvider } from "@/context/CartContext";
 import AOSProvider from "@/components/AOSProvider";
 import { generateMetadata as generateSEOMetadata, generateStructuredData } from "@/lib/seo";
 
-const funnelDisplay = Funnel_Display({
+const oswald = Oswald({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-funnel-display",
+  weight: ["200", "300", "400", "500", "600", "700"],
+  variable: "--font-oswald",
   display: "swap",
 });
 
@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${funnelDisplay.variable} ${dmSerifText.variable}`}
+      className={`${oswald.variable} ${dmSerifText.variable}`}
     >
       <head>
         {/* Favicon and Icons */}

@@ -67,7 +67,7 @@ export default function ProductDetailsClient() {
   }
 
   return (
-    <main className="bg-primary-bg font-inter text-primary-text">
+    <main className="bg-primary-bg text-primary-text">
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 max-w-6xl grid lg:grid-cols-2 gap-12">
           {/* Images */}

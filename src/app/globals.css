@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Funnel+Display:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Oswald:wght@200;300;400;500;600;700&display=swap');
 
 @import 'tailwindcss';
 @import "swiper/css";
@@ -79,8 +79,9 @@
   --chart-5: 45 100% 51%;
 
   /* Fonts */
-  --font-heading: 'DM Serif Text', serif;
-  --font-body: 'Funnel Display', sans-serif;
+  /* Fonts are centrally controlled via next/font CSS variables set on <html> */
+  --font-heading: var(--font-dm-serif-text);
+  --font-body: var(--font-oswald);
   --font-sans: var(--font-body);
 
   /* Radii */

@@ -17,7 +17,7 @@ const buttonClassMap = {
 
 export default function ProfileSubmission() {
   return (
-    <main className="bg-primary-bg text-primary-text font-inter text-center py-16">
+    <main className="bg-primary-bg text-primary-text text-center py-16">
       <h1 className=" font-bold text-5xl mb-6 bg-gradient-to-r from-accent-red to-accent-amber bg-clip-text text-transparent">
         Submit Your Profile to Be Discovered
       </h1>

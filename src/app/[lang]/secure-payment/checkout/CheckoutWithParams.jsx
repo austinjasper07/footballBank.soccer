@@ -74,7 +74,7 @@ export default function CheckoutWithParams() {
   if (loading) return <div className="text-center py-20">Loading Order Summary...</div>
 
   return (
-    <main className="bg-primary-bg font-inter text-primary-text py-16 md:py-24">
+    <main className="bg-primary-bg text-primary-text py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-4 grid lg:grid-cols-3 gap-8">
         {/* LEFT */}
         <div className="lg:col-span-2 space-y-8">

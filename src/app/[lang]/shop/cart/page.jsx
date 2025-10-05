@@ -25,7 +25,7 @@ const CartPage = () => {
   const total = +(subtotal + vat - discount).toFixed(2);
 
   return (
-    <main className="bg-primary-bg font-inter text-primary-text">
+    <main className="bg-primary-bg text-primary-text">
       <section className="py-6 border-b border-divider">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="flex items-center space-x-2 text-sm">

@@ -14,8 +14,21 @@ export default function Footer({ lang = 'en' }) {
 
   if (!dict) return null;
   return (
-    <footer className="bg-primary-card max-w-full px-4 lg:px-12 pt-16 mt-20 pb-8 border-t border-divider">
+    <footer className="bg-primary-card max-w-full px-4 lg:px-12 pt-10 mt-20 pb-8 border-t border-divider">
       <div className=" mx-auto px-4">
+        {/* Partner Logos */}
+        <div className="mb-10">
+          <div className="flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-xl p-3 md:p-4">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-600 font-medium">Trusted Partners:</span>
+            </div>
+            <div className="flex items-center gap-4 md:gap-6">
+              <img src="/partners/amazon-logo.svg" alt="Amazon" className="h-5 object-contain bg-white rounded-md border border-gray-200 shadow-sm p-2" />
+              <img src="/partners/concacaf-logo.svg" alt="CONCACAF" className="h-5 object-contain bg-white rounded-md border border-gray-200 shadow-sm p-2" />
+              <img src="/partners/fifa-logo.svg" alt="FIFA" className="h-5 object-contain bg-white rounded-md border border-gray-200 shadow-sm p-2" />
+            </div>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div>
             <div className="flex flex-col mb-4 ">

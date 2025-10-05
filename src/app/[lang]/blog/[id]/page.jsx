@@ -60,7 +60,7 @@ export default async function BlogArticlePage({ params }) {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }}
           />
         </Head>
-        <main className="bg-primary-bg text-primary-text font-inter">
+        <main className="bg-primary-bg text-primary-text">
         {/* Breadcrumb */}
         <section className="py-6 border-b border-divider">
           <div className="container mx-auto px-4">
