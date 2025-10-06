@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/oauth";
-import prisma from "@/lib/prisma";
+import { User } from "@/lib/schemas";
 import bcrypt from "bcryptjs";
 
 export async function PATCH(request) {
@@ -27,10 +27,8 @@ export async function PATCH(request) {
     }
 
     // Get user with password
-    const userWithPassword = await prisma.user.findUnique({
-      where: { id: user.id },
-      select: { password: true },
-    });
+    const userWithPassword = await User.findById(user.id)
+      .select('password');
 
     if (!userWithPassword?.password) {
       return NextResponse.json(
@@ -56,10 +54,7 @@ export async function PATCH(request) {
     const hashedNewPassword = await bcrypt.hash(newPassword, 12);
 
     // Update password
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { password: hashedNewPassword },
-    });
+    await User.findByIdAndUpdate(user.id, { password: hashedNewPassword });
 
     return NextResponse.json({
       success: true,

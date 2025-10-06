@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { getAuthUser } from '@/lib/oauth';
 
 const locales = ['en', 'es'];
 const defaultLocale = 'en';
@@ -88,35 +87,20 @@ export async function middleware(request) {
     return NextResponse.next();
   }
 
-  // For protected routes, check authentication
-  try {
-    const user = await getAuthUser();
-    
-    if (!user) {
-      // Redirect to login page, preserving the original path as a redirect parameter
-      const loginUrl = new URL(`/${locale}/auth/login`, request.url);
-      loginUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(loginUrl);
-    }
-
-    // Check admin routes
-    if (cleanPathname.startsWith('/admin')) {
-      if (user.role !== 'admin') {
-        return NextResponse.json(
-          { error: 'Admin access required' },
-          { status: 403 }
-        );
-      }
-    }
-
-    return NextResponse.next();
-  } catch (error) {
-    console.error('Middleware auth error:', error);
-    // Redirect to login page on any middleware authentication error
+  // For protected routes, check if session cookie exists
+  // We'll do the actual authentication check in the page components
+  const sessionToken = request.cookies.get('session')?.value;
+  
+  if (!sessionToken) {
+    // Redirect to login page, preserving the original path as a redirect parameter
     const loginUrl = new URL(`/${locale}/auth/login`, request.url);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);
   }
+
+  // For admin routes, we'll let the page component handle the role check
+  // since we can't use Prisma in middleware
+  return NextResponse.next();
 }
 
 export const config = {

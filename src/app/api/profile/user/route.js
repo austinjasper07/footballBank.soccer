@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/oauth";
-import prisma from "@/lib/prisma";
+import { User } from "@/lib/schemas";
 
 export async function GET() {
   try {
@@ -10,19 +10,8 @@ export async function GET() {
     }
 
     // Get user with additional data
-    const userData = await prisma.user.findUnique({
-      where: { id: user.id },
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        role: true,
-        isVerified: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+    const userData = await User.findById(user.id)
+      .select('firstName lastName email role isVerified createdAt');
 
     if (!userData) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

@@ -1,4 +1,4 @@
-import  prisma  from "@/lib/prisma"
+import { Post } from "@/lib/schemas"
 import ClientSideFilterWrapper from "./components/ClientSideFilterWrapper"
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 
@@ -21,30 +21,25 @@ export const metadata = generateSEOMetadata({
 export default async function BlogPage() {
   'use server'
 
-  const posts = await prisma.post.findMany({
-    orderBy: { createdAt: "desc" },
-  }).then((posts) =>
-    posts.map((post) => ({
-      ...post,
-      createdAt: post.createdAt.toISOString(),
-      updatedAt: post.updatedAt.toISOString(),
-    }))
-  )
+  const posts = await Post.find({}).sort({ createdAt: -1 })
+  const formattedPosts = posts.map((post) => ({
+    ...post.toObject(),
+    id: post._id.toString(),
+    createdAt: post.createdAt.toISOString(),
+    updatedAt: post.updatedAt.toISOString(),
+  }))
 
-  const featuredPost = await prisma.post.findMany({
-    where: { featured: true },
-    orderBy: { createdAt: "desc" },
-  }).then((featuredPosts) =>
-    featuredPosts.map((post) => ({
-      ...post,
-      createdAt: post.createdAt.toISOString(),
-      updatedAt: post.updatedAt.toISOString(),
-    }))
-  )
+  const featuredPosts = await Post.find({ featured: true }).sort({ createdAt: -1 })
+  const formattedFeaturedPosts = featuredPosts.map((post) => ({
+    ...post.toObject(),
+    id: post._id.toString(),
+    createdAt: post.createdAt.toISOString(),
+    updatedAt: post.updatedAt.toISOString(),
+  }))
 
   const categories = [
     "All",
-    ...Array.from(new Set(posts.map((p) => p.category))),
+    ...Array.from(new Set(formattedPosts.map((p) => p.category))),
   ]
 
   return (
@@ -60,8 +55,8 @@ export default async function BlogPage() {
           </p>
 
           <ClientSideFilterWrapper
-            posts={posts}
-            featuredPost={featuredPost}
+            posts={formattedPosts}
+            featuredPost={formattedFeaturedPosts}
             categories={categories}
           />
         </div>

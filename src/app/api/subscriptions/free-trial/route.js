@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/oauth";
-import prisma from "@/lib/prisma";
+import { Subscription, User } from "@/lib/schemas";
 
 export async function POST() {
   try {
@@ -14,11 +14,9 @@ export async function POST() {
     }
 
     // Check if user already has a subscription
-    const existingSubscription = await prisma.subscription.findFirst({
-      where: {
-        userId: user.id,
-        status: "active"
-      }
+    const existingSubscription = await Subscription.findOne({
+      userId: user.id,
+      status: "active"
     });
 
     if (existingSubscription) {
@@ -33,28 +31,23 @@ export async function POST() {
     const trialEndDate = new Date();
     trialEndDate.setDate(trialEndDate.getDate() + 60); // 60 days free trial
 
-    const subscription = await prisma.subscription.create({
-      data: {
-        userId: user.id,
-        planId: "free-trial",
-        planName: "Free Trial",
-        status: "active",
-        startDate: trialStartDate,
-        endDate: trialEndDate,
-        isActive: true,
-        price: 0,
-        currency: "USD",
-        trialPeriod: true,
-        maxSubmissions: 1,
-        usedSubmissions: 0,
-      }
+    const subscription = await Subscription.create({
+      userId: user.id,
+      planId: "free-trial",
+      planName: "Free Trial",
+      status: "active",
+      startDate: trialStartDate,
+      endDate: trialEndDate,
+      isActive: true,
+      price: 0,
+      currency: "USD",
+      trialPeriod: true,
+      maxSubmissions: 1,
+      usedSubmissions: 0,
     });
 
     // Update user's subscription status
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { subscribed: true }
-    });
+    await User.findByIdAndUpdate(user.id, { subscribed: true });
 
     return NextResponse.json({
       success: true,

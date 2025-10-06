@@ -16,9 +16,9 @@ const AboutAgent = async ({ params: { lang } }) => {
   
 
   return (
-    <main className="bg-primary-bg text-primary-text min-h-screen">
+    <main className=" text-primary-text min-h-screen">
       {/* Hero Section with Enhanced Profile Layout */}
-      <section className="pb-12 pt-20 bg-gradient-to-br from-primary-bg to-primary-card/30" data-aos="fade-up">
+      <section className="pb-12 pt-20 " data-aos="fade-up">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="flex flex-col lg:flex-row gap-16 items-start">
             {/* Left Side - Enhanced Profile Card */}

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/oauth";
-import prisma from "@/lib/prisma";
+import { Order } from "@/lib/schemas";
 
 export async function GET(request) {
   try {
@@ -22,23 +22,12 @@ export async function GET(request) {
 
     try {
       // Get user's orders
-      const orders = await prisma.order.findMany({
-        where: { userId: user.id },
-        orderBy: { createdAt: 'desc' },
-        skip,
-        take: limit,
-        include: {
-          items: {
-            include: {
-              product: true
-            }
-          }
-        }
-      });
+      const orders = await Order.find({ userId: user.id })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
 
-      const totalOrders = await prisma.order.count({
-        where: { userId: user.id }
-      });
+      const totalOrders = await Order.countDocuments({ userId: user.id });
 
       const totalPages = Math.ceil(totalOrders / limit);
 
@@ -84,11 +73,9 @@ export async function DELETE(request) {
     const { orderId } = await request.json();
 
     // Check if order belongs to user
-    const order = await prisma.order.findFirst({
-      where: { 
-        id: orderId,
-        userId: user.id 
-      }
+    const order = await Order.findOne({
+      _id: orderId,
+      userId: user.id 
     });
 
     if (!order) {
@@ -99,10 +86,7 @@ export async function DELETE(request) {
     }
 
     // Update order status to cancelled
-    await prisma.order.update({
-      where: { id: orderId },
-      data: { status: 'cancelled' }
-    });
+    await Order.findByIdAndUpdate(orderId, { status: 'cancelled' });
 
     return NextResponse.json({ success: true });
   } catch (error) {

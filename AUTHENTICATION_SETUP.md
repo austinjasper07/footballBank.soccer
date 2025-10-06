@@ -41,12 +41,8 @@ RESEND_API_KEY="your-resend-api-key"
 
 ## Setup Instructions
 
-### 1. Database Migration
-Run the database migration to add OTP and Session tables:
-
-```bash
-npx prisma db push
-```
+### 1. Database Setup
+The application uses MongoDB with Mongoose. No database migration is needed as Mongoose handles schema creation automatically.
 
 ### 2. Resend Email Service Setup
 1. Go to [Resend.com](https://resend.com)
@@ -188,7 +184,7 @@ If migrating from Kinde:
 1. **OTP not received**: Check Resend API key and email configuration
 2. **OAuth not working**: Verify client IDs and redirect URIs
 3. **Session issues**: Check JWT_SECRET configuration
-4. **Database errors**: Run `npx prisma db push` to update schema
+4. **Database errors**: Check MongoDB connection and ensure DATABASE_URL is correct
 
 ### Debug Mode:
 Set `NODE_ENV=development` to see detailed error logs.

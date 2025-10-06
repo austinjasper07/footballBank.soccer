@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import prisma from "@/lib/prisma";
+import { User, Subscription, Order } from "@/lib/schemas";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -36,13 +36,13 @@ export async function POST(request) {
         console.log("Subscription updated:", updatedSubscription.id);
         
         // Update subscription status in database
-        await prisma.subscription.updateMany({
-          where: { stripeSubscriptionId: updatedSubscription.id },
-          data: {
+        await Subscription.updateMany(
+          { stripeSubscriptionId: updatedSubscription.id },
+          {
             status: updatedSubscription.status,
             isActive: updatedSubscription.status === "active",
           }
-        });
+        );
         break;
 
       case "customer.subscription.deleted":
@@ -50,13 +50,13 @@ export async function POST(request) {
         console.log("Subscription deleted:", deletedSubscription.id);
         
         // Mark subscription as cancelled
-        await prisma.subscription.updateMany({
-          where: { stripeSubscriptionId: deletedSubscription.id },
-          data: {
+        await Subscription.updateMany(
+          { stripeSubscriptionId: deletedSubscription.id },
+          {
             status: "cancelled",
             isActive: false,
           }
-        });
+        );
         break;
 
       case "invoice.payment_succeeded":
@@ -69,13 +69,13 @@ export async function POST(request) {
         console.log("Payment failed for invoice:", failedInvoice.id);
         
         // Mark subscription as past due
-        await prisma.subscription.updateMany({
-          where: { stripeSubscriptionId: failedInvoice.subscription },
-          data: {
+        await Subscription.updateMany(
+          { stripeSubscriptionId: failedInvoice.subscription },
+          {
             status: "past_due",
             isActive: false,
           }
-        });
+        );
         break;
 
       default:

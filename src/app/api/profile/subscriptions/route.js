@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/oauth";
-import prisma from "@/lib/prisma";
+import { Subscription } from "@/lib/schemas";
 
 export async function GET() {
   try {
@@ -17,13 +17,8 @@ export async function GET() {
 
     try {
       // Get user's subscriptions
-      const subscriptions = await prisma.subscription.findMany({
-        where: { userId: user.id },
-        orderBy: { createdAt: 'desc' },
-        include: {
-          product: true
-        }
-      });
+      const subscriptions = await Subscription.find({ userId: user.id })
+        .sort({ createdAt: -1 });
 
       console.log(`Found ${subscriptions.length} subscriptions for user ${user.id}`);
 
@@ -57,11 +52,9 @@ export async function PATCH(request) {
     const { subscriptionId, isActive } = await request.json();
 
     // Check if subscription belongs to user
-    const subscription = await prisma.subscription.findFirst({
-      where: { 
-        id: subscriptionId,
-        userId: user.id 
-      }
+    const subscription = await Subscription.findOne({
+      _id: subscriptionId,
+      userId: user.id 
     });
 
     if (!subscription) {
@@ -72,10 +65,7 @@ export async function PATCH(request) {
     }
 
     // Update subscription status
-    await prisma.subscription.update({
-      where: { id: subscriptionId },
-      data: { isActive }
-    });
+    await Subscription.findByIdAndUpdate(subscriptionId, { isActive });
 
     return NextResponse.json({ success: true });
   } catch (error) {

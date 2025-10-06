@@ -5,9 +5,9 @@ export async function GET() {
   try {
     console.log("🔍 Auth check called");
     
-    // Set a timeout for the authentication check
+    // Set a shorter timeout for the authentication check
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Authentication check timeout')), 3000);
+      setTimeout(() => reject(new Error('Authentication check timeout')), 2000);
     });
     
     const authPromise = getAuthUser();

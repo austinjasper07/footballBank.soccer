@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import prisma from "./prisma";
+import { Session, User } from "./schemas";
 
 export async function getAuthUser() {
   try {
@@ -12,34 +12,32 @@ export async function getAuthUser() {
     if (sessionToken) {
       try {
         // Find session in database
-        const sessionRecord = await prisma.session.findFirst({
-          where: {
-            token: sessionToken,
-            expiresAt: {
-              gt: new Date()
-            }
-          },
-          include: {
-            user: true
-          }
+        const sessionRecord = await Session.findOne({
+          token: sessionToken,
+          expiresAt: { $gt: new Date() }
         });
 
-        if (sessionRecord && sessionRecord.user) {
-          // Update last used timestamp
-          await prisma.session.update({
-            where: { id: sessionRecord.id },
-            data: { lastUsed: new Date() }
-          });
+        if (sessionRecord) {
+          // Get user details
+          const user = await User.findById(sessionRecord.userId);
+          
+          if (user) {
+            // Update last used timestamp (non-blocking)
+            Session.findByIdAndUpdate(
+              sessionRecord._id, 
+              { lastUsed: new Date() }
+            ).catch(err => console.error("Error updating session:", err));
 
-          return {
-            id: sessionRecord.user.id,
-            email: sessionRecord.user.email,
-            firstName: sessionRecord.user.firstName,
-            lastName: sessionRecord.user.lastName,
-            role: sessionRecord.user.role,
-            isVerified: sessionRecord.user.isVerified,
-            authMethod: 'otp'
-          };
+            return {
+              id: user._id.toString(),
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              role: user.role,
+              isVerified: user.isVerified,
+              authMethod: 'otp'
+            };
+          }
         }
       } catch (error) {
         console.error("Error checking OTP session:", error);

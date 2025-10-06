@@ -92,7 +92,8 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ### 1. Test Database Connection
 ```bash
-npx prisma db push
+# Test MongoDB connection
+curl http://localhost:3000/api/health
 ```
 
 ### 2. Test Email Service
@@ -149,7 +150,7 @@ If you encounter issues:
 ## Next Steps
 
 After setting up environment variables:
-1. Run `npx prisma db push` to update database schema
+1. Check MongoDB connection and ensure DATABASE_URL is correct
 2. Test the authentication system at `/auth/test`
 3. Try both OTP and OAuth authentication flows
 4. Deploy to production with production environment variables

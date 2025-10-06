@@ -44,27 +44,26 @@ NEXT_PUBLIC_APP_URL=http://localhost:3001
 
 The subscription system uses these database models:
 
-```prisma
-model Subscription {
-  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId                String    @db.ObjectId
-  user                  User      @relation(fields: [userId], references: [id])
-  planId                String
-  planName              String
-  status                String    // active, cancelled, past_due
-  startDate             DateTime
-  endDate               DateTime
-  isActive              Boolean
-  price                 Float
-  currency              String
-  stripeSessionId       String?
-  stripeSubscriptionId  String?
-  trialPeriod           Boolean   @default(false)
-  maxSubmissions        Int
-  usedSubmissions       Int       @default(0)
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
-}
+```javascript
+// Mongoose Schema for Subscription
+const subscriptionSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  planId: { type: String },
+  planName: { type: String },
+  status: { type: String }, // active, cancelled, past_due
+  startDate: { type: Date },
+  endDate: { type: Date },
+  isActive: { type: Boolean, default: true },
+  price: { type: Number },
+  currency: { type: String },
+  stripeSessionId: { type: String },
+  stripeSubscriptionId: { type: String },
+  trialPeriod: { type: Boolean, default: false },
+  maxSubmissions: { type: Number },
+  usedSubmissions: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
 ```
 
 ## 🔄 Subscription Flow

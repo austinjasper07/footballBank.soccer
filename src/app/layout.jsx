@@ -82,7 +82,7 @@ export default function RootLayout({ children }) {
           strategy="afterInteractive"
         />
       </head>
-      <body className="font-body bg-primary-bg text-primary-text">
+      <body className="font-body bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 text-primary-text">
         <Analytics />
         <AOSProvider>
           <NewAuthProvider>

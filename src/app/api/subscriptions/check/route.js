@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/oauth";
-import prisma from "@/lib/prisma";
+import { Subscription } from "@/lib/schemas";
 
 export async function GET() {
   try {
@@ -15,19 +15,14 @@ export async function GET() {
 
     try {
       // Check for active subscription
-      const subscription = await prisma.subscription.findFirst({
-        where: {
-          userId: user.id,
-          status: "active",
-          isActive: true,
-          endDate: {
-            gt: new Date() // Not expired
-          }
-        },
-        orderBy: {
-          createdAt: "desc"
+      const subscription = await Subscription.findOne({
+        userId: user.id,
+        status: "active",
+        isActive: true,
+        endDate: {
+          $gt: new Date() // Not expired
         }
-      });
+      }).sort({ createdAt: -1 });
 
       if (!subscription) {
         return NextResponse.json({

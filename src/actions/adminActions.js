@@ -1,13 +1,12 @@
 "use server";
 
-import prisma from "@/lib/prisma";
+import { User, Post, Player, Product, Order, Subscription, Message, Submission } from "@/lib/schemas";
 import { revalidatePath } from "next/cache";
-
 
 // USERS
 export const getAllUsers = async () => {
   try {
-    return await prisma.user.findMany();
+    return await User.find({}).sort({ createdAt: -1 });
   } catch (err) {
     console.error("Error fetching users:", err);
     return [];
@@ -16,7 +15,7 @@ export const getAllUsers = async () => {
 
 export const getUserById = async (id) => {
   try {
-    return await prisma.user.findUnique({ where: { kindeId: id } });
+    return await User.findById(id);
   } catch (err) {
     console.error("Error fetching user by ID:", err);
     return null;
@@ -25,20 +24,17 @@ export const getUserById = async (id) => {
 
 export async function createUser(data) {
   try {
-    const existingUser = await prisma.user.findFirst({
-      where: {
-        OR: [
-          { email: data.email },
-          { kindeId: data.kindeId }
-        ]
-      }
+    const existingUser = await User.findOne({
+      $or: [
+        { email: data.email }
+      ]
     });
 
     if (existingUser) {
-      throw new Error("User with this email or Kinde ID already exists");
+      throw new Error("User with this email already exists");
     }
 
-    await prisma.user.create({ data });
+    await User.create(data);
     
   } catch (err) {
     console.error("Error creating user:", err);
@@ -46,62 +42,57 @@ export async function createUser(data) {
   }
 }
 
-
 export async function updateUser(userId, data) {
   try {
-    // Remove id, createdAt, kindeId, updatedAt from data before updating
-    const { id, createdAt, kindeId, updatedAt, ...updateData } = data;
+    // Remove id, createdAt, updatedAt from data before updating
+    const { id, createdAt, updatedAt, ...updateData } = data;
     if (updateData.email) {
-      const existingUser = await prisma.user.findFirst({
-        where: {
-          email: updateData.email,
-          id: { not: userId } // Ensure we're not checking the same user
-        }
+      const existingUser = await User.findOne({
+        email: updateData.email,
+        _id: { $ne: userId }
       });
 
       if (existingUser) {
         throw new Error("User with this email already exists");
       }
     }
-    await prisma.user.update({
-      where: { id: userId },
-      data: updateData,
-    });
-    return await getAllUsers();
+    await User.findByIdAndUpdate(userId, updateData, { new: true });
+
+    revalidatePath("/admin/users");
+    return { success: true };
   } catch (err) {
     console.error("Error updating user:", err);
-    return null;
+    return err;
   }
 }
 
 export async function deleteUser(id) {
   try {
-    await prisma.user.delete({ where: { id } });
-
+    await User.findByIdAndDelete(id);
     return await getAllUsers();
   } catch (err) {
     console.error("Error deleting user:", err);
-    return null;
+    return err;
   }
 }
 
 // PRODUCTS
 export async function getAllProducts() {
   try {
-    return await prisma.product.findMany({ orderBy: { createdAt: "desc" } });
+    return await Product.find({}).sort({ createdAt: -1 });
   } catch (err) {
     console.error("Error fetching products:", err);
     return [];
   }
 }
+
 export async function createProduct(data) {
   try {
-    await prisma.product.create({ data });
-
+    await Product.create(data);
     return await getAllProducts();
   } catch (err) {
     console.error("Error creating product:", err);
-    return null;
+    return err;
   }
 }
 
@@ -109,28 +100,28 @@ export async function updateProduct(productId, data) {
   try {
     // Remove id, createdAt, updatedAt from data before updating
     const { id, createdAt, updatedAt, ...updateData } = data;
-    await prisma.product.update({ where: { id: productId }, data: updateData });
+    await Product.findByIdAndUpdate(productId, updateData);
     return await getAllProducts();
   } catch (err) {
     console.error("Error updating product:", err);
-    return null;
+    return err;
   }
 }
 
 export async function deleteProduct(id) {
   try {
-    await prisma.product.delete({ where: { id } });
+    await Product.findByIdAndDelete(id);
     return await getAllProducts();
   } catch (err) {
     console.error("Error deleting product:", err);
-    return null;
+    return err;
   }
 }
 
 // PLAYERS
 export async function getAllPlayers() {
   try {
-    return await prisma.player.findMany({ orderBy: { createdAt: "desc" } });
+    return await Player.find({}).sort({ createdAt: -1 });
   } catch (err) {
     console.error("Error fetching players:", err);
     return [];
@@ -140,50 +131,43 @@ export async function getAllPlayers() {
 export async function createPlayer(data) {
   try {
     // Check if player with same email already exists
-    const existingPlayer = await prisma.player.findFirst({
-      where: { email: data.email }
-    });
+    const existingPlayer = await Player.findOne({ email: data.email });
 
     if (existingPlayer) {
       throw new Error("Player with this email already exists");
     }
     // Create new player
-    return await prisma.player.create({ data });
+    return await Player.create(data);
   } catch (err) {
     console.error("Error creating player:", err);
     return err;
   }
 }
 
-
-
 export async function updatePlayer(playerId, data) {
   try {
     // Remove id from data before updating
     const { id, createdAt, updatedAt, ...updateData } = data;
-    return await prisma.player.update({
-      where: { id: playerId },
-      data: updateData,
-    });
+    return await Player.findByIdAndUpdate(playerId, updateData, { new: true });
   } catch (err) {
     console.error("Error updating player:", err);
-    return null;
+    return err;
   }
 }
 
 export async function deletePlayer(id) {
   try {
-    return await prisma.player.delete({ where: { id } });
+    return await Player.findByIdAndDelete(id);
   } catch (err) {
     console.error("Error deleting player:", err);
-    return null;
+    return err;
   }
 }
 
 // POSTS
 export async function getAllPosts() {
   try {
-    return await prisma.post.findMany({ orderBy: { createdAt: "desc" } });
+    return await Post.find({}).sort({ createdAt: -1 });
   } catch (err) {
     console.error("Error fetching posts:", err);
     return [];
@@ -192,10 +176,10 @@ export async function getAllPosts() {
 
 export async function createPost(data) {
   try {
-    return await prisma.post.create({ data });
+    return await Post.create(data);
   } catch (err) {
     console.error("Error creating post:", err);
-    return null;
+    return err;
   }
 }
 
@@ -203,31 +187,26 @@ export async function updatePost(postId, data) {
   try {
     // Remove id, createdAt, updatedAt from data before updating
     const { id, createdAt, updatedAt, ...updateData } = data;
-    return await prisma.post.update({
-      where: { id: postId },
-      data: updateData,
-    });
+    return await Post.findByIdAndUpdate(postId, updateData, { new: true });
   } catch (err) {
     console.error("Error updating post:", err);
-    return null;
+    return err;
   }
 }
 
 export async function deletePost(id) {
   try {
-    return await prisma.post.delete({ where: { id } });
+    return await Post.findByIdAndDelete(id);
   } catch (err) {
     console.error("Error deleting post:", err);
-    return null;
+    return err;
   }
 }
 
 // SUBMISSIONS
 export async function getAllSubmissions() {
   try {
-    return await prisma.submission.findMany({
-      orderBy: { submittedAt: "desc" },
-    });
+    return await Submission.find({}).sort({ submittedAt: -1 });
   } catch (err) {
     console.error("Error fetching submissions:", err);
     return [];
@@ -236,7 +215,7 @@ export async function getAllSubmissions() {
 
 export async function getSubmissionsById(id) {
   try {
-    return await prisma.submission.findUnique({ where: { id } });
+    return await Submission.findById(id);
   } catch (err) {
     console.error("Error fetching submission by ID:", err);
     return null;
@@ -245,112 +224,104 @@ export async function getSubmissionsById(id) {
 
 export async function approveSubmission(submissionId) {
   try {
-    const approvedSubmission = await prisma.submission.update({
-      where: { id: submissionId },
-      data: { status: "APPROVED" },
-    });
+    const approvedSubmission = await Submission.findByIdAndUpdate(
+      submissionId,
+      { status: "APPROVED" },
+      { new: true }
+    );
+
     if (!approvedSubmission) {
-      console.error("No submission found with ID:", submissionId);
-      return null;
+      throw new Error("Submission not found");
     }
+
+    // Create player from approved submission
     const {
-      id,
-      userId,
+      _id,
       submittedAt,
       status,
       rejectionReason,
-      createdAt,
-      updatedAt,
       ...submissionData
-    } = approvedSubmission;
-    const player = await prisma.player.create({ data: submissionData });
+    } = approvedSubmission.toObject();
+    
+    const player = await Player.create(submissionData);
     console.log(player);
     const players = await getAllPlayers();
     return players;
   } catch (err) {
     console.error("Error approving submission:", err);
-    return null;
+    return err;
   }
 }
 
 export async function rejectSubmission(id, reason) {
   try {
-    return await prisma.submission.update({
-      where: { id },
-      data: { status: "REJECTED", rejectionReason: reason },
-    });
+    return await Submission.findByIdAndUpdate(
+      id,
+      { status: "REJECTED", rejectionReason: reason },
+      { new: true }
+    );
   } catch (err) {
     console.error("Error rejecting submission:", err);
-    return null;
+    return err;
   }
 }
 
 export async function deleteSubmission(id) {
   try {
-    return await prisma.submission.delete({ where: { id } });
+    return await Submission.findByIdAndDelete(id);
   } catch (err) {
     console.error("Error deleting submission:", err);
-    return null;
+    return err;
   }
 }
 
 // ORDERS
 export async function getAllOrders() {
   try {
-    return await prisma.order.findMany({ orderBy: { createdAt: "desc" } });
+    return await Order.find({}).sort({ createdAt: -1 });
   } catch (err) {
     console.error("Error fetching orders:", err);
     return [];
   }
 }
 
-
-//Affiliate Products
+// AFFILIATE PRODUCTS (using Product model)
 export async function getAffiliateProducts() {
   try {
-    const products = await prisma.affiliateProduct.findMany({
-      orderBy: { createdAt: "desc" },
-    });
+    const products = await Product.find({}).sort({ createdAt: -1 });
     return products;
-  } catch (error) {
-    console.error("❌ Error fetching affiliate products:", error);
-    throw new Error("Failed to fetch affiliate products");
+  } catch (err) {
+    console.error("Error fetching affiliate products:", err);
+    return [];
   }
 }
 
 export async function createAffiliateProduct(data) {
   try {
-    const product = await prisma.affiliateProduct.create({
-      data,
-    });
+    const product = await Product.create(data);
     return product;
-  } catch (error) {
-    console.error("❌ Error creating affiliate product:", error);
-    throw new Error("Failed to create affiliate product");
+  } catch (err) {
+    console.error("Error creating affiliate product:", err);
+    return err;
   }
 }
 
 export async function updateAffiliateProduct(id, data) {
   try {
-    const product = await prisma.affiliateProduct.update({
-      where: { id },
-      data,
-    });
+    const product = await Product.findByIdAndUpdate(id, data, { new: true });
     return product;
-  } catch (error) {
-    console.error("❌ Error updating affiliate product:", error);
-    throw new Error("Failed to update affiliate product");
+  } catch (err) {
+    console.error("Error updating affiliate product:", err);
+    return err;
   }
 }
 
 export async function deleteAffiliateProduct(id) {
   try {
-    await prisma.affiliateProduct.delete({
-      where: { id },
-    });
-    return { success: true };
-  } catch (error) {
-    console.error("❌ Error deleting affiliate product:", error);
-    throw new Error("Failed to delete affiliate product");
+    await Product.findByIdAndDelete(id);
+    return await getAffiliateProducts();
+  } catch (err) {
+    console.error("Error deleting affiliate product:", err);
+    return err;
   }
 }

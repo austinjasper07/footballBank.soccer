@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "@/lib/prisma";
+import { User, Order, Subscription, PaymentMethod, Submission, Player } from "@/lib/schemas";
 import { getAuthUser } from "@/lib/oauth";
 
 // Get current user's profile data
@@ -12,32 +12,46 @@ export async function getCurrentUserProfile() {
       return null;
     }
 
-    const userProfile = await prisma.user.findUnique({
-      where: { id: user.id },
-      include: {
-        orders: {
-          include: {
-            items: true
-          },
-          orderBy: {
-            createdAt: 'desc'
-          }
-        },
-        subscriptions: {
-          orderBy: {
-            startedAt: 'desc'
-          }
-        },
-        paymentMethods: true,
-        Submission: {
-          orderBy: {
-            submittedAt: 'desc'
-          }
-        }
-      }
-    });
+    const userProfile = await User.findById(user.id);
+    
+    if (!userProfile) {
+      return null;
+    }
 
-    return userProfile;
+    // Get related data
+    const [orders, subscriptions, paymentMethods, submissions] = await Promise.all([
+      Order.find({ userId: user.id }).sort({ createdAt: -1 }),
+      Subscription.find({ userId: user.id }).sort({ startedAt: -1 }),
+      PaymentMethod.find({ userId: user.id }),
+      Submission.find({ userId: user.id }).sort({ submittedAt: -1 })
+    ]);
+
+    return {
+      ...userProfile.toObject(),
+      id: userProfile._id.toString(),
+      orders: orders.map(order => ({
+        ...order.toObject(),
+        id: order._id.toString(),
+        createdAt: order.createdAt.toISOString(),
+        items: order.items || []
+      })),
+      subscriptions: subscriptions.map(sub => ({
+        ...sub.toObject(),
+        id: sub._id.toString(),
+        startedAt: sub.startedAt.toISOString(),
+        expiresAt: sub.expiresAt.toISOString()
+      })),
+      paymentMethods: paymentMethods.map(pm => ({
+        ...pm.toObject(),
+        id: pm._id.toString(),
+        createdAt: pm.createdAt.toISOString()
+      })),
+      Submission: submissions.map(sub => ({
+        ...sub.toObject(),
+        id: sub._id.toString(),
+        submittedAt: sub.submittedAt.toISOString()
+      }))
+    };
   } catch (error) {
     console.error('Error fetching user profile:', error);
     return null;
@@ -56,26 +70,22 @@ export async function getUserOrders(page = 1, limit = 10) {
     const skip = (page - 1) * limit;
     
     const [orders, totalCount] = await Promise.all([
-      prisma.order.findMany({
-        where: { userId: user.id },
-        include: {
-          items: true
-        },
-        orderBy: {
-          createdAt: 'desc'
-        },
-        skip,
-        take: limit
-      }),
-      prisma.order.count({
-        where: { userId: user.id }
-      })
+      Order.find({ userId: user.id })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      Order.countDocuments({ userId: user.id })
     ]);
 
     const totalPages = Math.ceil(totalCount / limit);
 
     return {
-      orders,
+      orders: orders.map(order => ({
+        ...order.toObject(),
+        id: order._id.toString(),
+        createdAt: order.createdAt.toISOString(),
+        items: order.items || []
+      })),
       totalPages,
       currentPage: page,
       totalCount
@@ -95,18 +105,15 @@ export async function getUserSubscriptions() {
       return [];
     }
 
-    if (!user) {
-      return [];
-    }
+    const subscriptions = await Subscription.find({ userId: user.id })
+      .sort({ startedAt: -1 });
 
-    const subscriptions = await prisma.subscription.findMany({
-      where: { userId: user.id },
-      orderBy: {
-        startedAt: 'desc'
-      }
-    });
-
-    return subscriptions;
+    return subscriptions.map(sub => ({
+      ...sub.toObject(),
+      id: sub._id.toString(),
+      startedAt: sub.startedAt.toISOString(),
+      expiresAt: sub.expiresAt.toISOString()
+    }));
   } catch (error) {
     console.error('Error fetching user subscriptions:', error);
     return [];
@@ -122,17 +129,17 @@ export async function updateUserSubscription(subscriptionId, isActive) {
       return { success: false, error: 'User not authenticated' };
     }
 
-    if (!user) {
-      return { success: false, error: 'User not found' };
-    }
-
-    await prisma.subscription.update({
-      where: { 
-        id: subscriptionId,
+    const result = await Subscription.updateOne(
+      { 
+        _id: subscriptionId,
         userId: user.id // Ensure user can only update their own subscriptions
       },
-      data: { isActive }
-    });
+      { isActive }
+    );
+
+    if (result.matchedCount === 0) {
+      return { success: false, error: 'Subscription not found or unauthorized' };
+    }
 
     return { success: true };
   } catch (error) {
@@ -144,22 +151,19 @@ export async function updateUserSubscription(subscriptionId, isActive) {
 // Get player profile by ID
 export async function getPlayerProfile(playerId) {
   try {
-    const player = await prisma.player.findUnique({
-      where: { id: playerId }
-    });
+    const player = await Player.findById(playerId);
 
     if (!player) {
       return null;
     }
 
-    // Parse JSON fields
-    const stats = player.stats ? JSON.parse(player.stats) : null;
-    const clubHistory = player.clubHistory ? JSON.parse(player.clubHistory) : null;
-
     return {
-      ...player,
-      stats,
-      clubHistory
+      ...player.toObject(),
+      id: player._id.toString(),
+      createdAt: player.createdAt.toISOString(),
+      updatedAt: player.updatedAt.toISOString(),
+      stats: player.stats || null,
+      clubHistory: player.clubHistory || null
     };
   } catch (error) {
     console.error('Error fetching player profile:', error);
@@ -181,22 +185,19 @@ export async function getCurrentPlayerProfile() {
     }
 
     // Find player record by email
-    const player = await prisma.player.findUnique({
-      where: { email: user.email }
-    });
+    const player = await Player.findOne({ email: user.email });
 
     if (!player) {
       return null;
     }
 
-    // Parse JSON fields
-    const stats = player.stats ? JSON.parse(player.stats) : null;
-    const clubHistory = player.clubHistory ? JSON.parse(player.clubHistory) : null;
-
     return {
-      ...player,
-      stats,
-      clubHistory
+      ...player.toObject(),
+      id: player._id.toString(),
+      createdAt: player.createdAt.toISOString(),
+      updatedAt: player.updatedAt.toISOString(),
+      stats: player.stats || null,
+      clubHistory: player.clubHistory || null
     };
   } catch (error) {
     console.error('Error fetching current player profile:', error);
@@ -213,14 +214,8 @@ export async function updatePlayerProfile(playerId, data) {
       return { success: false, error: 'User not authenticated' };
     }
 
-    if (!user) {
-      return { success: false, error: 'User not found' };
-    }
-
     // Check if user is the owner of this player profile
-    const player = await prisma.player.findUnique({
-      where: { id: playerId }
-    });
+    const player = await Player.findById(playerId);
 
     if (!player || player.email !== user.email) {
       return { success: false, error: 'Unauthorized to update this profile' };
@@ -232,18 +227,14 @@ export async function updatePlayerProfile(playerId, data) {
       updatedAt: new Date()
     };
 
-    // Handle JSON fields
-    if (data.stats) {
-      updateData.stats = JSON.stringify(data.stats);
-    }
-    if (data.clubHistory) {
-      updateData.clubHistory = JSON.stringify(data.clubHistory);
-    }
+    const result = await Player.updateOne(
+      { _id: playerId },
+      updateData
+    );
 
-    await prisma.player.update({
-      where: { id: playerId },
-      data: updateData
-    });
+    if (result.matchedCount === 0) {
+      return { success: false, error: 'Player profile not found' };
+    }
 
     return { success: true };
   } catch (error) {
@@ -261,27 +252,25 @@ export async function cancelOrder(orderId) {
       return { success: false, error: 'User not authenticated' };
     }
 
-    if (!user) {
-      return { success: false, error: 'User not found' };
-    }
-
     // Check if order belongs to user and is still pending
-    const order = await prisma.order.findFirst({
-      where: {
-        id: orderId,
-        userId: user.id,
-        status: 'pending'
-      }
+    const order = await Order.findOne({
+      _id: orderId,
+      userId: user.id,
+      status: 'pending'
     });
 
     if (!order) {
       return { success: false, error: 'Order not found or cannot be cancelled' };
     }
 
-    await prisma.order.update({
-      where: { id: orderId },
-      data: { status: 'cancelled' }
-    });
+    const result = await Order.updateOne(
+      { _id: orderId },
+      { status: 'cancelled' }
+    );
+
+    if (result.matchedCount === 0) {
+      return { success: false, error: 'Order not found' };
+    }
 
     return { success: true };
   } catch (error) {
