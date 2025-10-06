@@ -2,11 +2,14 @@
   "name": "football_bank_js",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "ping": "node src/scripts/ping.js",
+    "test-db": "node src/scripts/test-network.js"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.7",

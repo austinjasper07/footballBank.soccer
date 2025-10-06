@@ -2,9 +2,10 @@
 
 import { User, Order, Subscription, PaymentMethod, Submission, Player } from "@/lib/schemas";
 import { getAuthUser } from "@/lib/oauth";
-
+import dbConnect from "@/lib/mongodb";
 // Get current user's profile data
 export async function getCurrentUserProfile() {
+  await dbConnect();
   try {
     const user = await getAuthUser();
 
@@ -60,6 +61,7 @@ export async function getCurrentUserProfile() {
 
 // Get user's orders with pagination
 export async function getUserOrders(page = 1, limit = 10) {
+  await dbConnect();
   try {
     const user = await getAuthUser();
 
@@ -98,6 +100,7 @@ export async function getUserOrders(page = 1, limit = 10) {
 
 // Get user's subscriptions
 export async function getUserSubscriptions() {
+  await dbConnect();
   try {
     const user = await getAuthUser();
 
@@ -122,6 +125,7 @@ export async function getUserSubscriptions() {
 
 // Update user subscription
 export async function updateUserSubscription(subscriptionId, isActive) {
+  await dbConnect();
   try {
     const user = await getAuthUser();
 
@@ -150,6 +154,7 @@ export async function updateUserSubscription(subscriptionId, isActive) {
 
 // Get player profile by ID
 export async function getPlayerProfile(playerId) {
+  await dbConnect();
   try {
     const player = await Player.findById(playerId);
 
@@ -173,6 +178,7 @@ export async function getPlayerProfile(playerId) {
 
 // Get current user's player profile (if they are a player)
 export async function getCurrentPlayerProfile() {
+  await dbConnect();
   try {
     const user = await getAuthUser();
 
@@ -207,6 +213,7 @@ export async function getCurrentPlayerProfile() {
 
 // Update player profile
 export async function updatePlayerProfile(playerId, data) {
+  await dbConnect();
   try {
     const user = await getAuthUser();
 
@@ -245,6 +252,7 @@ export async function updatePlayerProfile(playerId, data) {
 
 // Cancel order
 export async function cancelOrder(orderId) {
+  await dbConnect();
   try {
     const user = await getAuthUser();
 

@@ -1,7 +1,9 @@
 import { cookies } from "next/headers";
 import { Session, User } from "./schemas";
+import dbConnect from "./mongodb";
 
 export async function getAuthUser() {
+  await dbConnect();
   try {
     // Only use OTP session (no NextAuth to avoid openid-client issues)
     const cookieStore = await cookies();
@@ -9,7 +11,7 @@ export async function getAuthUser() {
     
     console.log("🔍 getAuthUser - sessionToken:", sessionToken ? 'found' : 'not found');
 
-    if (sessionToken) {
+    if (sessionToken && sessionToken.trim() !== '') {
       try {
         // Find session in database
         const sessionRecord = await Session.findOne({
@@ -37,10 +39,16 @@ export async function getAuthUser() {
               isVerified: user.isVerified,
               authMethod: 'otp'
             };
+          } else {
+            console.log("🔍 Session found but user not found, cleaning up session");
+            // Clean up orphaned session
+            await Session.findByIdAndDelete(sessionRecord._id);
           }
+        } else {
+          console.log("🔍 Session token not found or expired");
         }
       } catch (error) {
-        console.error("Error checking OTP session:", error);
+        console.error("Error checking OTP session:", error.message || error);
       }
     }
 
@@ -52,6 +60,7 @@ export async function getAuthUser() {
 }
 
 export async function requireAuth() {
+  await dbConnect();
   const user = await getAuthUser();
   if (!user) {
     throw new Error("Authentication required");

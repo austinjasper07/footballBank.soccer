@@ -199,7 +199,57 @@ const pendingOrderSchema = new mongoose.Schema({
   items: { type: mongoose.Schema.Types.Mixed }
 });
 
-// Create models with proper error handling
+// Cart Item Schema
+const cartItemSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+  quantity: { type: Number, required: true, default: 1 },
+  size: { type: String },
+  color: { type: String },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+// Affiliate Product Schema
+const affiliateProductSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  originalPrice: { type: Number },
+  discount: { type: Number, default: 0 },
+  image: { type: String, required: true },
+  images: [{ type: String }],
+  category: { type: String, required: true },
+  brand: { type: String },
+  rating: { type: Number, default: 0 },
+  reviewCount: { type: Number, default: 0 },
+  affiliateUrl: { type: String, required: true },
+  amazonAsin: { type: String },
+  featured: { type: Boolean, default: false },
+  inStock: { type: Boolean, default: true },
+  sizes: [{ type: String }],
+  colors: [{ type: String }],
+  tags: [{ type: String }],
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+// Order Item Schema
+const orderItemSchema = new mongoose.Schema({
+  orderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: true },
+  productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+  affiliateProductId: { type: mongoose.Schema.Types.ObjectId, ref: 'AffiliateProduct' },
+  name: { type: String, required: true },
+  description: { type: String },
+  price: { type: Number, required: true },
+  quantity: { type: Number, required: true, default: 1 },
+  size: { type: String },
+  color: { type: String },
+  image: { type: String },
+  type: { type: String, enum: ['product', 'affiliate'], default: 'product' }
+});
+
+// Create models with proper error handling - use existing collection names from Prisma
 export const User = mongoose.models.User || mongoose.model('User', userSchema);
 export const OtpToken = mongoose.models.OtpToken || mongoose.model('OtpToken', otpTokenSchema);
 export const Session = mongoose.models.Session || mongoose.model('Session', sessionSchema);
@@ -212,3 +262,6 @@ export const PaymentMethod = mongoose.models.PaymentMethod || mongoose.model('Pa
 export const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
 export const Submission = mongoose.models.Submission || mongoose.model('Submission', submissionSchema);
 export const PendingOrder = mongoose.models.PendingOrder || mongoose.model('PendingOrder', pendingOrderSchema);
+export const CartItem = mongoose.models.CartItem || mongoose.model('CartItem', cartItemSchema);
+export const AffiliateProduct = mongoose.models.AffiliateProduct || mongoose.model('AffiliateProduct', affiliateProductSchema);
+export const OrderItem = mongoose.models.OrderItem || mongoose.model('OrderItem', orderItemSchema);

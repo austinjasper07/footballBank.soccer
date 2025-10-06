@@ -5,7 +5,7 @@ import { sendOTPEmail } from "@/lib/email";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import dbConnect from "@/lib/mongodb";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 const OTP_EXPIRY_MINUTES = 10;
@@ -27,6 +27,7 @@ function generateSessionToken() {
 
 // Clean expired OTPs
 async function cleanExpiredOTPs() {
+  await dbConnect();
   try {
     await OtpToken.deleteMany({
       expiresAt: { $lt: new Date() }
@@ -38,6 +39,7 @@ async function cleanExpiredOTPs() {
 
 // Clean expired sessions
 async function cleanExpiredSessions() {
+  await dbConnect();
   try {
     await Session.deleteMany({
       expiresAt: { $lt: new Date() }
@@ -49,6 +51,7 @@ async function cleanExpiredSessions() {
 
 // Send OTP for login
 export async function sendLoginOTP(email) {
+  await dbConnect();
   try {
     // Clean expired OTPs first
     await cleanExpiredOTPs();
@@ -95,6 +98,7 @@ export async function sendLoginOTP(email) {
 
 // Send OTP for signup
 export async function sendSignupOTP(email, firstName, lastName) {
+  await dbConnect();
   try {
     // Clean expired OTPs first
     await cleanExpiredOTPs();
@@ -140,6 +144,7 @@ export async function sendSignupOTP(email, firstName, lastName) {
 
 // Verify OTP and login
 export async function verifyLoginOTP(email, otp) {
+  await dbConnect();
   try {
     // Find valid OTP
     const otpRecord = await OtpToken.findOne({
@@ -214,6 +219,7 @@ export async function verifyLoginOTP(email, otp) {
 
 // Verify OTP and create account
 export async function verifySignupOTP(email, otp, firstName, lastName) {
+  await dbConnect();
   try {
     // Find valid OTP
     const otpRecord = await OtpToken.findOne({
@@ -269,7 +275,7 @@ export async function verifySignupOTP(email, otp, firstName, lastName) {
     return {
       success: true,
       user: {
-        id: userResult.insertedId.toString(),
+        id: user._id.toString(),
         email,
         firstName,
         lastName,
@@ -288,6 +294,7 @@ export async function verifySignupOTP(email, otp, firstName, lastName) {
 
 // Get current user from session
 export async function getCurrentUser() {
+  await dbConnect();
   try {
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get("session")?.value;
@@ -337,6 +344,7 @@ export async function getCurrentUser() {
 
 // Logout user
 export async function logout() {
+  await dbConnect();
   try {
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get("session")?.value;
@@ -358,6 +366,7 @@ export async function logout() {
 
 // Send password reset OTP
 export async function sendPasswordResetOTP(email) {
+  await dbConnect();
   try {
     // Clean expired OTPs first
     await cleanExpiredOTPs();
@@ -404,6 +413,7 @@ export async function sendPasswordResetOTP(email) {
 
 // Verify password reset OTP and reset password
 export async function resetPasswordWithOTP(email, otp, newPassword) {
+  await dbConnect();
   try {
     // Find valid OTP
     const otpRecord = await OtpToken.findOne({
@@ -451,6 +461,7 @@ export async function resetPasswordWithOTP(email, otp, newPassword) {
 
 // Clean up expired tokens and sessions
 export async function cleanupExpiredTokens() {
+  await dbConnect();
   try {
     await Promise.all([
       cleanExpiredOTPs(),
