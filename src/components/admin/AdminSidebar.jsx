@@ -20,10 +20,11 @@ const navigationItems = [
   { id: 'players', icon: Users, label: 'Players' },
   { id: 'users', icon: Users, label: 'Users' },
   { id: 'submissions', icon: Inbox, label: 'Submissions', badge: 0 },
+  
   { id: 'shop', icon: Store, label: 'Shop' },
   { id: 'affiliate', icon: Store, label: 'Affiliate' },
   { id: 'orders', icon: ShoppingCart, label: 'Orders' },
-      { id: 'blog', icon: FileText, label: 'Blog' },
+  { id: 'blog', icon: FileText, label: 'Blog' },
   { id: 'settings', icon: Settings, label: 'Settings' },
 ];
 

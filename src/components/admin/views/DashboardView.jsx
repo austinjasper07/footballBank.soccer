@@ -11,6 +11,8 @@ import {
   ShoppingCart,
   FileText,
   TrendingUp,
+  Package,
+  Star,
 } from "lucide-react";
 
 import {
@@ -22,7 +24,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useEffect, useMemo, useState } from "react";
 import { formatDistanceToNow, isSameMonth, parseISO } from "date-fns";
-import { getAllUsers, getAllPosts, getAllOrders, getAllPlayers, getAllSubmissions } from "@/actions/adminActions";
+import { getAllUsers, getAllPosts, getAllOrders, getAllPlayers, getAllSubmissions, getAllProducts, getAffiliateProducts } from "@/actions/adminActions";
 import { formatFullDate } from "@/utils/dateHelper";
 import { useToast } from "@/hooks/use-toast";
 
@@ -32,6 +34,8 @@ export function DashboardView() {
   const [posts, setPosts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [submissions, setSubmissions] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [affiliateProducts, setAffiliateProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -43,13 +47,17 @@ export function DashboardView() {
         const usersRes = await getAllUsers();
         const postsRes = await getAllPosts();
         const ordersRes = await getAllOrders();
-        const submissionsRes = await getAllSubmissions()
+        const submissionsRes = await getAllSubmissions();
+        const productsRes = await getAllProducts();
+        const affiliateProductsRes = await getAffiliateProducts();
 
         setPlayers(playersRes);
         setUsers(usersRes);
         setPosts(postsRes);
         setOrders(ordersRes);
         setSubmissions(submissionsRes);
+        setProducts(productsRes);
+        setAffiliateProducts(affiliateProductsRes);
         setLoading(false);
       } catch (error) {
         toast({
@@ -108,21 +116,37 @@ export function DashboardView() {
   const lastPlayerCount = getMonthlyCount(players, 1);
   const playerGrowth = lastPlayerCount === 0 ? 0 : ((currentPlayerCount - lastPlayerCount) / lastPlayerCount) * 100;
 
+  const currentProductCount = getMonthlyCount(products, 0);
+  const lastProductCount = getMonthlyCount(products, 1);
+  const productGrowth = lastProductCount === 0 ? 0 : ((currentProductCount - lastProductCount) / lastProductCount) * 100;
+
+  const currentUserCount = getMonthlyCount(users, 0);
+  const lastUserCount = getMonthlyCount(users, 1);
+  const userGrowth = lastUserCount === 0 ? 0 : ((currentUserCount - lastUserCount) / lastUserCount) * 100;
+
   const dynamicMetrics = [
     {
-      title: "Total Players",
-      value: players.length.toLocaleString(),
+      title: "Total Users",
+      value: users.length.toLocaleString(),
       icon: Users,
-      change: `${playerGrowth >= 0 ? "+" : ""}${playerGrowth.toFixed(1)}% from last month`,
-      positive: playerGrowth >= 0,
+      change: `${userGrowth >= 0 ? "+" : ""}${userGrowth.toFixed(1)}% from last month`,
+      positive: userGrowth >= 0,
       variant: "blue"
     },
     {
-      title: "Pending Submissions",
-      value: submissions.filter(sub => sub.status === "PENDING").length.toString(),
-      icon: Inbox,
-      change: "Live count only",
-      positive: true,
+      title: "Total Players",
+      value: players.length.toLocaleString(),
+      icon: UserPlus,
+      change: `${playerGrowth >= 0 ? "+" : ""}${playerGrowth.toFixed(1)}% from last month`,
+      positive: playerGrowth >= 0,
+      variant: "green"
+    },
+    {
+      title: "Total Products",
+      value: products.length.toLocaleString(),
+      icon: Package,
+      change: `${productGrowth >= 0 ? "+" : ""}${productGrowth.toFixed(1)}% from last month`,
+      positive: productGrowth >= 0,
       variant: "amber"
     },
     {
@@ -147,6 +171,7 @@ export function DashboardView() {
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
+    // Player activities
     const playerActivity = Array.isArray(players)
       ? players
           .filter((player) => new Date(player.createdAt) >= oneWeekAgo)
@@ -160,6 +185,21 @@ export function DashboardView() {
           }))
       : [];
 
+    // User activities
+    const userActivity = Array.isArray(users)
+      ? users
+          .filter((user) => new Date(user.createdAt) >= oneWeekAgo)
+          .map((user) => ({
+            icon: Users,
+            variant: "blue",
+            title: "New user registered",
+            description: `${user.firstName} ${user.lastName} – ${user.role}`,
+            time: formatDistanceToNow(new Date(user.createdAt), { addSuffix: true }),
+            createdAt: new Date(user.createdAt)
+          }))
+      : [];
+
+    // Order activities
     const orderActivity = Array.isArray(orders)
       ? orders
           .filter((order) => new Date(order.createdAt) >= oneWeekAgo)
@@ -173,6 +213,7 @@ export function DashboardView() {
           }))
       : [];
 
+    // Post activities
     const postActivity = Array.isArray(posts)
       ? posts
           .filter((post) => new Date(post.createdAt) >= oneWeekAgo)
@@ -186,10 +227,61 @@ export function DashboardView() {
           }))
       : [];
 
-    return [...playerActivity, ...orderActivity, ...postActivity]
+    // Product activities
+    const productActivity = Array.isArray(products)
+      ? products
+          .filter((product) => new Date(product.createdAt) >= oneWeekAgo)
+          .map((product) => ({
+            icon: Package,
+            variant: "green",
+            title: "New product added",
+            description: `${product.name} – $${product.price}`,
+            time: formatDistanceToNow(new Date(product.createdAt), { addSuffix: true }),
+            createdAt: new Date(product.createdAt)
+          }))
+      : [];
+
+    // Affiliate product activities
+    const affiliateActivity = Array.isArray(affiliateProducts)
+      ? affiliateProducts
+          .filter((product) => new Date(product.createdAt) >= oneWeekAgo)
+          .map((product) => ({
+            icon: Star,
+            variant: "amber",
+            title: "New affiliate product",
+            description: `${product.description} – $${product.price}`,
+            time: formatDistanceToNow(new Date(product.createdAt), { addSuffix: true }),
+            createdAt: new Date(product.createdAt)
+          }))
+      : [];
+
+
+    // Submission activities
+    const submissionActivity = Array.isArray(submissions)
+      ? submissions
+          .filter((submission) => new Date(submission.createdAt) >= oneWeekAgo)
+          .map((submission) => ({
+            icon: Inbox,
+            variant: "red",
+            title: "New submission",
+            description: `${submission.firstName} ${submission.lastName} – ${submission.status}`,
+            time: formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true }),
+            createdAt: new Date(submission.createdAt)
+          }))
+      : [];
+
+    return [
+      ...playerActivity, 
+      ...userActivity, 
+      ...orderActivity, 
+      ...postActivity, 
+      ...productActivity, 
+      ...affiliateActivity, 
+      ...submissionActivity
+    ]
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-      .slice(0, 5);
-  }, [orders, players, posts]);
+      .slice(0, 8);
+  }, [orders, players, posts, users, products, affiliateProducts, submissions]);
 
   return (
     <div className="space-y-8 font-body">
@@ -225,8 +317,8 @@ export function DashboardView() {
       </div>
 
       {/* Activity Feed */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 border-0 shadow-sm">
+      <div className="grid grid-cols-1 gap-6">
+        <Card className="border-0 shadow-sm">
           <CardHeader>
             <CardTitle className="font-[var(--heading)]">Recent Activity</CardTitle>
           </CardHeader>
@@ -252,27 +344,6 @@ export function DashboardView() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-sm">
-          <CardHeader>
-            <CardTitle className="font-[var(--heading)]">System Health</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">API Status</span>
-                <Badge className="bg-accent-green text-white border-0">ONLINE</Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Payment Gateway</span>
-                <Badge className="bg-accent-green text-white border-0">ONLINE</Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Score Feed</span>
-                <Badge className="bg-accent-red text-white border-0">ERROR</Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

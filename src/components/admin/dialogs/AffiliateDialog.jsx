@@ -84,7 +84,7 @@ export default function AffiliateDialog({ open, onOpenChange, product, onSave })
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>

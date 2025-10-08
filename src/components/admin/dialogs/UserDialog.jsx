@@ -101,7 +101,7 @@ export function UserDialog({ open, onOpenChange, user, onSave }) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{user?.id ? "Edit User" : "Add New User"}</DialogTitle>

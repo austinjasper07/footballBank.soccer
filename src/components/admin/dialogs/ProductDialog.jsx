@@ -70,7 +70,7 @@ export function ProductDialog({
   }, [product, open]);
 
   const handleSave = async () => {
-    if (!formData.name || !formData.price || formData.stock === undefined) {
+    if (!formData.name || !formData.price || formData.stock === undefined || formData.stock === null) {
       toast({
         title: "Error",
         description: "Please fill in all required fields.",
@@ -123,7 +123,7 @@ export function ProductDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
