@@ -27,7 +27,7 @@ const EditorDashboard = () => {
         router.replace(`/auth/login?redirect=${pathname}`);
         return;
       }
-      
+
       if (role) {
         const isEditorUser = role === "editor" || role === "admin";
         if (!isEditorUser) {
@@ -95,27 +95,36 @@ const EditorDashboard = () => {
       },
       editor: {
         title: editingPost ? "Edit Post" : "Create New Post",
-        subtitle: editingPost ? "Update your blog post" : "Write and publish a new blog post",
+        subtitle: editingPost
+          ? "Update your blog post"
+          : "Write and publish a new blog post",
       },
     };
-    return titles[activeView] || { title: "Editor Dashboard", subtitle: "Overview of your content and statistics" };
+    return (
+      titles[activeView] || {
+        title: "Editor Dashboard",
+        subtitle: "Overview of your content and statistics",
+      }
+    );
   };
 
   return (
-    <div className="flex h-screen bg-[hsl(var(--background))] overflow-x-scroll">
-      <EditorSidebar
-        activeView={activeView}
-        onViewChange={setActiveView}
-        collapsed={collapsed}
-        onToggleCollapse={() => setCollapsed(!collapsed)}
-      />
+    <div className="flex h-screen bg-[hsl(var(--background))] overflow-hidden">
+      {/* Sidebar */}
+      <div className="fixed inset-y-0 left-0 z-40">
+        <EditorSidebar
+          activeView={activeView}
+          onViewChange={setActiveView}
+          collapsed={collapsed}
+          onToggleCollapse={() => setCollapsed(!collapsed)}
+        />
+      </div>
 
       {/* Desktop */}
       <div
-        className={`
-          hidden md:flex flex-col flex-1 transition-all duration-300 ease-in-out 
-          ${collapsed ? "ml-16" : "ml-64"}
-        `}
+        className={`hidden md:flex flex-col flex-1 transition-all duration-300 ease-in-out ${
+          collapsed ? "ml-16" : "ml-64"
+        }`}
       >
         <EditorHeader
           title={getViewTitle().title}

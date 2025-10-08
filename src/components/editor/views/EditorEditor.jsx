@@ -26,7 +26,7 @@ export default function EditorEditor({ editingPost, onSave, onCancel }) {
     status: "Draft",
     featured: false,
     tags: [],
-    imageUrl: ""
+    imageUrl: []
   });
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function EditorEditor({ editingPost, onSave, onCancel }) {
         status: editingPost.status || "Draft",
         featured: editingPost.featured || false,
         tags: editingPost.tags || [],
-        imageUrl: editingPost.imageUrl || ""
+        imageUrl: Array.isArray(editingPost.imageUrl) ? editingPost.imageUrl : (editingPost.imageUrl ? [editingPost.imageUrl] : [])
       });
     } else {
       setPostData({
@@ -53,7 +53,7 @@ export default function EditorEditor({ editingPost, onSave, onCancel }) {
         status: "Draft",
         featured: false,
         tags: [],
-        imageUrl: ""
+        imageUrl: []
       });
     }
   }, [editingPost, user]);
@@ -112,6 +112,22 @@ export default function EditorEditor({ editingPost, onSave, onCancel }) {
     setPostData({ 
       ...postData, 
       tags: postData.tags.filter(tag => tag !== tagToRemove) 
+    });
+  };
+
+  const handleImageAdd = (imageUrl) => {
+    if (imageUrl.trim() && !postData.imageUrl.includes(imageUrl.trim())) {
+      setPostData({ 
+        ...postData, 
+        imageUrl: [...postData.imageUrl, imageUrl.trim()] 
+      });
+    }
+  };
+
+  const handleImageRemove = (imageToRemove) => {
+    setPostData({ 
+      ...postData, 
+      imageUrl: postData.imageUrl.filter(img => img !== imageToRemove) 
     });
   };
 
@@ -214,13 +230,55 @@ export default function EditorEditor({ editingPost, onSave, onCancel }) {
               </div>
 
               <div>
-                <Label htmlFor="imageUrl">Featured Image URL</Label>
-                <Input
-                  id="imageUrl"
-                  value={postData.imageUrl}
-                  onChange={(e) => setPostData({ ...postData, imageUrl: e.target.value })}
-                  placeholder="https://example.com/image.jpg"
-                />
+                <Label htmlFor="imageUrl">Images</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="imageUrl"
+                    placeholder="https://example.com/image.jpg"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        handleImageAdd(e.target.value);
+                        e.target.value = '';
+                      }
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={(e) => {
+                      const input = e.target.previousElementSibling;
+                      handleImageAdd(input.value);
+                      input.value = '';
+                    }}
+                  >
+                    Add
+                  </Button>
+                </div>
+                
+                <div className="mt-2 space-y-2">
+                  {postData.imageUrl.map((image, index) => (
+                    <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded-md">
+                      <img 
+                        src={image} 
+                        alt={`Image ${index + 1}`}
+                        className="w-12 h-12 object-cover rounded"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                      <span className="flex-1 text-sm text-gray-600 truncate">{image}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleImageRemove(image)}
+                        className="text-red-600 hover:text-red-700"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className="flex items-center space-x-2">

@@ -244,7 +244,7 @@ export function AffiliateView() {
                 ))}
 
                 {paginatedProducts.length === 0 && (
-                  <tr>
+                  <tr key="no-products">
                     <td
                       colSpan={4}
                       className="p-6 text-center text-muted-foreground"

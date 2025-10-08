@@ -144,38 +144,50 @@ export function DashboardView() {
   ];
 
   const recentActivity = useMemo(() => {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
     const playerActivity = Array.isArray(players)
-      ? players.map((player) => ({
-          icon: UserPlus,
-          variant: "green",
-          title: "New player submission",
-          description: `${player.firstName} ${player.lastName} – ${player.position}`,
-          time: formatDistanceToNow(new Date(player.createdAt), { addSuffix: true })
-        }))
+      ? players
+          .filter((player) => new Date(player.createdAt) >= oneWeekAgo)
+          .map((player) => ({
+            icon: UserPlus,
+            variant: "green",
+            title: "New player submission",
+            description: `${player.firstName} ${player.lastName} – ${player.position}`,
+            time: formatDistanceToNow(new Date(player.createdAt), { addSuffix: true }),
+            createdAt: new Date(player.createdAt)
+          }))
       : [];
 
     const orderActivity = Array.isArray(orders)
-      ? orders.map((order) => ({
-          icon: ShoppingCart,
-          variant: "blue",
-          title: "New order placed",
-          description: `Order #${order.id} – $${order.items.reduce((sum, i) => sum + i.price * i.quantity, 0)}`,
-          time: formatDistanceToNow(new Date(order.createdAt), { addSuffix: true })
-        }))
+      ? orders
+          .filter((order) => new Date(order.createdAt) >= oneWeekAgo)
+          .map((order) => ({
+            icon: ShoppingCart,
+            variant: "blue",
+            title: "New order placed",
+            description: `Order #${order.id} – $${order.items.reduce((sum, i) => sum + i.price * i.quantity, 0)}`,
+            time: formatDistanceToNow(new Date(order.createdAt), { addSuffix: true }),
+            createdAt: new Date(order.createdAt)
+          }))
       : [];
 
     const postActivity = Array.isArray(posts)
-      ? posts.map((post) => ({
-          icon: FileText,
-          variant: "amber",
-          title: "New blog post",
-          description: post.title,
-          time: formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })
-        }))
+      ? posts
+          .filter((post) => new Date(post.createdAt) >= oneWeekAgo)
+          .map((post) => ({
+            icon: FileText,
+            variant: "amber",
+            title: "New blog post",
+            description: post.title,
+            time: formatDistanceToNow(new Date(post.createdAt), { addSuffix: true }),
+            createdAt: new Date(post.createdAt)
+          }))
       : [];
 
     return [...playerActivity, ...orderActivity, ...postActivity]
-      .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .slice(0, 5);
   }, [orders, players, posts]);
 

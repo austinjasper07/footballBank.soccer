@@ -89,7 +89,7 @@ export default function Header({ lang = 'en' }) {
           <nav className="hidden lg:flex flex-1 justify-center">
             <div className="flex space-x-4 xl:space-x-6 text-nowrap">
             {navLinks.map(({ label, path }) => {
-              const isActive = pathname === path || (path !== `/${lang}` && pathname.startsWith(path));
+              const isActive = mounted && (pathname === path || (path !== `/${lang}` && pathname.startsWith(path)));
               return (
                 <Link
                   key={path}
@@ -173,7 +173,7 @@ export default function Header({ lang = 'en' }) {
       >
           <div className="flex flex-col p-4 sm:p-6 space-y-3 sm:space-y-4 pt-20 sm:pt-24">
           {navLinks.map(({ label, path }) => {
-            const isActive = pathname === path || (path !== `/${lang}` && pathname.startsWith(path));
+            const isActive = mounted && (pathname === path || (path !== `/${lang}` && pathname.startsWith(path)));
             return (
               <Link
                 key={path}

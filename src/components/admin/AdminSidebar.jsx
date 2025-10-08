@@ -89,15 +89,15 @@ export function AdminSidebar({ activeView, onViewChange, collapsed, onToggleColl
               const Icon = item.icon;
 
               return (
-                <li key={item.id}>
+                <li key={item.id} >
                   <button
                     onClick={() => {
                       onViewChange(item.id);
                       setMobileOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                    className={`w-full cursor-pointer flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
                       isActive
-                        ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]'
+                        ? 'bg-accent-red text-[hsl(var(--primary-foreground))]'
                         : 'hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]'
                     }`}
                   >

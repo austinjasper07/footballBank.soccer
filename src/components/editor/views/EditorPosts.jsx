@@ -15,7 +15,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { SearchBar } from "@/components/admin/SearchBar";
+import { Search } from "lucide-react";
 import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
 
 import { getAllPosts } from "@/actions/publicActions";
@@ -57,7 +57,7 @@ export default function EditorPosts({ onNavigateToEditor }) {
 
   const handleViewPost = (post) => {
     const postUrl = `/en/blog/${post.id}`;
-    window.open(postUrl, '_blank');
+    window.open(postUrl, "_blank");
   };
 
   const confirmDeletePost = async () => {
@@ -94,10 +94,11 @@ export default function EditorPosts({ onNavigateToEditor }) {
   };
 
   const filteredPosts = useMemo(() => {
-    return posts.filter((post) =>
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.author.toLowerCase().includes(searchQuery.toLowerCase())
+    return posts.filter(
+      (post) =>
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.author.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [posts, searchQuery]);
 
@@ -175,12 +176,15 @@ export default function EditorPosts({ onNavigateToEditor }) {
       <div className="flex md:items-center justify-between">
         <div className="flex flex-col md:flex-row md:items-center gap-4">
           <h2 className="text-xl font-semibold text-nowrap">Blog Posts</h2>
-          <SearchBar
+
+          <input
+            type="text"
             value={searchQuery}
             onChange={setSearchQuery}
             placeholder="Search posts..."
-            className="w-50 md:w-80"
+            className="w-full rounded-md px-3 py-2 pr-10 border border-[hsl(var(--border))] bg-[hsl(var(--background))] text-sm focus:outline-none focus:border-[hsl(var(--primary))]"
           />
+          <Search className="absolute right-3 top-2.5 h-4 w-4 text-[hsl(var(--muted-foreground))]" />
         </div>
         <div className="flex gap-2">
           <Button onClick={handleCreateNewPost}>
@@ -227,7 +231,11 @@ export default function EditorPosts({ onNavigateToEditor }) {
                             {post.title}
                           </div>
                           <div className="text-sm text-gray-500 truncate max-w-xs">
-                            {post.summary || post.content.replace(/<[^>]*>/g, '').substring(0, 100)}...
+                            {post.summary ||
+                              post.content
+                                .replace(/<[^>]*>/g, "")
+                                .substring(0, 100)}
+                            ...
                           </div>
                         </div>
                       </div>
@@ -237,7 +245,9 @@ export default function EditorPosts({ onNavigateToEditor }) {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Badge
-                        variant={post.status === "Published" ? "default" : "secondary"}
+                        variant={
+                          post.status === "Published" ? "default" : "secondary"
+                        }
                       >
                         {post.status}
                       </Badge>
@@ -254,7 +264,6 @@ export default function EditorPosts({ onNavigateToEditor }) {
                           variant="outline"
                           size="sm"
                           onClick={() => handleViewPost(post)}
-                          className="text-blue-600 hover:text-blue-700"
                         >
                           <Eye className="h-4 w-4 mr-1" />
                           View
@@ -271,7 +280,6 @@ export default function EditorPosts({ onNavigateToEditor }) {
                           variant="outline"
                           size="sm"
                           onClick={() => handleDeletePost(post)}
-                          className="text-red-600 hover:text-red-700"
                         >
                           <Trash2 className="h-4 w-4 mr-1" />
                           Delete
@@ -294,26 +302,38 @@ export default function EditorPosts({ onNavigateToEditor }) {
               <PaginationItem>
                 <PaginationPrevious
                   onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  className={
+                    currentPage === 1
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
                 />
               </PaginationItem>
-              
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <PaginationItem key={page}>
-                  <PaginationLink
-                    onClick={() => setCurrentPage(page)}
-                    isActive={currentPage === page}
-                    className="cursor-pointer"
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-              
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      onClick={() => setCurrentPage(page)}
+                      isActive={currentPage === page}
+                      className="cursor-pointer"
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              )}
+
               <PaginationItem>
                 <PaginationNext
-                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  onClick={() =>
+                    setCurrentPage(Math.min(totalPages, currentPage + 1))
+                  }
+                  className={
+                    currentPage === totalPages
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
                 />
               </PaginationItem>
             </PaginationContent>
@@ -327,7 +347,7 @@ export default function EditorPosts({ onNavigateToEditor }) {
         onConfirm={confirmDeletePost}
         title="Delete Blog Post"
         description="This will permanently remove the blog post from the system."
-        itemName={postToDelete ? postToDelete.title : ''}
+        itemName={postToDelete ? postToDelete.title : ""}
         isLoading={isDeleting}
       />
     </div>

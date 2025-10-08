@@ -46,7 +46,7 @@ export default function BlogView() {
     status: "Draft",
     featured: false,
     tags: [],
-    imageUrl: ""
+    imageUrl: []
   });
   const [isSaving, setIsSaving] = useState(false);
 
@@ -191,7 +191,7 @@ export default function BlogView() {
         status: "Draft",
         featured: false,
         tags: [],
-        imageUrl: ""
+        imageUrl: []
       });
     } catch (error) {
       toast({

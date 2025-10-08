@@ -43,7 +43,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 const MenuButton = ({ onClick, isActive, children, title }) => (
   <Button
@@ -135,6 +135,13 @@ export default function AdvancedTextEditor({
       },
     },
   });
+
+  // Update editor content when content prop changes
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content);
+    }
+  }, [content, editor]);
 
   const setLink = useCallback(() => {
     if (linkUrl) {
