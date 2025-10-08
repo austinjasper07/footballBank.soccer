@@ -28,24 +28,28 @@ const AdminDashboard = () => {
 
 
   useEffect(() => {
-  if (!isLoading && pathname) {
-    if (!isAuthenticated) {
-      router.replace(`/auth/login?redirect=${pathname}`);
-    } else if (role ) {
-      const isAdminUser = role === "admin";
-      if (!isAdminUser) {
-        toast({
-          title: "Access Denied",
-          description: "You do not have permission to access this page.",
-          variant: "destructive",
-        });
-        router.replace("/");
-      } else {
-        setCheckedAuth(true);
+    if (!isLoading && pathname) {
+      if (!isAuthenticated) {
+        router.replace(`/auth/login?redirect=${pathname}`);
+        return;
+      }
+      
+      if (role) {
+        const isAdminUser = role === "admin";
+        if (!isAdminUser) {
+          toast({
+            title: "Access Denied",
+            description: "You do not have permission to access this page.",
+            variant: "destructive",
+          });
+          router.replace("/");
+          return;
+        } else {
+          setCheckedAuth(true);
+        }
       }
     }
-  }
-}, [isAuthenticated, isLoading, role, pathname, router, toast]);
+  }, [isAuthenticated, isLoading, role, pathname, router, toast]);
 
 
   if (isLoading || !checkedAuth) {

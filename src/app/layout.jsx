@@ -1,6 +1,6 @@
 // app/layout.tsx
 import "./globals.css";
-import { DM_Serif_Text, Oswald } from "next/font/google";
+import { Oswald } from "next/font/google";
 import Script from "next/script";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 import { NewAuthProvider } from "@/context/NewAuthContext";
@@ -16,14 +16,6 @@ const oswald = Oswald({
   display: "swap",
 });
 
-const dmSerifText = DM_Serif_Text({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-dm-serif-text",
-  display: "swap",
-});
-
 export const metadata = generateSEOMetadata({
   title: "Global Football Talent Platform",
   description: "Discover and showcase football talent worldwide. Connect players with scouts, clubs, and opportunities through our comprehensive talent banking platform.",
@@ -35,7 +27,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${oswald.variable} ${dmSerifText.variable}`}
+      className={`${oswald.variable}`}
     >
       <head>
         {/* Favicon and Icons */}
@@ -52,6 +44,12 @@ export default function RootLayout({ children }) {
         {/* Preconnect for Critical Resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Google Fonts - DM Serif Text */}
+        <link 
+          href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital,wght@0,400;1,400&display=swap" 
+          rel="stylesheet" 
+        />
         
         {/* Structured Data - Organization */}
         <script

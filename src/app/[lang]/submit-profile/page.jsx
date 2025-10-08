@@ -37,7 +37,8 @@ export default function PlayerSubmissionForm() {
   const [submittingUser, setSubmittingUser] = useState(null);
   const [checkedAuth, setCheckedAuth] = useState(false);
   const [subscription, setSubscription] = useState(null);
-  const [checkingSubscription, setCheckingSubscription] = useState(true);
+  const [checkingSubscription, setCheckingSubscription] = useState(false);
+  const [authTimeout, setAuthTimeout] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -76,6 +77,7 @@ export default function PlayerSubmissionForm() {
 
   const checkSubscription = async () => {
     try {
+      setCheckingSubscription(true);
       const response = await fetch("/api/subscriptions/check");
       const data = await response.json();
       
@@ -86,36 +88,99 @@ export default function PlayerSubmissionForm() {
         if (data.subscription.usedSubmissions >= data.subscription.maxSubmissions) {
           // Redirect to subscription page
           router.push("/subscriptions?limit_reached=true");
-          return;
+          return false;
+        } else {
+          return true;
         }
       } else {
         // No active subscription, redirect to subscription page
         router.push("/subscriptions?required=true");
-        return;
+        return false;
       }
     } catch (error) {
       console.error("Error checking subscription:", error);
       // On error, redirect to subscription page
       router.push("/subscriptions?error=true");
+      return false;
     } finally {
       setCheckingSubscription(false);
     }
   };
 
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     if (!isAuthenticated) {
+  //       // Redirect to our custom login page with redirect parameter
+  //       router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+  //     } else {
+  //       setCheckedAuth(true);
+  //       getUserById(user.id).then(setSubmittingUser);
+        
+  //     }
+  //   }
+  // }, [isLoading, isAuthenticated, pathname, router]);
+
+  // Add timeout to prevent infinite loading
   useEffect(() => {
-    if (!isLoading) {
-      if (!isAuthenticated) {
-        // Redirect to our custom login page with redirect parameter
-        router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
-      } else {
-        setCheckedAuth(true);
-        getUserById(user.id).then(setSubmittingUser);
-        checkSubscription();
+    const timeout = setTimeout(() => {
+      if (isLoading) {
+        console.warn("Authentication check timed out");
+        setAuthTimeout(true);
+      }
+    }, 10000); // 10 second timeout
+
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
+
+  useEffect(() => {
+    // Wait until auth finishes loading or timeout occurs
+    if (isLoading && !authTimeout) return;
+  
+    if (!isAuthenticated) {
+      // Redirect to login if not logged in
+      router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
+  
+    // If authenticated but user data not yet loaded, wait for it
+    if (isAuthenticated && !user) {
+      console.log("Waiting for user data...");
+      return;
+    }
+  
+    // Now we have everything — mark checked
+    if (isAuthenticated && user) {
+      setCheckedAuth(true);
+  
+      // Load submitting user info once
+      if (!submittingUser) {
+        getUserById(user.id).then(setSubmittingUser).catch(console.error);
       }
     }
-  }, [isLoading, isAuthenticated, pathname, router]);
+  }, [isLoading, isAuthenticated, user, pathname, router, submittingUser, authTimeout]);
+  
 
-  if (isLoading || !checkedAuth || checkingSubscription) return <SplashScreen />;
+  console.log("Auth loading:", isLoading, "checked:", checkedAuth, "user:", user, "timeout:", authTimeout);
+  
+  // Show splash screen while loading, but not if we've timed out
+  if ((isLoading && !authTimeout) || !checkedAuth || checkingSubscription) {
+    return <SplashScreen />;
+  }
+  
+  // If we've timed out and still loading, show an error or redirect
+  if (authTimeout && isLoading) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-12 text-center">
+        <h2 className="text-2xl font-bold mb-4">Authentication Timeout</h2>
+        <p className="text-primary-muted mb-4">
+          There was an issue loading your authentication status. Please try refreshing the page.
+        </p>
+        <Button onClick={() => window.location.reload()}>
+          Refresh Page
+        </Button>
+      </div>
+    );
+  }
 
   const validateStep = () => {
     const errs = [];
@@ -148,22 +213,32 @@ export default function PlayerSubmissionForm() {
   const prevStep = () => setStep(step - 1);
 
   const submitForm = async () => {
-    try {
-      await createSubmission({
-        ...formData,
-        submittedAt: new Date(),
-        userId: submittingUser?.id,
-      });
-      setSubmitted(true);
-      setStep(4);
-      toast({
-        title: "Success",
-        description: "Profile submitted successfully.",
-      });
-    } catch {
+    const canSubmit = await checkSubscription();
+    if (canSubmit) {
+      try {
+        await createSubmission({
+          ...formData,
+          submittedAt: new Date(),
+          userId: submittingUser?.id,
+        });
+        setSubmitted(true);
+        setStep(4);
+        toast({
+          title: "Success",
+          description: "Profile submitted successfully.",
+        });
+      } catch (error) {
+        console.error("Submission error:", error);
+        toast({
+          title: "Error",
+          description: "Failed to submit profile.",
+          variant: "destructive",
+        });
+      }
+    } else {
       toast({
         title: "Error",
-        description: "Failed to submit profile.",
+        description: "Failed to submit profile. Subscribe to a plan and try again",
         variant: "destructive",
       });
     }
@@ -595,3 +670,5 @@ function InputField({ label, value, onChange, type = "text" }) {
     </div>
   );
 }
+
+

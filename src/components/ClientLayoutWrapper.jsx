@@ -17,10 +17,9 @@ export default function ClientLayoutWrapper({ children, lang }) {
     setIsClient(true);
   }, []);
 
-  const isAdminPage = pathname.startsWith("/admin");
+  const isAdminPage = pathname.startsWith("/admin") || pathname.startsWith(`/${lang}/admin`);
   // Check if it's homepage for any language (e.g., /en, /es, or /)
   const isHomePage = pathname === "/" || pathname === `/${lang}` || /^\/[a-z]{2}$/.test(pathname);
-
   // Use a consistent base className to avoid hydration mismatches
   const baseClassName = 'mx-auto min-h-screen';
   const dynamicClassName = isClient && (isAdminPage || isHomePage) 
@@ -47,3 +46,5 @@ export default function ClientLayoutWrapper({ children, lang }) {
     </>
   );
 }
+
+

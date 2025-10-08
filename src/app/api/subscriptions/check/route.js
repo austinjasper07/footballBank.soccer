@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/oauth";
 import { Subscription } from "@/lib/schemas";
+import dbConnect from "@/lib/mongodb";
 
 export async function GET() {
+  await dbConnect();
   try {
     const user = await getAuthUser();
     

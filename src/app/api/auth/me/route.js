@@ -12,7 +12,8 @@ export async function GET() {
       );
     }
 
-    return NextResponse.json(user);
+    // Return user wrapped in user property to match context expectations
+    return NextResponse.json({ user });
   } catch (error) {
     console.error("Error getting user:", error);
     return NextResponse.json(

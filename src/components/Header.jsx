@@ -54,6 +54,7 @@ export default function Header({ lang = 'en' }) {
     pathname.endsWith("/cart") ||
     pathname.includes("/shop/cart");
   const isCartPage = pathname.endsWith("/cart") || pathname.includes("/shop/cart");
+  const isShopPage = pathname.includes("/shop");
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -108,13 +109,15 @@ export default function Header({ lang = 'en' }) {
             {/* Language Switcher */}
             {mounted && <LanguageSwitcher currentLang={lang} />}
             
-            {/* Submit Profile CTA */}
-            <Link
-              href={`/${lang}/submit-profile`}
-              className="hidden md:block bg-gradient-to-r from-accent-red to-red-600 hover:from-red-600 hover:to-red-700 text-white px-3 lg:px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200 shadow-sm hover:shadow-md text-sm lg:text-base"
-            >
-              {(dict && mounted) ? dict?.navigation?.submitProfile : "Submit Profile"}
-            </Link>
+            {/* Submit Profile CTA - Hidden on shop pages */}
+            {!isShopPage && (
+              <Link
+                href={`/${lang}/submit-profile`}
+                className="hidden md:block bg-gradient-to-r from-accent-red to-red-600 hover:from-red-600 hover:to-red-700 text-white px-3 lg:px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200 shadow-sm hover:shadow-md text-sm lg:text-base"
+              >
+                {(dict && mounted) ? dict?.navigation?.submitProfile : "Submit Profile"}
+              </Link>
+            )}
             
             {isShopOrCart && mounted && (
               <Link href={`/${lang}/shop/cart`} className="relative">
@@ -181,14 +184,16 @@ export default function Header({ lang = 'en' }) {
             </Link>
           ))}
           
-          {/* Mobile Submit Profile Button */}
-          <Link
-              href={`/${lang}/submit-profile`}
-            onClick={() => setMenuOpen(false)}
-            className="bg-gradient-to-r from-accent-red to-red-600 text-white text-center py-3 rounded-md block font-medium"
-          >
-              {(dict && mounted) ? dict?.navigation?.submitProfile : "Submit Profile"}
-          </Link>
+          {/* Mobile Submit Profile Button - Hidden on shop pages */}
+          {!isShopPage && (
+            <Link
+                href={`/${lang}/submit-profile`}
+              onClick={() => setMenuOpen(false)}
+              className="bg-gradient-to-r from-accent-red to-red-600 text-white text-center py-3 rounded-md block font-medium"
+            >
+                {(dict && mounted) ? dict?.navigation?.submitProfile : "Submit Profile"}
+            </Link>
+          )}
           
           {!isLoading && (
             isAuthenticated ? (

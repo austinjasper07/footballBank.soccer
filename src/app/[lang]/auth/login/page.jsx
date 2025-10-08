@@ -43,7 +43,28 @@ export default function LoginPage() {
     }
   }, [searchParams]);
 
-  // No need for client-side authentication checks - server-side layout handles redirects
+  // Check if user is already authenticated
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/me', { credentials: 'include' });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.user) {
+            // User is already authenticated, redirect to appropriate dashboard
+            const dashboardUrl = redirectUrl || (data.user.role === 'admin' ? '/admin' : 
+                              data.user.role === 'player' ? '/player-profile' : '/profile');
+            window.location.href = dashboardUrl;
+          }
+        }
+      } catch (error) {
+        // User is not authenticated, continue with login process
+        console.log('User not authenticated, showing login form');
+      }
+    };
+
+    checkAuth();
+  }, [redirectUrl]);
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
@@ -76,10 +97,24 @@ export default function LoginPage() {
       const result = await verifyLoginOTP(email, otp);
       
       if (result.success) {
+        console.log("🔐 Login successful for user:", result.user.email);
         setMessage("Login successful! Redirecting...");
         // Redirect directly without page reload to avoid redirect loop
         setTimeout(() => {
-          const dashboardUrl = redirectUrl || (result.user.role === 'admin' ? '/admin' : result.user.role === 'player' ? '/player-profile' : '/profile');
+          let dashboardUrl = redirectUrl;
+          
+          // If no redirect URL specified, determine based on user role
+          if (!dashboardUrl) {
+            if (result.user.role === 'admin') {
+              dashboardUrl = '/admin';
+            } else if (result.user.role === 'player') {
+              dashboardUrl = '/player-profile';
+            } else {
+              dashboardUrl = '/profile';
+            }
+          }
+          
+          console.log("🔐 Redirecting to:", dashboardUrl);
           window.location.href = dashboardUrl;
         }, 1000);
       } else {
