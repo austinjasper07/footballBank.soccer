@@ -187,7 +187,7 @@ export function DashboardView() {
           const Icon = metric.icon;
           const variantClasses = getVariantClasses(metric.variant);
           return (
-            <Card key={index} className="border-0 shadow-sm">
+            <Card key={`metric-${metric.title}-${index}`} className="border-0 shadow-sm">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div>
@@ -224,7 +224,7 @@ export function DashboardView() {
                 const Icon = activity.icon;
                 const variantClasses = getVariantClasses(activity.variant);
                 return (
-                  <div key={index} className="flex items-center gap-4 p-3 hover:bg-[hsl(var(--muted))]/50 rounded-lg transition-colors">
+                  <div key={`activity-${activity.title}-${index}`} className="flex items-center gap-4 p-3 hover:bg-[hsl(var(--muted))]/50 rounded-lg transition-colors">
                     <div className={`p-2 rounded-lg ${variantClasses.iconBg}`}>
                       <Icon className={`h-4 w-4 ${variantClasses.iconColor}`} />
                     </div>

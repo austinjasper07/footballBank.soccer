@@ -5,6 +5,7 @@ import { getFeaturedPlayers, getFeaturedPosts } from "@/actions/publicActions";
 import { getAuthUser } from "@/lib/oauth";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { getDictionary } from "@/lib/dictionaries";
+import { formatTimeAgo } from "@/utils/dateHelper";
 import HeroBackground from "@/components/HeroBackground";
 
 export async function generateMetadata({ params }) {
@@ -407,9 +408,9 @@ export default async function HomePage({ params }) {
                     </div>
                     <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
                     <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-                      {post.content.slice(0, 100)}
+                      {post.content.replace(/<[^>]*>/g, '').slice(0, 100)}...
                     </p>
-                    <Link href={`/${lang}/posts/${post.id}`}>
+                    <Link href={`/${lang}/blog/${post.id}`}>
                       <span className="text-accent-red hover:underline text-sm font-medium">
                         {dict.homepage.blog.readMore}
                       </span>

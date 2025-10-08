@@ -105,7 +105,7 @@ const AdminDashboard = () => {
       },
       settings: { title: "Settings", subtitle: "Configure system preferences" },
     };
-    return titles[activeView];
+    return titles[activeView] || { title: "Dashboard", subtitle: "Overview of your platform metrics" };
   };
 
   return (

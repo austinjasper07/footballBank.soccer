@@ -20,7 +20,8 @@ import { BlogPostDialog } from "@/components/admin/dialogs/BlogPostDialog";
 import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
 
 import { getAllPosts } from "@/actions/publicActions";
-import { updatePost, deletePost } from "@/actions/adminActions";
+import { updatePost, deletePost, createPost } from "@/actions/adminActions";
+import AdvancedTextEditor from "@/components/admin/AdvancedTextEditor";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -35,6 +36,18 @@ export default function BlogView() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showInlineEditor, setShowInlineEditor] = useState(false);
+  const [newPostData, setNewPostData] = useState({
+    title: "",
+    summary: "",
+    content: "",
+    author: "Admin",
+    status: "Draft",
+    featured: false,
+    tags: [],
+    imageUrl: ""
+  });
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -102,22 +115,85 @@ export default function BlogView() {
   };
 
   const handleAddOrUpdatePost = async (data) => {
-    if (!data.id) {
+    try {
+      if (data.id) {
+        await updatePost(data.id, data);
+        toast({
+          title: "Success",
+          description: "Post updated successfully.",
+        });
+      } else {
+        await createPost(data);
+        toast({
+          title: "Success",
+          description: "New post created successfully.",
+        });
+      }
+      
+      const updated = await getAllPosts();
+      setPosts(updated);
+    } catch (error) {
       toast({
         title: "Error",
-        description: "New post creation not implemented yet.",
+        description: "Failed to save post.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleCreateNewPost = () => {
+    setNewPostData({
+      title: "",
+      summary: "",
+      content: "",
+      author: "Admin",
+      status: "Draft",
+      featured: false,
+      tags: [],
+      imageUrl: ""
+    });
+    setShowInlineEditor(true);
+  };
+
+  const handleSaveNewPost = async () => {
+    if (!newPostData.title || !newPostData.content) {
+      toast({
+        title: "Missing Fields",
+        description: "Please fill in title and content.",
         variant: "destructive",
       });
       return;
     }
 
-    await updatePost(data.id, data);
-    const updated = await getAllPosts();
-    setPosts(updated);
-    toast({
-      title: "Success",
-      description: "Post updated successfully.",
-    });
+    setIsSaving(true);
+    try {
+      await createPost(newPostData);
+      toast({
+        title: "Success",
+        description: "New post created successfully.",
+      });
+      const updated = await getAllPosts();
+      setPosts(updated);
+      setShowInlineEditor(false);
+      setNewPostData({
+        title: "",
+        summary: "",
+        content: "",
+        author: "Admin",
+        status: "Draft",
+        featured: false,
+        tags: [],
+        imageUrl: ""
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create post.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const countStats = () => {
@@ -194,11 +270,90 @@ export default function BlogView() {
             className="w-50 md:w-80"
           />
         </div>
-        <Button onClick={() => setPostDialogOpen(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          New Post
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => setPostDialogOpen(true)} variant="outline">
+            <Plus className="h-4 w-4 mr-2" />
+            Quick Post
+          </Button>
+          <Button onClick={handleCreateNewPost} variant="outline">
+            <Plus className="h-4 w-4 mr-2" />
+            Inline Editor
+          </Button>
+          <Button onClick={() => window.open('/admin/blog-editor', '_blank')}>
+            <Plus className="h-4 w-4 mr-2" />
+            Full Editor
+          </Button>
+        </div>
       </div>
+
+      {/* Inline Editor */}
+      {showInlineEditor && (
+        <Card className="mb-6">
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Create New Post</h3>
+                <div className="flex gap-2">
+                  <Button variant="outline" onClick={() => setShowInlineEditor(false)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleSaveNewPost} disabled={isSaving}>
+                    {isSaving ? 'Saving...' : 'Save Post'}
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-1 space-y-4">
+                  <div>
+                    <label className="text-sm font-medium">Title *</label>
+                    <input
+                      type="text"
+                      value={newPostData.title}
+                      onChange={(e) => setNewPostData({ ...newPostData, title: e.target.value })}
+                      placeholder="Enter post title"
+                      className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium">Summary</label>
+                    <textarea
+                      value={newPostData.summary}
+                      onChange={(e) => setNewPostData({ ...newPostData, summary: e.target.value })}
+                      placeholder="Brief description"
+                      rows={3}
+                      className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium">Author</label>
+                    <select
+                      value={newPostData.author}
+                      onChange={(e) => setNewPostData({ ...newPostData, author: e.target.value })}
+                      className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="Admin">Admin</option>
+                      <option value="Editor">Editor</option>
+                      <option value="Guest Writer">Guest Writer</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-2">
+                  <AdvancedTextEditor
+                    content={newPostData.content}
+                    onChange={(content) => setNewPostData({ ...newPostData, content })}
+                    placeholder="Start writing your blog post here..."
+                    className="min-h-[400px]"
+                  />
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Blog Posts Table */}
       <Card className="border-0 shadow-sm">

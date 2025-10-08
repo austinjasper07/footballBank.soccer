@@ -8,11 +8,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] hover:bg-[hsl(var(--primary))]/90",
+        default: "bg-accent-red text-[hsl(var(--primary-foreground))] hover:bg-accent-red/90",
         destructive:
-          "bg-[hsl(var(--destructive))] text-[hsl(var(--destructive-foreground))] hover:bg-[hsl(var(--destructive))]/90",
+          "bg-accent-red text-[hsl(var(--destructive-foreground))] hover:bg-[hsl(var(--destructive))]/90",
         outline:
-          "bg-transparent border border-white text-white hover:bg-white hover:text-accent-red hover:border-white",
+          "bg-transparent border hover:border-white hover:text-white hover:bg-accent-red text-accent-red border-accent-red",
         secondary:
           "bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))] hover:bg-[hsl(var(--secondary))]/80",
         ghost: "hover:bg-accent-red hover:text-[hsl(var(--accent-foreground))]",

@@ -23,8 +23,9 @@ export default function ClientSideFilter({
   }, [posts, activeTab, query]);
 
   return (
-    <div className="mt-6">
-      <div className="flex items-center justify-between border-b border-[hsl(200,5%,87%)]">
+    <div className="space-y-8">
+      {/* Filter Controls - Simplified to match reference */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
         <BlogTabs
           categories={categories}
           active={activeTab}
@@ -32,6 +33,8 @@ export default function ClientSideFilter({
         />
         <BlogSearch value={query} onChange={setQuery} />
       </div>
+      
+      {/* Blog Grid */}
       <BlogGrid posts={filteredPosts} featuredPost={featuredPost} />
     </div>
   );

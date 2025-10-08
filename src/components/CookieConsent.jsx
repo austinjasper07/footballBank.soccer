@@ -98,7 +98,7 @@ export default function CookieConsent() {
                 variant="outline"
                 size="sm"
                 onClick={declineCookies}
-                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                className="border-gray-300 text-gray-700"
               >
                 Decline
               </Button>
@@ -107,7 +107,7 @@ export default function CookieConsent() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border-gray-300 text-gray-700 hover:bg-gray-50 gap-1"
+                    className="border-gray-300 text-gray-700 gap-1"
                   >
                     <Settings className="w-3 h-3" />
                     Customize

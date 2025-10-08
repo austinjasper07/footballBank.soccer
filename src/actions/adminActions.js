@@ -1,6 +1,6 @@
 "use server";
 
-import { User, Post, Player, Product, Order, Subscription, Message, Submission } from "@/lib/schemas";
+import { User, Post, Player, Product, Order, Subscription, Message, Submission, AffiliateProduct } from "@/lib/schemas";
 import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongodb";
 

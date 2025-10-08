@@ -38,7 +38,7 @@ export default function PlayerSubmissionForm() {
   const [checkedAuth, setCheckedAuth] = useState(false);
   const [subscription, setSubscription] = useState(null);
   const [checkingSubscription, setCheckingSubscription] = useState(false);
-  const [authTimeout, setAuthTimeout] = useState(false);
+
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -107,80 +107,70 @@ export default function PlayerSubmissionForm() {
     }
   };
 
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     if (!isAuthenticated) {
-  //       // Redirect to our custom login page with redirect parameter
-  //       router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
-  //     } else {
-  //       setCheckedAuth(true);
-  //       getUserById(user.id).then(setSubmittingUser);
+  useEffect(() => {
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        // Redirect to our custom login page with redirect parameter
+        router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+      } else {
+        setCheckedAuth(true);
+        getUserById(user.id).then(setSubmittingUser);
         
+      }
+    }
+  }, [isLoading, isAuthenticated, pathname, router]);
+
+  // // Add timeout to prevent infinite loading
+
+  // useEffect(() => {
+  //   // Wait until auth finishes loading or timeout occurs
+  //   if (isLoading) return;
+  
+  //   if (!isAuthenticated) {
+  //     // Redirect to login if not logged in
+  //     router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+  //     return;
+  //   }
+  
+  //   // If authenticated but user data not yet loaded, wait for it
+  //   if (isAuthenticated && !user) {
+  //     console.log("Waiting for user data...");
+  //     return;
+  //   }
+  
+  //   // Now we have everything — mark checked
+  //   if (isAuthenticated && user) {
+  //     setCheckedAuth(true);
+  
+  //     // Load submitting user info once
+  //     if (!submittingUser) {
+  //       getUserById(user.id).then(setSubmittingUser).catch(console.error);
   //     }
   //   }
-  // }, [isLoading, isAuthenticated, pathname, router]);
-
-  // Add timeout to prevent infinite loading
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (isLoading) {
-        console.warn("Authentication check timed out");
-        setAuthTimeout(true);
-      }
-    }, 10000); // 10 second timeout
-
-    return () => clearTimeout(timeout);
-  }, [isLoading]);
-
-  useEffect(() => {
-    // Wait until auth finishes loading or timeout occurs
-    if (isLoading && !authTimeout) return;
-  
-    if (!isAuthenticated) {
-      // Redirect to login if not logged in
-      router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
-      return;
-    }
-  
-    // If authenticated but user data not yet loaded, wait for it
-    if (isAuthenticated && !user) {
-      console.log("Waiting for user data...");
-      return;
-    }
-  
-    // Now we have everything — mark checked
-    if (isAuthenticated && user) {
-      setCheckedAuth(true);
-  
-      // Load submitting user info once
-      if (!submittingUser) {
-        getUserById(user.id).then(setSubmittingUser).catch(console.error);
-      }
-    }
-  }, [isLoading, isAuthenticated, user, pathname, router, submittingUser, authTimeout]);
+  // }, [isLoading, isAuthenticated, user, pathname, router, submittingUser]);
   
 
-  console.log("Auth loading:", isLoading, "checked:", checkedAuth, "user:", user, "timeout:", authTimeout);
+  console.log("Auth loading:", isLoading, "checked:", checkedAuth, "user:", user);
   
   // Show splash screen while loading, but not if we've timed out
-  if ((isLoading && !authTimeout) || !checkedAuth || checkingSubscription) {
-    return <SplashScreen />;
-  }
+  // if (isLoading || !checkedAuth || checkingSubscription) {
+  //   return <SplashScreen />;
+  // }
   
   // If we've timed out and still loading, show an error or redirect
-  if (authTimeout && isLoading) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-12 text-center">
-        <h2 className="text-2xl font-bold mb-4">Authentication Timeout</h2>
-        <p className="text-primary-muted mb-4">
-          There was an issue loading your authentication status. Please try refreshing the page.
-        </p>
-        <Button onClick={() => window.location.reload()}>
-          Refresh Page
-        </Button>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="max-w-4xl mx-auto px-4 py-12 text-center">
+  //       <h2 className="text-2xl font-bold mb-4">Authentication Timeout</h2>
+  //       <p className="text-primary-muted mb-4">
+  //         There was an issue loading your authentication status. Please try refreshing the page.
+  //       </p>
+  //       <Button onClick={() => window.location.reload()}>
+  //         Refresh Page
+  //       </Button>
+  //     </div>
+  //   );
+  // }
 
   const validateStep = () => {
     const errs = [];

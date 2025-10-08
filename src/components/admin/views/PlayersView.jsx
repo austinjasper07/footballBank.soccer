@@ -285,7 +285,7 @@ export default function PlayersView() {
               />
             </PaginationItem>
             {Array.from({ length: totalPages }, (_, i) => (
-              <PaginationItem key={i}>
+              <PaginationItem key={`page-${i + 1}`}>
                 <PaginationLink
                   href="#"
                   isActive={i + 1 === currentPage}

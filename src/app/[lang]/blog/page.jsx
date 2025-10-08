@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Post } from "@/lib/schemas"
 import ClientSideFilterWrapper from "./components/ClientSideFilterWrapper"
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
@@ -21,18 +22,36 @@ export const metadata = generateSEOMetadata({
 export default async function BlogPage() {
   'use server'
 
-  const posts = await Post.find({}).sort({ createdAt: -1 })
+  const posts = await Post.find({}).sort({ createdAt: -1 }).lean()
   const formattedPosts = posts.map((post) => ({
-    ...post.toObject(),
     id: post._id.toString(),
+    title: post.title,
+    content: post.content,
+    summary: post.summary,
+    author: post.author,
+    category: post.category,
+    imageUrl: post.imageUrl,
+    status: post.status,
+    featured: post.featured,
+    tags: post.tags,
+    views: post.views,
     createdAt: post.createdAt.toISOString(),
     updatedAt: post.updatedAt.toISOString(),
   }))
 
-  const featuredPosts = await Post.find({ featured: true }).sort({ createdAt: -1 })
+  const featuredPosts = await Post.find({ featured: true }).sort({ createdAt: -1 }).lean()
   const formattedFeaturedPosts = featuredPosts.map((post) => ({
-    ...post.toObject(),
     id: post._id.toString(),
+    title: post.title,
+    content: post.content,
+    summary: post.summary,
+    author: post.author,
+    category: post.category,
+    imageUrl: post.imageUrl,
+    status: post.status,
+    featured: post.featured,
+    tags: post.tags,
+    views: post.views,
     createdAt: post.createdAt.toISOString(),
     updatedAt: post.updatedAt.toISOString(),
   }))
@@ -43,22 +62,51 @@ export default async function BlogPage() {
   ]
 
   return (
-    <main className="bg-primary-bg text-primary-text">
-      <section className="py-16 text-center px-4">
-        <div className="max-w-4xl mx-auto">
-          <h1 className=" font-bold text-4xl md:text-5xl mb-6">
-            Football Talent Hub
-          </h1>
-          <p className="text-primary-muted text-lg mb-8">
-            Latest insights, player spotlights, and transfer updates from the
-            world of football talent scouting.
-          </p>
+    <main className="w-full">
+      {/* Breadcrumb Section */}
+      <section 
+        className="w-full h-64 relative py-16 overflow-hidden bg-cover bg-center bg-no-repeat bg-[url('/blog-breadcrumb.jpg')] " 
+      >
+        {/* Background overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40"></div>
+        
+        {/* Content */}
+        <div className="relative z-10">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="breadcrumb-content-main">
+                <h1 className="text-4xl font-bold text-white mb-6">Blog Posts</h1>
+                <div className="breadcrumb-links">
+                  <div className="content-inner">
+                    <nav className="breadcrumb" aria-labelledby="system-breadcrumb">
+                      <ol className="flex items-center gap-2 text-sm text-white">
+                        <li>
+                          <Link href="/" className="hover:text-blue-300">Home</Link>
+                          <span className="mx-2">-</span>
+                        </li>
+                        <li>
+                          <span className="text-white">Blog posts</span>
+                        </li>
+                      </ol>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-          <ClientSideFilterWrapper
-            posts={formattedPosts}
-            featuredPost={formattedFeaturedPosts}
-            categories={categories}
-          />
+      {/* Blog Content */}
+      <section className="py-8">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <ClientSideFilterWrapper
+              posts={formattedPosts}
+              featuredPost={formattedFeaturedPosts}
+              categories={categories}
+            />
+          </div>
         </div>
       </section>
     </main>

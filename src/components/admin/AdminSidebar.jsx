@@ -24,6 +24,7 @@ const navigationItems = [
   { id: 'affiliate', icon: Store, label: 'Affiliate' },
   { id: 'orders', icon: ShoppingCart, label: 'Orders' },
   { id: 'blog', icon: FileText, label: 'Blog' },
+  { id: 'blog-editor', icon: FileText, label: 'Blog Editor', href: '/admin/blog-editor' },
   { id: 'settings', icon: Settings, label: 'Settings' },
 ];
 
