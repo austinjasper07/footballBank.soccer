@@ -215,52 +215,7 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* FEATURED PLAYERS */}
-        {/* <section className="py-16 bg-primary-bg" data-aos="fade-up">
-          <div className=" px-4">
-            <div className="flex justify-between items-center mb-10">
-              <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold">
-                {dict.homepage.featuredPlayers.title}
-              </h2>
-              <Link href={`/${lang}/players`} className="text-accent-red hover:underline">
-                {dict.homepage.featuredPlayers.viewAll}
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {featuredPlayers.map((player) => (
-                <div
-                  key={player.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden h-[300px] lg:h-[400px] flex flex-col lg:justify-between"
-                  data-aos="fade-up"
-                >
-                  <div className="relative w-full h-40 lg:h-48">
-                    <Image
-                      src={player.imageUrl[0]}
-                      alt={player.firstName}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-xl mb-1">
-                      {player.firstName} {player.lastName}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-3">
-                      {player.description?.slice(0, 180)}
-                    </p>
-                    <Link href={`/${lang}/players/${player.id}`}>
-                      <span className="block bg-accent-red text-white text-center py-2 rounded hover:bg-red-600 transition">
-                        {dict.homepage.featuredPlayers.viewProfile}
-                      </span>
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section> */}
-
-        {/* FEATURED PLAYERS */}
-        <section className=" py-20 relative overflow-hidden" data-aos="fade-up">
+        <section className=" py-16 relative overflow-hidden" data-aos="fade-up">
           <div className="mb-8 text-center w-full">
             <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold text-[#111827] mb-2">
               {dict.homepage.featuredPlayers.title}
@@ -270,7 +225,7 @@ export default async function HomePage({ params }) {
               Discover exceptional talent from around the world
             </p>
           </div>
-          <div className="relative z-10 max-w-7xl mx-auto shadow-lg rounded-lg ">
+          <div className="relative z-10 max-w-7xl mx-auto ">
             <div className="flex flex-col lg:flex-row justify-end items-center mb-4 px-4 sm:px-6 lg:px-8 xl:px-12">
               <Link
                 href={`/${lang}/players`}
@@ -295,7 +250,10 @@ export default async function HomePage({ params }) {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6 lg:gap-8 px-4 py-4 sm:px-6 lg:px-8 xl:px-12" data-aos="fade-up">
+            <div
+              className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 px-4 py-4 sm:px-6 lg:px-8 xl:px-12"
+              data-aos="fade-up"
+            >
               {featuredPlayers.map((player, index) => (
                 <div
                   key={player.id}
@@ -378,8 +336,7 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* BLOG */}
-
-        <section className="py-20 bg-white" id="blog">
+        <section className="py-16 bg-white" id="blog">
           <div
             className="max-w-7xl mx-auto px-4 text-center"
             data-aos="fade-up"
@@ -387,51 +344,84 @@ export default async function HomePage({ params }) {
             <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold mb-4">
               {dict.homepage.blog.title}
             </h2>
-            <div className="w-24 h-1 bg-accent-red mx-auto mb-10" />
-            <div className="grid md:grid-cols-3 gap-8 text-left">
-              {featuredPosts.map((post) => (
-                <article
-                  key={post.id}
-                  className="bg-[#f9fafb] rounded-xl shadow hover:shadow-md transition"
-                  data-aos="fade-up"
+            <div className="w-24 h-1 bg-accent-red mx-auto mb-4" />
+
+            <div className="relative z-10 max-w-7xl mx-auto">
+              <div className="flex flex-col lg:flex-row justify-end items-center mb-4 px-4 sm:px-6 lg:px-8 xl:px-12">
+                <Link
+                  href={`/${lang}/blog`}
+                  className="group inline-flex items-center px-6 lg:px-8 py-3 lg:py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-accent-red hover:bg-white/20 hover:border-white/30 transition-all duration-300"
                 >
-                  <Image
-                    src={post.imageUrl[0]}
-                    alt={post.title}
-                    width={400}
-                    height={200}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-6">
-                    <div className="text-sm text-gray-500 mb-2">
-                      {formatTimeAgo(post.createdAt)}
+                  <span className="font-semibold text-sm lg:text-base">
+                    {dict.homepage.blog.visitBlog}
+                  </span>
+                  <svg
+                    className="ml-2 w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
+              <div
+                className="text-left grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 px-4 py-4 sm:px-6 lg:px-8 xl:px-12"
+                data-aos="fade-up"
+              >
+                {featuredPosts.map((post) => (
+                  <article
+                    key={post.id}
+                    className="bg-[#f9fafb] rounded-xl shadow hover:shadow-md transition"
+                    data-aos="fade-up"
+                  >
+                    <Image
+                      src={
+                        post.imageUrl &&
+                        post.imageUrl.length > 0 &&
+                        post.imageUrl[0]
+                          ? post.imageUrl[0]
+                          : "/logo.jpg"
+                      }
+                      alt={post.title}
+                      width={400}
+                      height={200}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-6">
+                      <div className="text-sm text-gray-500 mb-2">
+                        {formatTimeAgo(post.createdAt)}
+                      </div>
+                      <h3 className="text-lg font-semibold mb-2">
+                        {post.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                        {post.content.replace(/<[^>]*>/g, "").slice(0, 100)}...
+                      </p>
+                      <Link href={`/${lang}/blog/${post.id}`}>
+                        <span className="text-accent-red hover:underline text-sm font-medium">
+                          {dict.homepage.blog.readMore}
+                        </span>
+                      </Link>
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-                      {post.content.replace(/<[^>]*>/g, '').slice(0, 100)}...
-                    </p>
-                    <Link href={`/${lang}/blog/${post.id}`}>
-                      <span className="text-accent-red hover:underline text-sm font-medium">
-                        {dict.homepage.blog.readMore}
-                      </span>
-                    </Link>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                ))}
+              </div>
             </div>
-            <div className="mt-10">
-              <Link href={`/${lang}/blog`}>
-                <span className="bg-accent-red text-white px-6 py-3 rounded-lg hover:bg-red-700 transition font-medium">
-                  {dict.homepage.blog.visitBlog}
-                </span>
-              </Link>
+            <div className="mt-10 flex justify-end">
+              
             </div>
           </div>
         </section>
 
         {/* CTA SECTION */}
         <section
-          className="py-20 bg-accent-red/50 relative"
+          className="py-16 bg-accent-red/50 relative max-w-7xl mx-auto"
           data-aos="zoom-in-up"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-accent-red/80 to-accent-red/40 z-0" />

@@ -19,7 +19,7 @@ export function AmazonAdMobile({ lang = "en" }) {
     getClientDictionary(lang).then(setDict);
   }, [lang]);
 
-  const categories = [...new Set(products.map((p) => p.category))];
+  const categories = [...new Set((products || []).map((p) => p.category))];
 
   // 🧩 Utility: chunk array into groups of n
   const chunkArray = (arr, size) => {
@@ -61,7 +61,7 @@ export function AmazonAdMobile({ lang = "en" }) {
           slidesPerView={1}
           className="h-auto"
         >
-          {chunkArray(products, 3).map((group, idx) => (
+          {chunkArray(products || [], 3).map((group, idx) => (
             <SwiperSlide key={idx}>
               <div className="grid grid-cols-3 gap-3">
                 {group.map((p) => (
@@ -120,7 +120,7 @@ export function AmazonAdDesktop({ lang = "en" }) {
     getClientDictionary(lang).then(setDict);
   }, [lang]);
 
-  const categories = [...new Set(products.map((p) => p.category))];
+  const categories = [...new Set((products || []).map((p) => p.category))];
 
   return (
     <aside className="hidden lg:block w-80 h-fit bg-gradient-to-br from-slate-50 via-white to-blue-50 rounded-2xl shadow-xl border border-slate-200/50 p-6 space-y-6" data-aos="fade-left">
@@ -142,8 +142,8 @@ export function AmazonAdDesktop({ lang = "en" }) {
 
       {/* 💻 Desktop Product Categories */}
       <div className="space-y-4">
-        {categories.slice(0, 3).map((cat) => {
-          const catProducts = products.filter((p) => p.category === cat);
+        {(categories || []).slice(0, 3).map((cat) => {
+          const catProducts = (products || []).filter((p) => p.category === cat);
           return (
             <div
               key={cat}

@@ -10,6 +10,7 @@ export function UserHeader({slug, href}) {
 
   const isAdmin = role === "admin";
   const isPlayer = role === "player";
+  const isEditor = role === "editor";
 
   if (!isAuthenticated || !user) return null;
 
@@ -19,12 +20,14 @@ export function UserHeader({slug, href}) {
   const getDashboardLink = () => {
     if (isAdmin) return "/admin";
     if (isPlayer) return "/player-profile";
+    if (isEditor) return "/editor";
     return "/profile";
   };
 
   const getDashboardLabel = () => {
     if (isAdmin) return "Admin Dashboard";
     if (isPlayer) return "Player Profile";
+    if (isEditor) return "Editor Dashboard";
     return "My Profile";
   };
 
@@ -45,22 +48,48 @@ export function UserHeader({slug, href}) {
           onMouseLeave={closeDropdown}
         >
           <div className="py-1">
+            {/* Profile Link */}
             <Link
-              href={getDashboardLink()}
+              href="/profile"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               onClick={closeDropdown}
             >
-              {getDashboardLabel()}
+              My Profile
             </Link>
+            
+            {/* Admin Dashboard Link */}
             {isAdmin && (
               <Link
-                href={href}
+                href="/admin"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 onClick={closeDropdown}
               >
-                {slug}
+                Admin Dashboard
               </Link>
             )}
+            
+            {/* Editor Dashboard Link */}
+            {isEditor && (
+              <Link
+                href="/editor"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                onClick={closeDropdown}
+              >
+                Editor Dashboard
+              </Link>
+            )}
+            
+            {/* Admin can access Editor Dashboard */}
+            {isAdmin && (
+              <Link
+                href="/editor"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                onClick={closeDropdown}
+              >
+                Editor Dashboard
+              </Link>
+            )}
+            
             <button
               onClick={() => {
                 closeDropdown();

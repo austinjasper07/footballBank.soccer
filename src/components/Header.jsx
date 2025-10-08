@@ -88,19 +88,22 @@ export default function Header({ lang = 'en' }) {
           {/* Desktop Navigation - Centered */}
           <nav className="hidden lg:flex flex-1 justify-center">
             <div className="flex space-x-4 xl:space-x-6 text-nowrap">
-            {navLinks.map(({ label, path }) => (
-              <Link
-                key={path}
-                href={path}
+            {navLinks.map(({ label, path }) => {
+              const isActive = pathname === path || (path !== `/${lang}` && pathname.startsWith(path));
+              return (
+                <Link
+                  key={path}
+                  href={path}
                   className={`transition-colors text-sm xl:text-base ${
-                  pathname === path
-                    ? "text-accent-red font-semibold"
-                    : "text-primary-text hover:text-accent-red"
-                }`}
-              >
-                {label}
-              </Link>
-            ))}
+                    isActive
+                      ? "text-accent-red font-semibold"
+                      : "text-primary-text hover:text-accent-red"
+                  }`}
+                >
+                  {label}
+                </Link>
+              );
+            })}
             </div>
           </nav>
 
@@ -169,20 +172,23 @@ export default function Header({ lang = 'en' }) {
         }`}
       >
           <div className="flex flex-col p-4 sm:p-6 space-y-3 sm:space-y-4 pt-20 sm:pt-24">
-          {navLinks.map(({ label, path }) => (
-            <Link
-              key={path}
-              href={path}
+          {navLinks.map(({ label, path }) => {
+            const isActive = pathname === path || (path !== `/${lang}` && pathname.startsWith(path));
+            return (
+              <Link
+                key={path}
+                href={path}
                 className={`text-base sm:text-lg py-2 px-3 rounded-md transition-colors ${
-                pathname === path
+                  isActive
                     ? "text-accent-red font-semibold bg-red-50"
                     : "text-primary-text hover:text-accent-red hover:bg-gray-50"
-              }`}
-              onClick={() => setMenuOpen(false)}
-            >
-              {label}
-            </Link>
-          ))}
+                }`}
+                onClick={() => setMenuOpen(false)}
+              >
+                {label}
+              </Link>
+            );
+          })}
           
           {/* Mobile Submit Profile Button - Hidden on shop pages */}
           {!isShopPage && (

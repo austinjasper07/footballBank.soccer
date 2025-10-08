@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
   role: { 
     type: String, 
-    enum: ['admin', 'user', 'player', 'agent'], 
+    enum: ['admin', 'user', 'player', 'agent', 'editor'], 
     default: 'user' 
   },
   subscribed: { type: Boolean, default: false },
@@ -117,7 +117,7 @@ const postSchema = new mongoose.Schema({
   summary: { type: String },
   author: { type: String, required: true },
   category: { type: String, required: true },
-  imageUrl: { type: String },
+  imageUrl: [{ type: String }],
   status: { 
     type: String, 
     enum: ['Draft', 'Published', 'Archived'],

@@ -18,6 +18,7 @@ export default function ClientLayoutWrapper({ children, lang }) {
   }, []);
 
   const isAdminPage = pathname.startsWith("/admin") || pathname.startsWith(`/${lang}/admin`);
+  const isEditorPage = pathname.startsWith("/editor") || pathname.startsWith(`/${lang}/editor`);
   // Check if it's homepage for any language (e.g., /en, /es, or /)
   const isHomePage = pathname === "/" || pathname === `/${lang}` || /^\/[a-z]{2}$/.test(pathname);
   // Use a consistent base className to avoid hydration mismatches
@@ -30,18 +31,18 @@ export default function ClientLayoutWrapper({ children, lang }) {
     <>
       <Toaster />
       {
-        !isAdminPage && <Header lang={lang} />
+        !isAdminPage && !isEditorPage && <Header lang={lang} />
       }
       
       <main className={` ${baseClassName}`}>
         {children}
       </main>
       {
-        !isAdminPage && <Footer lang={lang} />
+        !isAdminPage && !isEditorPage && <Footer lang={lang} />
       }
       
       {/* Cookie Consent Banner - Show on all pages except admin */}
-      {!isAdminPage && <CookieConsent />}
+      {!isAdminPage && !isEditorPage && <CookieConsent />}
       
     </>
   );

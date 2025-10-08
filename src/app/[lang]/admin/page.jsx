@@ -9,7 +9,7 @@ import PlayersView from "@/components/admin/views/PlayersView";
 import SubmissionsView from "@/components/admin/views/SubmissionsView";
 import ShopView from "@/components/admin/views/ShopView";
 import OrdersView from "@/components/admin/views/OrdersView";
-import BlogView from "@/components/admin/views/BlogView";
+import AdminBlogView from "@/components/admin/views/AdminBlogView";
 import { SettingsView } from "@/components/admin/views/SettingsView";
 import { AffiliateView } from "@/components/admin/views/AffiliateView";
 import UsersView from "@/components/admin/views/UsersView";
@@ -71,7 +71,7 @@ const AdminDashboard = () => {
       case "orders":
         return <OrdersView />;
       case "blog":
-        return <BlogView />;
+        return <AdminBlogView />;
       case "affiliate":
         return <AffiliateView />;
       case "settings":

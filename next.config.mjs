@@ -12,6 +12,10 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "gaviasthemes.net",
+      },
+      {
+        protocol: "https",
         hostname: "flagcdn.com",
       },
       {

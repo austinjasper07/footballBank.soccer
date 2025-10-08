@@ -42,6 +42,7 @@ export default function BlogView() {
     summary: "",
     content: "",
     author: "Admin",
+    category: "General",
     status: "Draft",
     featured: false,
     tags: [],
@@ -82,6 +83,11 @@ export default function BlogView() {
     const post = posts.find(p => p.id === id);
     setPostToDelete(post);
     setDeleteDialogOpen(true);
+  };
+
+  const handleViewPost = (post) => {
+    const postUrl = `/en/blog/${post.id}`;
+    window.open(postUrl, '_blank');
   };
 
   const confirmDeletePost = async () => {
@@ -147,6 +153,7 @@ export default function BlogView() {
       summary: "",
       content: "",
       author: "Admin",
+      category: "General",
       status: "Draft",
       featured: false,
       tags: [],
@@ -180,6 +187,7 @@ export default function BlogView() {
         summary: "",
         content: "",
         author: "Admin",
+        category: "General",
         status: "Draft",
         featured: false,
         tags: [],
@@ -210,7 +218,7 @@ export default function BlogView() {
     <div className="space-y-6">
       {/* Blog Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="border-0 shadow-sm">
+        {/* <Card className="border-0 shadow-sm">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <Edit className="h-8 w-8 text-blue-500" />
@@ -256,7 +264,7 @@ export default function BlogView() {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Table Header */}
@@ -278,10 +286,6 @@ export default function BlogView() {
           <Button onClick={handleCreateNewPost} variant="outline">
             <Plus className="h-4 w-4 mr-2" />
             Inline Editor
-          </Button>
-          <Button onClick={() => window.open('/admin/blog-editor', '_blank')}>
-            <Plus className="h-4 w-4 mr-2" />
-            Full Editor
           </Button>
         </div>
       </div>
@@ -375,7 +379,7 @@ export default function BlogView() {
                   <tr key={post.id} className="border-t hover:bg-muted/40">
                     <td className="p-4 font-medium">{post.title}</td>
                     <td className="p-4 text-muted-foreground line-clamp-2 max-w-[300px]">
-                      {post.summary}
+                      {post.summary || post.content.replace(/<[^>]*>/g, '').substring(0, 100)}...
                     </td>
                     <td className="p-4">
                       <Badge
@@ -396,6 +400,14 @@ export default function BlogView() {
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleViewPost(post)}
+                          className="text-blue-600 hover:text-blue-700"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
                         <Button
                           variant="ghost"
                           size="sm"

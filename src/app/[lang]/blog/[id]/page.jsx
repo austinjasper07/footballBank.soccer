@@ -10,6 +10,7 @@ import {
   generateStructuredData,
 } from "@/lib/seo";
 import Head from "next/head";
+import ImageCarousel from "@/components/ui/ImageCarousel";
 
 // Dynamic metadata generation
 export async function generateMetadata({ params }) {
@@ -151,49 +152,17 @@ export default async function BlogArticlePage({ params }) {
                 </h1>
               </header>
 
-              {/* Featured Image */}
-              {(() => {
-                const imageUrl = Array.isArray(post.imageUrl)
-                  ? post.imageUrl[0]
-                  : post.imageUrl;
-
-                if (imageUrl && imageUrl.trim() !== "") {
-                  return (
-                    <div className="mb-8">
-                      <Image
-                        src={imageUrl}
-                        alt={post.title}
-                        width={1200}
-                        height={600}
-                        className="w-full h-64 md:h-96 object-cover rounded"
-                      />
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div className="mb-8">
-                      <div className="w-full h-64 md:h-96 bg-gray-200 rounded flex items-center justify-center">
-                        <div className="text-center">
-                          <svg
-                            className="w-16 h-16 text-gray-400 mx-auto mb-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                          </svg>
-                          <p className="text-gray-500">No Featured Image</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-              })()}
+              {/* Featured Image Carousel */}
+              <div className="mb-8">
+                <ImageCarousel
+                  images={(() => {
+                    const imageArray = Array.isArray(post.imageUrl) ? post.imageUrl : [post.imageUrl];
+                    return imageArray.filter(img => img && img.trim() !== '');
+                  })()}
+                  alt={post.title}
+                  className="w-full"
+                />
+              </div>
 
               {/* Article Content */}
               <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
@@ -221,22 +190,6 @@ export default async function BlogArticlePage({ params }) {
                 {/* Right Sidebar - Exact match to reference design */}
                 <div className="lg:col-span-1 bg-white p-4 max-h-fit">
                   <div className="space-y-4">
-                    {/* Author Bio Widget */}
-                    {/* <div className="bg-white border border-gray-200 rounded-lg p-6">
-                      <h3 className="text-lg font-semibold mb-4 text-gray-900">About Author</h3>
-                      <div className="text-center">
-                        <div className="w-20 h-20 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
-                          <span className="text-2xl font-bold text-gray-600">
-                            {post.author ? post.author.charAt(0) : "A"}
-                          </span>
-                        </div>
-                        <h4 className="font-semibold text-gray-900 mb-2">{post.author || "Admin"}</h4>
-                        <p className="text-sm text-gray-600 leading-relaxed">
-                          Professional football analyst with over 10 years of experience in sports journalism and player development insights.
-                        </p>
-                      </div>
-                    </div> */}
-
                     {/* Search Widget */}
                     <div className="bg-gray-100 border border-gray-200 p-6">
                       <h3 className="text-lg font-semibold mb-4 text-gray-900">Search</h3>
