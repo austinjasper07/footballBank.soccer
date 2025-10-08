@@ -187,6 +187,9 @@ export default function EditorPosts({ onNavigateToEditor }) {
           <Search className="absolute right-3 top-2.5 h-4 w-4 text-[hsl(var(--muted-foreground))]" />
         </div>
         <div className="flex gap-2">
+          <Button variant="outline" onClick={() => window.open('/blog', '_blank')}>
+            View Posts
+          </Button>
           <Button onClick={handleCreateNewPost}>
             <Plus className="h-4 w-4 mr-2" />
             Create New Post

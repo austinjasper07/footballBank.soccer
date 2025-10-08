@@ -203,10 +203,15 @@ export default function ProductsView() {
           />
         </div>
 
-        <Button onClick={() => setProductDialogOpen(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Product
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => window.open('/shop/products', '_blank')}>
+            View Shop
+          </Button>
+          <Button onClick={() => setProductDialogOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Product
+          </Button>
+        </div>
       </div>
 
       {/* Products Table */}

@@ -48,6 +48,15 @@ export function UserHeader({slug, href}) {
           onMouseLeave={closeDropdown}
         >
           <div className="py-1">
+            {/* Home Link */}
+            <Link
+              href="/"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={closeDropdown}
+            >
+              Home
+            </Link>
+            
             {/* Profile Link */}
             <Link
               href="/profile"
