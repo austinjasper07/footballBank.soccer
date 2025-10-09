@@ -2,12 +2,17 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useAuth } from '@/context/NewAuthContext'
+import { CheckoutLoadingSkeleton } from '@/components/ui/loading-skeleton'
 import Image from 'next/image'
 import axios from 'axios'
 
 export default function CheckoutWithParams() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const authContext = useAuth()
+  const user = authContext?.user || null
+  const isAuthenticated = authContext?.isAuthenticated || false
 
   const type = searchParams.get('type')
   const plan = searchParams.get('plan')
@@ -15,30 +20,71 @@ export default function CheckoutWithParams() {
   const [items, setItems] = useState([])
   const [paymentMethod, setPaymentMethod] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [orderId] = useState(() => `#FB-${Math.floor(Math.random() * 90000 + 10000)}`)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (type === 'subscription' && plan) {
-          const { data: planData } = await axios.get(`/api/subscriptions/${plan}`)
+        // First, try to restore from localStorage (for refresh persistence)
+        const storedItems = localStorage.getItem('checkout-items')
+        if (storedItems && storedItems !== '[]') {
+          try {
+            const parsedItems = JSON.parse(storedItems)
+            if (parsedItems && parsedItems.length > 0) {
+              setItems(parsedItems)
+              setLoading(false)
+              return
+            }
+          } catch (error) {
+            console.error('Error parsing stored items:', error)
+          }
+        }
 
+        // If no stored items, load based on type
+        if (type === 'subscription' && plan) {
+          // For subscriptions, create the item and save to localStorage for persistence
           const subscriptionItem = {
-            id: planData.id,
-            name: `${planData.id.charAt(0).toUpperCase() + planData.id.slice(1)} Plan`,
-            description: planData.features.join(', '),
+            id: `subscription-${plan}`,
+            name: `${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan`,
+            description: plan === 'basic' ? 'Submit up to 5 player profiles, Enhanced profile visibility, Priority support, Advanced analytics' : 'Unlimited player profiles, Maximum profile visibility, 24/7 priority support, Advanced analytics & insights, Custom profile templates, Bulk upload capabilities',
             quantity: 1,
-            price: planData.price,
+            price: plan === 'basic' ? 29 : plan === 'premium' ? 79 : 0,
             type: 'subscription',
             imageUrl: '/images/subscription-placeholder.png',
           }
 
+          // Save to localStorage for persistence
+          localStorage.setItem('checkout-items', JSON.stringify([subscriptionItem]))
           setItems([subscriptionItem])
+        } else if (type === 'cart') {
+          // For cart, get items from localStorage
+          const cartData = localStorage.getItem('cart')
+          if (cartData) {
+            const parsedCart = JSON.parse(cartData)
+            const cartItems = Array.isArray(parsedCart) ? parsedCart : parsedCart.items || []
+            
+            // Save to localStorage for persistence
+            localStorage.setItem('checkout-items', JSON.stringify(cartItems))
+            setItems(cartItems)
+          } else {
+            setItems([])
+          }
         } else {
-          const data = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : { items: [] }
-          setItems(data)
+          // Fallback: try to get from localStorage
+          const storedItems = localStorage.getItem('checkout-items')
+          if (storedItems) {
+            setItems(JSON.parse(storedItems))
+          } else {
+            setItems([])
+          }
         }
       } catch (error) {
         console.error('Fetch error:', error?.message)
+        // Fallback: try to get from localStorage
+        const storedItems = localStorage.getItem('checkout-items')
+        if (storedItems) {
+          setItems(JSON.parse(storedItems))
+        }
       } finally {
         setLoading(false)
       }
@@ -49,7 +95,22 @@ export default function CheckoutWithParams() {
 
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const shipping = subtotal > 50 ? 0 : 5.99
-  const tax = +(subtotal * 0.08).toFixed(2)
+  
+  // Unified tax calculation system for all purchase types
+  const getTaxRate = () => {
+    if (type === 'subscription') {
+      // Subscriptions: 0% tax for digital services
+      return 0.0
+    } else if (type === 'cart') {
+      // Physical products: 20% VAT
+      return 0.2
+    }
+    // Default: 20% VAT for unknown types
+    return 0.2
+  }
+  
+  const taxRate = getTaxRate()
+  const tax = +(subtotal * taxRate).toFixed(2)
   const total = +(subtotal + shipping + tax).toFixed(2)
 
   const handlePayment = async () => {
@@ -61,6 +122,8 @@ export default function CheckoutWithParams() {
     try {
       const res = await axios.post('/api/checkout', { items, paymentMethod })
       if (res.data?.checkoutUrl) {
+        // Clear checkout items from localStorage when proceeding to payment
+        localStorage.removeItem('checkout-items')
         window.location.href = res.data.checkoutUrl
       } else {
         alert('Unable to create payment session.')
@@ -71,7 +134,18 @@ export default function CheckoutWithParams() {
     }
   }
 
-  if (loading) return <div className="text-center py-20">Loading Order Summary...</div>
+  // Redirect unauthenticated users
+  useEffect(() => {
+    if (!authContext?.isLoading && !isAuthenticated) {
+      router.push('/auth/login?redirect=/secure-payment/checkout')
+    }
+  }, [authContext?.isLoading, isAuthenticated, router])
+
+  if (loading || authContext?.isLoading) return <CheckoutLoadingSkeleton />
+
+  if (!isAuthenticated) {
+    return <div className="text-center py-20">Redirecting to login...</div>
+  }
 
   return (
     <main className="bg-primary-bg text-primary-text py-16 md:py-24">
@@ -83,7 +157,7 @@ export default function CheckoutWithParams() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
               <div>
                 <p className="text-primary-muted">Order ID</p>
-                <p className="font-mono text-accent-red">#FB-{Math.floor(Math.random() * 90000 + 10000)}</p>
+                <p className="font-mono text-accent-red">{orderId}</p>
               </div>
               <div>
                 <p className="text-primary-muted">Shipping</p>
@@ -91,11 +165,16 @@ export default function CheckoutWithParams() {
               </div>
               <div>
                 <p className="text-primary-muted">Email</p>
-                <p>player@footballbank.soccer</p>
+                <p>{user?.email || 'Loading...'}</p>
               </div>
               <div>
                 <p className="text-primary-muted">Billing</p>
-                <p>123 Football St, Soccer City</p>
+                <p>
+                  {user?.billingAddress && user.billingAddress.street ? 
+                    `${user.billingAddress.street}, ${user.billingAddress.city}, ${user.billingAddress.state} ${user.billingAddress.postalCode}` :
+                    'Address will be collected during checkout'
+                  }
+                </p>
               </div>
             </div>
           </section>
@@ -107,10 +186,13 @@ export default function CheckoutWithParams() {
                 <div key={item.id} className="flex items-center gap-4 p-4 rounded-xl border border-divider bg-primary-bg">
                   <div className="w-20 h-20 relative">
                     <Image
-                      src={item.imageUrl || '/images/product-placeholder.png'}
+                      src={item.imageUrl || item.image || '/images/product-placeholder.png'}
                       alt={item.name}
                       fill
                       className="object-cover rounded-lg"
+                      onError={(e) => {
+                        e.target.src = '/images/product-placeholder.png'
+                      }}
                     />
                   </div>
                   <div className="flex-1">
@@ -134,7 +216,17 @@ export default function CheckoutWithParams() {
             <div className="space-y-3 text-sm">
               <div className="flex justify-between"><span>Subtotal</span><span>£{subtotal.toFixed(2)}</span></div>
               <div className="flex justify-between"><span>Shipping</span><span>{shipping ? `£${shipping.toFixed(2)}` : 'FREE'}</span></div>
-              <div className="flex justify-between"><span>Tax</span><span>£{tax.toFixed(2)}</span></div>
+              <div className="flex justify-between">
+                <span>
+                  {type === 'subscription' 
+                    ? 'Tax (0%)' 
+                    : type === 'cart' 
+                    ? 'VAT (20%)' 
+                    : 'Tax'
+                  }
+                </span>
+                <span>£{tax.toFixed(2)}</span>
+              </div>
               <div className="border-t border-divider pt-4 flex justify-between font-bold text-xl">
                 <span>Total</span><span>£{total.toFixed(2)}</span>
               </div>

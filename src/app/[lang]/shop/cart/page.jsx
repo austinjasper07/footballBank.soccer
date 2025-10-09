@@ -3,8 +3,9 @@
 import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { CartLoadingSkeleton } from '@/components/ui/loading-skeleton';
 
 const CartPage = () => {
   const { cart, clearCart, addToCart, removeFromCart } = useCart();
@@ -14,6 +15,13 @@ const CartPage = () => {
   const [savedItems, setSavedItems] = useState([]);
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Simulate loading for demonstration
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const updateQuantity = (id, change) => {
     const item = cart.find(i => i.id === id);
@@ -47,11 +55,16 @@ const CartPage = () => {
   };
 
   const subtotal = cart.reduce((total, item) => total + item.quantity * item.price, 0);
-  const vat = +(subtotal * 0.2).toFixed(2);
+  
+  // No tax calculation in cart - tax will be calculated in checkout
   const promoDiscount = appliedPromo ? subtotal * appliedPromo.discount : 0;
   const bulkDiscount = subtotal > 300 ? 0.1 * subtotal : 0;
   const totalDiscount = promoDiscount + bulkDiscount;
-  const total = +(subtotal + vat - totalDiscount).toFixed(2);
+  const total = +(subtotal - totalDiscount).toFixed(2);
+
+  if (loading) {
+    return <CartLoadingSkeleton />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -294,10 +307,6 @@ const CartPage = () => {
                   <div className="flex justify-between">
                     <span>Shipping</span>
                   <span className="text-green-600 font-medium">FREE</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>VAT (20%)</span>
-                    <span>${vat.toFixed(2)}</span>
                   </div>
                 {promoDiscount > 0 && (
                   <div className="flex justify-between text-green-600">

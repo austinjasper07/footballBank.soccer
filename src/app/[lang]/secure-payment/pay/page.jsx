@@ -1,18 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaCreditCard, FaCheckCircle, FaPaypal, FaCcVisa, FaCcMastercard, FaLock, FaShieldAlt, FaUndo } from 'react-icons/fa';
+import { PayPageLoadingSkeleton } from '@/components/ui/loading-skeleton';
 
 export default function Payment() {
   const [saveCard, setSaveCard] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <PayPageLoadingSkeleton />;
+  }
 
   return (
     <>
       {/* Hero */}
-      <section id="payment-hero" className="py-16">
+      <section id="payment-hero" className="py-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className=" font-bold text-4xl md:text-5xl mb-6 text-primary-text">Secure Payment</h1>
-          <p className="text-primary-muted text-lg max-w-2xl mx-auto mb-8">
+          <p className="text-primary-muted text-lg max-w-2xl mx-auto mb-4">
             Complete your payment securely to unlock premium features and boost your football career.
           </p>
         </div>

@@ -13,6 +13,15 @@ const userSchema = new mongoose.Schema({
   },
   subscribed: { type: Boolean, default: false },
   isVerified: { type: Boolean, default: false },
+  // Billing Address Fields
+  billingAddress: {
+    street: { type: String },
+    city: { type: String },
+    state: { type: String },
+    postalCode: { type: String },
+    country: { type: String },
+    countryCode: { type: String }
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

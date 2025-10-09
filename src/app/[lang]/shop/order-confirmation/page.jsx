@@ -1,8 +1,9 @@
 // pages/order-confirmed.tsx
 import Head from "next/head";
-
+import { useState } from "react";
 
 const OrderConfirmedPage = () => {
+  const [orderId] = useState(() => `#FB-${Math.floor(Math.random() * 90000 + 10000)}`);
   return (
     <>
       <Head>
@@ -36,7 +37,7 @@ const OrderConfirmedPage = () => {
 
                 <div className="mb-6 flex justify-between items-center">
                   <span className="text-primary-muted">Order Number:</span>
-                  <span className="font-mono font-medium text-accent-red">#FB-2024-001247</span>
+                  <span className="font-mono font-medium text-accent-red">{orderId}</span>
                 </div>
 
                 <div className="mb-6">

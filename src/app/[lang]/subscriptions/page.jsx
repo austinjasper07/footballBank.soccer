@@ -135,8 +135,8 @@ export default function SubscriptionsPage() {
         setProcessing(false);
       }
     } else {
-      // Redirect to payment page for paid plans
-      router.push(`/secure-payment?plan=${planId}`);
+      // Redirect to checkout page for paid plans using the existing pattern
+      router.push(`/secure-payment/checkout?type=subscription&plan=${planId}`);
     }
   };
 

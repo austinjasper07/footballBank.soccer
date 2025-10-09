@@ -112,9 +112,16 @@ export default function SecurePaymentPage() {
         },
         body: JSON.stringify({
           planId,
-          price: plan.price,
-          planName: plan.name,
           userId: user.id,
+          userEmail: user.email,
+          billingAddress: {
+            street: formData.street || "",
+            city: formData.city || "",
+            state: formData.state || "",
+            postalCode: formData.postalCode || "",
+            country: formData.country || "",
+            countryCode: formData.countryCode || ""
+          }
         }),
       });
 
