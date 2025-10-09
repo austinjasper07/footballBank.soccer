@@ -89,7 +89,11 @@ export default function Header({ lang = 'en' }) {
           <nav className="hidden lg:flex flex-1 justify-center">
             <div className="flex space-x-4 xl:space-x-6 text-nowrap">
             {navLinks.map(({ label, path }) => {
-              const isActive = mounted && (pathname === path || (path !== `/${lang}` && pathname.startsWith(path)));
+              const isActive = mounted && (
+                pathname === path || 
+                (path !== `/${lang}` && pathname.startsWith(path)) ||
+                (path === `/${lang}/shop/products` && pathname.startsWith(`/${lang}/shop`))
+              );
               return (
                 <Link
                   key={path}
@@ -125,14 +129,10 @@ export default function Header({ lang = 'en' }) {
             {isShopOrCart && mounted && (
               <Link href={`/${lang}/shop/cart`} className="relative">
                 <FaShoppingCart
-                  className={`text-xl ${
-                    isCartPage
-                      ? "text-accent-red"
-                      : "text-accent-red hover:text-[var(--accent)]"
-                  }`}
+                  className={`text-xl `}
                 />
                 {cart.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-accent-red text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                  <span className="absolute -top-2 -right-2 bg-accent-red text-white text-xs w-4 h-4 rounded-full flex items-center justify-center font-bold text-center ">
                     {cart.length}
                   </span>
                 )}
@@ -173,7 +173,11 @@ export default function Header({ lang = 'en' }) {
       >
           <div className="flex flex-col p-4 sm:p-6 space-y-3 sm:space-y-4 pt-20 sm:pt-24">
           {navLinks.map(({ label, path }) => {
-            const isActive = mounted && (pathname === path || (path !== `/${lang}` && pathname.startsWith(path)));
+            const isActive = mounted && (
+              pathname === path || 
+              (path !== `/${lang}` && pathname.startsWith(path)) ||
+              (path === `/${lang}/shop/products` && pathname.startsWith(`/${lang}/shop`))
+            );
             return (
               <Link
                 key={path}
