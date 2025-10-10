@@ -1,18 +1,15 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
+import { getPriceId, isValidPlanDuration } from "@/lib/stripeUtils";
 
 // ✅ Initialize Stripe with error handling
 const stripe = process.env.STRIPE_SECRET_KEY 
-  ? new Stripe(process.env.STRIPE_SECRET_KEY)
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2023-10-16',
+    })
   : null;
 
-// ✅ Define recurring price IDs for each plan
-const PRICE_MAP = {
-  basic_1m: "price_1SGKRkRvu0fa63vjPN1kzJKb",
-  basic_3m: "price_1SGKRkRvu0fa63vjiGJeqMUu",
-  premium_1m: "price_1SGKUIRvu0fa63vjHHHGu3Va",
-  premium_3m: "price_1SGKUIRvu0fa63vjlPXuCTZS",
-};
+// Price mapping is now handled by centralized utility
 
 // ✅ Create checkout session for subscriptions
 export async function POST(req) {
@@ -31,22 +28,43 @@ export async function POST(req) {
     if (!plan || !duration)
       return NextResponse.json({ error: "Missing plan or duration" }, { status: 400 });
 
-    const key = `${plan}_${duration}`;
-    const priceId = PRICE_MAP[key];
+    // Validate plan and duration combination
+    if (!isValidPlanDuration(plan, duration)) {
+      return NextResponse.json({ error: "Invalid plan or duration combination" }, { status: 400 });
+    }
 
-    if (!priceId)
-      return NextResponse.json({ error: "Invalid plan or duration" }, { status: 400 });
+    const priceId = getPriceId(plan, duration);
+
+    // Handle free plan differently
+    if (plan === "free") {
+      // For free plan, redirect to the free subscription endpoint
+      return NextResponse.json({ 
+        message: "Free plan activation required",
+        redirect: "/api/subscriptions/free"
+      });
+    }
+
+    if (!priceId) {
+      return NextResponse.json({ error: "Invalid plan configuration" }, { status: 400 });
+    }
 
     // ✅ Create Stripe Checkout Session
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
+      success_url: `${baseUrl}/en/payment-successful?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/en/cancel`,
+      billing_address_collection: 'auto',
+      client_reference_id: `subscription_${plan}_${duration}_${Date.now()}`,
+      metadata: {
+        plan: plan,
+        duration: duration
+      },
+      allow_promotion_codes: false,
+      automatic_tax: { enabled: false }
     });
-
-    console.log("✅ Stripe success URL:", session.success_url);
 
     return NextResponse.json({ url: session.url });
   } catch (err) {

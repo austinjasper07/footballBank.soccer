@@ -24,6 +24,7 @@ import ProfileLayout from "@/components/profile/ProfileLayout";
 import ProfileDashboard from "@/components/profile/ProfileDashboard";
 import OrderCard from "@/components/profile/OrderCard";
 import SubscriptionCard from "@/components/profile/SubscriptionCard";
+import SubscriptionManager from "@/components/SubscriptionManager";
 import "aos/dist/aos.css";
 
 export default function UserProfilePage() {
@@ -375,30 +376,10 @@ export default function UserProfilePage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {subscriptions.length > 0 ? (
-                <div className="space-y-4">
-                  {subscriptions.map((subscription) => (
-                    <SubscriptionCard
-                      key={subscription.id}
-                      subscription={subscription}
-                      onToggle={handleSubscriptionToggle}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <Crown className="w-16 h-16 text-primary-muted mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-primary-text mb-2">
-                    No subscriptions yet
-                  </h3>
-                  <p className="text-primary-muted mb-6">
-                    Subscribe to our services to get started
-                  </p>
-                  <Button asChild>
-                    <Link href="/pricing">View Plans</Link>
-                  </Button>
-                </div>
-              )}
+              <SubscriptionManager 
+                subscriptions={subscriptions} 
+                onUpdate={fetchSubscriptions}
+              />
             </CardContent>
           </Card>
         </TabsContent>

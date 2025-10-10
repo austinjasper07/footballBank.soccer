@@ -62,11 +62,11 @@ export function AmazonAdMobile({ lang = "en" }) {
           className="h-auto"
         >
           {chunkArray(products || [], 3).map((group, idx) => (
-            <SwiperSlide key={idx}>
+            <SwiperSlide key={`group-${idx}`}>
               <div className="grid grid-cols-3 gap-3">
-                {group.map((p) => (
+                {group.map((p, productIdx) => (
                   <a
-                    key={p.id}
+                    key={p.id || `product-${idx}-${productIdx}`}
                     href={p.url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -142,11 +142,11 @@ export function AmazonAdDesktop({ lang = "en" }) {
 
       {/* 💻 Desktop Product Categories */}
       <div className="space-y-4">
-        {(categories || []).slice(0, 3).map((cat) => {
+        {(categories || []).slice(0, 3).map((cat, catIdx) => {
           const catProducts = (products || []).filter((p) => p.category === cat);
           return (
             <div
-              key={cat}
+              key={cat || `category-${catIdx}`}
               className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 overflow-hidden"
             >
               {/* 🏷 Modern Category Header */}
@@ -168,8 +168,8 @@ export function AmazonAdDesktop({ lang = "en" }) {
                 slidesPerView={1}
                 className="h-32 relative"
               >
-                {catProducts.map((p) => (
-                  <SwiperSlide key={p.id}>
+                {catProducts.map((p, productIdx) => (
+                  <SwiperSlide key={p.id || `product-${catIdx}-${productIdx}`}>
                     <a
                       href={p.url}
                       target="_blank"

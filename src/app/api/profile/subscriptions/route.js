@@ -21,6 +21,13 @@ export async function GET() {
         .sort({ createdAt: -1 });
 
       console.log(`Found ${subscriptions.length} subscriptions for user ${user.id}`);
+      console.log(`Subscriptions:`, subscriptions.map(sub => ({
+        id: sub._id,
+        plan: sub.plan,
+        isActive: sub.isActive,
+        type: sub.type,
+        stripeSubId: sub.stripeSubId
+      })));
 
       return NextResponse.json(subscriptions || []);
     } catch (dbError) {

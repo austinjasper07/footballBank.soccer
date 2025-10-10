@@ -77,6 +77,127 @@ export async function deleteUser(id) {
   }
 }
 
+// ORDERS
+export async function getAllOrders() {
+  await dbConnect();
+  try {
+    const orders = await Order.find({})
+      .populate('userId', 'firstName lastName email')
+      .lean()
+      .sort({ createdAt: -1 });
+    return toPlain(orders);
+  } catch (err) {
+    console.error("Error fetching orders:", err);
+    return [];
+  }
+}
+
+export async function getOrderById(id) {
+  await dbConnect();
+  try {
+    const order = await Order.findById(id)
+      .populate('userId', 'firstName lastName email')
+      .lean();
+    return toPlain(order);
+  } catch (err) {
+    console.error("Error fetching order by ID:", err);
+    return null;
+  }
+}
+
+export async function updateOrderStatus(id, status) {
+  await dbConnect();
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      id, 
+      { status }, 
+      { new: true }
+    ).populate('userId', 'firstName lastName email');
+    
+    revalidatePath("/admin/orders");
+    return toPlain(updatedOrder);
+  } catch (err) {
+    console.error("Error updating order status:", err);
+    return err;
+  }
+}
+
+export async function getOrderStats() {
+  await dbConnect();
+  try {
+    const total = await Order.countDocuments();
+    const pending = await Order.countDocuments({ status: 'pending' });
+    const fulfilled = await Order.countDocuments({ status: 'fulfilled' });
+    const completed = await Order.countDocuments({ status: 'completed' });
+    const cancelled = await Order.countDocuments({ status: 'cancelled' });
+    
+    // Payment status stats
+    const paymentCompleted = await Order.countDocuments({ paymentStatus: 'completed' });
+    const paymentFailed = await Order.countDocuments({ paymentStatus: 'failed' });
+    const paymentPending = await Order.countDocuments({ paymentStatus: 'pending' });
+    const paymentRefunded = await Order.countDocuments({ paymentStatus: 'refunded' });
+    
+    return {
+      total,
+      pending,
+      fulfilled,
+      completed,
+      cancelled,
+      paymentCompleted,
+      paymentFailed,
+      paymentPending,
+      paymentRefunded
+    };
+  } catch (err) {
+    console.error("Error fetching order stats:", err);
+    return { 
+      total: 0, pending: 0, fulfilled: 0, completed: 0, cancelled: 0,
+      paymentCompleted: 0, paymentFailed: 0, paymentPending: 0, paymentRefunded: 0
+    };
+  }
+}
+
+// SUBSCRIPTIONS
+export async function getAllSubscriptions() {
+  await dbConnect();
+  try {
+    const subscriptions = await Subscription.find({})
+      .populate('userId', 'firstName lastName email')
+      .lean()
+      .sort({ createdAt: -1 });
+    return toPlain(subscriptions);
+  } catch (err) {
+    console.error("Error fetching subscriptions:", err);
+    return [];
+  }
+}
+
+export async function getSubscriptionById(id) {
+  await dbConnect();
+  try {
+    const subscription = await Subscription.findById(id)
+      .populate('userId', 'firstName lastName email')
+      .lean();
+    return toPlain(subscription);
+  } catch (err) {
+    console.error("Error fetching subscription by ID:", err);
+    return null;
+  }
+}
+
+export async function updateSubscription(id, data) {
+  await dbConnect();
+  try {
+    const updatedSubscription = await Subscription.findByIdAndUpdate(id, data, { new: true })
+      .populate('userId', 'firstName lastName email');
+    revalidatePath("/admin/subscriptions");
+    return toPlain(updatedSubscription);
+  } catch (err) {
+    console.error("Error updating subscription:", err);
+    return err;
+  }
+}
+
 // PRODUCTS
 export async function getAllProducts() {
   await dbConnect();
@@ -294,17 +415,6 @@ export async function deleteSubmission(id) {
   }
 }
 
-// ORDERS
-export async function getAllOrders() {
-  await dbConnect();
-  try {
-    const orders = await Order.find({}).lean().sort({ createdAt: -1 });
-    return toPlain(orders);
-  } catch (err) {
-    console.error("Error fetching orders:", err);
-    return [];
-  }
-}
 
 // AFFILIATE PRODUCTS
 export async function getAffiliateProducts() {

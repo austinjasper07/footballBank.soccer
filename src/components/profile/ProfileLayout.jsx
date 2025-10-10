@@ -60,7 +60,7 @@ export default function ProfileLayout({
             <div className="flex gap-3">
               {actions.map((action, index) => (
                 <Button
-                  key={index}
+                  key={`action-${index}-${action.label || action.href || 'button'}`}
                   variant={action.variant || "outline"}
                   size={action.size || "default"}
                   onClick={action.onClick}

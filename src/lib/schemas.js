@@ -65,12 +65,13 @@ const subscriptionSchema = new mongoose.Schema({
   },
   plan: { 
     type: String, 
-    enum: ['basic', 'standard', 'premium'],
+    enum: ['free', 'basic', 'premium'],
     required: true 
   },
   isActive: { type: Boolean, default: true },
   startedAt: { type: Date, default: Date.now },
-  expiresAt: { type: Date, required: true }
+  expiresAt: { type: Date, required: true },
+  stripeSubId: { type: String, unique: true, sparse: true } // Stripe subscription ID
 });
 
 // Player Schema
@@ -149,9 +150,16 @@ const orderSchema = new mongoose.Schema({
   }],
   status: { 
     type: String, 
-    enum: ['pending', 'completed', 'cancelled'],
+    enum: ['pending', 'fulfilled', 'completed', 'cancelled'],
     default: 'pending' 
   },
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'completed', 'failed', 'refunded'],
+    default: 'pending'
+  },
+  totalAmount: { type: Number, required: true },
+  stripeSessionId: { type: String }, // Store Stripe session ID for reference
   createdAt: { type: Date, default: Date.now }
 });
 

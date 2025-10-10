@@ -1,7 +1,8 @@
 import Stripe from "stripe";
 import mongoose from "mongoose";
-import { connectDB } from "@/lib/mongoose";
-import { User, Subscription } from "@/lib/schemas";
+import dbConnect from "@/lib/mongodb";
+import { User, Subscription, Order } from "@/lib/schemas";
+import { mapPlanName } from "@/lib/stripeUtils";
 
 // ✅ Initialize Stripe with error handling
 const stripe = process.env.STRIPE_SECRET_KEY 
@@ -29,7 +30,23 @@ export async function POST(req) {
   }
 
   try {
-    if (mongoose.connection.readyState === 0) await connectDB();
+    if (mongoose.connection.readyState === 0) await dbConnect();
+
+    // Add retry logic for critical operations
+    const processWithRetry = async (operation, maxRetries = 3) => {
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          return await operation();
+        } catch (error) {
+          console.error(`❌ Attempt ${attempt}/${maxRetries} failed:`, error.message);
+          if (attempt === maxRetries) {
+            throw error;
+          }
+          // Wait before retry (exponential backoff)
+          await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+        }
+      }
+    };
 
     switch (event.type) {
       case "checkout.session.completed": {
@@ -42,27 +59,54 @@ export async function POST(req) {
         if (!user) break;
 
         if (session.mode === "subscription") {
-          const sub = await stripe.subscriptions.retrieve(session.subscription);
-          const price = sub.items.data[0].price;
-          const planName = price.nickname || price.id || "basic";
-          const expiresAt = new Date(sub.current_period_end * 1000);
+          await processWithRetry(async () => {
+            const sub = await stripe.subscriptions.retrieve(session.subscription);
+            const price = sub.items.data[0].price;
+            const planName = price.nickname || price.id || "basic";
+            const expiresAt = new Date(sub.current_period_end * 1000);
 
-          await Subscription.create({
-            userId: user._id,
-            type: "player_publication",
-            plan: planName.toLowerCase(),
-            isActive: true,
-            startedAt: new Date(),
-            expiresAt,
-            stripeSubId: sub.id,
+            // Map plan name to valid enum values using centralized function
+            const mappedPlan = mapPlanName(planName);
+
+            await Subscription.create({
+              userId: user._id,
+              type: "player_publication",
+              plan: mappedPlan,
+              isActive: true,
+              startedAt: new Date(),
+              expiresAt,
+              stripeSubId: sub.id,
+            });
+
+            user.subscribed = true;
+            await user.save();
+
+            console.log(`✅ Subscription created for ${email} - Plan: ${mappedPlan}`);
           });
-
-          user.subscribed = true;
-          await user.save();
-
-          console.log(`✅ Subscription created for ${email}`);
         } else if (session.mode === "payment") {
-          console.log(`✅ One-time payment completed for ${email}`);
+          await processWithRetry(async () => {
+            // Handle one-time product purchases
+            const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+            
+            const orderItems = lineItems.data.map(item => ({
+              name: item.description || item.price.product.name,
+              quantity: item.quantity,
+              price: item.price.unit_amount / 100
+            }));
+
+            const totalAmount = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            await Order.create({
+              userId: user._id,
+              items: orderItems,
+              status: "pending", // Orders start as pending, admin fulfills them
+              paymentStatus: session.payment_status === "paid" ? "completed" : "failed",
+              totalAmount: totalAmount,
+              stripeSessionId: session.id
+            });
+
+            console.log(`✅ Product purchase completed for ${email} - Items: ${orderItems.length}, Payment: ${session.payment_status}`);
+          });
         }
         break;
       }

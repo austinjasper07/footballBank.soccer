@@ -13,6 +13,7 @@ import AdminBlogView from "@/components/admin/views/AdminBlogView";
 import { SettingsView } from "@/components/admin/views/SettingsView";
 import { AffiliateView } from "@/components/admin/views/AffiliateView";
 import UsersView from "@/components/admin/views/UsersView";
+import SubscriptionsView from "@/components/admin/views/SubscriptionsView";
 import { useAuth } from "@/context/NewAuthContext";
 import { useToast } from "@/hooks/use-toast";
 import SplashScreen from "@/components/SplashScreen";
@@ -64,6 +65,8 @@ const AdminDashboard = () => {
         return <PlayersView />;
       case "users":
         return <UsersView />;
+      case "subscriptions":
+        return <SubscriptionsView />;
       case "submissions":
         return <SubmissionsView />;
       case "shop":
@@ -92,6 +95,10 @@ const AdminDashboard = () => {
         subtitle: "Manage football players and profiles",
       },
       users: { title: "Users", subtitle: "Manage users and profiles" },
+      subscriptions: { 
+        title: "Subscriptions", 
+        subtitle: "Manage user subscriptions and billing" 
+      },
       submissions: {
         title: "Submissions",
         subtitle: "Review and moderate player submissions",

@@ -101,7 +101,7 @@ export default function OrderCard({ order, onCancel, showActions = true }) {
         <div className="space-y-3 mb-4">
           {order.items.map((item, index) => (
             <div
-              key={index}
+              key={`${order.id}-item-${index}`}
               className="flex items-center justify-between p-3 bg-primary-bg rounded-lg"
             >
               <div className="flex items-center gap-3">

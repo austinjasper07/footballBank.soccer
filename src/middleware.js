@@ -71,6 +71,9 @@ export async function middleware(request) {
     '/pricing', // Pricing page should be accessible
     '/secure-payment', // Payment page should be accessible
     '/order-confirmation', // Order confirmation page should be accessible
+    '/payment-successful', // Stripe redirect page
+    '/payment-failed', // Stripe redirect page
+    '/cancel', // Stripe cancel page
     '/players',
     '/blog',
     '/shop',

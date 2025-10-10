@@ -26,7 +26,7 @@ export default function StatsCard({ title, stats, icon: Icon, className = "" }) 
       <CardContent>
         <div className="space-y-3">
           {stats.map((stat, index) => (
-            <div key={index} className="flex items-center justify-between">
+            <div key={`stat-${index}-${stat.label}`} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-primary-muted text-sm">
                   {stat.label}

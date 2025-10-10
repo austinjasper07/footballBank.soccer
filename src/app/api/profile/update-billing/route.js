@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { connectDB } from '@/lib/mongodb';
+import dbConnect from '@/lib/mongodb';
 import { User } from '@/lib/schemas';
 
 export async function POST(request) {
   try {
-    await connectDB();
+    await dbConnect();
     
     const { billingAddress } = await request.json();
     const userId = request.headers.get('user-id');

@@ -11,6 +11,7 @@ import {
   Menu,
   ChevronLeft,
   ChevronRight,
+  Crown,
 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -19,6 +20,7 @@ const navigationItems = [
   { id: 'dashboard', icon: BarChart3, label: 'Dashboard' },
   { id: 'players', icon: Users, label: 'Players' },
   { id: 'users', icon: Users, label: 'Users' },
+  { id: 'subscriptions', icon: Crown, label: 'Subscriptions' },
   { id: 'submissions', icon: Inbox, label: 'Submissions', badge: 0 },
   
   { id: 'shop', icon: Store, label: 'Shop' },

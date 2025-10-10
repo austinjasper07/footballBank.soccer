@@ -55,12 +55,6 @@ export default async function HomePage({ params }) {
         {/* Background Carousel */}
         <HeroBackground />
 
-        {/* Decorative Elements */}
-        {/* <div className="absolute inset-0 -z-5 pointer-events-none">
-          <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[200px] -top-24 -left-20 opacity-20" />
-          <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[120px] bottom-10 right-10 opacity-25" />
-        </div> */}
-
         {/* LEFT CONTENT */}
         <section className="relative z-10 w-full lg:w-[50%] h-full flex items-center justify-center lg:justify-start text-center lg:text-left">
           <div className="max-w-2xl space-y-6 h-1/2">
@@ -112,7 +106,7 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* PLAYER OF THE WEEK */}
-        {playerOfTheWeek && (
+        {/* {playerOfTheWeek && (
           <section
             className="relative z-10 w-full lg:w-[50%] flex items-center justify-center lg:h-[700px] "
             data-aos="zoom-in"
@@ -158,6 +152,92 @@ export default async function HomePage({ params }) {
                     {playerOfTheWeek?.description ||
                       "This player stands out for their dedication, talent and extraordinary performance on the pitch."}
                   </p>
+                </div>
+              </div>
+            </Link>
+          </section>
+        )} */}
+
+        {/* PLAYER OF THE WEEK */}
+        {playerOfTheWeek && (
+          <section
+            className="w-full lg:w-1/2 flex items-center justify-center"
+            data-aos="zoom-in"
+            data-aos-delay="100"
+          >
+            <Link href={`/${lang}/players/${playerOfTheWeek.id}`}>
+              <div className="flex group relative w-full max-w-sm lg:max-w-md bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105">
+                <div className="absolute top-4 left-4 z-20 bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 text-xs sm:text-sm font-semibold rounded-full shadow-lg">
+                  {dict.homepage.hero.starOnTheRise}
+                </div>
+
+                <div className="relative w-1/2">
+                  <Image
+                    src={playerOfTheWeek?.imageUrl?.[0] || "/placeholder.jpg"}
+                    alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
+                    width={500}
+                    height={400}
+                    className="object-cover w-full h-full"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                </div>
+
+                <div className="w-1/2 p-4 sm:p-6 space-y-3 sm:space-y-4">
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
+                    {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName}
+                  </h3>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-white/10 rounded-lg p-2 sm:p-3 backdrop-blur-sm">
+                      <div className="text-blue-200 text-xs sm:text-sm font-medium mb-1">
+                        {dict.playerProfile.position}
+                      </div>
+                      <div className="text-white font-semibold text-sm sm:text-base">
+                        {playerOfTheWeek?.position}
+                      </div>
+                    </div>
+                    <div className="bg-white/10 rounded-lg p-2 sm:p-3 backdrop-blur-sm">
+                      <div className="text-blue-200 text-xs sm:text-sm font-medium mb-1">
+                        {dict.playerProfile.age}
+                      </div>
+                      <div className="text-white font-semibold text-sm sm:text-base">
+                        {age}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/10 rounded-lg p-2 sm:p-3 backdrop-blur-sm">
+                    <div className="text-blue-200 text-xs sm:text-sm font-medium mb-1">
+                      {dict.playerProfile.foot}
+                    </div>
+                    <div className="text-white font-semibold text-sm sm:text-base">
+                      {playerOfTheWeek?.foot}
+                    </div>
+                  </div>
+
+                  <p className="text-blue-100 text-xs sm:text-sm leading-relaxed line-clamp-3 sm:line-clamp-4">
+                    {playerOfTheWeek?.description ||
+                      "This player stands out for their dedication, talent and extraordinary performance on the pitch."}
+                  </p>
+
+                  <div className="pt-2">
+                    <span className="inline-flex items-center text-white text-xs sm:text-sm font-medium group-hover:text-red-300 transition-colors">
+                      View Profile
+                      <svg
+                        className="ml-2 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
               </div>
             </Link>
@@ -413,9 +493,7 @@ export default async function HomePage({ params }) {
                 ))}
               </div>
             </div>
-            <div className="mt-10 flex justify-end">
-              
-            </div>
+            <div className="mt-10 flex justify-end"></div>
           </div>
         </section>
 

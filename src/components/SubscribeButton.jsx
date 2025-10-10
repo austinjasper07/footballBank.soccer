@@ -21,7 +21,29 @@ export default function SubscribeButton({ plan, duration, label }) {
     }
     
     if (plan === "free") {
-      router.push("/profile");
+      // Handle free plan activation
+      try {
+        const res = await fetch("/api/subscriptions/free", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ duration: mappedDuration }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success) {
+            router.push("/profile");
+          } else {
+            throw new Error(data.error || "Failed to activate free plan");
+          }
+        } else {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Failed to activate free plan");
+        }
+      } catch (err) {
+        console.error("Free plan activation error:", err);
+        alert(err.message || "Failed to activate free plan. Please try again.");
+      }
       return;
     }
 
@@ -88,3 +110,5 @@ export default function SubscribeButton({ plan, duration, label }) {
 //     </div>
 //   );
 // }
+
+
