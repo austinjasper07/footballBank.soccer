@@ -19,31 +19,27 @@ import {
   Target,
   Users,
   Star,
-  Play,
   Download,
-  Edit,
-  Eye,
+  Edit,   
   Share2,
   Heart,
   MessageCircle,
   Award,
   TrendingUp,
   Clock,
-  Globe,
   Shield,
   Camera,
   Video,
   FileText,
   ExternalLink,
   RefreshCw,
-  ChevronRight,
-  ChevronLeft,
+ 
 } from "lucide-react";
 import Link from "next/link";
 import "aos/dist/aos.css";
 
 export default function PlayerProfilePage() {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, loading: isLoading } = useAuth();
   const [playerData, setPlayerData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");

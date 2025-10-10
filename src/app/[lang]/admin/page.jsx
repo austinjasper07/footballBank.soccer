@@ -20,7 +20,7 @@ import SplashScreen from "@/components/SplashScreen";
 const AdminDashboard = () => {
   const [activeView, setActiveView] = useState("dashboard");
   const [collapsed, setCollapsed] = useState(false);
-  const { role, isAuthenticated, isLoading } = useAuth();
+  const { role, isAuthenticated, loading: isLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [checkedAuth, setCheckedAuth] = useState(false);

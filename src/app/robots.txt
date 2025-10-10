@@ -6,7 +6,7 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /profile/
 Disallow: /auth/
-Disallow: /checkout/
+Disallow: /order-confirmation/
 Disallow: /secure-payment/
 Disallow: /submit-profile/
 Disallow: /debug*/
@@ -20,7 +20,7 @@ Allow: /about
 Allow: /contact
 Allow: /livescore/
 Allow: /shop/
-Allow: /subscriptions
+Allow: /pricing
 Allow: /career-tips
 Allow: /faq
 

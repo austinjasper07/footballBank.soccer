@@ -17,7 +17,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { uploadFileWithProgress } from "@/lib/uploadWithProgress";
 import { createSubmission } from "@/actions/protectedAction";
-import SplashScreen from "@/components/SplashScreen";
 import { getUserById } from "@/actions/adminActions";
 import { countries } from "@/data/countries&code"; // Adjust import path as needed
 
@@ -25,10 +24,7 @@ export default function PlayerSubmissionForm() {
   const { toast } = useToast();
   const router = useRouter();
   const pathname = usePathname();
-  const authContext = useAuth();
-  const isAuthenticated = authContext?.isAuthenticated || false;
-  const user = authContext?.user || null;
-  const isLoading = authContext?.isLoading || true;
+  const { user, isAuthenticated, loading: isLoading } = useAuth();
 
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState([]);
@@ -38,7 +34,6 @@ export default function PlayerSubmissionForm() {
   const [checkedAuth, setCheckedAuth] = useState(false);
   const [subscription, setSubscription] = useState(null);
   const [checkingSubscription, setCheckingSubscription] = useState(false);
-
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -80,27 +75,29 @@ export default function PlayerSubmissionForm() {
       setCheckingSubscription(true);
       const response = await fetch("/api/subscriptions/check");
       const data = await response.json();
-      
+
       if (data.subscription) {
         setSubscription(data.subscription);
-        
+
         // Check if user has reached submission limit
-        if (data.subscription.usedSubmissions >= data.subscription.maxSubmissions) {
+        if (
+          data.subscription.usedSubmissions >= data.subscription.maxSubmissions
+        ) {
           // Redirect to subscription page
-          router.push("/subscriptions?limit_reached=true");
+          router.push("/pricing?limit_reached=true");
           return false;
         } else {
           return true;
         }
       } else {
         // No active subscription, redirect to subscription page
-        router.push("/subscriptions?required=true");
+        router.push("/pricing?required=true");
         return false;
       }
     } catch (error) {
       console.error("Error checking subscription:", error);
       // On error, redirect to subscription page
-      router.push("/subscriptions?error=true");
+      router.push("/pricing?error=true");
       return false;
     } finally {
       setCheckingSubscription(false);
@@ -115,17 +112,9 @@ export default function PlayerSubmissionForm() {
       } else {
         setCheckedAuth(true);
         getUserById(user.id).then(setSubmittingUser);
-        
       }
     }
   }, [isLoading, isAuthenticated, pathname, router]);
-
-
-  
-
-  console.log("Auth loading:", isLoading, "checked:", checkedAuth, "user:", user);
-  
-
 
   const validateStep = () => {
     const errs = [];
@@ -183,7 +172,8 @@ export default function PlayerSubmissionForm() {
     } else {
       toast({
         title: "Error",
-        description: "Failed to submit profile. Subscribe to a plan and try again",
+        description:
+          "Failed to submit profile. Subscribe to a plan and try again",
         variant: "destructive",
       });
     }
@@ -231,7 +221,7 @@ export default function PlayerSubmissionForm() {
       {/* Step indicators */}
       <div className="flex items-center justify-center gap-4 mb-8 flex-wrap">
         {["Details", "Stats", "Uploads", "Complete"].map((l, i) => (
-          <div key={l} className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+          <div key={l} className="grid grid-cols-2 lg:grid-cols-5 gap-1">
             <div
               className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium ${
                 step > i + 1
@@ -437,9 +427,7 @@ export default function PlayerSubmissionForm() {
                         <Label>Position</Label>
                         <Select
                           value={c.position}
-                          onValueChange={(val) =>
-                            updateClub(i, field, val)
-                          }
+                          onValueChange={(val) => updateClub(i, field, val)}
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Select position" />
@@ -615,5 +603,3 @@ function InputField({ label, value, onChange, type = "text" }) {
     </div>
   );
 }
-
-

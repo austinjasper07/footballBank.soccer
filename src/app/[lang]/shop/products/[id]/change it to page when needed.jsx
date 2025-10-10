@@ -63,7 +63,7 @@ export default function ProductDetailsClient() {
 
   const handleBuyNow = () => {
     handleAddToCart()
-    router.push('/checkout')
+    router.push('/order-confirmation')
   }
 
   return (

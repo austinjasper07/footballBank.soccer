@@ -1,12 +1,7 @@
 // app/[lang]/layout.jsx
 import "../globals.css";
 import { DM_Serif_Text, Oswald } from "next/font/google";
-import Script from "next/script";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
-import { NewAuthProvider } from "@/context/NewAuthContext";
-import { Analytics } from "@vercel/analytics/next";
-import { CartProvider } from "@/context/CartContext";
-import AOSProvider from "@/components/AOSProvider";
 import { generateMetadata as generateSEOMetadata, generateStructuredData } from "@/lib/seo";
 import { getDictionary, locales } from "@/lib/dictionaries";
 

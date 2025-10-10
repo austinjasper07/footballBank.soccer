@@ -2,7 +2,6 @@
 import "./globals.css";
 import { Oswald } from "next/font/google";
 import Script from "next/script";
-import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 import { NewAuthProvider } from "@/context/NewAuthContext";
 import { Analytics } from "@vercel/analytics/next";
 import { CartProvider } from "@/context/CartContext";
@@ -80,7 +79,7 @@ export default function RootLayout({ children }) {
           strategy="afterInteractive"
         />
       </head>
-      <body className="font-body bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 text-primary-text">
+      <body className="font-body bg-white text-primary-text">
         <Analytics />
         <AOSProvider>
           <NewAuthProvider>

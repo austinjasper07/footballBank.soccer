@@ -253,7 +253,7 @@ export default function ProfileDashboard({
               <Crown className="w-12 h-12 text-primary-muted mx-auto mb-4" />
               <p className="text-primary-muted mb-4">No subscriptions yet</p>
               <Button asChild>
-                <Link href="/subscriptions">View Plans</Link>
+                <Link href="/pricing">View Plans</Link>
               </Button>
             </div>
           )}

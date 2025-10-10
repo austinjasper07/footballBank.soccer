@@ -4,33 +4,20 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/NewAuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   User,
-  Mail,
-  Calendar,
-  CreditCard,
   ShoppingBag,
-  Settings,
   Crown,
-  Download,
-  Eye,
   X,
   CheckCircle,
   Clock,
   AlertCircle,
-  Star,
-  TrendingUp,
-  Users,
   Shield,
   Bell,
   Edit,
-  Trash2,
-  RefreshCw,
   Plus,
-  Minus,
-  ExternalLink,
+  RefreshCw,
 } from "lucide-react";
 import Link from "next/link";
 import ProfileLayout from "@/components/profile/ProfileLayout";
@@ -40,7 +27,7 @@ import SubscriptionCard from "@/components/profile/SubscriptionCard";
 import "aos/dist/aos.css";
 
 export default function UserProfilePage() {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, loading: isLoading } = useAuth();
   const [profileData, setProfileData] = useState(null);
   const [orders, setOrders] = useState([]);
   const [subscriptions, setSubscriptions] = useState([]);
@@ -408,7 +395,7 @@ export default function UserProfilePage() {
                     Subscribe to our services to get started
                   </p>
                   <Button asChild>
-                    <Link href="/subscriptions">View Plans</Link>
+                    <Link href="/pricing">View Plans</Link>
                   </Button>
                 </div>
               )}

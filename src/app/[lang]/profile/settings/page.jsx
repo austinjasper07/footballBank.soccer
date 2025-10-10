@@ -10,7 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import {
   User,
-  Mail,
+
   Shield,
   Bell,
   Eye,
@@ -27,7 +27,7 @@ import Link from "next/link";
 import ProfileLayout from "@/components/profile/ProfileLayout";
 
 export default function SettingsPage() {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, loading: isLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
@@ -66,7 +66,7 @@ export default function SettingsPage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value
     }));

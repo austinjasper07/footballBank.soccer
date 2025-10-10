@@ -4,18 +4,12 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/NewAuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
   ShoppingBag,
   Search,
-  Filter,
-  Calendar,
-  DollarSign,
   Package,
   RefreshCw,
-  Eye,
-  Download,
   AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
@@ -23,7 +17,7 @@ import ProfileLayout from "@/components/profile/ProfileLayout";
 import OrderCard from "@/components/profile/OrderCard";
 
 export default function OrdersPage() {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, loading: isLoading } = useAuth();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -70,12 +64,18 @@ export default function OrdersPage() {
     }
   };
 
-  const filteredOrders = Array.isArray(orders) ? orders.filter((order) => {
-    const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.items?.some(item => item.product?.name?.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesStatus = statusFilter === "all" || order.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  }) : [];
+  const filteredOrders = Array.isArray(orders)
+    ? orders.filter((order) => {
+        const matchesSearch =
+          order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.items?.some((item) =>
+            item.product?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        const matchesStatus =
+          statusFilter === "all" || order.status === statusFilter;
+        return matchesSearch && matchesStatus;
+      })
+    : [];
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -108,8 +108,12 @@ export default function OrdersPage() {
       <ProfileLayout title="Orders" userRole="user">
         <div className="text-center py-12">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-primary-text mb-2">Authentication Required</h2>
-          <p className="text-primary-muted mb-6">Please log in to view your orders.</p>
+          <h2 className="text-2xl font-bold text-primary-text mb-2">
+            Authentication Required
+          </h2>
+          <p className="text-primary-muted mb-6">
+            Please log in to view your orders.
+          </p>
           <Button asChild>
             <Link href="/auth/login">Sign In</Link>
           </Button>
@@ -124,7 +128,9 @@ export default function OrdersPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-primary-text">Order History</h1>
+            <h1 className="text-3xl font-bold text-primary-text">
+              Order History
+            </h1>
             <p className="text-primary-muted">View and manage your orders</p>
           </div>
           <Button asChild>
@@ -186,13 +192,14 @@ export default function OrdersPage() {
             <CardContent className="text-center py-12">
               <ShoppingBag className="w-16 h-16 text-primary-muted mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-primary-text mb-2">
-                {searchTerm || statusFilter !== "all" ? "No orders found" : "No orders yet"}
+                {searchTerm || statusFilter !== "all"
+                  ? "No orders found"
+                  : "No orders yet"}
               </h3>
               <p className="text-primary-muted mb-6">
-                {searchTerm || statusFilter !== "all" 
+                {searchTerm || statusFilter !== "all"
                   ? "Try adjusting your search or filter criteria"
-                  : "Start shopping to see your orders here"
-                }
+                  : "Start shopping to see your orders here"}
               </p>
               <Button asChild>
                 <Link href="/shop">Browse Products</Link>

@@ -68,9 +68,9 @@ export async function middleware(request) {
     '/privacy-policy',
     '/career-tips',
     '/auth', // All auth pages are public
-    '/subscriptions', // Subscription page should be accessible
+    '/pricing', // Pricing page should be accessible
     '/secure-payment', // Payment page should be accessible
-    '/checkout', // Checkout page should be accessible
+    '/order-confirmation', // Order confirmation page should be accessible
     '/players',
     '/blog',
     '/shop',

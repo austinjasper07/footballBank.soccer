@@ -163,9 +163,9 @@ export default function LoginPage() {
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </Link>
-          <div className="w-16 h-16 bg-gradient-to-r from-accent-red to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          {/* <div className="w-16 h-16 bg-gradient-to-r from-accent-red to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Shield className="w-8 h-8 text-white" />
-          </div>
+          </div> */}
           <h1 className="text-3xl font-bold text-primary-text mb-2">
             Welcome Back
           </h1>
@@ -207,7 +207,7 @@ export default function LoginPage() {
             {step === "email" && (
               <form onSubmit={handleSendOTP} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">
+                  <Label htmlFor="email" className="text-sm font-medium mb-4">
                     Email Address
                   </Label>
                   <div className="relative">
@@ -243,7 +243,7 @@ export default function LoginPage() {
             {step === "otp" && (
               <form onSubmit={handleVerifyOTP} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="otp" className="text-sm font-medium">
+                  <Label htmlFor="otp" className="text-sm font-medium mb-2">
                     Verification Code
                   </Label>
                   <div className="relative">

@@ -331,7 +331,7 @@ const CartPage = () => {
               {/* Checkout Button */}
               <Button
                 disabled={cart.length === 0}
-                onClick={() => router.push(`/${lang}/secure-payment/checkout?type=cart`)}
+                onClick={() => router.push(`/${lang}/secure-payment/order-confirmation`)}
                 className="w-full mt-6 bg-accent-red hover:bg-red-700 text-white font-medium py-3 cursor-pointer"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

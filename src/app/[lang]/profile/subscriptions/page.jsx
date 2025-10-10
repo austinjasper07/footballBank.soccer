@@ -4,14 +4,12 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/NewAuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
+
 import {
   Crown,
   RefreshCw,
   AlertCircle,
   CheckCircle,
-  Calendar,
   DollarSign,
   Settings,
   Plus,
@@ -21,7 +19,7 @@ import ProfileLayout from "@/components/profile/ProfileLayout";
 import SubscriptionCard from "@/components/profile/SubscriptionCard";
 
 export default function SubscriptionsPage() {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, loading: isLoading } = useAuth();
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -117,7 +115,7 @@ export default function SubscriptionsPage() {
             <p className="text-primary-muted">Manage your active subscriptions</p>
           </div>
           <Button asChild>
-            <Link href="/subscriptions">
+            <Link href="/pricing">
               <Plus className="w-4 h-4 mr-2" />
               View Plans
             </Link>
@@ -225,7 +223,7 @@ export default function SubscriptionsPage() {
                 Subscribe to our services to get started
               </p>
               <Button asChild>
-                <Link href="/subscriptions">View Plans</Link>
+                <Link href="/pricing">View Plans</Link>
               </Button>
             </CardContent>
           </Card>

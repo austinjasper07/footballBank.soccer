@@ -5,12 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   User,
   Crown,
-  Shield,
-  RefreshCw,
   LogOut,
-  Settings,
-  Edit,
-  Plus,
 } from "lucide-react";
 import Link from "next/link";
 import ProfileNavigation from "./ProfileNavigation";

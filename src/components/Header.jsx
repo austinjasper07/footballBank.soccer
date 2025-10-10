@@ -4,7 +4,7 @@ import { useAuth } from "@/context/NewAuthContext";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaShoppingCart, FaBars, FaTimes, FaUser } from "react-icons/fa";
+import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import { UserHeader } from "./UserHeader";
@@ -26,7 +26,7 @@ export default function Header({ lang = 'en' }) {
     { label: "About", path: `/${lang}/about` },
     { label: "Players", path: `/${lang}/players` },
     { label: "Agent", path: `/${lang}/agent` },
-    { label: "Live Scores", path: `/${lang}/livescore` },
+    { label: "Pricing", path: `/${lang}/pricing` },
     { label: "Blog", path: `/${lang}/blog` },
     { label: "Shop", path: `/${lang}/shop/products` },
     { label: "Contact", path: `/${lang}/contact` },
@@ -38,13 +38,13 @@ export default function Header({ lang = 'en' }) {
     { label: dict.navigation.about, path: `/${lang}/about` },
     { label: dict.navigation.players, path: `/${lang}/players` },
     { label: dict.navigation.agent || "Agent", path: `/${lang}/agent` },
-    { label: dict.navigation.liveScores, path: `/${lang}/livescore` },
+    { label: dict.navigation.pricing || "Pricing", path: `/${lang}/pricing` },
     { label: dict.navigation.blog, path: `/${lang}/blog` },
     { label: dict.navigation.shop, path: `/${lang}/shop/products` },
     { label: dict.navigation.contact, path: `/${lang}/contact` },
   ] : defaultNavLinks;
 
-  const { isAuthenticated, user, isLoading } = useAuth();
+  const { isAuthenticated, loading: isLoading } = useAuth();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const { cart } = useCart();
@@ -59,8 +59,7 @@ export default function Header({ lang = 'en' }) {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <header className="bg-primary-card sticky top-0 z-50 border-b border-divider shadow-sm">
-      {/* Partner Logos moved to Footer */}
+    <header className="bg-gray-50 sticky top-0 z-50 border-b border-divider shadow-sm">
       
       <div className="max-w-full mx-auto px-3 sm:px-4 lg:px-12">
         <div className="flex items-center justify-between h-12 sm:h-14 md:h-16">
@@ -68,18 +67,19 @@ export default function Header({ lang = 'en' }) {
           <div className="flex-shrink-0">
           <Link
               href={`/${lang}`}
-              className="font-bold text-2xl text-accent-red cursor-pointer flex items-center gap-2"
+              className="font-bold text-2xl cursor-pointer flex items-center gap-2"
           >
               <div className="flex items-center gap-2">
               <Image
-                src="/logo.jpg"
+                src="/logo/logo-1.png"
                 alt="FootballBank Logo"
-                width={40}
-                height={40}
-                  className="object-contain h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12"
+                width={60}
+                height={60}
+                  className="object-contain h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16"
               />
-                <span className="text-lg sm:text-xl md:text-2xl font-semibold text-accent-red">
+                <span className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800">
                 FootballBank
+                <span className="text-base md:text-lg text-accent-red">.soccer</span>
               </span>
             </div>
           </Link>

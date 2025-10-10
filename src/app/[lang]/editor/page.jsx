@@ -15,7 +15,7 @@ const EditorDashboard = () => {
   const [activeView, setActiveView] = useState("overview");
   const [collapsed, setCollapsed] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
-  const { role, isAuthenticated, isLoading } = useAuth();
+  const { role, isAuthenticated, loading: isLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [checkedAuth, setCheckedAuth] = useState(false);
