@@ -39,7 +39,7 @@ export async function generateMetadata({ params }) {
       ],
       url: `/shop/products/${id}`,
       image: product.image[0],
-      type: "product"
+      type: "website"
     });
   } catch (error) {
     return generateSEOMetadata({

@@ -24,11 +24,27 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (item) => {
     setCart((prev) => {
-      const exists = prev.find((p) => p.id === item.id);
+      // Create a unique key for cart items that includes variation data
+      const itemKey = item.variation 
+        ? `${item.id}-${JSON.stringify(item.variation.attributes)}`
+        : item.id;
+      
+      const exists = prev.find((p) => {
+        if (p.variation && item.variation) {
+          return p.id === item.id && 
+                 JSON.stringify(p.variation.attributes) === JSON.stringify(item.variation.attributes);
+        }
+        return p.id === item.id && !p.variation && !item.variation;
+      });
+      
       if (exists) {
-        return prev.map((p) =>
-          p.id === item.id ? { ...p, quantity: p.quantity + item.quantity } : p
-        );
+        return prev.map((p) => {
+          const isSameItem = p.variation && item.variation
+            ? p.id === item.id && JSON.stringify(p.variation.attributes) === JSON.stringify(item.variation.attributes)
+            : p.id === item.id && !p.variation && !item.variation;
+            
+          return isSameItem ? { ...p, quantity: p.quantity + item.quantity } : p;
+        });
       }
       return [...prev, item];
     });

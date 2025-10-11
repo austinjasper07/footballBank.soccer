@@ -118,6 +118,29 @@ const productSchema = new mongoose.Schema({
   colors: [{ type: String }],
   stock: { type: Number, default: 0 },
   category: { type: String, required: true },
+  
+  // Product Variation System
+  hasVariations: { type: Boolean, default: false },
+  variations: [{
+    attributes: {
+      type: Map,
+      of: String
+    },
+    price: { type: Number, required: true },
+    stock: { type: Number, default: 0 },
+    sku: { type: String }
+  }],
+  
+  // Variation attributes configuration
+  variationAttributes: [{
+    name: { type: String, required: true }, // e.g., "Color", "Size", "Memory"
+    type: { 
+      type: String, 
+      enum: ['color', 'size', 'text', 'select'],
+      default: 'text'
+    }
+  }],
+  
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

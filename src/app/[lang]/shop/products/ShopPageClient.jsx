@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Pagination,
   PaginationContent,
@@ -10,8 +11,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useCart } from "@/context/CartContext";
-import { Button } from "@/components/ui/button";
 
 const CATEGORIES = [
   "All Products",
@@ -44,7 +43,6 @@ export default function ShopPageClient({ products: initialProducts, lang }) {
   const [sortBy, setSortBy] = useState("featured");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const itemsPerPage = 12;
-  const { addToCart } = useCart();
 
   useEffect(() => {
     let result = products;
@@ -79,25 +77,12 @@ export default function ShopPageClient({ products: initialProducts, lang }) {
     setCurrentPage(1);
   }, [search, category, products, priceRange, sortBy]);
 
-  // This function converts a Product object to a CartItem object.
-  const productToCartItem = useCallback((product) => ({
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    quantity: 1,
-    image: product.image[0], // assuming the first image is the main one
-  }), []);
-
   const paginated = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
     return filtered.slice(start, start + itemsPerPage);
   }, [filtered, currentPage]);
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
-
-  const handleAddToCart = useCallback((product) => {
-    addToCart(productToCartItem(product));
-  }, [addToCart, productToCartItem]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -227,9 +212,10 @@ export default function ShopPageClient({ products: initialProducts, lang }) {
             ) : paginated && paginated.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {paginated.map((product) => (
-                  <div
+                  <Link
                     key={product.id}
-                    className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-200"
+                    href={`/${lang}/shop/products/${product.id}`}
+                    className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-200 block"
                   >
                     <div className="relative h-48 bg-gray-100">
                       <Image
@@ -250,16 +236,17 @@ export default function ShopPageClient({ products: initialProducts, lang }) {
                         <span className="text-lg font-bold text-accent-amber">
                           ${product.price.toFixed(2)}
                         </span>
+                        {product.discount && (
+                          <span className="text-sm text-green-600 font-medium">
+                            {product.discount}% OFF
+                          </span>
+                        )}
                       </div>
-                      <Button
-                        variant="outline"
-                        className="w-full py-2 px-4 rounded-md text-sm font-medium transition-colors duration-200"
-                        onClick={() => handleAddToCart(product)}
-                      >
-                        Add to Cart
-                      </Button>
+                      <div className="w-full py-2 px-4 rounded-md text-sm font-medium text-center bg-gray-100 text-gray-600">
+                        View Details
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (
