@@ -22,6 +22,7 @@ import { DeleteConfirmationModal } from '@/components/admin/dialogs/DeleteConfir
 import { SearchBar } from '../SearchBar';
 import { getAllProducts } from '@/actions/publicActions';
 import { deleteProduct, updateProduct } from '@/actions/adminActions';
+import LoadingSplash from '@/components/ui/loading-splash';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -29,6 +30,7 @@ export default function ProductsView() {
   const [searchQuery, setSearchQuery] = useState('');
   const { toast } = useToast();
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [productDialogOpen, setProductDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,10 +41,13 @@ export default function ProductsView() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setIsLoading(true);
         const response = await getAllProducts();
         setProducts(response);
       } catch (error) {
         console.error('Error fetching products:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchProducts();
@@ -137,6 +142,10 @@ export default function ProductsView() {
   };
 
   const { total, inStock, lowStock, outOfStock } = countStock();
+
+  if (isLoading) {
+    return <LoadingSplash message="Loading products..." />;
+  }
 
   return (
     <div className="space-y-6">

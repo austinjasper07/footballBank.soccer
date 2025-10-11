@@ -1,6 +1,6 @@
 // "use server";
 
-// import { User, OtpToken, Session } from "@/lib/schemas";
+// import { User, OtpToken } from "@/lib/schemas";
 // import { sendOTPEmail } from "@/lib/email";
 // import bcrypt from "bcryptjs";
 // import jwt from "jsonwebtoken";
@@ -476,14 +476,17 @@
 
 "use server";
 
-import { User, OtpToken, Session } from "@/lib/schemas";
+import { User, OtpToken } from "@/lib/schemas";
 import { sendOTPEmail } from "@/lib/email";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import dbConnect from "@/lib/mongodb";
 
-const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-key";
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required");
+}
 const OTP_EXPIRY_MINUTES = 10;
 const SESSION_EXPIRY_DAYS = 30;
 
@@ -492,16 +495,22 @@ const SESSION_EXPIRY_DAYS = 30;
 // Generate a 6-digit OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
-// Generate session JWT
-const generateSessionToken = () =>
-  jwt.sign({ ts: Date.now() }, JWT_SECRET, { expiresIn: `${SESSION_EXPIRY_DAYS}d` });
+// Generate session JWT with user data embedded
+const generateSessionToken = (user) =>
+  jwt.sign({
+    userId: user._id.toString(),
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    role: user.role,
+    isVerified: user.isVerified,
+    authMethod: "otp",
+    iat: Math.floor(Date.now() / 1000),
+  }, JWT_SECRET, { expiresIn: `${SESSION_EXPIRY_DAYS}d` });
 
-// Clean expired OTPs and sessions
+// Clean expired OTPs (sessions are now stateless JWT tokens)
 const cleanExpiredOTPs = async () => {
   await OtpToken.deleteMany({ expiresAt: { $lt: new Date() } }).catch(console.error);
-};
-const cleanExpiredSessions = async () => {
-  await Session.deleteMany({ expiresAt: { $lt: new Date() } }).catch(console.error);
 };
 
 /** ---------- OTP & Auth Actions ---------- **/
@@ -573,12 +582,9 @@ export async function verifyLoginOTP(email, otp) {
     otpRecord.verifiedAt = new Date();
     await otpRecord.save();
 
-    const sessionToken = generateSessionToken();
-    const expiresAt = new Date(Date.now() + SESSION_EXPIRY_DAYS * 86400000);
+    const sessionToken = generateSessionToken(user);
 
-    await Session.create({ userId: user._id, token: sessionToken, expiresAt });
-
-    // Set session cookie with proper configuration
+    // Set session cookie with JWT containing user data (NO DATABASE SESSION STORAGE)
     cookies().set("session", sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -607,7 +613,7 @@ export async function verifyLoginOTP(email, otp) {
 }
 
 // Verify signup OTP and create user
-export async function verifySignupOTP(email, otp, firstName, lastName) {
+export async function verifySignupOTP(email, otp, firstName, lastName, address, shippingAddress) {
   await dbConnect();
   try {
     const otpRecord = await OtpToken.findOne({
@@ -624,13 +630,22 @@ export async function verifySignupOTP(email, otp, firstName, lastName) {
     otpRecord.verifiedAt = new Date();
     await otpRecord.save();
 
-    const user = await User.create({ email, firstName, lastName, role: "user", isVerified: true });
+    // Prepare user data with addresses
+    const userData = {
+      email,
+      firstName,
+      lastName,
+      role: "user",
+      isVerified: true,
+      address,
+      shippingAddress
+    };
 
-    const sessionToken = generateSessionToken();
-    const expiresAt = new Date(Date.now() + SESSION_EXPIRY_DAYS * 86400000);
-    await Session.create({ userId: user._id, token: sessionToken, expiresAt });
+    const user = await User.create(userData);
 
-    // Set session cookie with proper configuration
+    const sessionToken = generateSessionToken(user);
+
+    // Set session cookie with JWT containing user data (NO DATABASE SESSION STORAGE)
     cookies().set("session", sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -661,50 +676,61 @@ export async function verifySignupOTP(email, otp, firstName, lastName) {
 /** ---------- Session Management ---------- **/
 
 export async function getCurrentUser() {
-  await dbConnect();
   try {
     const sessionToken = cookies().get("session")?.value;
     if (!sessionToken) return null;
 
-    let decoded;
-    try {
-      decoded = jwt.verify(sessionToken, JWT_SECRET);
-    } catch {
-      return null; // Invalid or expired token
+    // Verify JWT token directly (NO DATABASE QUERY)
+    const decoded = jwt.verify(sessionToken, JWT_SECRET);
+    
+    // Validate required fields in JWT
+    if (!decoded.userId || !decoded.email) {
+      console.log("Invalid JWT payload - missing required fields, clearing token");
+      // Clear the invalid token
+      try {
+        cookies().delete("session");
+      } catch (clearError) {
+        console.log("Could not clear invalid token:", clearError.message);
+      }
+      return null;
     }
 
-    const session = await Session.findOne({
-      token: sessionToken,
-      expiresAt: { $gt: new Date() },
-    });
-    if (!session) return null;
-
-    const user = await User.findById(session.userId);
-    if (!user) return null;
-
-    session.lastUsed = new Date();
-    await session.save();
-
+    // Return user data directly from JWT (NO DATABASE QUERY)
     return {
-      id: user._id.toString(),
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      role: user.role,
-      isVerified: user.isVerified,
+      id: decoded.userId,
+      email: decoded.email,
+      firstName: decoded.firstName,
+      lastName: decoded.lastName,
+      role: decoded.role,
+      isVerified: decoded.isVerified,
     };
   } catch (error) {
-    console.error("Error getting current user:", error);
+    if (error.name === 'JsonWebTokenError') {
+      console.log("Invalid JWT token, clearing cookie");
+      // Clear invalid token
+      try {
+        cookies().delete("session");
+      } catch (clearError) {
+        console.log("Could not clear invalid token:", clearError.message);
+      }
+    } else if (error.name === 'TokenExpiredError') {
+      console.log("JWT token expired, clearing cookie");
+      // Clear expired token
+      try {
+        cookies().delete("session");
+      } catch (clearError) {
+        console.log("Could not clear expired token:", clearError.message);
+      }
+    } else {
+      console.error("JWT verification error:", error.message);
+    }
     return null;
   }
 }
 
 export async function logout() {
-  await dbConnect();
   try {
-    const sessionToken = cookies().get("session")?.value;
-    if (sessionToken) await Session.deleteMany({ token: sessionToken });
-
+    // Simply clear the session cookie (NO DATABASE OPERATIONS NEEDED)
     cookies().delete("session");
     return { success: true };
   } catch (error) {
@@ -774,7 +800,8 @@ export async function resetPasswordWithOTP(email, otp, newPassword) {
 export async function cleanupExpiredTokens() {
   await dbConnect();
   try {
-    await Promise.all([cleanExpiredOTPs(), cleanExpiredSessions()]);
+    // Only clean OTPs since sessions are now stateless JWT tokens
+    await cleanExpiredOTPs();
     return { success: true };
   } catch (error) {
     console.error("Error cleaning expired tokens:", error);

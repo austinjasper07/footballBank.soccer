@@ -3,16 +3,41 @@
 import { User, Post, Player, Product, Order, Subscription, Message, Submission, AffiliateProduct } from "@/lib/schemas";
 import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongodb";
+import mongoose from "mongoose";
 
-// 🔧 Helper: safely convert any Mongoose doc(s) to plain JSON
-const toPlain = (data) => JSON.parse(JSON.stringify(data));
+// 🔧 Helper: safely convert any Mongoose doc(s) to plain JSON and convert _id to id
+const toPlain = (data) => {
+  const json = JSON.parse(JSON.stringify(data));
+  
+  // Handle arrays
+  if (Array.isArray(json)) {
+    return json.map(item => {
+      if (item._id) {
+        const { _id, ...rest } = item;
+        return { id: _id, ...rest };
+      }
+      return item;
+    });
+  }
+  
+  // Handle single objects
+  if (json && json._id) {
+    const { _id, ...rest } = json;
+    return { id: _id, ...rest };
+  }
+  
+  return json;
+};
 
 // USERS
 export const getAllUsers = async () => {
   await dbConnect();
   try {
     const users = await User.find({}).lean().sort({ createdAt: -1 });
-    return toPlain(users);
+    console.log("Raw users from DB:", users.slice(0, 1)); // Log first user to see structure
+    const convertedUsers = toPlain(users);
+    console.log("Converted users:", convertedUsers.slice(0, 1)); // Log first user after conversion
+    return convertedUsers;
   } catch (err) {
     console.error("Error fetching users:", err);
     return [];
@@ -69,11 +94,35 @@ export async function updateUser(userId, data) {
 export async function deleteUser(id) {
   await dbConnect();
   try {
-    await User.findByIdAndDelete(id);
-    return await getAllUsers();
+    console.log("Delete user - ID received:", id, "Type:", typeof id);
+    
+    // Convert string ID to ObjectId if needed
+    let objectId;
+    try {
+      objectId = new mongoose.Types.ObjectId(id);
+    } catch (error) {
+      console.error("Invalid ObjectId:", id);
+      throw new Error("Invalid user ID");
+    }
+    
+    console.log("Converted ObjectId:", objectId);
+    
+    // First, let's check if the user exists
+    const userExists = await User.findById(objectId);
+    console.log("User exists check:", userExists);
+    
+    const result = await User.findByIdAndDelete(objectId);
+    console.log("Delete result:", result);
+    
+    if (!result) {
+      throw new Error("User not found");
+    }
+    
+    revalidatePath("/admin/users");
+    return { success: true };
   } catch (err) {
     console.error("Error deleting user:", err);
-    return err;
+    throw err;
   }
 }
 
@@ -237,10 +286,11 @@ export async function deleteProduct(id) {
   await dbConnect();
   try {
     await Product.findByIdAndDelete(id);
-    return await getAllProducts();
+    revalidatePath("/admin/shop");
+    return { success: true };
   } catch (err) {
     console.error("Error deleting product:", err);
-    return err;
+    throw err;
   }
 }
 
@@ -285,11 +335,12 @@ export async function updatePlayer(playerId, data) {
 export async function deletePlayer(id) {
   await dbConnect();
   try {
-    const deletedPlayer = await Player.findByIdAndDelete(id);
-    return toPlain(deletedPlayer);
+    await Player.findByIdAndDelete(id);
+    revalidatePath("/admin/players");
+    return { success: true };
   } catch (err) {
     console.error("Error deleting player:", err);
-    return err;
+    throw err;
   }
 }
 
@@ -331,11 +382,13 @@ export async function updatePost(postId, data) {
 export async function deletePost(id) {
   await dbConnect();
   try {
-    const deletedPost = await Post.findByIdAndDelete(id);
-    return toPlain(deletedPost);
+    await Post.findByIdAndDelete(id);
+    revalidatePath("/admin/blog");
+    revalidatePath("/editor/posts");
+    return { success: true };
   } catch (err) {
     console.error("Error deleting post:", err);
-    return err;
+    throw err;
   }
 }
 

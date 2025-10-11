@@ -27,6 +27,8 @@ const nextConfig = {
         hostname: "m.media-amazon.com",
       },
     ],
+    // Configure image qualities to avoid warnings
+    qualities: [25, 50, 75, 90, 100],
   },
   // This is required to ensure middleware behaves as expected
   experimental: {

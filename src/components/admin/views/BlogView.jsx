@@ -18,6 +18,7 @@ import {
 import { SearchBar } from "@/components/admin/SearchBar";
 import { BlogPostDialog } from "@/components/admin/dialogs/BlogPostDialog";
 import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
+import LoadingSplash from "@/components/ui/loading-splash";
 
 import { getAllPosts } from "@/actions/publicActions";
 import { updatePost, deletePost, createPost } from "@/actions/adminActions";
@@ -33,6 +34,7 @@ export default function BlogView() {
   const [editingPost, setEditingPost] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -53,10 +55,13 @@ export default function BlogView() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        setIsLoading(true);
         const response = await getAllPosts();
         setPosts(response);
       } catch (error) {
         console.error("Error fetching posts:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchPosts();
@@ -213,6 +218,10 @@ export default function BlogView() {
   };
 
   const { total, published, drafts, views } = countStats();
+
+  if (isLoading) {
+    return <LoadingSplash message="Loading blog posts..." />;
+  }
 
   return (
     <div className="space-y-6">

@@ -1,272 +1,141 @@
-'use client'
+import React from 'react'
+import Link from 'next/link'
+import { ArrowLeft, Calendar } from 'lucide-react'
+import { generateMetadata as generateSEOMetadata } from '@/lib/seo'
+import { getDictionary } from '@/lib/dictionaries'
 
-import React, { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { 
-  Shield, 
-  Users, 
-  FileText, 
-  Upload, 
-  Copyright, 
-  AlertTriangle, 
-  X, 
-  Mail, 
-  Calendar,
-  CheckCircle,
-  ArrowRight,
-  Scale,
-  Lock,
-  Eye,
-  Trash2
-} from 'lucide-react'
-import "aos/dist/aos.css"
+export async function generateMetadata({ params }) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
+  return generateSEOMetadata({
+    title: "Terms of Service - FootballBank",
+    description: "Read our Terms of Service for FootballBank.soccer. Learn about our user agreements, service terms, and legal policies for our football talent platform.",
+    keywords: [
+      "terms of service",
+      "user agreement",
+      "legal terms",
+      "football platform",
+      "service terms",
+      "user policies",
+      "legal agreement"
+    ],
+    url: "/terms-of-service",
+    type: "website"
+  });
+}
 
 export default function TermsOfServicePage() {
-  const [expandedSection, setExpandedSection] = useState(null)
-
-  const toggleSection = (sectionId) => {
-    setExpandedSection(expandedSection === sectionId ? null : sectionId)
-  }
-
-  const terms = [
+  const sections = [
     {
-      id: 1,
-      title: "Acceptance of Terms",
-      icon: CheckCircle,
-      color: "bg-green-500",
-      content: "By using FootballBank.soccer, you confirm that you are at least 18 years old or have the permission of a parent or legal guardian. Your continued use of this site constitutes your agreement to these terms and any future updates.",
-      highlights: ["18+ years old requirement", "Parent/guardian permission for minors", "Automatic agreement by continued use"]
+      title: "1. Acceptance of Terms",
+      content: `
+      By accessing or using FootballBank.soccer, you agree to be bound by these Terms of Service and all applicable laws and regulations. 
+      If you do not agree with these terms, you are prohibited from using this site. 
+      You confirm that you are at least 18 years of age, or have the consent of a legal guardian.`
     },
     {
-      id: 2,
-      title: "Use of Our Services",
-      icon: Users,
-      color: "bg-blue-500",
-      content: "You may use FootballBank.soccer to view player profiles, submit football-related data, request representation, or interact with our football content. You agree not to misuse or interfere with the functionality or security of the site.",
-      highlights: ["View player profiles", "Submit football data", "Request representation", "No misuse or interference"]
+      title: "2. Use of Services",
+      content: `
+      FootballBank.soccer provides digital tools for players, agents, and clubs to share and access football-related data. 
+      You agree to use these services only for lawful purposes and in compliance with all applicable laws. 
+      You must not interfere with the security, availability, or integrity of our platform.`
     },
     {
-      id: 3,
-      title: "Account Registration",
-      icon: Lock,
-      color: "bg-purple-500",
-      content: "To access certain features, you may be required to register and maintain a secure account. You are responsible for maintaining the confidentiality of your credentials and for all activities under your account.",
-      highlights: ["Secure account required", "Confidentiality responsibility", "Account activity monitoring"]
+      title: "3. Account Registration",
+      content: `
+      Some services require registration. You must provide accurate information and keep your login credentials confidential. 
+      You are responsible for any activity under your account. We reserve the right to suspend or terminate accounts that violate our terms.`
     },
     {
-      id: 4,
-      title: "Content Submissions",
-      icon: Upload,
-      color: "bg-orange-500",
-      content: "By submitting player profiles, videos, images, or other content, you grant FootballBank.soccer a worldwide, non-exclusive, royalty-free license to use, reproduce, and promote the submitted content. You confirm that you own or have permission to submit such content.",
-      highlights: ["Worldwide license granted", "Non-exclusive rights", "Content ownership confirmation"]
+      title: "4. Content Submissions",
+      content: `
+      By uploading player profiles, videos, or other materials, you grant FootballBank.soccer a worldwide, non-exclusive, royalty-free license 
+      to use, display, and promote that content for the purpose of operating and improving our services. 
+      You confirm you own the rights or have permission to submit such content.`
     },
     {
-      id: 5,
-      title: "Intellectual Property",
-      icon: Copyright,
-      color: "bg-indigo-500",
-      content: "All trademarks, content, and branding on FootballBank.soccer are owned by FootballBank or its licensors. You may not reproduce or reuse content without explicit written permission.",
-      highlights: ["Trademark protection", "Content ownership", "Permission required for reuse"]
+      title: "5. Intellectual Property",
+      content: `
+      All site materials, including text, graphics, and trademarks, are the property of FootballBank.soccer or its licensors. 
+      You may not copy, modify, or distribute any part of the website without explicit written consent.`
     },
     {
-      id: 6,
-      title: "Limitation of Liability",
-      icon: AlertTriangle,
-      color: "bg-yellow-500",
-      content: "FootballBank.soccer is not liable for any indirect, incidental, or consequential damages resulting from your use of the site. Services and content are provided \"as is\" and \"as available\" without warranties.",
-      highlights: ["No liability for indirect damages", "Services provided 'as is'", "No warranties implied"]
+      title: "6. Limitation of Liability",
+      content: `
+      FootballBank.soccer and its affiliates are not liable for indirect, incidental, or consequential damages arising from your use of the site. 
+      All services are provided "as is" without warranties of any kind.`
     },
     {
-      id: 7,
-      title: "Termination",
-      icon: X,
-      color: "bg-red-500",
-      content: "We reserve the right to terminate or suspend your access to the site without notice for conduct that violates these terms or is harmful to other users or FootballBank.soccer.",
-      highlights: ["Right to terminate access", "No notice required", "Violation consequences"]
+      title: "7. Termination",
+      content: `
+      We reserve the right to suspend or terminate access to our services at our discretion, without notice, if you violate these terms 
+      or act in a way that harms FootballBank.soccer or its users.`
     },
     {
-      id: 8,
-      title: "Changes to Terms",
-      icon: FileText,
-      color: "bg-teal-500",
-      content: "We may revise these Terms of Service from time to time. Continued use of the site means you accept any updates or modifications to the terms.",
-      highlights: ["Terms may be revised", "Automatic acceptance", "Continued use agreement"]
+      title: "8. Changes to Terms",
+      content: `
+      We may revise these terms at any time by updating this page. 
+      Continued use of FootballBank.soccer after such changes constitutes your acceptance of the updated terms.`
+    },
+    {
+      title: "9. Contact Us",
+      content: `
+      For questions or concerns regarding these Terms of Service, please contact us at:
+      contact@footballbank.soccer.`
     }
   ]
 
   return (
-    <div className="bg-primary-bg min-h-screen">
+    <div className="min-h-screen bg-white text-gray-800">
+      {/* Header */}
+      <header className="border-b border-gray-200 bg-white sticky top-0 z-40">
+        <div className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center text-sm text-gray-600">
+          <Link href="/" className="flex items-center gap-2 hover:text-gray-900 transition">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Home
+          </Link>
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4" />
+            <span>Last updated: August 23, 2025</span>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] py-16 lg:py-24 overflow-hidden">
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute w-96 h-96 bg-accent-red rounded-full blur-[200px] -top-24 -left-20 opacity-25" />
-          <div className="absolute w-80 h-80 bg-accent-green rounded-full blur-[120px] bottom-10 right-10 opacity-30" />
-        </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="flex justify-center mb-6" data-aos="fade-up">
-              <div className="w-20 h-20 bg-accent-red rounded-full flex items-center justify-center">
-                <Scale className="w-10 h-10 text-white" />
-              </div>
-            </div>
-            <h1 
-              className="font-bold text-[clamp(2.5rem,3.5vw,4rem)] leading-tight tracking-tight text-primary-text mb-6"
-              data-aos="fade-up"
-              data-aos-delay="100"
-            >
-              Terms of Service
-            </h1>
-            <p 
-              className="text-xl text-primary-muted mb-4"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              Welcome to FootballBank.soccer. By accessing or using our website, you agree to be bound by the following Terms of Service.
-            </p>
-            <div className="flex items-center justify-center gap-4 text-sm text-primary-muted" data-aos="fade-up" data-aos-delay="300">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                <span>Effective Date: August 23, 2025</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 py-16 max-w-6xl">
-        {/* Introduction */}
-        <div className="text-center mb-16" data-aos="fade-up">
-          <div className="bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] border border-divider rounded-xl p-8">
-            <p className="text-lg text-primary-muted leading-relaxed max-w-4xl mx-auto">
-              Please read these terms carefully. Your continued use of this site constitutes your agreement to these terms and any future updates.
-            </p>
-          </div>
-        </div>
-
-        {/* Terms Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          {terms.map((term, index) => {
-            const IconComponent = term.icon
-            const isExpanded = expandedSection === term.id
-            
-            return (
-              <Card 
-                key={term.id} 
-                className={`bg-primary-card border border-divider hover:shadow-lg transition-all duration-300 cursor-pointer ${
-                  isExpanded ? 'ring-2 ring-accent-red' : ''
-                }`}
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
-                onClick={() => toggleSection(term.id)}
-              >
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className={`w-12 h-12 ${term.color} rounded-full flex items-center justify-center`}>
-                      <IconComponent className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <CardTitle className="text-xl font-semibold text-primary-text flex items-center gap-2">
-                        {term.title}
-                        <ArrowRight className={`w-5 h-5 transition-transform duration-200 ${
-                          isExpanded ? 'rotate-90' : ''
-                        }`} />
-                      </CardTitle>
-                      <Badge variant="outline" className="text-sm mt-2">
-                        Section {term.id}
-                      </Badge>
-                    </div>
-                  </div>
-                </CardHeader>
-                
-                {isExpanded && (
-                  <CardContent className="pt-0">
-                    <Separator className="mb-6" />
-                    <p className="text-primary-muted leading-relaxed mb-6">
-                      {term.content}
-                    </p>
-                    <div className="space-y-2">
-                      <h4 className="font-semibold text-primary-text mb-3">Key Points:</h4>
-                      {term.highlights.map((highlight, idx) => (
-                        <div key={idx} className="flex items-center gap-2 text-sm text-primary-muted">
-                          <div className="w-2 h-2 bg-accent-red rounded-full" />
-                          <span>{highlight}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                )}
-              </Card>
-            )
-          })}
-        </div>
-
-        {/* Important Notice */}
-        <div className="bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-8 mb-16" data-aos="fade-up">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0">
-              <AlertTriangle className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-yellow-800 mb-3">
-                Important Notice
-              </h3>
-              <p className="text-yellow-700 leading-relaxed">
-                These terms are legally binding. By using our services, you acknowledge that you have read, understood, and agree to be bound by these terms. If you do not agree to these terms, please do not use our services.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Contact Section */}
-        <div className="bg-gradient-to-br from-[#f0f4ff] via-[#e0e7ff] to-[#fff] border border-divider rounded-xl p-8 text-center" data-aos="fade-up">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 bg-accent-red rounded-full flex items-center justify-center">
-                <Mail className="w-8 h-8 text-white" />
-              </div>
-            </div>
-            <h2 className="text-3xl font-bold text-primary-text mb-6">
-              Questions About Our Terms?
-            </h2>
-            <p className="text-lg text-primary-muted leading-relaxed mb-8">
-              If you have questions or concerns about these terms, please don't hesitate to contact us. We're here to help clarify any points and ensure you understand your rights and responsibilities.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                asChild 
-                className="bg-accent-red hover:bg-accent-red/90 text-white px-8 py-3"
-              >
-                <a href="mailto:contact@footballbank.soccer">
-                  <Mail className="w-5 h-5 mr-2" />
-                  Contact Legal Team
-                </a>
-              </Button>
-              <Button 
-                asChild 
-                variant="outline"
-                className="border-accent-red text-accent-red hover:bg-accent-red hover:text-white px-8 py-3"
-              >
-                <a href="/contact">
-                  General Contact
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer Notice */}
-        <div className="mt-16 text-center" data-aos="fade-up">
-          <p className="text-sm text-primary-muted">
-            Last updated: August 23, 2025 | FootballBank.soccer
+      <section className="bg-gradient-to-b from-gray-50 to-white py-8 md:py-12 border-b border-gray-100">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Terms of Service
+          </h1>
+          <p className="text-base md:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
+            Please read these Terms of Service carefully before using FootballBank.soccer.
+            By continuing to use our website or services, you acknowledge that you have read, understood, and agreed to be bound by these terms.
           </p>
         </div>
-      </div>
+      </section>
+
+      {/* Terms Body */}
+      <main className="max-w-3xl mx-auto px-6 py-8 md:py-12">
+        {sections.map((section, idx) => (
+          <section key={idx} className="mb-6 md:mb-8">
+            <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-1">
+              {section.title}
+            </h2>
+            <p className="text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-line">
+              {section.content}
+            </p>
+          </section>
+        ))}
+
+        {/* Legal Note */}
+        <div className="mt-12 md:mt-16 border-t border-gray-200 pt-6 text-xs md:text-sm text-gray-600 leading-relaxed">
+          <p>
+            These Terms of Service constitute the entire agreement between you and FootballBank.soccer regarding your use of our services.
+            If any part of these terms is deemed invalid or unenforceable, the remaining provisions will remain in full effect.
+          </p>
+        </div>
+      </main>
     </div>
   )
 }
-

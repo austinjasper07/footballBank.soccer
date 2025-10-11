@@ -18,6 +18,7 @@ import {
 import { SearchBar } from '@/components/admin/SearchBar';
 import { getAllOrders, updateOrderStatus, getOrderById } from '@/actions/adminActions';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import LoadingSplash from '@/components/ui/loading-splash';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -25,6 +26,7 @@ export default function OrdersView() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [loadingStates, setLoadingStates] = useState({});
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [orderDetailsOpen, setOrderDetailsOpen] = useState(false);
@@ -32,10 +34,13 @@ export default function OrdersView() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        setIsLoading(true);
         const orders = await getAllOrders();
         setOrders(orders);
       } catch (error) {
         console.error('Error fetching orders:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchOrders();
@@ -164,6 +169,10 @@ export default function OrdersView() {
         return 'bg-gray-500 hover:bg-gray-600';
     }
   };
+
+  if (isLoading) {
+    return <LoadingSplash message="Loading orders..." />;
+  }
 
   return (
     <div className="space-y-6">

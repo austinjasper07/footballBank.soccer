@@ -24,6 +24,7 @@ import {
 } from "@/actions/adminActions";
 import AffiliateDialog from "@/components/admin/dialogs/AffiliateDialog";
 import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
+import LoadingSplash from "@/components/ui/loading-splash";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -33,6 +34,7 @@ export function AffiliateView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -44,6 +46,7 @@ export function AffiliateView() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setIsLoading(true);
         const res = await getAffiliateProducts();
         setProducts(res);
       } catch (error) {
@@ -53,6 +56,8 @@ export function AffiliateView() {
           description: "Failed to load affiliate products.",
           variant: "destructive",
         });
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -129,6 +134,10 @@ export function AffiliateView() {
     setSelectedProduct(null);
     setDialogOpen(true);
   };
+
+  if (isLoading) {
+    return <LoadingSplash message="Loading affiliate products..." />;
+  }
 
   return (
     <div className="space-y-6">

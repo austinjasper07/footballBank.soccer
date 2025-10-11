@@ -17,15 +17,16 @@ export default function ClientLayoutWrapper({ children, lang }) {
     setIsClient(true);
   }, []);
 
-  const isAdminPage = pathname.startsWith("/admin") || pathname.startsWith(`/${lang}/admin`);
-  const isEditorPage = pathname.startsWith("/editor") || pathname.startsWith(`/${lang}/editor`);
-  // Check if it's homepage for any language (e.g., /en, /es, or /)
-  const isHomePage = pathname === "/" || pathname === `/${lang}` || /^\/[a-z]{2}$/.test(pathname);
   // Use a consistent base className to avoid hydration mismatches
-  const baseClassName = 'mx-auto min-h-screen max-w-full';
-  // const dynamicClassName = isClient && (isAdminPage || isHomePage) 
-  //   ? '' 
-  //   : 'max-w-7xl px-6 lg:px-4';
+  // Define className as a constant to ensure server/client consistency
+  const mainClassName = "mx-auto min-h-screen max-w-full";
+
+  // Only compute pathname-dependent logic on client side to avoid hydration mismatches
+  const isAdminPage = isClient && (pathname.startsWith("/admin") || pathname.startsWith(`/${lang}/admin`));
+  const isEditorPage = isClient && (pathname.startsWith("/editor") || pathname.startsWith(`/${lang}/editor`));
+  // Check if it's homepage for any language (e.g., /en, /es, or /)
+  const isHomePage = isClient && (pathname === "/" || pathname === `/${lang}` || /^\/[a-z]{2}$/.test(pathname));
+
   
   return (
     <>
@@ -34,7 +35,7 @@ export default function ClientLayoutWrapper({ children, lang }) {
         !isAdminPage && !isEditorPage && <Header lang={lang} />
       }
       
-      <main className={` ${baseClassName}`}>
+      <main className={mainClassName}>
         {children}
       </main>
       {

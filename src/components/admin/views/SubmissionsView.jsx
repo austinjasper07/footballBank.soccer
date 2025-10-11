@@ -17,6 +17,7 @@ import {
   deleteSubmission,
 } from "@/actions/adminActions";
 import { calculateAge, formatFullDate } from "@/utils/dateHelper";
+import LoadingSplash from "@/components/ui/loading-splash";
 
 export default function SubmissionsView() {
   const { toast } = useToast();
@@ -24,6 +25,7 @@ export default function SubmissionsView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [submissions, setSubmissions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [submissionToDelete, setSubmissionToDelete] = useState(null);
@@ -31,8 +33,15 @@ export default function SubmissionsView() {
 
   useEffect(() => {
     const fetchSubmissions = async () => {
-      const response = await getAllSubmissions();
-      setSubmissions(response);
+      try {
+        setIsLoading(true);
+        const response = await getAllSubmissions();
+        setSubmissions(response);
+      } catch (error) {
+        console.error("Error fetching submissions:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchSubmissions();
   }, []);
@@ -148,6 +157,10 @@ const confirmDeleteSubmission = useCallback(
   const pending = filtered.filter((s) => s.status === "PENDING");
   const approved = filtered.filter((s) => s.status === "APPROVED");
   const rejected = filtered.filter((s) => s.status === "REJECTED");
+
+  if (isLoading) {
+    return <LoadingSplash message="Loading submissions..." />;
+  }
 
   return (
     <div className="space-y-6">

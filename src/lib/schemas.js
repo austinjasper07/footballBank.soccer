@@ -13,14 +13,24 @@ const userSchema = new mongoose.Schema({
   },
   subscribed: { type: Boolean, default: false },
   isVerified: { type: Boolean, default: false },
-  // Billing Address Fields
-  billingAddress: {
+  // Address Fields
+  address: {
+    street: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    postalCode: { type: String, required: true },
+    country: { type: String, required: true },
+    countryCode: { type: String, required: true }
+  },
+  // Shipping Address Fields
+  shippingAddress: {
     street: { type: String },
     city: { type: String },
     state: { type: String },
     postalCode: { type: String },
     country: { type: String },
-    countryCode: { type: String }
+    countryCode: { type: String },
+    isSameAsBilling: { type: Boolean, default: true }
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
@@ -46,14 +56,6 @@ const otpTokenSchema = new mongoose.Schema({
   verifiedAt: { type: Date }
 });
 
-// Session Schema
-const sessionSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  token: { type: String, required: true, unique: true },
-  expiresAt: { type: Date, required: true },
-  createdAt: { type: Date, default: Date.now },
-  lastUsed: { type: Date, default: Date.now }
-});
 
 // Subscription Schema
 const subscriptionSchema = new mongoose.Schema({
@@ -216,16 +218,6 @@ const pendingOrderSchema = new mongoose.Schema({
   items: { type: mongoose.Schema.Types.Mixed }
 });
 
-// Cart Item Schema
-const cartItemSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-  quantity: { type: Number, required: true, default: 1 },
-  size: { type: String },
-  color: { type: String },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-});
 
 // Affiliate Product Schema
 const affiliateProductSchema = new mongoose.Schema({
@@ -251,25 +243,10 @@ const affiliateProductSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
-// Order Item Schema
-const orderItemSchema = new mongoose.Schema({
-  orderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: true },
-  productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-  affiliateProductId: { type: mongoose.Schema.Types.ObjectId, ref: 'AffiliateProduct' },
-  name: { type: String, required: true },
-  description: { type: String },
-  price: { type: Number, required: true },
-  quantity: { type: Number, required: true, default: 1 },
-  size: { type: String },
-  color: { type: String },
-  image: { type: String },
-  type: { type: String, enum: ['product', 'affiliate'], default: 'product' }
-});
 
 // Create models with proper error handling - use existing collection names from Prisma
 export const User = mongoose.models.User || mongoose.model('User', userSchema);
 export const OtpToken = mongoose.models.OtpToken || mongoose.model('OtpToken', otpTokenSchema);
-export const Session = mongoose.models.Session || mongoose.model('Session', sessionSchema);
 export const Subscription = mongoose.models.Subscription || mongoose.model('Subscription', subscriptionSchema);
 export const Player = mongoose.models.Player || mongoose.model('Player', playerSchema);
 export const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
@@ -279,6 +256,4 @@ export const PaymentMethod = mongoose.models.PaymentMethod || mongoose.model('Pa
 export const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
 export const Submission = mongoose.models.Submission || mongoose.model('Submission', submissionSchema);
 export const PendingOrder = mongoose.models.PendingOrder || mongoose.model('PendingOrder', pendingOrderSchema);
-export const CartItem = mongoose.models.CartItem || mongoose.model('CartItem', cartItemSchema);
 export const AffiliateProduct = mongoose.models.AffiliateProduct || mongoose.model('AffiliateProduct', affiliateProductSchema);
-export const OrderItem = mongoose.models.OrderItem || mongoose.model('OrderItem', orderItemSchema);

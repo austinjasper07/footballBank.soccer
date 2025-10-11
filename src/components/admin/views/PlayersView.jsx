@@ -34,6 +34,7 @@ import {
 } from "@/actions/adminActions";
 import { calculateAge } from "@/utils/dateHelper";
 import { countries } from "@/data/countries&code";
+import LoadingSplash from "@/components/ui/loading-splash";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -47,6 +48,7 @@ export default function PlayersView() {
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [players, setPlayers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [playerToDelete, setPlayerToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -54,10 +56,13 @@ export default function PlayersView() {
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
+        setIsLoading(true);
         const response = await getAllPlayers();
         setPlayers(response);
       } catch (error) {
         console.error("Error fetching players:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchPlayers();
@@ -148,6 +153,10 @@ export default function PlayersView() {
     });
   };
 
+  if (isLoading) {
+    return <LoadingSplash message="Loading players..." />;
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex md:items-center justify-between">
@@ -188,7 +197,8 @@ export default function PlayersView() {
 
         <Button
           onClick={() => setPlayerDialogOpen(true)}
-          className="bg-[hsl(210,74%,55%)] text-[hsl(var(--muted))]"
+          variant="outline"
+          // className="bg-[hsl(210,74%,55%)] text-[hsl(var(--muted))]"
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Player

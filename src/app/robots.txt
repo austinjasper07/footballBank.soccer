@@ -1,31 +1,35 @@
 User-agent: *
 Allow: /
 
-# Disallow admin and private areas
+# Disallow admin and editor areas
 Disallow: /admin/
+Disallow: /editor/
 Disallow: /api/
-Disallow: /profile/
+
+# Disallow auth pages (no need to index login/signup)
 Disallow: /auth/
-Disallow: /order-confirmation/
-Disallow: /secure-payment/
-Disallow: /submit-profile/
-Disallow: /debug*/
-Disallow: /test*/
+Disallow: /en/auth/
+Disallow: /es/auth/
+
+# Disallow profile pages (private user data)
+Disallow: /profile/
+Disallow: /en/profile/
+Disallow: /es/profile/
 
 # Allow important pages
-Allow: /
+Allow: /shop/
 Allow: /players/
 Allow: /blog/
-Allow: /about
-Allow: /contact
-Allow: /livescore/
-Allow: /shop/
-Allow: /pricing
-Allow: /career-tips
-Allow: /faq
+Allow: /contact/
+Allow: /about/
+Allow: /agent/
+Allow: /pricing/
+Allow: /faq/
+Allow: /terms-of-service/
+Allow: /privacy-policy/
 
 # Sitemap location
 Sitemap: https://footballbank.soccer/sitemap.xml
 
-# Crawl delay (optional - be respectful)
+# Crawl delay (be respectful)
 Crawl-delay: 1

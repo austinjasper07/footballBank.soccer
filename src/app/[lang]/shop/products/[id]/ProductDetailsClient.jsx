@@ -1,42 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { notFound, useParams, useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useCart } from '@/context/CartContext'
-import { getProductById } from '@/actions/publicActions'
 
-export default function ProductDetailsClient() {
-  const params = useParams()
-  const id = params?.id
+export default function ProductDetailsClient({ product, lang, dict }) {
   const router = useRouter()
   const { addToCart } = useCart()
-
-  const [product, setProduct] = useState(null)
-  const [loading, setLoading] = useState(true)
 
   const [selectedSize, setSelectedSize] = useState(null)
   const [selectedColor, setSelectedColor] = useState(null)
   const [quantity, setQuantity] = useState(1)
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const res = await getProductById(id)
-        if (!res) notFound()
-        setProduct(res)
-      } catch {
-        // router.replace('/404')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    if (id) fetchProduct()
-  }, [id, router])
-
-  if (loading) return <div className="text-center py-24">Loading product...</div>
-  if (!product) return <div className="text-center py-24 text-accent-red">Product not found.</div>
 
   const finalPrice = product.discount
     ? (product.price - product.price * (product.discount / 100)).toFixed(2)
@@ -85,7 +60,7 @@ export default function ProductDetailsClient() {
                   <Image
                     key={i}
                     src={img}
-                    alt={`Thumbnail ${i + 1}`}
+                    alt={`${product.name} thumbnail ${i + 1}`}
                     width={100}
                     height={100}
                     className="w-full h-20 object-cover rounded-lg bg-primary-card border hover:border-accent-red"
@@ -97,7 +72,7 @@ export default function ProductDetailsClient() {
 
           {/* Product Info */}
           <div className="space-y-6">
-            <h1 className=" font-bold text-3xl md:text-4xl">{product.name}</h1>
+            <h1 className="font-bold text-3xl md:text-4xl">{product.name}</h1>
 
             <div className="flex items-center gap-4">
               <span className="text-accent-red font-bold text-3xl">£{finalPrice}</span>

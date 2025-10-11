@@ -12,11 +12,14 @@ import { useToast } from "@/hooks/use-toast";
 import AdvancedTextEditor from "@/components/admin/AdvancedTextEditor";
 import { createPost, updatePost, getAllPosts } from "@/actions/adminActions";
 import { useAuth } from "@/context/NewAuthContext";
+import { uploadFileWithProgress } from "@/lib/uploadWithProgress";
 
 export default function EditorEditor({ editingPost, onSave, onCancel }) {
   const { toast } = useToast();
   const { user } = useAuth();
   const [isSaving, setIsSaving] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [postData, setPostData] = useState({
     title: "",
     summary: "",
@@ -115,12 +118,51 @@ export default function EditorEditor({ editingPost, onSave, onCancel }) {
     });
   };
 
-  const handleImageAdd = (imageUrl) => {
-    if (imageUrl.trim() && !postData.imageUrl.includes(imageUrl.trim())) {
-      setPostData({ 
-        ...postData, 
-        imageUrl: [...postData.imageUrl, imageUrl.trim()] 
-      });
+  const handleImageUpload = async (files) => {
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+    const uploadPromises = Array.from(files).map(async (file) => {
+      try {
+        // Create folder name using post title and current date
+        const postName = postData.title || 'untitled-post';
+        const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+        const folderName = `${postName.replace(/[^a-zA-Z0-9]/g, '-')}-${currentDate}`;
+        const path = `posts/${folderName}`;
+        
+        const url = await uploadFileWithProgress(path, file, (progress) => {
+          setUploadProgress(progress);
+        });
+        
+        return url;
+      } catch (error) {
+        console.error('Upload failed:', error);
+        toast({
+          title: "Upload Failed",
+          description: `Failed to upload ${file.name}`,
+          variant: "destructive",
+        });
+        return null;
+      }
+    });
+
+    try {
+      const results = await Promise.all(uploadPromises);
+      const successfulUploads = results.filter(Boolean);
+      
+      if (successfulUploads.length > 0) {
+        setPostData({ 
+          ...postData, 
+          imageUrl: [...postData.imageUrl, ...successfulUploads] 
+        });
+        toast({
+          title: "Upload Successful",
+          description: `${successfulUploads.length} image(s) uploaded successfully.`,
+        });
+      }
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(null);
     }
   };
 
@@ -230,29 +272,30 @@ export default function EditorEditor({ editingPost, onSave, onCancel }) {
               </div>
 
               <div>
-                <Label htmlFor="imageUrl">Images</Label>
-                <div className="flex gap-2">
+                <Label htmlFor="imageUpload">Images</Label>
+                <div className="space-y-2">
                   <Input
-                    id="imageUrl"
-                    placeholder="https://example.com/image.jpg"
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
-                        handleImageAdd(e.target.value);
-                        e.target.value = '';
-                      }
-                    }}
+                    id="imageUpload"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => handleImageUpload(e.target.files)}
+                    disabled={isUploading}
+                    className="cursor-pointer"
                   />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={(e) => {
-                      const input = e.target.previousElementSibling;
-                      handleImageAdd(input.value);
-                      input.value = '';
-                    }}
-                  >
-                    Add
-                  </Button>
+                  
+                  {uploadProgress !== null && (
+                    <div className="w-full h-2 bg-gray-200 rounded">
+                      <div
+                        className="bg-blue-600 h-2 rounded transition-all"
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                    </div>
+                  )}
+                  
+                  {isUploading && (
+                    <p className="text-sm text-gray-600">Uploading images...</p>
+                  )}
                 </div>
                 
                 <div className="mt-2 space-y-2">

@@ -194,7 +194,18 @@
     "dontHaveAccount": "¿No tienes una cuenta?",
     "createAccount": "Crear Cuenta",
     "signInWithGoogle": "Iniciar sesión con Google",
-    "signInWithGithub": "Iniciar sesión con GitHub"
+    "signInWithGithub": "Iniciar sesión con GitHub",
+    "address": "Dirección",
+    "street": "Dirección de la Calle",
+    "city": "Ciudad",
+    "state": "Estado/Provincia",
+    "postalCode": "Código Postal",
+    "country": "País",
+    "shippingAddress": "Dirección de Envío",
+    "sameAsAddress": "Igual que la dirección",
+    "acceptTerms": "Acepto los Términos de Servicio y la Política de Privacidad",
+    "termsOfService": "Términos de Servicio",
+    "privacyPolicy": "Política de Privacidad"
   },
   "footer": {
     "description": "Empoderando el talento futbolístico mundial a través de la visibilidad y las oportunidades.",
@@ -265,7 +276,7 @@
     "trialRequest": "Solicitud de Prueba",
     "careerConsultation": "Consulta de Carrera",
     "businessInquiry": "Consulta Comercial",
-    "fitnessBranding": "Marca de Fitness",
+    "scoutingInquiry": "Consulta de Scouting",
     "transferInquiry": "Consulta de Transferencia",
     "partnershipOpportunity": "Oportunidad de Asociación",
     "generalQuestion": "Pregunta General",
@@ -377,6 +388,98 @@
     "billing": "Información de Facturación",
     "nextBilling": "Próxima Fecha de Facturación",
     "paymentMethod": "Método de Pago"
+  },
+  "termsOfService": {
+    "title": "Términos de Servicio",
+    "lastUpdated": "Última actualización: Diciembre 2024",
+    "sections": {
+      "acceptance": {
+        "title": "1. Aceptación de Términos",
+        "content": "Al acceder o usar FootballBank.soccer, aceptas estar sujeto a estos Términos de Servicio y todas las leyes y regulaciones aplicables. Si no estás de acuerdo con estos términos, tienes prohibido usar este sitio. Confirmas que tienes al menos 18 años de edad, o tienes el consentimiento de un tutor legal."
+      },
+      "useOfServices": {
+        "title": "2. Uso de Servicios",
+        "content": "FootballBank.soccer proporciona herramientas digitales para que jugadores, agentes y clubes compartan y accedan a datos relacionados con el fútbol. Aceptas usar estos servicios solo para propósitos legales y en cumplimiento con todas las leyes aplicables. No debes interferir con la seguridad, disponibilidad o integridad de nuestra plataforma."
+      },
+      "accountRegistration": {
+        "title": "3. Registro de Cuenta",
+        "content": "Algunos servicios requieren registro. Debes proporcionar información precisa y mantener confidenciales tus credenciales de inicio de sesión. Eres responsable de cualquier actividad bajo tu cuenta. Nos reservamos el derecho de suspender o terminar cuentas que violen nuestros términos."
+      },
+      "contentSubmissions": {
+        "title": "4. Envío de Contenido",
+        "content": "Al subir perfiles de jugadores, videos u otros materiales, otorgas a FootballBank.soccer una licencia mundial, no exclusiva, libre de regalías para usar, mostrar y promover ese contenido con el propósito de operar y mejorar nuestros servicios. Confirmas que posees los derechos o tienes permiso para enviar dicho contenido."
+      },
+      "intellectualProperty": {
+        "title": "5. Propiedad Intelectual",
+        "content": "Todos los materiales del sitio, incluyendo texto, gráficos y marcas comerciales, son propiedad de FootballBank.soccer o sus licenciantes. No puedes copiar, modificar o distribuir ninguna parte del sitio web sin consentimiento escrito explícito."
+      },
+      "limitationOfLiability": {
+        "title": "6. Limitación de Responsabilidad",
+        "content": "FootballBank.soccer y sus afiliados no son responsables de daños indirectos, incidentales o consecuenciales que surjan del uso del sitio. Todos los servicios se proporcionan \"tal como están\" sin garantías de ningún tipo."
+      },
+      "termination": {
+        "title": "7. Terminación",
+        "content": "Podemos terminar o suspender tu acceso a nuestros servicios en cualquier momento, con o sin causa, con o sin aviso. Al terminar, tu derecho a usar los servicios cesará inmediatamente."
+      },
+      "governingLaw": {
+        "title": "8. Ley Aplicable",
+        "content": "Estos términos se rigen e interpretan de acuerdo con las leyes aplicables. Cualquier disputa que surja de estos términos se resolverá a través de canales legales apropiados."
+      },
+      "changes": {
+        "title": "9. Cambios a los Términos",
+        "content": "Nos reservamos el derecho de modificar estos términos en cualquier momento. Notificaremos a los usuarios de cualquier cambio material por correo electrónico o a través de nuestro sitio web. El uso continuo de nuestros servicios después de los cambios constituye aceptación de los nuevos términos."
+      },
+      "contact": {
+        "title": "10. Información de Contacto",
+        "content": "Si tienes alguna pregunta sobre estos Términos de Servicio, por favor contáctanos en contact@footballbank.soccer o a través de nuestro formulario de contacto."
+      }
+    }
+  },
+  "privacyPolicy": {
+    "title": "Política de Privacidad",
+    "lastUpdated": "Última actualización: Diciembre 2024",
+    "sections": {
+      "informationWeCollect": {
+        "title": "1. Información que Recopilamos",
+        "content": "Recopilamos información personal como tu nombre, dirección de correo electrónico y número de teléfono cuando te registras o interactúas con FootballBank.soccer. También podemos recopilar información de jugadores como biografías, videos y estadísticas, así como datos técnicos como tu dirección IP, tipo de navegador y comportamiento de uso. Las cookies y tecnologías similares se usan para mejorar la funcionalidad del sitio y analizar la actividad del usuario."
+      },
+      "howWeUseYourInformation": {
+        "title": "2. Cómo Usamos Tu Información",
+        "content": "Usamos tus datos para operar, mejorar y personalizar nuestros servicios. Esto incluye gestionar cuentas de usuario, procesar consultas, habilitar perfiles de jugadores y proporcionar actualizaciones o comunicaciones relevantes. Tus datos nos ayudan a brindar una experiencia más segura y optimizada."
+      },
+      "sharingYourInformation": {
+        "title": "3. Compartir Tu Información",
+        "content": "Nunca vendemos tus datos. Podemos compartir tu información con socios de confianza, clubes de fútbol o agentes—con tu consentimiento—o según lo requiera la ley. Todos los socios de terceros están obligados a manejar tus datos de manera segura y en cumplimiento con las regulaciones aplicables."
+      },
+      "dataSecurity": {
+        "title": "4. Seguridad de Datos",
+        "content": "Usamos encriptación avanzada, servidores seguros y auditorías regulares para proteger tus datos personales. Aunque ningún sistema es completamente inmune, nos esforzamos por mantener los más altos estándares de seguridad para prevenir acceso no autorizado o mal uso."
+      },
+      "cookiesAndTracking": {
+        "title": "5. Cookies y Seguimiento",
+        "content": "FootballBank.soccer usa cookies para asegurar la funcionalidad esencial del sitio, analizar el rendimiento y recordar preferencias. Puedes gestionar o deshabilitar las cookies en la configuración de tu navegador, pero algunas partes del sitio pueden no funcionar correctamente sin ellas."
+      },
+      "yourRightsAndChoices": {
+        "title": "6. Tus Derechos y Opciones",
+        "content": "Tienes el derecho de acceder, corregir o eliminar tus datos personales. También puedes retirar el consentimiento o optar por no recibir comunicaciones en cualquier momento contactándonos. Nuestro objetivo es responder a todas las solicitudes de datos de manera rápida y transparente."
+      },
+      "childrensPrivacy": {
+        "title": "7. Privacidad de Menores",
+        "content": "Nuestros servicios no están dirigidos a niños menores de 13 años. No recopilamos conscientemente información personal de niños menores de 13 años. Si nos enteramos de que hemos recopilado información personal de un niño menor de 13 años, tomaremos medidas para eliminar dicha información."
+      },
+      "internationalTransfers": {
+        "title": "8. Transferencias Internacionales de Datos",
+        "content": "Tu información puede ser transferida y procesada en países distintos al tuyo. Aseguramos que se implementen salvaguardas apropiadas para proteger tus datos durante dichas transferencias, en cumplimiento con las leyes de protección de datos aplicables."
+      },
+      "changesToPolicy": {
+        "title": "9. Cambios a Esta Política",
+        "content": "Podemos actualizar esta Política de Privacidad de vez en cuando. Te notificaremos de cualquier cambio publicando la nueva Política de Privacidad en esta página y actualizando la fecha de \"Última actualización\". Tu uso continuo de nuestros servicios después de cualquier cambio constituye aceptación de la política actualizada."
+      },
+      "contactUs": {
+        "title": "10. Contáctanos",
+        "content": "Si tienes alguna pregunta sobre esta Política de Privacidad, por favor contáctanos en contact@footballbank.soccer o a través de nuestro formulario de contacto."
+      }
+    }
   },
   "seo": {
     "defaultTitle": "Plataforma Global de Talento Futbolístico",

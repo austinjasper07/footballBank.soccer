@@ -190,6 +190,64 @@ export function generateStructuredData(type, data) {
         }))
       };
 
+    case "product":
+      return {
+        ...baseData,
+        "@type": "Product",
+        name: data.name,
+        description: data.description,
+        image: data.image,
+        brand: {
+          "@type": "Brand",
+          name: data.brand || "FootballBank"
+        },
+        category: data.category,
+        sku: data.sku,
+        url: `${siteConfig.url}${data.url}`,
+        offers: {
+          "@type": "Offer",
+          price: data.price,
+          priceCurrency: "USD",
+          availability: `https://schema.org/${data.availability}`,
+          seller: {
+            "@type": "Organization",
+            name: siteConfig.name
+          },
+          ...(data.originalPrice && {
+            priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+          })
+        },
+        ...(data.discount && {
+          additionalProperty: {
+            "@type": "PropertyValue",
+            name: "discount",
+            value: data.discount
+          }
+        })
+      };
+
+    case "collection":
+      return {
+        ...baseData,
+        "@type": "CollectionPage",
+        name: data.name,
+        description: data.description,
+        url: `${siteConfig.url}${data.url}`,
+        mainEntity: {
+          "@type": "ItemList",
+          numberOfItems: data.numberOfItems,
+          itemListElement: data.items?.map((item, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            item: {
+              "@type": "Product",
+              name: item.name,
+              url: `${siteConfig.url}/shop/products/${item.id}`
+            }
+          }))
+        }
+      };
+
     default:
       return baseData;
   }

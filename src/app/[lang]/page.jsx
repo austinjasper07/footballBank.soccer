@@ -49,7 +49,7 @@ export default async function HomePage({ params }) {
     : "N/A";
 
   return (
-    <div className="bg-[#F9FAFB]">
+    <div className="">
       {/* HERO SECTION */}
       <div className="relative min-h-[calc(100vh+100px)] md:h-[calc(100vh+100px)] w-full overflow-hidden pt-8 pb-16 lg:pb-2 lg:pt-0 px-6 lg:px-12 flex flex-col lg:flex-row justify-between gap-12 items-center">
         {/* Background Carousel */}
@@ -87,7 +87,7 @@ export default async function HomePage({ params }) {
               {dict.homepage.hero.subtitle}
             </p>
             <div
-              className="flex sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start"
+              className="flex sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start pt-8"
               data-aos="fade-up"
               data-aos-delay="200"
             >
@@ -416,7 +416,7 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* BLOG */}
-        <section className="py-16 bg-white" id="blog">
+        <section className="py-16 " id="blog">
           <div
             className="max-w-7xl mx-auto px-4 text-center"
             data-aos="fade-up"

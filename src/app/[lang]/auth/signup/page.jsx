@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -7,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Mail,
   User,
@@ -18,11 +18,38 @@ import {
   Eye,
   EyeOff,
   Users,
+  ExternalLink,
+  MapPin,
+  Home,
 } from "lucide-react";
 import Link from "next/link";
 // import { signIn } from "next-auth/react"; // Disabled to avoid openid-client issues
 import { sendSignupOTP, verifySignupOTP } from "@/actions/authActions";
+import { countryList } from "@/lib/variousCountryListFormats";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
+import { getDictionary } from "@/lib/dictionaries";
 import "aos/dist/aos.css";
+
+export async function generateMetadata({ params }) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
+  return generateSEOMetadata({
+    title: "Sign Up - FootballBank",
+    description: "Join FootballBank to showcase your football talent, connect with scouts and clubs worldwide, and advance your football career. Free registration for players.",
+    keywords: [
+      "football signup",
+      "soccer registration",
+      "player signup",
+      "football talent platform",
+      "join footballbank",
+      "football career platform",
+      "player registration"
+    ],
+    url: "/auth/signup",
+    noIndex: true
+  });
+}
 
 export default function SignupPage() {
   const [step, setStep] = useState("form"); // "form" or "otp"
@@ -30,7 +57,44 @@ export default function SignupPage() {
     firstName: "",
     lastName: "",
     email: "",
+    address: {
+      street: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      country: "",
+      countryCode: ""
+    },
+    shippingAddress: {
+      street: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      country: "",
+      countryCode: "",
+      isSameAsBilling: true
+    }
   });
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [sameAsBilling, setSameAsBilling] = useState(true);
+
+  // Helper function to copy address to shipping address
+  const copyAddressToShipping = () => {
+    setFormData({
+      ...formData,
+      shippingAddress: {
+        ...formData.address,
+        isSameAsBilling: true
+      }
+    });
+  };
+
+  // Auto-copy address to shipping when address changes and checkbox is checked
+  useEffect(() => {
+    if (sameAsBilling) {
+      copyAddressToShipping();
+    }
+  }, [formData.address, sameAsBilling]);
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -57,13 +121,29 @@ export default function SignupPage() {
 
     // Basic validation
     if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim()) {
-      setError("Please fill in all fields");
+      setError("Please fill in all required fields");
       setLoading(false);
       return;
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       setError("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
+
+    // Address validation
+    const { address } = formData;
+    if (!address.street.trim() || !address.city.trim() || 
+        !address.state.trim() || !address.postalCode.trim() || 
+        !address.country.trim()) {
+      setError("Please fill in all address fields");
+      setLoading(false);
+      return;
+    }
+
+    if (!acceptTerms) {
+      setError("You must accept the Terms of Service to continue");
       setLoading(false);
       return;
     }
@@ -98,7 +178,9 @@ export default function SignupPage() {
         formData.email,
         otp,
         formData.firstName,
-        formData.lastName
+        formData.lastName,
+        formData.address,
+        formData.shippingAddress
       );
       
       if (result.success) {
@@ -150,10 +232,10 @@ export default function SignupPage() {
   // No need for loading states - server-side layout handles authentication
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-bg via-blue-50 to-indigo-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary-bg via-blue-50 to-indigo-50 flex items-center justify-center px-4 pt-4 pb-8">
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <Link href="/" className="inline-flex items-center gap-2 text-primary-muted hover:text-primary-text transition-colors mb-6">
             <ArrowLeft className="w-4 h-4" />
             Back to Home
@@ -256,10 +338,273 @@ export default function SignupPage() {
                   </div>
                 </div>
 
+                {/* Address Section */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Home className="w-5 h-5 text-accent-red" />
+                    <h3 className="text-lg font-semibold text-gray-900">Address</h3>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="md:col-span-2">
+                      <Label htmlFor="street" className="text-sm font-medium">
+                        Street Address *
+                      </Label>
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
+                        <Input
+                          id="street"
+                          type="text"
+                          placeholder="123 Main Street"
+                        value={formData.address.street}
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          address: { ...formData.address, street: e.target.value }
+                        })}
+                          className="pl-10"
+                          required
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="city" className="text-sm font-medium">
+                        City *
+                      </Label>
+                      <Input
+                        id="city"
+                        type="text"
+                        placeholder="New York"
+                        value={formData.address.city}
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          address: { ...formData.address, city: e.target.value }
+                        })}
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="state" className="text-sm font-medium">
+                        State/Province *
+                      </Label>
+                      <Input
+                        id="state"
+                        type="text"
+                        placeholder="NY"
+                        value={formData.address.state}
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          address: { ...formData.address, state: e.target.value }
+                        })}
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="postalCode" className="text-sm font-medium">
+                        Postal Code *
+                      </Label>
+                      <Input
+                        id="postalCode"
+                        type="text"
+                        placeholder="10001"
+                        value={formData.address.postalCode}
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          address: { ...formData.address, postalCode: e.target.value }
+                        })}
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="country" className="text-sm font-medium">
+                        Country *
+                      </Label>
+                      <Select
+                        value={formData.address.country}
+                        onValueChange={(value) => setFormData({
+                          ...formData,
+                          address: { ...formData.address, country: value }
+                        })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select country" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {countryList.map((country) => (
+                            <SelectItem key={country} value={country}>
+                              {country}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Shipping Address Section */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <MapPin className="w-5 h-5 text-accent-red" />
+                    <h3 className="text-lg font-semibold text-gray-900">Shipping Address</h3>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="sameAsBilling"
+                      checked={sameAsBilling}
+                      onCheckedChange={(checked) => {
+                        setSameAsBilling(checked);
+                        if (checked) {
+                          copyAddressToShipping();
+                        }
+                      }}
+                    />
+                    <Label htmlFor="sameAsBilling" className="text-sm text-gray-700">
+                      Same as address
+                    </Label>
+                  </div>
+                  
+                  {!sameAsBilling && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="md:col-span-2">
+                        <Label htmlFor="shippingStreet" className="text-sm font-medium">
+                          Street Address
+                        </Label>
+                        <div className="relative">
+                          <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
+                          <Input
+                            id="shippingStreet"
+                            type="text"
+                            placeholder="123 Main Street"
+                            value={formData.shippingAddress.street}
+                            onChange={(e) => setFormData({
+                              ...formData,
+                              shippingAddress: { ...formData.shippingAddress, street: e.target.value }
+                            })}
+                            className="pl-10"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="shippingCity" className="text-sm font-medium">
+                          City
+                        </Label>
+                        <Input
+                          id="shippingCity"
+                          type="text"
+                          placeholder="New York"
+                          value={formData.shippingAddress.city}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            shippingAddress: { ...formData.shippingAddress, city: e.target.value }
+                          })}
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="shippingState" className="text-sm font-medium">
+                          State/Province
+                        </Label>
+                        <Input
+                          id="shippingState"
+                          type="text"
+                          placeholder="NY"
+                          value={formData.shippingAddress.state}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            shippingAddress: { ...formData.shippingAddress, state: e.target.value }
+                          })}
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="shippingPostalCode" className="text-sm font-medium">
+                          Postal Code
+                        </Label>
+                        <Input
+                          id="shippingPostalCode"
+                          type="text"
+                          placeholder="10001"
+                          value={formData.shippingAddress.postalCode}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            shippingAddress: { ...formData.shippingAddress, postalCode: e.target.value }
+                          })}
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="shippingCountry" className="text-sm font-medium">
+                          Country
+                        </Label>
+                        <Select
+                          value={formData.shippingAddress.country}
+                          onValueChange={(value) => setFormData({
+                            ...formData,
+                            shippingAddress: { ...formData.shippingAddress, country: value }
+                          })}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select country" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {countryList.map((country) => (
+                              <SelectItem key={country} value={country}>
+                                {country}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Terms of Service Checkbox */}
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <Checkbox
+                      id="acceptTerms"
+                      checked={acceptTerms}
+                      onCheckedChange={setAcceptTerms}
+                      className="mt-1"
+                    />
+                    <div className="space-y-1">
+                      <Label htmlFor="acceptTerms" className="text-sm text-gray-700 cursor-pointer">
+                        I agree to the{" "}
+                        <Link 
+                          href="/terms-of-service" 
+                          target="_blank"
+                          className="text-accent-red hover:text-red-700 underline inline-flex items-center gap-1"
+                        >
+                          Terms of Service
+                          <ExternalLink className="w-3 h-3" />
+                        </Link>
+                        {" "}and{" "}
+                        <Link 
+                          href="/privacy-policy" 
+                          target="_blank"
+                          className="text-accent-red hover:text-red-700 underline inline-flex items-center gap-1"
+                        >
+                          Privacy Policy
+                          <ExternalLink className="w-3 h-3" />
+                        </Link>
+                      </Label>
+                      <p className="text-xs text-gray-500">
+                        By creating an account, you agree to our terms and conditions.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <Button
                   type="submit"
                   className="w-full bg-accent-red hover:bg-red-700"
-                  disabled={loading}
+                  disabled={loading || !acceptTerms}
                 >
                   {loading ? (
                     <RefreshCw className="w-4 h-4 mr-2 animate-spin" />

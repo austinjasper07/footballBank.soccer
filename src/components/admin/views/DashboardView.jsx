@@ -27,6 +27,7 @@ import { formatDistanceToNow, isSameMonth, parseISO } from "date-fns";
 import { getAllUsers, getAllPosts, getAllOrders, getAllPlayers, getAllSubmissions, getAllProducts, getAffiliateProducts } from "@/actions/adminActions";
 import { formatFullDate } from "@/utils/dateHelper";
 import { useToast } from "@/hooks/use-toast";
+import LoadingSplash from "@/components/ui/loading-splash";
 
 export function DashboardView() {
   const [users, setUsers] = useState([]);
@@ -282,6 +283,10 @@ export function DashboardView() {
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .slice(0, 8);
   }, [orders, players, posts, users, products, affiliateProducts, submissions]);
+
+  if (loading) {
+    return <LoadingSplash message="Loading dashboard..." />;
+  }
 
   return (
     <div className="space-y-8 font-body">

@@ -194,7 +194,18 @@
     "dontHaveAccount": "Don't have an account?",
     "createAccount": "Create Account",
     "signInWithGoogle": "Sign in with Google",
-    "signInWithGithub": "Sign in with GitHub"
+    "signInWithGithub": "Sign in with GitHub",
+    "address": "Address",
+    "street": "Street Address",
+    "city": "City",
+    "state": "State/Province",
+    "postalCode": "Postal Code",
+    "country": "Country",
+    "shippingAddress": "Shipping Address",
+    "sameAsAddress": "Same as address",
+    "acceptTerms": "I accept the Terms of Service and Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy"
   },
   "footer": {
     "description": "Empowering football talent worldwide through visibility and opportunity.",
@@ -265,7 +276,7 @@
     "trialRequest": "Trial Request",
     "careerConsultation": "Career Consultation",
     "businessInquiry": "Business Inquiry",
-    "fitnessBranding": "Fitness Branding",
+    "scoutingInquiry": "Scouting Inquiry",
     "transferInquiry": "Transfer Inquiry",
     "partnershipOpportunity": "Partnership Opportunity",
     "generalQuestion": "General Question",
@@ -377,6 +388,98 @@
     "billing": "Billing Information",
     "nextBilling": "Next Billing Date",
     "paymentMethod": "Payment Method"
+  },
+  "termsOfService": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: December 2024",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing or using FootballBank.soccer, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with these terms, you are prohibited from using this site. You confirm that you are at least 18 years of age, or have the consent of a legal guardian."
+      },
+      "useOfServices": {
+        "title": "2. Use of Services",
+        "content": "FootballBank.soccer provides digital tools for players, agents, and clubs to share and access football-related data. You agree to use these services only for lawful purposes and in compliance with all applicable laws. You must not interfere with the security, availability, or integrity of our platform."
+      },
+      "accountRegistration": {
+        "title": "3. Account Registration",
+        "content": "Some services require registration. You must provide accurate information and keep your login credentials confidential. You are responsible for any activity under your account. We reserve the right to suspend or terminate accounts that violate our terms."
+      },
+      "contentSubmissions": {
+        "title": "4. Content Submissions",
+        "content": "By uploading player profiles, videos, or other materials, you grant FootballBank.soccer a worldwide, non-exclusive, royalty-free license to use, display, and promote that content for the purpose of operating and improving our services. You confirm you own the rights or have permission to submit such content."
+      },
+      "intellectualProperty": {
+        "title": "5. Intellectual Property",
+        "content": "All site materials, including text, graphics, and trademarks, are the property of FootballBank.soccer or its licensors. You may not copy, modify, or distribute any part of the website without explicit written consent."
+      },
+      "limitationOfLiability": {
+        "title": "6. Limitation of Liability",
+        "content": "FootballBank.soccer and its affiliates are not liable for indirect, incidental, or consequential damages arising from your use of the site. All services are provided \"as is\" without warranties of any kind."
+      },
+      "termination": {
+        "title": "7. Termination",
+        "content": "We may terminate or suspend your access to our services at any time, with or without cause, with or without notice. Upon termination, your right to use the services will cease immediately."
+      },
+      "governingLaw": {
+        "title": "8. Governing Law",
+        "content": "These terms are governed by and construed in accordance with applicable laws. Any disputes arising from these terms will be resolved through appropriate legal channels."
+      },
+      "changes": {
+        "title": "9. Changes to Terms",
+        "content": "We reserve the right to modify these terms at any time. We will notify users of any material changes via email or through our website. Continued use of our services after changes constitutes acceptance of the new terms."
+      },
+      "contact": {
+        "title": "10. Contact Information",
+        "content": "If you have any questions about these Terms of Service, please contact us at contact@footballbank.soccer or through our contact form."
+      }
+    }
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: December 2024",
+    "sections": {
+      "informationWeCollect": {
+        "title": "1. Information We Collect",
+        "content": "We collect personal information such as your name, email address, and phone number when you register or interact with FootballBank.soccer. We may also collect player information like bios, videos, and statistics, as well as technical data such as your IP address, browser type, and usage behavior. Cookies and similar technologies are used to enhance site functionality and analyze user activity."
+      },
+      "howWeUseYourInformation": {
+        "title": "2. How We Use Your Information",
+        "content": "We use your data to operate, improve, and personalize our services. This includes managing user accounts, processing inquiries, enabling player profiles, and providing relevant updates or communications. Your data helps us deliver a more secure and optimized experience."
+      },
+      "sharingYourInformation": {
+        "title": "3. Sharing Your Information",
+        "content": "We never sell your data. We may share your information with trusted partners, football clubs, or agents—with your consent—or as required by law. All third-party partners are obligated to handle your data securely and in compliance with applicable regulations."
+      },
+      "dataSecurity": {
+        "title": "4. Data Security",
+        "content": "We use advanced encryption, secure servers, and regular audits to protect your personal data. While no system is entirely immune, we strive to maintain the highest security standards to prevent unauthorized access or misuse."
+      },
+      "cookiesAndTracking": {
+        "title": "5. Cookies and Tracking",
+        "content": "FootballBank.soccer uses cookies to ensure essential site functionality, analyze performance, and remember preferences. You can manage or disable cookies in your browser settings, but some parts of the site may not function properly without them."
+      },
+      "yourRightsAndChoices": {
+        "title": "6. Your Rights and Choices",
+        "content": "You have the right to access, correct, or delete your personal data. You can also withdraw consent or opt out of communications at any time by contacting us. We aim to respond to all data requests promptly and transparently."
+      },
+      "childrensPrivacy": {
+        "title": "7. Children's Privacy",
+        "content": "Our services are not directed to children under 13. We do not knowingly collect personal information from children under 13. If we become aware that we have collected personal information from a child under 13, we will take steps to delete such information."
+      },
+      "internationalTransfers": {
+        "title": "8. International Data Transfers",
+        "content": "Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your data during such transfers, in compliance with applicable data protection laws."
+      },
+      "changesToPolicy": {
+        "title": "9. Changes to This Policy",
+        "content": "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the \"Last updated\" date. Your continued use of our services after any changes constitutes acceptance of the updated policy."
+      },
+      "contactUs": {
+        "title": "10. Contact Us",
+        "content": "If you have any questions about this Privacy Policy, please contact us at contact@footballbank.soccer or through our contact form."
+      }
+    }
   },
   "seo": {
     "defaultTitle": "Global Football Talent Platform",

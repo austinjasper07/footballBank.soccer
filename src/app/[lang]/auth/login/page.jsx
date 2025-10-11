@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -21,7 +19,29 @@ import {
 import Link from "next/link";
 // import { signIn } from "next-auth/react"; // Disabled to avoid openid-client issues
 import { sendLoginOTP, verifyLoginOTP } from "@/actions/authActions";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
+import { getDictionary } from "@/lib/dictionaries";
 import "aos/dist/aos.css";
+
+export async function generateMetadata({ params }) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
+  return generateSEOMetadata({
+    title: "Login - FootballBank",
+    description: "Sign in to your FootballBank account to access your player profile, manage your football career, and connect with scouts and clubs worldwide.",
+    keywords: [
+      "football login",
+      "soccer account",
+      "player login",
+      "football platform login",
+      "talent platform",
+      "football career"
+    ],
+    url: "/auth/login",
+    noIndex: true
+  });
+}
 
 export default function LoginPage() {
   const [step, setStep] = useState("email"); // "email" or "otp"
@@ -30,9 +50,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [redirectUrl, setRedirectUrl] = useState("/profile");
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -163,9 +181,7 @@ export default function LoginPage() {
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </Link>
-          {/* <div className="w-16 h-16 bg-gradient-to-r from-accent-red to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Shield className="w-8 h-8 text-white" />
-          </div> */}
+         
           <h1 className="text-3xl font-bold text-primary-text mb-2">
             Welcome Back
           </h1>

@@ -79,7 +79,7 @@ export default function RootLayout({ children }) {
           strategy="afterInteractive"
         />
       </head>
-      <body className="font-body bg-white text-primary-text">
+      <body className="font-body bg-gray-50 text-primary-text">
         <Analytics />
         <AOSProvider>
           <NewAuthProvider>

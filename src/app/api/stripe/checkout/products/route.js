@@ -48,7 +48,16 @@ export async function POST(req) {
       line_items,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/en/payment-successful?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/en/payment-failed`,
+      // Add metadata to help with debugging
+      metadata: {
+        source: "product_checkout",
+        timestamp: new Date().toISOString()
+      }
     });
+
+    console.log(`🛒 Checkout session created: ${session.id}`);
+    console.log(`🛒 Success URL: ${session.success_url}`);
+    console.log(`🛒 Webhook endpoint: ${process.env.STRIPE_WEBHOOK_ENDPOINT || 'Not configured'}`);
 
     return NextResponse.json({ url: session.url });
   } catch (err) {

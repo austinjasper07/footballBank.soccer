@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { getAllSubscriptions, updateSubscription } from "@/actions/adminActions";
 import { useToast } from "@/hooks/use-toast";
+import LoadingSplash from "@/components/ui/loading-splash";
 
 export default function SubscriptionsView() {
   const [subscriptions, setSubscriptions] = useState([]);
@@ -130,12 +131,7 @@ export default function SubscriptionsView() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <RefreshCw className="w-8 h-8 animate-spin" />
-        <span className="ml-2">Loading subscriptions...</span>
-      </div>
-    );
+    return <LoadingSplash message="Loading subscriptions..." />;
   }
 
   return (

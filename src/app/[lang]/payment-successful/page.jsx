@@ -20,7 +20,7 @@ export default function SuccessPage() {
       return;
     }
     
-    fetch(`/api/stripe/checkout/subscription-success/${sessionId}`)
+    fetch(`/api/stripe/checkout/success/${sessionId}`)
       .then((res) => {
         console.log("API Response status:", res.status);
         if (!res.ok) {

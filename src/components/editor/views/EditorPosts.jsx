@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/pagination";
 import { Search } from "lucide-react";
 import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
+import LoadingSplash from "@/components/ui/loading-splash";
 
 import { getAllPosts } from "@/actions/publicActions";
 import { updatePost, deletePost } from "@/actions/adminActions";
@@ -29,6 +30,7 @@ export default function EditorPosts({ onNavigateToEditor }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -39,6 +41,7 @@ export default function EditorPosts({ onNavigateToEditor }) {
 
   const loadPosts = async () => {
     try {
+      setIsLoading(true);
       const data = await getAllPosts();
       setPosts(data);
     } catch (error) {
@@ -47,6 +50,8 @@ export default function EditorPosts({ onNavigateToEditor }) {
         description: "Failed to load posts.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -118,6 +123,10 @@ export default function EditorPosts({ onNavigateToEditor }) {
   };
 
   const { total, published, drafts, views } = countStats();
+
+  if (isLoading) {
+    return <LoadingSplash message="Loading posts..." />;
+  }
 
   return (
     <div className="space-y-6">

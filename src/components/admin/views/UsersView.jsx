@@ -24,6 +24,7 @@ import { SearchBar } from '@/components/admin/SearchBar';
 import { useToast } from '@/hooks/use-toast';
 import { UserDialog } from '@/components/admin/dialogs/UserDialog';
 import { DeleteConfirmationModal } from '@/components/admin/dialogs/DeleteConfirmationModal';
+import LoadingSplash from '@/components/ui/loading-splash';
 import {
   getAllUsers,
   updateUser,
@@ -36,6 +37,7 @@ const ITEMS_PER_PAGE = 5;
 export default function UsersView() {
   const { toast } = useToast();
   const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [userDialogOpen, setUserDialogOpen] = useState(false);
@@ -48,10 +50,13 @@ export default function UsersView() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setIsLoading(true);
         const response = await getAllUsers();
         setUsers(response);
       } catch (error) {
         console.error('Error fetching users:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchUsers();
@@ -77,7 +82,9 @@ export default function UsersView() {
   const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
 
   const handleDeleteUser = async (id) => {
+    console.log("Delete user clicked - ID:", id, "Type:", typeof id);
     const user = users.find(u => u.id === id);
+    console.log("Found user:", user);
     setUserToDelete(user);
     setDeleteDialogOpen(true);
   };
@@ -85,18 +92,27 @@ export default function UsersView() {
   const confirmDeleteUser = async () => {
     if (!userToDelete) return;
     
+    console.log("Confirming delete for user:", userToDelete);
+    console.log("User ID to delete:", userToDelete.id, "Type:", typeof userToDelete.id);
+    
     try {
       setIsDeleting(true);
-      await deleteUser(userToDelete.id);
-      toast({
-        title: 'User Deleted',
-        description: 'The user has been removed successfully.',
-      });
-      const updated = await getAllUsers();
-      setUsers(updated);
-      setDeleteDialogOpen(false);
-      setUserToDelete(null);
-    } catch {
+      const result = await deleteUser(userToDelete.id);
+      
+      if (result && result.success) {
+        toast({
+          title: 'User Deleted',
+          description: 'The user has been removed successfully.',
+        });
+        const updated = await getAllUsers();
+        setUsers(updated);
+        setDeleteDialogOpen(false);
+        setUserToDelete(null);
+      } else {
+        throw new Error('Delete operation failed');
+      }
+    } catch (error) {
+      console.error('Delete user error:', error);
       toast({
         title: 'Error',
         description: 'Failed to delete user.',
@@ -141,6 +157,10 @@ export default function UsersView() {
       });
     }
   };
+
+  if (isLoading) {
+    return <LoadingSplash message="Loading users..." />;
+  }
 
   return (
     <div className="space-y-6">
