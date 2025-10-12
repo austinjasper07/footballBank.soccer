@@ -150,6 +150,7 @@ export default function UserProfilePage() {
       }
       
       const data = JSON.parse(text);
+      console.log('Subscriptions API response:', data);
       setSubscriptions(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching subscriptions:", error);

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Eye, FileText, Edit, TrendingUp } from "lucide-react";
 import { getAllPosts } from "@/actions/publicActions";
+import LoadingSplash from "@/components/ui/loading-splash";
 
 export default function EditorOverview({ onNavigateToEditor }) {
   const [posts, setPosts] = useState([]);

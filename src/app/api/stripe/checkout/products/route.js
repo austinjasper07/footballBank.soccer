@@ -17,7 +17,7 @@ export async function POST(req) {
       }, { status: 500 });
     }
 
-    const { products } = await req.json();
+    const { products, tax, shipping, subtotal, total, selectedAddressId } = await req.json();
 
     if (!products || !Array.isArray(products) || products.length === 0) {
       return NextResponse.json({ error: "No products provided" }, { status: 400 });
@@ -42,6 +42,33 @@ export async function POST(req) {
       };
     });
 
+    // Add tax and shipping as separate line items if they exist
+    if (tax && tax > 0) {
+      line_items.push({
+        price_data: {
+          currency: products[0]?.currency || "usd",
+          product_data: {
+            name: "Tax (6.625%)",
+          },
+          unit_amount: Math.round(tax * 100),
+        },
+        quantity: 1,
+      });
+    }
+
+    if (shipping && shipping > 0) {
+      line_items.push({
+        price_data: {
+          currency: products[0]?.currency || "usd",
+          product_data: {
+            name: "Shipping",
+          },
+          unit_amount: Math.round(shipping * 100),
+        },
+        quantity: 1,
+      });
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
@@ -51,7 +78,12 @@ export async function POST(req) {
       // Add metadata to help with debugging
       metadata: {
         source: "product_checkout",
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        subtotal: subtotal?.toString() || "0",
+        tax: tax?.toString() || "0",
+        shipping: shipping?.toString() || "0",
+        total: total?.toString() || "0",
+        selectedAddressId: selectedAddressId || "none"
       }
     });
 

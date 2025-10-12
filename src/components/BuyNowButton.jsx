@@ -4,7 +4,7 @@ import { useAuth } from "@/context/NewAuthContext";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 
-export default function BuyNowButton({ cartItems }) {
+export default function BuyNowButton({ cartItems, selectedAddressId }) {
   const {isAuthenticated, user, loading: isLoading} = useAuth();
   const [loading, setLoading] = useState(false);
   const { cart, clearCart } = useCart();
@@ -20,6 +20,13 @@ export default function BuyNowButton({ cartItems }) {
     }
 
     try {
+      // Calculate pricing breakdown
+      const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const shipping = subtotal > 50 ? 0 : 5.99;
+      const taxRate = 0.06625; // 6.625% Tax
+      const tax = +(subtotal * taxRate).toFixed(2);
+      const total = +(subtotal + shipping + tax).toFixed(2);
+
       const res = await fetch("/api/stripe/checkout/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -29,8 +36,15 @@ export default function BuyNowButton({ cartItems }) {
             amount: item.price,
             quantity: item.quantity,
             image: item.image,
-            currency: "usd",
+            currency: "usd", // Using USD currency
           })),
+          // Include tax and shipping information
+          tax: tax,
+          shipping: shipping,
+          subtotal: subtotal,
+          total: total,
+          // Include selected shipping address
+          selectedAddressId: selectedAddressId,
         }),
       });
 

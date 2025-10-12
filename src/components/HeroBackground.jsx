@@ -33,7 +33,7 @@ export default function HeroBackground() {
           />
         </div>
       ))}
-      <div className="absolute inset-0 bg-black/50" /> {/* readability overlay */}
+      <div className="absolute inset-0 bg-black/40" /> {/* readability overlay */}
     </div>
   );
 }

@@ -99,8 +99,8 @@ export function DashboardView() {
     const now = new Date();
     const targetMonth = new Date(now.getFullYear(), now.getMonth() - monthOffset, 1);
     return ordersList.reduce((total, order) => {
-      if (!isSameMonth(parseISO(formatFullDate(order.createdAt)), targetMonth)) return total;
-      const orderTotal = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      if (!isSameMonth(new Date(order.createdAt), targetMonth)) return total;
+      const orderTotal = order.items.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 0), 0);
       return total + orderTotal;
     }, 0);
   };
@@ -284,9 +284,6 @@ export function DashboardView() {
       .slice(0, 8);
   }, [orders, players, posts, users, products, affiliateProducts, submissions]);
 
-  if (loading) {
-    return <LoadingSplash message="Loading dashboard..." />;
-  }
 
   return (
     <div className="space-y-8 font-body">

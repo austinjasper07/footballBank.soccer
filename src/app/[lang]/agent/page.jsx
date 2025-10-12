@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import "aos/dist/aos.css";
 import { getDictionary } from "@/lib/dictionaries";
+import { getAgentInfo } from "@/actions/adminActions";
 
 export async function generateMetadata({ params }) {
   const { lang } = await params;
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }) {
 const AboutAgent = async ({ params }) => {
   const { lang } = await params;
   const dict = await getDictionary(lang);
+  const agentInfo = await getAgentInfo();
 
   return (
     <main className=" text-primary-text min-h-screen">
@@ -28,8 +30,8 @@ const AboutAgent = async ({ params }) => {
                 <div className="text-center">
                   <div className="relative inline-block mb-6">
                     <Image
-                      src="/FootballBank_agent.jpg"
-                      alt="Ayodeji Fatade headshot"
+                      src={agentInfo?.profilePhoto || "/FootballBank_agent.jpg"}
+                      alt={`${agentInfo?.name || "Ayodeji Fatade"} headshot`}
                       width={140}
                       height={175}
                       className="rounded-xl border-3 border-accent-red object-cover shadow-lg"
@@ -42,18 +44,15 @@ const AboutAgent = async ({ params }) => {
 
                   {/* Enhanced name and credentials */}
                   <h2 className="font-bold text-3xl text-primary-text">
-                    {dict.agentPage.hero.name}
+                    {agentInfo?.name || dict.agentPage.hero.name}
                   </h2>
-                  <span className=" text-gray-400 p-2 rounded-full text-base mb-4 inline-block">
-                    United States Based Agent
-                  </span>
 
                   {/* Enhanced license display */}
                   <div className="bg-gradient-to-r from-accent-green/10 to-accent-green/5 rounded-xl p-4 border border-accent-green/20">
                     <div className="flex items-center justify-center gap-3 mb-2">
                       <i className="fa-solid fa-certificate text-accent-green text-xl" />
                       <span className="font-bold text-primary-text">
-                        {dict.agentPage.hero.license.title}
+                        {agentInfo?.credentials || dict.agentPage.hero.license.title}
                       </span>
                     </div>
                     <p className="text-sm text-primary-muted">

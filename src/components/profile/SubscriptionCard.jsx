@@ -9,8 +9,6 @@ import {
   Calendar,
   Clock,
   AlertCircle,
-  Settings,
-  ExternalLink,
 } from "lucide-react";
 
 export default function SubscriptionCard({ 
@@ -100,7 +98,7 @@ export default function SubscriptionCard({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => onToggle(subscription.id, !subscription.isActive)}
+                onClick={() => onToggle(subscription._id || subscription.id, !subscription.isActive)}
               >
                 {subscription.isActive ? "Deactivate" : "Activate"}
               </Button>
@@ -159,18 +157,6 @@ export default function SubscriptionCard({
           </Badge>
         </div>
 
-        {showActions && (
-          <div className="flex gap-2 pt-4 border-t border-divider">
-            <Button variant="outline" size="sm" className="flex-1">
-              <Settings className="w-4 h-4 mr-2" />
-              Manage
-            </Button>
-            <Button variant="outline" size="sm" className="flex-1">
-              <ExternalLink className="w-4 h-4 mr-2" />
-              Renew
-            </Button>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

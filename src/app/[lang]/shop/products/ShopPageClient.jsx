@@ -14,11 +14,26 @@ import {
 
 const CATEGORIES = [
   "All Products",
-  "Football Boots",
-  "Jerseys",
-  "Balls",
-  "Training Gear",
+  "Clothing",
+  "Shoes",
+  "Bags",
   "Accessories",
+  "Jewelry",
+  "Watches",
+  "Electronics",
+  "Home & Garden",
+  "Sports & Fitness",
+  "Beauty & Personal Care",
+  "Books & Media",
+  "Toys & Games",
+  "Automotive",
+  "Health & Wellness",
+  "Office Supplies",
+  "Travel & Luggage",
+  "Food & Beverages",
+  "Pet Supplies",
+  "Baby & Kids",
+  "Other",
 ];
 
 // Loading skeleton component
@@ -233,18 +248,16 @@ export default function ShopPageClient({ products: initialProducts, lang }) {
                         {product.description}
                       </p>
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-lg font-bold text-accent-amber">
+                        <span className="text-lg font-bold text-accent-red">
                           ${product.price.toFixed(2)}
                         </span>
-                        {product.discount && (
+                        {product.discount > 0 && (
                           <span className="text-sm text-green-600 font-medium">
                             {product.discount}% OFF
                           </span>
                         )}
                       </div>
-                      <div className="w-full py-2 px-4 rounded-md text-sm font-medium text-center bg-gray-100 text-gray-600">
-                        View Details
-                      </div>
+                      
                     </div>
                   </Link>
                 ))}

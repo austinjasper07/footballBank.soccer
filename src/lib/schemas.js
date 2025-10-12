@@ -13,16 +13,29 @@ const userSchema = new mongoose.Schema({
   },
   subscribed: { type: Boolean, default: false },
   isVerified: { type: Boolean, default: false },
-  // Address Fields
+  // Address Fields (optional for users who only use shipping addresses)
   address: {
+    street: { type: String },
+    city: { type: String },
+    state: { type: String },
+    postalCode: { type: String },
+    country: { type: String },
+    countryCode: { type: String }
+  },
+  // Multiple Shipping Addresses (up to 3)
+  shippingAddresses: [{
+    id: { type: String, required: true },
+    name: { type: String, required: true }, // Address nickname (e.g., "Home", "Work", "Office")
     street: { type: String, required: true },
     city: { type: String, required: true },
     state: { type: String, required: true },
     postalCode: { type: String, required: true },
     country: { type: String, required: true },
-    countryCode: { type: String, required: true }
-  },
-  // Shipping Address Fields
+    countryCode: { type: String }, // Optional country code
+    isDefault: { type: Boolean, default: false },
+    createdAt: { type: Date, default: Date.now }
+  }],
+  // Legacy single shipping address (for backward compatibility)
   shippingAddress: {
     street: { type: String },
     city: { type: String },
@@ -110,6 +123,7 @@ const playerSchema = new mongoose.Schema({
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
+  specifications: { type: String, default: "" },
   price: { type: Number, required: true },
   image: [{ type: String }],
   featured: { type: Boolean, default: false },
@@ -185,6 +199,16 @@ const orderSchema = new mongoose.Schema({
   },
   totalAmount: { type: Number, required: true },
   stripeSessionId: { type: String }, // Store Stripe session ID for reference
+  shippingAddress: {
+    id: { type: String },
+    name: { type: String },
+    street: { type: String },
+    city: { type: String },
+    state: { type: String },
+    postalCode: { type: String },
+    country: { type: String },
+    countryCode: { type: String }
+  },
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -267,6 +291,18 @@ const affiliateProductSchema = new mongoose.Schema({
 });
 
 
+// Agent Schema for managing agent profile information
+const agentSchema = new mongoose.Schema({
+  name: { type: String, required: true, default: "Ayodeji Fatade" },
+  profilePhoto: { type: String, default: "/FootballBank_agent.jpg" },
+  bio: { type: String, default: "Experienced football agent with a proven track record of helping players achieve their professional goals." },
+  credentials: { type: String, default: "Licensed Agent" },
+  location: { type: String, default: "United States" },
+  isActive: { type: Boolean, default: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
 // Create models with proper error handling - use existing collection names from Prisma
 export const User = mongoose.models.User || mongoose.model('User', userSchema);
 export const OtpToken = mongoose.models.OtpToken || mongoose.model('OtpToken', otpTokenSchema);
@@ -280,3 +316,4 @@ export const Message = mongoose.models.Message || mongoose.model('Message', mess
 export const Submission = mongoose.models.Submission || mongoose.model('Submission', submissionSchema);
 export const PendingOrder = mongoose.models.PendingOrder || mongoose.model('PendingOrder', pendingOrderSchema);
 export const AffiliateProduct = mongoose.models.AffiliateProduct || mongoose.model('AffiliateProduct', affiliateProductSchema);
+export const Agent = mongoose.models.Agent || mongoose.model('Agent', agentSchema);

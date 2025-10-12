@@ -598,7 +598,7 @@ export default async function HomePage({ params }) {
           <div className="relative max-w-7xl mx-auto px-4 z-10 text-center text-white">
             <div className="max-w-4xl mx-auto space-y-8">
               <h2 className="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4 lg:mb-6 leading-tight">
-                {dict.homepage.cta.title}
+                <span dangerouslySetInnerHTML={{ __html: dict.homepage.cta.title }} />
               </h2>
               <p className="text-lg lg:text-xl text-blue-100 mb-8 lg:mb-12 max-w-3xl mx-auto leading-relaxed">
                 {dict.homepage.cta.subtitle}

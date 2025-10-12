@@ -48,10 +48,20 @@ export default function ProfileDashboard({
 
   const getTotalSpent = () => {
     if (!Array.isArray(orders)) return 0;
+    
+    // Use totalAmount from order if available, otherwise calculate from items
     return orders
       .filter(order => order.status === "completed")
       .reduce((total, order) => {
-        return total + (order.items || []).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        // Use totalAmount if available, otherwise calculate from items
+        if (order.totalAmount) {
+          return total + order.totalAmount;
+        }
+        
+        // Fallback to calculating from items
+        return total + (order.items || []).reduce((sum, item) => {
+          return sum + ((item.price || 0) * (item.quantity || 0));
+        }, 0);
       }, 0);
   };
 
@@ -61,12 +71,12 @@ export default function ProfileDashboard({
   };
 
   const getRecentOrders = () => {
-    if (!Array.isArray(orders)) return [];
+    if (!Array.isArray(orders) || orders.length === 0) return [];
     return orders.slice(0, 3);
   };
 
   const getRecentSubscriptions = () => {
-    if (!Array.isArray(subscriptions)) return [];
+    if (!Array.isArray(subscriptions) || subscriptions.length === 0) return [];
     return subscriptions.slice(0, 2);
   };
 
@@ -76,12 +86,16 @@ export default function ProfileDashboard({
     const stats = [];
     
     if (playerData.stats.career) {
-      Object.entries(playerData.stats.career).forEach(([key, value]) => {
-        stats.push({
-          label: key.replace(/([A-Z])/g, " $1").trim(),
-          value: value,
-          trend: Math.floor(Math.random() * 21) - 10 // Random trend for demo
-        });
+      Object.entries(playerData.stats.career).forEach(([key, value], index) => {
+        // Ensure we have valid key and value
+        if (key && value !== undefined && value !== null) {
+          stats.push({
+            id: `stat-${key}-${index}`, // Add unique ID
+            label: key.replace(/([A-Z])/g, " $1").trim(),
+            value: value,
+            trend: Math.floor(Math.random() * 21) - 10 // Random trend for demo
+          });
+        }
       });
     }
     
@@ -134,7 +148,7 @@ export default function ProfileDashboard({
               <div>
                 <p className="text-sm text-primary-muted">Member Since</p>
                 <p className="text-2xl font-bold text-primary-text">
-                  {formatDate(userData?.createdAt).split(" ")[1]}
+                  {userData?.createdAt ? formatDate(userData.createdAt) : 'N/A'}
                 </p>
               </div>
               <Calendar className="w-8 h-8 text-accent-red" />
@@ -203,14 +217,29 @@ export default function ProfileDashboard({
         </CardHeader>
         <CardContent>
           {getRecentOrders().length > 0 ? (
-            <div className="space-y-4">
-              {getRecentOrders().map((order) => (
-                <OrderCard
-                  key={order.id}
-                  order={order}
-                  showActions={false}
-                />
-              ))}
+            <div className="overflow-x-auto">
+              {/* Table Header */}
+              <div className="grid grid-cols-8 gap-4 items-center text-sm font-medium text-muted-foreground border-b border-divider pb-3 mb-4">
+                <div>Order ID</div>
+                <div>Customer</div>
+                <div>Items</div>
+                <div>Total</div>
+                <div>Status</div>
+                <div>Payment</div>
+                <div>Date</div>
+                <div>Actions</div>
+              </div>
+              
+              {/* Orders List */}
+              <div className="space-y-0">
+                {getRecentOrders().map((order, index) => (
+                  <OrderCard
+                    key={order.id || `order-${index}`}
+                    order={order}
+                    showActions={true}
+                  />
+                ))}
+              </div>
             </div>
           ) : (
             <div className="text-center py-8">
@@ -240,9 +269,9 @@ export default function ProfileDashboard({
         <CardContent>
           {getRecentSubscriptions().length > 0 ? (
             <div className="space-y-4">
-              {getRecentSubscriptions().map((subscription) => (
+              {getRecentSubscriptions().map((subscription, index) => (
                 <SubscriptionCard
-                  key={subscription.id}
+                  key={subscription.id || `subscription-${index}`}
                   subscription={subscription}
                   showActions={false}
                 />

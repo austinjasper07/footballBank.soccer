@@ -34,7 +34,7 @@
     "hero": {
       "name": "Ayodeji Fatade",
       "title": "Representing global football talents with vision, integrity, and developmental expertise.",
-      "description": "Ayodeji is an agent at FootballBank.soccer, an international organization dedicated to discovering, developing and representing talented players across the globe.",
+      "description": "Ayodeji is a United State based FIFA licenced agent at FootballBank.soccer, an international organization dedicated to discovering, developing and representing talented players across the globe.",
       "license": {
         "title": "FIFA Licensed",
         "id": "License ID: 202309-4469"
@@ -157,7 +157,7 @@
       "visitBlog": "Visit Blog"
     },
     "cta": {
-      "title": "Club or Brand Looking to Collaborate?",
+      "title": "Club or Brand Looking to <span class=\"text-accent-red\">Collaborate</span>?",
       "subtitle": "We connect talent with trusted organizations.",
       "getInTouch": "Get in Touch"
     }

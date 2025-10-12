@@ -11,6 +11,7 @@ import {
   Download,
   Calendar,
   DollarSign,
+  Copy,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -21,6 +22,15 @@ export default function OrderCard({ order, onCancel, showActions = true }) {
       month: "short",
       day: "numeric",
     });
+  };
+
+  const copyOrderId = async (orderId) => {
+    try {
+      await navigator.clipboard.writeText(orderId);
+      // You could add a toast notification here if needed
+    } catch (err) {
+      console.error('Failed to copy order ID:', err);
+    }
   };
 
   const formatCurrency = (amount) => {
@@ -56,100 +66,84 @@ export default function OrderCard({ order, onCancel, showActions = true }) {
     }
   };
 
-  const totalAmount = order.items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+  const totalAmount = (order.items || []).reduce(
+    (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
     0
   );
 
   return (
-    <Card className="bg-primary-card border border-divider hover:shadow-md transition-shadow">
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-accent-red to-red-600 rounded-lg flex items-center justify-center">
-              <ShoppingBag className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <div className="font-semibold text-primary-text">
-                Order #{order.id.slice(-8)}
-              </div>
-              <div className="text-sm text-primary-muted flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                {formatDate(order.createdAt)}
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Badge className={getStatusColor(order.status)}>
-              {getStatusIcon(order.status)}
-              {order.status}
-            </Badge>
-            {order.status === "pending" && showActions && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onCancel(order.id)}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <X className="w-4 h-4 mr-1" />
-                Cancel
-              </Button>
-            )}
-          </div>
-        </div>
-
-        <div className="space-y-3 mb-4">
-          {order.items.map((item, index) => (
-            <div
-              key={`${order.id}-item-${index}`}
-              className="flex items-center justify-between p-3 bg-primary-bg rounded-lg"
+    <div className="border-b border-divider py-4 hover:bg-muted/50 transition-colors">
+      <div className="grid grid-cols-8 gap-4 items-center text-sm">
+        {/* Order ID */}
+        <div className="font-mono text-sm flex items-center gap-2">
+          <span>
+            {order._id ? order._id.slice(-8) : order.id ? order.id.slice(-8) : 'N/A'}
+          </span>
+          {(order._id || order.id) && (
+            <button
+              onClick={() => copyOrderId(order._id || order.id)}
+              className="p-1 hover:bg-gray-100 rounded transition-colors"
+              title="Copy Order ID"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-accent-red to-red-600 rounded flex items-center justify-center">
-                  <ShoppingBag className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <div className="font-medium text-primary-text">
-                    {item.name}
-                  </div>
-                  <div className="text-sm text-primary-muted">
-                    Qty: {item.quantity}
-                  </div>
-                </div>
-              </div>
-              <div className="font-medium text-primary-text">
-                {formatCurrency(item.price * item.quantity)}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex items-center justify-between pt-4 border-t border-divider">
-          <div className="flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-primary-muted" />
-            <span className="text-sm text-primary-muted">Total:</span>
-            <span className="font-semibold text-primary-text">
-              {formatCurrency(totalAmount)}
-            </span>
-          </div>
-          {showActions && (
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" asChild>
-                <Link href={`/orders/${order.id}`}>
-                  <Eye className="w-4 h-4 mr-1" />
-                  View
-                </Link>
-              </Button>
-              {order.status === "completed" && (
-                <Button variant="outline" size="sm">
-                  <Download className="w-4 h-4 mr-1" />
-                  Download
-                </Button>
-              )}
-            </div>
+              <Copy className="w-3 h-3" />
+            </button>
           )}
         </div>
-      </CardContent>
-    </Card>
+        
+        {/* Customer (simplified for profile view) */}
+        <div className="text-sm">
+          You
+        </div>
+        
+        {/* Items Count */}
+        <div className="text-sm">
+          {(order.items || []).length} items
+        </div>
+        
+        {/* Total Amount */}
+        <div className="font-medium">
+          {formatCurrency(totalAmount)}
+        </div>
+        
+        {/* Order Status */}
+        <div>
+          <Badge className={getStatusColor(order.status || 'unknown')}>
+            {getStatusIcon(order.status || 'unknown')}
+            <span className="ml-1 capitalize">{order.status || 'Unknown'}</span>
+          </Badge>
+        </div>
+        
+        {/* Payment Status (simplified) */}
+        <div>
+          <Badge className="bg-green-100 text-green-800">
+            <CheckCircle className="w-3 h-3 mr-1" />
+            Paid
+          </Badge>
+        </div>
+        
+        {/* Date */}
+        <div className="text-sm text-muted-foreground">
+          {formatDate(order.createdAt || new Date())}
+        </div>
+        
+        {/* Actions */}
+        <div className="flex gap-2">
+          {showActions && (
+            <>
+              <Button variant="outline" size="sm" asChild>
+                <Link href={`/profile/orders/${order._id || order.id || 'unknown'}`}>
+                  <Eye className="w-4 h-4" />
+                </Link>
+              </Button>
+              {(order.status || 'unknown') === "completed" && (
+                <Button variant="outline" size="sm">
+                  <Download className="w-4 h-4" />
+                </Button>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

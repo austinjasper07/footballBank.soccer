@@ -41,10 +41,11 @@ export function ProductDialog({
     sizes: [],
     colors: [],
     stock: 0,
-    category: "accessory",
+    category: "clothing",
     hasVariations: false,
     variations: [],
-    variationAttributes: []
+    variationAttributes: [],
+    specifications: ""
   });
 
   const [sizesInput, setSizesInput] = useState("");
@@ -76,7 +77,8 @@ export function ProductDialog({
         category: product.category || "accessory",
         hasVariations: product.hasVariations || false,
         variations: product.variations || [],
-        variationAttributes: product.variationAttributes || []
+        variationAttributes: product.variationAttributes || [],
+        specifications: product.specifications || ""
       });
 
       setSizesInput((product.sizes || []).join(", "));
@@ -95,10 +97,11 @@ export function ProductDialog({
         sizes: [],
         colors: [],
         stock: 0,
-        category: "accessory",
+        category: "clothing",
         hasVariations: false,
         variations: [],
-        variationAttributes: []
+        variationAttributes: [],
+        specifications: ""
       });
       setSizesInput("");
       setColorsInput("");
@@ -297,13 +300,34 @@ export function ProductDialog({
         return Array.from(variationMap.values());
       };
 
+      // Process colors input - ensure it only contains valid color values
+      const processedColors = colorsInput
+        .split(",")
+        .map((c) => c.trim())
+        .filter(Boolean)
+        .filter(color => {
+          // Basic validation - colors should be simple words, not long descriptions
+          return color.length < 50 && !color.includes("Add a refined touch") && !color.includes("premium insulated");
+        });
+
+      // Debug logging
+      console.log("Form Data:", {
+        description: formData.description,
+        colorsInput: colorsInput,
+        processedColors: processedColors,
+        sizesInput: sizesInput
+      });
+
       const finalData = {
         ...formData,
         image: uploadedImageUrls,
         sizes: sizesInput.split(",").map((s) => s.trim()).filter(Boolean),
-        colors: colorsInput.split(",").map((c) => c.trim()).filter(Boolean),
+        colors: processedColors,
         variationAttributes: variationAttributes.filter(attr => attr.name.trim() !== ""),
-        variations: formatVariationsForDB()
+        variations: formatVariationsForDB(),
+        // Ensure description is properly set and not overwritten
+        description: formData.description || "",
+        specifications: formData.specifications || ""
       };
 
       const res = product?.id
@@ -407,11 +431,26 @@ export function ProductDialog({
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="boots">Boots</SelectItem>
-                <SelectItem value="gloves">Gloves</SelectItem>
-                <SelectItem value="kits">Kits</SelectItem>
-                <SelectItem value="ball">Ball</SelectItem>
-                <SelectItem value="accessory">Accessory</SelectItem>
+                <SelectItem value="clothing">Clothing</SelectItem>
+                <SelectItem value="shoes">Shoes</SelectItem>
+                <SelectItem value="bags">Bags</SelectItem>
+                <SelectItem value="accessories">Accessories</SelectItem>
+                <SelectItem value="jewelry">Jewelry</SelectItem>
+                <SelectItem value="watches">Watches</SelectItem>
+                <SelectItem value="electronics">Electronics</SelectItem>
+                <SelectItem value="home">Home & Garden</SelectItem>
+                <SelectItem value="sports">Sports & Fitness</SelectItem>
+                <SelectItem value="beauty">Beauty & Personal Care</SelectItem>
+                <SelectItem value="books">Books & Media</SelectItem>
+                <SelectItem value="toys">Toys & Games</SelectItem>
+                <SelectItem value="automotive">Automotive</SelectItem>
+                <SelectItem value="health">Health & Wellness</SelectItem>
+                <SelectItem value="office">Office Supplies</SelectItem>
+                <SelectItem value="travel">Travel & Luggage</SelectItem>
+                <SelectItem value="food">Food & Beverages</SelectItem>
+                <SelectItem value="pets">Pet Supplies</SelectItem>
+                <SelectItem value="baby">Baby & Kids</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -423,6 +462,18 @@ export function ProductDialog({
               value={formData.description}
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
+              }
+            />
+          </div>
+
+          <div className="md:col-span-2">
+            <Label>Specifications</Label>
+            <Textarea
+              rows={4}
+              placeholder="Enter product specifications (e.g., Material: Leather, Weight: 500g, Dimensions: 30x20x10cm)"
+              value={formData.specifications}
+              onChange={(e) =>
+                setFormData({ ...formData, specifications: e.target.value })
               }
             />
           </div>

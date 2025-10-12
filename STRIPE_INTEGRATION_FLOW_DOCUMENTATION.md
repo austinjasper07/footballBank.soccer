@@ -502,7 +502,7 @@ Content-Type: application/json
 
 {
   "amount": 7297, // Amount in cents
-  "currency": "gbp",
+  "currency": "usd",
   "userId": "user_id",
   "userEmail": "user@example.com",
   "billingAddress": {

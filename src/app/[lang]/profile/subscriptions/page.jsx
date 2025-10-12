@@ -178,7 +178,7 @@ export default function SubscriptionsPage() {
               <div className="space-y-4">
                 {activeSubscriptions.map((subscription) => (
                   <SubscriptionCard
-                    key={subscription.id}
+                    key={subscription._id || subscription.id || `active-${Math.random()}`}
                     subscription={subscription}
                     onToggle={handleSubscriptionToggle}
                   />
@@ -201,7 +201,7 @@ export default function SubscriptionsPage() {
               <div className="space-y-4">
                 {inactiveSubscriptions.map((subscription) => (
                   <SubscriptionCard
-                    key={subscription.id}
+                    key={subscription._id || subscription.id || `inactive-${Math.random()}`}
                     subscription={subscription}
                     onToggle={handleSubscriptionToggle}
                   />

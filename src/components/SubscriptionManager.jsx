@@ -21,6 +21,8 @@ export default function SubscriptionManager({ subscriptions, onUpdate }) {
     setLoading(prev => ({ ...prev, [subscriptionId]: true }));
     setError(null);
 
+    console.log('Attempting to cancel subscription:', subscriptionId);
+
     try {
       const response = await fetch("/api/profile/subscriptions", {
         method: "PATCH",
@@ -33,10 +35,16 @@ export default function SubscriptionManager({ subscriptions, onUpdate }) {
         }),
       });
 
+      console.log('API response status:', response.status);
+
       if (!response.ok) {
         const errorData = await response.json();
+        console.error('API error response:', errorData);
         throw new Error(errorData.error || "Failed to cancel subscription");
       }
+
+      const result = await response.json();
+      console.log('API success response:', result);
 
       // Refresh subscriptions
       if (onUpdate) onUpdate();
@@ -53,6 +61,8 @@ export default function SubscriptionManager({ subscriptions, onUpdate }) {
     setLoading(prev => ({ ...prev, [subscriptionId]: true }));
     setError(null);
 
+    console.log('Attempting to reactivate subscription:', subscriptionId);
+
     try {
       const response = await fetch("/api/profile/subscriptions", {
         method: "PATCH",
@@ -65,10 +75,16 @@ export default function SubscriptionManager({ subscriptions, onUpdate }) {
         }),
       });
 
+      console.log('API response status:', response.status);
+
       if (!response.ok) {
         const errorData = await response.json();
+        console.error('API error response:', errorData);
         throw new Error(errorData.error || "Failed to reactivate subscription");
       }
+
+      const result = await response.json();
+      console.log('API success response:', result);
 
       // Refresh subscriptions
       if (onUpdate) onUpdate();

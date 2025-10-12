@@ -171,6 +171,7 @@ export function UserDialog({ open, onOpenChange, user, onSave }) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="editor">Editor</SelectItem>
                 <SelectItem value="user">User</SelectItem>
                 <SelectItem value="player">Player</SelectItem>
               </SelectContent>

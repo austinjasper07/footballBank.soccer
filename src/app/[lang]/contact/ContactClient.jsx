@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { FaSpinner } from "react-icons/fa";
 import "aos/dist/aos.css";
 import { handleContactSubmit } from "@/actions/emailActions";
+import { FaSquareXTwitter } from "react-icons/fa6";
 import Link from "next/link";
 import {
   Select,
@@ -75,10 +76,10 @@ export default function ContactClient({ lang = "en", dict }) {
   return (
     <main className=" text-primary-text">
       <section className="py-16 text-center">
-        <h1 className="text-primary-text  font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] md:text-5xl mb-4">
+        <h1 className="text-primary-text font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] md:text-5xl mb-4">
           {dict?.contact?.title || "Contact Us"}
         </h1>
-        <p className="text-primary-muted text-lg max-w-2xl mx-auto mb-4">
+        <p className="text-primary-muted text-lg max-w-2xl mx-auto">
           {dict?.contact?.subtitle || "Get in touch with our team"}
         </p>
       </section>
@@ -94,7 +95,7 @@ export default function ContactClient({ lang = "en", dict }) {
                 title: dict?.contact?.companyName || "Company Name",
                 icon: "fa-building",
                 color: "red",
-                text: "Soccer Bank Sports Management",
+                text: "Dojoglo & Fam",
                 subtitle: dict?.contact?.officialName || "Our Official Name",
               },
               {
@@ -104,6 +105,8 @@ export default function ContactClient({ lang = "en", dict }) {
                 text: "contact@footballbank.soccer",
                 subtitle:
                   dict?.contact?.ourInboxOpen || "Our inbox is always open",
+                isClickable: true,
+                type: "email"
               },
               {
                 title: dict?.contact?.phone || "Phone",
@@ -111,6 +114,8 @@ export default function ContactClient({ lang = "en", dict }) {
                 color: "red",
                 text: "+(844) 362-9881 (Toll Free)",
                 subtitle: dict?.contact?.callUs || "Call us anytime",
+                isClickable: true,
+                type: "phone"
               },
               {
                 title: "P.O Box",
@@ -127,7 +132,7 @@ export default function ContactClient({ lang = "en", dict }) {
                 subtitle:
                   dict?.contact?.weOperateWorldwide || "We operate worldwide",
               },
-            ].map(({ title, icon, color, text, subtitle }) => (
+            ].map(({ title, icon, color, text, subtitle, isClickable, type }) => (
               <div
                 key={title}
                 className="flex gap-4 items-start rounded-xl p-8 border border-divider shadow-lg"
@@ -144,9 +149,31 @@ export default function ContactClient({ lang = "en", dict }) {
                 <div>
                   <h3 className=" font-semibold text-xl mb-2">{title}</h3>
                   <p className="text-primary-muted mb-1">{subtitle}</p>
-                  <p className={`text-accent-${color} font-medium text-sm`}>
-                    {text}
-                  </p>
+                  {isClickable ? (
+                    type === "email" ? (
+                      <a 
+                        href={`mailto:${text}`}
+                        className={`text-accent-${color} font-medium text-sm hover:underline cursor-pointer transition-colors`}
+                      >
+                        {text}
+                      </a>
+                    ) : type === "phone" ? (
+                      <a 
+                        href={`tel:${text.replace(/[^\d+]/g, '')}`}
+                        className={`text-accent-${color} font-medium text-sm hover:underline cursor-pointer transition-colors`}
+                      >
+                        {text}
+                      </a>
+                    ) : (
+                      <p className={`text-accent-${color} font-medium text-sm`}>
+                        {text}
+                      </p>
+                    )
+                  ) : (
+                    <p className={`text-accent-${color} font-medium text-sm`}>
+                      {text}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
@@ -303,14 +330,14 @@ export default function ContactClient({ lang = "en", dict }) {
                 icon: "facebook",
                 color: "blue",
                 href: "https://www.facebook.com/profile.php?id=61580081775450",
-                handle: "FootballBank Global",
+                handle: "FootballBank.soccer",
               },
               {
-                name: "Twitter",
-                icon: "twitter",
-                color: "blue",
+                name: "X",
+                icon: "FaSquareXTwitter",
+                color: "black",
                 href: "https://x.com/footballbankhq?s=21&t=Ihzjw_SrtnHA4qE0nkgFfg",
-                handle: "@footballbankhq",
+                handle: "@footballbankHQ",
               },
               {
                 name: "TikTok",
@@ -324,13 +351,18 @@ export default function ContactClient({ lang = "en", dict }) {
                 href={href}
                 target="_blank"
                 key={name}
-                className={`bg-primary-card rounded-xl p-2 border border-divider shadow-lg hover:border-accent-${color} transition-colors cursor-pointer`}
+                className={`bg-primary-card flex flex-col items-center justify-center rounded-xl p-2 border border-divider shadow-lg hover:border-accent-${color} transition-colors cursor-pointer`}
               >
-                <i
-                  className={`fa-brands fa-${icon} text-accent-${color} text-3xl mb-4`}
-                />
+                {icon === "FaSquareXTwitter" ? (
+                  <FaSquareXTwitter className={`text-accent-${color} text-3xl mb-4`} />
+                ) : (
+                  <i
+                    className={`fa-brands fa-${icon} text-accent-${color} text-3xl mb-4`}
+                  />
+                )}
                 <p className="font-medium">{name}</p>
                 <p className="text-primary-muted text-sm">{handle}</p>
+                
               </Link>
             ))}
           </div>

@@ -6,9 +6,12 @@ import { useCart } from '@/context/CartContext';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { CartLoadingSkeleton } from '@/components/ui/loading-skeleton';
+import { getAvailableShippingMethods, calculateShippingCost, validateShippingAvailability } from '@/lib/shippingUtils';
+import { useAuth } from '@/context/NewAuthContext';
 
 const CartPage = () => {
   const { cart, clearCart, addToCart, removeFromCart } = useCart();
+  const { user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const lang = pathname?.split('/')[1] || 'en';
@@ -16,6 +19,10 @@ const CartPage = () => {
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedShippingMethod, setSelectedShippingMethod] = useState(null);
+  const [shippingAddress, setShippingAddress] = useState(null);
+  const [shippingMethods, setShippingMethods] = useState([]);
+  const [shippingError, setShippingError] = useState(null);
 
   // Simulate loading for demonstration
   useEffect(() => {
@@ -56,11 +63,44 @@ const CartPage = () => {
 
   const subtotal = cart.reduce((total, item) => total + item.quantity * item.price, 0);
   
+  // Calculate shipping cost
+  const shippingCost = selectedShippingMethod ? 
+    calculateShippingCost(selectedShippingMethod.name, subtotal) : 0;
+  
   // No tax calculation in cart - tax will be calculated in checkout
   const promoDiscount = appliedPromo ? subtotal * appliedPromo.discount : 0;
   const bulkDiscount = subtotal > 300 ? 0.1 * subtotal : 0;
   const totalDiscount = promoDiscount + bulkDiscount;
-  const total = +(subtotal - totalDiscount).toFixed(2);
+  const total = +(subtotal - totalDiscount + shippingCost).toFixed(2);
+
+  // Load user's shipping addresses and calculate shipping methods
+  useEffect(() => {
+    if (user && cart.length > 0) {
+      // For now, use a default US address for shipping calculation
+      // In a real implementation, you'd fetch the user's addresses
+      const defaultAddress = {
+        country: 'United States',
+        countryCode: 'US'
+      };
+      
+      setShippingAddress(defaultAddress);
+      
+      const methods = getAvailableShippingMethods(defaultAddress, subtotal);
+      setShippingMethods(methods);
+      
+      if (methods.length > 0) {
+        setSelectedShippingMethod(methods[0]);
+      }
+      
+      // Validate shipping availability
+      const validation = validateShippingAvailability(defaultAddress);
+      if (!validation.available) {
+        setShippingError(validation.error);
+      } else {
+        setShippingError(null);
+      }
+    }
+  }, [user, cart, subtotal]);
 
   if (loading) {
     return <CartLoadingSkeleton />;
@@ -298,6 +338,41 @@ const CartPage = () => {
                 )}
               </div>
 
+              {/* Shipping Method Selection */}
+              {shippingMethods.length > 0 && (
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Shipping Method
+                  </label>
+                  <div className="space-y-2">
+                    {shippingMethods.map((method, index) => (
+                      <div
+                        key={index}
+                        className={`p-3 border rounded-md cursor-pointer transition-colors ${
+                          selectedShippingMethod?.name === method.name
+                            ? 'border-orange-500 bg-orange-50'
+                            : 'border-gray-300 hover:border-gray-400'
+                        }`}
+                        onClick={() => setSelectedShippingMethod(method)}
+                      >
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <div className="font-medium text-sm">{method.name}</div>
+                            <div className="text-xs text-gray-500">{method.description}</div>
+                          </div>
+                          <div className="text-sm font-medium">
+                            {method.price === 0 ? 'FREE' : `$${method.price.toFixed(2)}`}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {shippingError && (
+                    <p className="text-xs text-red-600 mt-1">{shippingError}</p>
+                  )}
+                </div>
+              )}
+
               {/* Price Breakdown */}
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
@@ -306,7 +381,9 @@ const CartPage = () => {
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping</span>
-                  <span className="text-green-600 font-medium">FREE</span>
+                    <span className={shippingCost === 0 ? "text-green-600 font-medium" : ""}>
+                      {shippingCost === 0 ? "FREE" : `$${shippingCost.toFixed(2)}`}
+                    </span>
                   </div>
                 {promoDiscount > 0 && (
                   <div className="flex justify-between text-green-600">
@@ -330,7 +407,7 @@ const CartPage = () => {
 
               {/* Checkout Button */}
               <Button
-                disabled={cart.length === 0}
+                disabled={cart.length === 0 || shippingError || !selectedShippingMethod}
                 onClick={() => router.push(`/${lang}/secure-payment/order-confirmation`)}
                 className="w-full mt-6 bg-accent-red hover:bg-red-700 text-white font-medium py-3 cursor-pointer"
               >

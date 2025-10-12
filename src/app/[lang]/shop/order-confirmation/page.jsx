@@ -1,3 +1,5 @@
+"use client";
+
 // pages/order-confirmed.tsx
 import Head from "next/head";
 import { useState } from "react";

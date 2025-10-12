@@ -67,9 +67,9 @@ export default function OrdersPage() {
   const filteredOrders = Array.isArray(orders)
     ? orders.filter((order) => {
         const matchesSearch =
-          order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (order.id || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
           order.items?.some((item) =>
-            item.product?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+            (item.product?.name || '').toLowerCase().includes(searchTerm.toLowerCase())
           );
         const matchesStatus =
           statusFilter === "all" || order.status === statusFilter;
@@ -179,9 +179,9 @@ export default function OrdersPage() {
         {/* Orders List */}
         {filteredOrders.length > 0 ? (
           <div className="space-y-4">
-            {filteredOrders.map((order) => (
+            {filteredOrders.map((order, index) => (
               <OrderCard
-                key={order.id}
+                key={order.id || `order-${index}`}
                 order={order}
                 onCancel={handleCancelOrder}
               />

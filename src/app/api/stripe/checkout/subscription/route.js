@@ -60,7 +60,9 @@ export async function POST(req) {
       client_reference_id: `subscription_${plan}_${duration}_${Date.now()}`,
       metadata: {
         plan: plan,
-        duration: duration
+        duration: duration,
+        source: "subscription_checkout",
+        timestamp: new Date().toISOString()
       },
       allow_promotion_codes: false,
       automatic_tax: { enabled: false }

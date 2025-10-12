@@ -22,7 +22,7 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (item) => {
+  const addToCart = (item, availableStock) => {
     setCart((prev) => {
       // Create a unique key for cart items that includes variation data
       const itemKey = item.variation 
@@ -43,9 +43,25 @@ export const CartProvider = ({ children }) => {
             ? p.id === item.id && JSON.stringify(p.variation.attributes) === JSON.stringify(item.variation.attributes)
             : p.id === item.id && !p.variation && !item.variation;
             
-          return isSameItem ? { ...p, quantity: p.quantity + item.quantity } : p;
+          if (isSameItem) {
+            const newQuantity = p.quantity + item.quantity;
+            // Check if adding this quantity would exceed available stock
+            if (availableStock && newQuantity > availableStock) {
+              // Return the cart unchanged and let the calling component handle the error
+              return p;
+            }
+            return { ...p, quantity: newQuantity };
+          }
+          return p;
         });
       }
+      
+      // For new items, check if the requested quantity exceeds available stock
+      if (availableStock && item.quantity > availableStock) {
+        // Return the cart unchanged and let the calling component handle the error
+        return prev;
+      }
+      
       return [...prev, item];
     });
   };
@@ -58,8 +74,75 @@ export const CartProvider = ({ children }) => {
     setCart([]);
   };
 
+  const updateCartItemQuantity = (id, variation, newQuantity, availableStock) => {
+    setCart((prev) => {
+      return prev.map((item) => {
+        const isSameItem = item.variation && variation
+          ? item.id === id && JSON.stringify(item.variation.attributes) === JSON.stringify(variation.attributes)
+          : item.id === id && !item.variation && !variation;
+        
+        if (isSameItem) {
+          if (newQuantity <= 0) {
+            return null; // Remove item if quantity is 0 or negative
+          }
+          // Check if the new quantity exceeds available stock
+          if (availableStock && newQuantity > availableStock) {
+            return item; // Return unchanged if would exceed stock
+          }
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      }).filter(Boolean); // Remove null items
+    });
+  };
+
+  const isItemInCart = (id, variation) => {
+    return cart.some((item) => {
+      if (item.variation && variation) {
+        return item.id === id && 
+               JSON.stringify(item.variation.attributes) === JSON.stringify(variation.attributes);
+      }
+      return item.id === id && !item.variation && !variation;
+    });
+  };
+
+  const getCartItemQuantity = (id, variation) => {
+    const item = cart.find((item) => {
+      if (item.variation && variation) {
+        return item.id === id && 
+               JSON.stringify(item.variation.attributes) === JSON.stringify(variation.attributes);
+      }
+      return item.id === id && !item.variation && !variation;
+    });
+    return item ? item.quantity : 0;
+  };
+
+  const canAddToCart = (id, variation, quantity, availableStock) => {
+    const existingItem = cart.find((item) => {
+      if (item.variation && variation) {
+        return item.id === id && 
+               JSON.stringify(item.variation.attributes) === JSON.stringify(variation.attributes);
+      }
+      return item.id === id && !item.variation && !variation;
+    });
+    
+    const currentQuantity = existingItem ? existingItem.quantity : 0;
+    const newTotalQuantity = currentQuantity + quantity;
+    
+    return availableStock ? newTotalQuantity <= availableStock : true;
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ 
+      cart, 
+      addToCart, 
+      removeFromCart, 
+      clearCart, 
+      updateCartItemQuantity, 
+      isItemInCart, 
+      getCartItemQuantity,
+      canAddToCart
+    }}>
       {children}
     </CartContext.Provider>
   );

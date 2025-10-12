@@ -50,16 +50,11 @@ const PLANS = [
 ];
 
 export default function SubscriptionPage() {
-  
-  
-
   const [billingCycle, setBillingCycle] = useState("monthly");
-  
 
   useEffect(() => {
     AOS.init({ duration: 700, once: true });
   }, []);
-
 
   return (
     <div className="bg-white min-h-screen text-gray-900">
@@ -69,7 +64,8 @@ export default function SubscriptionPage() {
           className="text-5xl font-extrabold tracking-tight mb-4"
           data-aos="fade-up"
         >
-          Grow with <span className="text-red-600">Fewer Fees</span> & More Power
+          Grow with <span className="text-red-600">Fewer Fees</span> & More
+          Power
         </h1>
         <p
           className="text-gray-600 text-lg max-w-2xl mx-auto mb-8"
@@ -129,27 +125,22 @@ export default function SubscriptionPage() {
 
               <ul className="space-y-3 mb-6">
                 {plan.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-gray-700">
+                  <li
+                    key={idx}
+                    className="flex items-start gap-2 text-gray-700"
+                  >
                     <Check className="w-5 h-5 text-green-500 mt-1" />
                     <span>{feature}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            
-            {/* <Button
-              onClick={() => handleSubscribe(plan.id)}
-              disabled={loadingPlan === plan.id}
-              className={`w-full py-3 text-lg font-semibold rounded-xl transition ${
-                plan.id === "free"
-                  ? "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                  : "bg-red-600 text-white hover:bg-red-700"
-              }`}
-            >
-              {loadingPlan === plan.id ? "Processing..." : plan.cta}
-            </Button> */}
 
-<SubscribeButton plan={plan.id} duration={billingCycle} label={plan.cta} />
+            <SubscribeButton
+              plan={plan.id}
+              duration={billingCycle}
+              label={plan.cta}
+            />
           </div>
         ))}
       </div>
@@ -158,7 +149,8 @@ export default function SubscriptionPage() {
       <footer className="bg-gray-900 text-white py-20 text-center">
         <div className="max-w-3xl mx-auto" data-aos="fade-up">
           <h2 className="text-3xl font-bold mb-4">
-            Get started with <span className="text-red-500">YourApp</span> today
+            Get started with <span className="text-red-500">Your career</span>{" "}
+            today
           </h2>
           <p className="text-gray-400 mb-8">
             Try the Free plan or upgrade anytime. No credit card required to
@@ -175,4 +167,3 @@ export default function SubscriptionPage() {
     </div>
   );
 }
-

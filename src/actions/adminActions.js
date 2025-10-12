@@ -1,6 +1,6 @@
 "use server";
 
-import { User, Post, Player, Product, Order, Subscription, Message, Submission, AffiliateProduct } from "@/lib/schemas";
+import { User, Post, Player, Product, Order, Subscription, Message, Submission, AffiliateProduct, Agent } from "@/lib/schemas";
 import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongodb";
 import mongoose from "mongoose";
@@ -510,6 +510,63 @@ export async function deleteAffiliateProduct(id) {
     return await getAffiliateProducts();
   } catch (err) {
     console.error("Error deleting affiliate product:", err);
+    return err;
+  }
+}
+
+// Agent Management Functions
+export async function getAgentInfo() {
+  await dbConnect();
+  try {
+    let agent = await Agent.findOne();
+    if (!agent) {
+      // Create default agent if none exists
+      agent = await Agent.create({
+        name: "Ayodeji Fatade",
+        title: "United States Based Agent",
+        profilePhoto: "/FootballBank_agent.jpg",
+        bio: "Experienced football agent with a proven track record of helping players achieve their professional goals.",
+        credentials: "Licensed Agent",
+        location: "United States"
+      });
+    }
+    return toPlain(agent);
+  } catch (err) {
+    console.error("Error getting agent info:", err);
+    return err;
+  }
+}
+
+export async function updateAgentInfo(formData) {
+  await dbConnect();
+  try {
+    const { name, bio, credentials, location, profilePhoto } = Object.fromEntries(formData);
+    
+    let agent = await Agent.findOne();
+    if (!agent) {
+      agent = await Agent.create({
+        name: name || "Ayodeji Fatade",
+        profilePhoto: profilePhoto || "/FootballBank_agent.jpg",
+        bio: bio || "Experienced football agent with a proven track record of helping players achieve their professional goals.",
+        credentials: credentials || "Licensed Agent",
+        location: location || "United States"
+      });
+    } else {
+      agent.name = name || agent.name;
+      agent.bio = bio || agent.bio;
+      agent.credentials = credentials || agent.credentials;
+      agent.location = location || agent.location;
+      if (profilePhoto) {
+        agent.profilePhoto = profilePhoto;
+      }
+      agent.updatedAt = new Date();
+      await agent.save();
+    }
+    
+    revalidatePath('/agent');
+    return toPlain(agent);
+  } catch (err) {
+    console.error("Error updating agent info:", err);
     return err;
   }
 }

@@ -106,59 +106,7 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* PLAYER OF THE WEEK */}
-        {/* {playerOfTheWeek && (
-          <section
-            className="relative z-10 w-full lg:w-[50%] flex items-center justify-center lg:h-[700px] "
-            data-aos="zoom-in"
-            data-aos-delay="100"
-          >
-            <Link href={`/${lang}/players/${playerOfTheWeek.id}`}>
-              <div className="relative w-full md:w-[80%] lg:h-[600px] bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden flex flex-row-reverse gap-6 p-4 mx-auto border border-white/20">
-                <div className="absolute top-4 right-4 z-20 bg-accent-red/90 text-white px-3 py-1 text-xs rounded-full shadow">
-                  {dict.homepage.hero.starOnTheRise}
-                </div>
-                <div className="relative w-full h-full rounded-xl shadow-lg">
-                  <Image
-                    src={playerOfTheWeek?.imageUrl?.[0] || "/placeholder.jpg"}
-                    alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
-                    width={500}
-                    height={500}
-                    className="object-cover w-full h-[350px] lg:h-full rounded-xl"
-                  />
-                </div>
-                <div className="w-full mt-4">
-                  <h3 className="text-xl font-bold text-[#111827]  my-3">
-                    {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName}
-                  </h3>
-                  <p className="text-accent-red font-semibold mb-2">
-                    <span className="font-semibold text-primary-muted">
-                      {dict.playerProfile.position}:{" "}
-                    </span>
-                    {playerOfTheWeek?.position}
-                  </p>
-                  <p className="text-accent-red font-semibold mb-2">
-                    <span className="font-semibold text-primary-muted">
-                      {dict.playerProfile.age}:{" "}
-                    </span>
-                    {age}
-                  </p>
-                  <p className="text-accent-red font-semibold mb-2">
-                    <span className="font-semibold text-primary-muted">
-                      {dict.playerProfile.foot}:{" "}
-                    </span>
-                    {playerOfTheWeek?.foot}
-                  </p>
-                  <p className="text-gray-600 text-sm line-clamp-6 md:line-clamp-8 lg:line-clamp-15">
-                    {playerOfTheWeek?.description ||
-                      "This player stands out for their dedication, talent and extraordinary performance on the pitch."}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          </section>
-        )} */}
 
-        {/* PLAYER OF THE WEEK */}
         {playerOfTheWeek && (
           <section
             className="w-full lg:w-1/2 flex items-center justify-center"
@@ -166,29 +114,29 @@ export default async function HomePage({ params }) {
             data-aos-delay="100"
           >
             <Link href={`/${lang}/players/${playerOfTheWeek.id}`}>
-              <div className="flex group relative w-full max-w-sm lg:max-w-md bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105">
-                <div className="absolute top-4 left-4 z-20 bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 text-xs sm:text-sm font-semibold rounded-full shadow-lg">
+              <div className="group relative w-full max-w-sm lg:max-w-md bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105">
+                <div className="absolute top-4 right-4 z-20 bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 text-xs sm:text-sm font-semibold rounded-full shadow-lg">
                   {dict.homepage.hero.starOnTheRise}
                 </div>
 
-                <div className="relative w-1/2">
+                <div className="relative">
                   <Image
                     src={playerOfTheWeek?.imageUrl?.[0] || "/placeholder.jpg"}
                     alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
                     width={500}
                     height={400}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-56 sm:h-56 lg:h-80"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 </div>
 
-                <div className="w-1/2 p-4 sm:p-6 space-y-3 sm:space-y-4">
+                <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
                   <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
                     {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName}
                   </h3>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-white/10 rounded-lg p-2 sm:p-3 backdrop-blur-sm">
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="bg-white/10 rounded-lg p-2backdrop-blur-sm">
                       <div className="text-blue-200 text-xs sm:text-sm font-medium mb-1">
                         {dict.playerProfile.position}
                       </div>
@@ -196,7 +144,7 @@ export default async function HomePage({ params }) {
                         {playerOfTheWeek?.position}
                       </div>
                     </div>
-                    <div className="bg-white/10 rounded-lg p-2 sm:p-3 backdrop-blur-sm">
+                    <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
                       <div className="text-blue-200 text-xs sm:text-sm font-medium mb-1">
                         {dict.playerProfile.age}
                       </div>
@@ -204,14 +152,13 @@ export default async function HomePage({ params }) {
                         {age}
                       </div>
                     </div>
-                  </div>
-
-                  <div className="bg-white/10 rounded-lg p-2 sm:p-3 backdrop-blur-sm">
-                    <div className="text-blue-200 text-xs sm:text-sm font-medium mb-1">
-                      {dict.playerProfile.foot}
-                    </div>
-                    <div className="text-white font-semibold text-sm sm:text-base">
-                      {playerOfTheWeek?.foot}
+                    <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
+                      <div className="text-blue-200 text-xs sm:text-sm font-medium mb-1">
+                        {dict.playerProfile.foot}
+                      </div>
+                      <div className="text-white font-semibold text-sm sm:text-base">
+                        {playerOfTheWeek?.foot}
+                      </div>
                     </div>
                   </div>
 
@@ -498,25 +445,27 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* CTA SECTION */}
-        <section
-          className="py-16 bg-accent-red/50 relative max-w-7xl mx-auto"
-          data-aos="zoom-in-up"
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-accent-red/80 to-accent-red/40 z-0" />
-          <div className="relative max-w-7xl mx-auto px-4 z-10 text-center text-white">
-            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold mb-4">
-              {dict.homepage.cta.title}
+
+        <footer className="bg-gray-900 text-white py-20 text-center">
+          <div className="max-w-3xl mx-auto" data-aos="fade-up">
+            <h2 className="text-3xl font-bold mb-4">
+              {/* Get started with <span className="text-red-500">Your career</span> today */}
+              <span
+                dangerouslySetInnerHTML={{ __html: dict.homepage.cta.title }}
+              />
             </h2>
-            <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
+            <p className="text-gray-400 mb-8">
+              {/* Try the Free plan or upgrade anytime. No credit card required to begin.*/}
               {dict.homepage.cta.subtitle}
             </p>
-            <Link href={`/${lang}/contact`}>
-              <span className="bg-white text-accent-red px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition">
-                {dict.homepage.cta.getInTouch}
-              </span>
+            <Link
+              href={`/${lang}/pricing`}
+              className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl text-lg"
+            >
+              {dict.homepage.cta.getInTouch}
             </Link>
           </div>
-        </section>
+        </footer>
       </div>
     </div>
   );
