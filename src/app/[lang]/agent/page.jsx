@@ -52,7 +52,7 @@ const AboutAgent = async ({ params }) => {
                     <div className="flex items-center justify-center gap-3 mb-2">
                       <i className="fa-solid fa-certificate text-accent-green text-xl" />
                       <span className="font-bold text-primary-text">
-                        {agentInfo?.credentials || dict.agentPage.hero.license.title}
+                        {dict.agentPage.hero.license.title || agentInfo?.credentials}
                       </span>
                     </div>
                     <p className="text-sm text-primary-muted">

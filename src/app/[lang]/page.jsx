@@ -194,7 +194,7 @@ export default async function HomePage({ params }) {
 
       <div className="w-full">
         {/* WHY FOOTBALLBANK */}
-        <section className="pt-16 bg-[#F9FAFB] ">
+        <section className="py-16 bg-[#F9FAFB] ">
           <div
             className="max-w-7xl mx-auto text-center px-4"
             data-aos="fade-up"
@@ -242,13 +242,24 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* FEATURED PLAYERS */}
-        <section className=" py-16 relative overflow-hidden" data-aos="fade-up">
-          <div className="mb-8 text-center w-full">
-            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold text-[#111827] mb-2">
+        <section 
+          className="py-16 relative overflow-hidden " 
+          style={{
+            backgroundImage: 'url(/5618044.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+          data-aos="fade-up"
+        >
+          {/* Background overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/30"></div>
+          <div className="mb-8 text-center w-full relative z-10">
+            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold text-white mb-2">
               {dict.homepage.featuredPlayers.title}
             </h2>
             <div className="w-24 h-1 bg-accent-red/80 mx-auto mb-4" />
-            <p className="text-slate-400 text-lg lg:text-xl max-w-2xl mx-auto">
+            <p className="text-white/90 text-lg lg:text-xl max-w-2xl mx-auto">
               Discover exceptional talent from around the world
             </p>
           </div>

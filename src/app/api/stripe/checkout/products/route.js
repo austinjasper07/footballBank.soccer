@@ -35,6 +35,10 @@ export async function POST(req) {
           product_data: {
             name: product.name,
             images: product.image ? [product.image] : [],
+            metadata: {
+              productId: product.id, // Store our database product ID
+              variationId: product.variationId || null, // Store variation ID if applicable
+            },
           },
           unit_amount: Math.round(product.amount * 100), // Stripe uses cents
         },

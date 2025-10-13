@@ -85,14 +85,24 @@ export default function PlayerPortfolioPage() {
 
   return (
     <>
-      <main className="relative z-10 min-h-screen py-8">
+      <main className="relative z-10 min-h-screen py-8" 
+      style={{
+            backgroundImage: 'url(/2.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }
+        }
+        >
+
+<div className="absolute inset-0 bg-black/30"></div>
         {/* Background Carousel - Covers entire main content area */}
-        {playerImages.length > 0 && (
+        {/* {playerImages.length > 0 && (
           <div className="absolute inset-0 z-0 w-screen left-1/2 transform -translate-x-1/2">
             <PlayerCarousel images={playerImages} interval={6000} />
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
-        )}
+        )} */}
         <div className="w-full max-w-7xl mx-auto px-2 sm:px-4">
           {/* Page title */}
           <section className="py-8 text-center">
@@ -184,7 +194,7 @@ export default function PlayerPortfolioPage() {
           
 
           {/* Main content */}
-          <section className="py-8 sm:py-16 bg-white/5 backdrop-blur-md rounded-lg px-3 sm:px-6">
+          <section className="py-8 sm:py-16 bg-white/5 rounded-lg px-3 sm:px-6">
             <div className="grid lg:grid-cols-[3fr_1fr] gap-4 lg:gap-8">
               {loading ? (
                 <div className="text-center text-primary-muted">
@@ -264,7 +274,7 @@ export default function PlayerPortfolioPage() {
                               {player.description?.slice(0, 120)}...
                             </p>
                             
-                            <button className="group/btn inline-flex items-center w-full justify-center bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 px-4 rounded-xl font-semibold hover:from-red-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 text-sm lg:text-base shadow-lg">
+                            <button className="group/btn inline-flex items-center w-full justify-center bg-accent-red/80 text-white py-3 px-4 rounded-xl font-semibold hover:red-600 transition-all duration-300 transform hover:scale-105 text-sm lg:text-base shadow-lg">
                               View Profile
                               <svg className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -297,7 +307,7 @@ export default function PlayerPortfolioPage() {
                             isActive={currentPage === num}
                             className={`${
                               currentPage === num
-                                ? "bg-gradient-to-r from-red-500 to-pink-500 text-white border-red-500 shadow-lg"
+                                ? "bg-accent-red text-white border-red-500 shadow-lg"
                                 : "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:text-white"
                             } transition-all duration-300 font-semibold`}
                             onClick={(e) => {

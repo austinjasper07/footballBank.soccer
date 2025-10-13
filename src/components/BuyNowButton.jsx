@@ -32,11 +32,13 @@ export default function BuyNowButton({ cartItems, selectedAddressId }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           products: cartItems.map((item) => ({
+            id: item.id, // Include the database product ID
             name: item.name,
             amount: item.price,
             quantity: item.quantity,
             image: item.image,
             currency: "usd", // Using USD currency
+            variationId: item.variation?.id, // Include variation ID if applicable
           })),
           // Include tax and shipping information
           tax: tax,

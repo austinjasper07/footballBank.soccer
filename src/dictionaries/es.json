@@ -36,7 +36,7 @@
       "title": "Representando talentos futbolísticos globales con visión, integridad y experiencia en desarrollo.",
       "description": "Ayodeji es un agente licenciado por FIFA con base en Estados Unidos en FootballBank.soccer, una organización internacional dedicada a descubrir, desarrollar y representar jugadores talentosos en todo el mundo.",
       "license": {
-        "title": "Licenciado FIFA",
+        "title": "Agente Licenciado FIFA",
         "id": "ID de Licencia: 202309-4469"
       },
       "stats": {
@@ -132,9 +132,9 @@
       "starOnTheRise": "Estrella en ascenso"
     },
     "whyFootballBank": {
-      "title": "¿Por qué FootballBank?",
+      "title": "¿Por qué FootballBank.soccer?",
       "fifaCertified": {
-        "title": "Agente Certificado FIFA",
+        "title": "Agente Licenciado FIFA",
         "description": "Representación profesional licenciada que garantiza el cumplimiento de las regulaciones futbolísticas internacionales."
       },
       "globalNetwork": {

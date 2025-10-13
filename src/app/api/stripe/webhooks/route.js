@@ -120,7 +120,9 @@ export async function POST(req) {
             const orderItems = lineItems.data.map(item => ({
               name: item.description || item.price.product.name,
               quantity: item.quantity,
-              price: item.price.unit_amount / 100
+              price: item.price.unit_amount / 100,
+              productId: item.price.product.metadata?.productId, // Extract our database product ID
+              variationId: item.price.product.metadata?.variationId // Extract variation ID if applicable
             }));
 
             const totalAmount = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -225,6 +227,59 @@ export async function POST(req) {
               console.error(`❌ Error sending admin notification email:`, adminEmailError);
             }
           });
+
+          // Update product stock after successful payment (outside email section)
+          if (session.payment_status === "paid") {
+            try {
+              console.log(`📦 Updating stock for ${orderItems.length} items`);
+              console.log(`📦 Order items with IDs:`, orderItems.map(item => ({ 
+                name: item.name, 
+                productId: item.productId, 
+                variationId: item.variationId, 
+                quantity: item.quantity 
+              })));
+              
+              for (const item of orderItems) {
+                if (!item.productId) {
+                  console.log(`⚠️ Skipping item ${item.name} - no productId found`);
+                  continue;
+                }
+
+                const product = await Product.findById(item.productId);
+                if (!product) {
+                  console.log(`⚠️ Product not found for ID: ${item.productId}`);
+                  continue;
+                }
+
+                console.log(`📦 Found product: ${product.name} (ID: ${product._id})`);
+
+                if (item.variationId) {
+                  // Update variation stock
+                  const variation = product.variations.find(v => v._id.toString() === item.variationId);
+                  if (variation) {
+                    const oldStock = variation.stock;
+                    const newStock = Math.max(0, oldStock - item.quantity);
+                    variation.stock = newStock;
+                    console.log(`📦 Updated variation stock: ${item.variationId} from ${oldStock} to ${newStock}`);
+                  } else {
+                    console.log(`⚠️ Variation not found: ${item.variationId}`);
+                  }
+                } else {
+                  // Update main product stock
+                  const oldStock = product.stock;
+                  const newStock = Math.max(0, oldStock - item.quantity);
+                  product.stock = newStock;
+                  console.log(`📦 Updated product stock: ${product._id} from ${oldStock} to ${newStock}`);
+                }
+                
+                await product.save();
+                console.log(`✅ Product ${product.name} stock updated successfully`);
+              }
+              console.log(`✅ Stock updated successfully for order ${order._id}`);
+            } catch (stockError) {
+              console.error(`❌ Error updating stock:`, stockError);
+            }
+          }
         }
         break;
       }

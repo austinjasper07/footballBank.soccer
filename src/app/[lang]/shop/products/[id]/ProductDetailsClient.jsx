@@ -160,11 +160,6 @@ export default function ProductDetailsClient({ product, lang, dict }) {
 
     // Check stock availability
     if (!canAddToCart(product.id, currentVariation, quantity, availableStock)) {
-      toast({
-        title: "Insufficient Stock",
-        description: `Only ${availableStock} items available in stock`,
-        variant: "destructive",
-      });
       return;
     }
 
@@ -200,11 +195,6 @@ export default function ProductDetailsClient({ product, lang, dict }) {
     if (newQuantity <= 0) {
       setCartMessage("Item removed from Cart");
       setTimeout(() => setCartMessage(""), 3000);
-      toast({
-        title: "Item Removed",
-        description: "Product removed from cart",
-        variant: "default",
-      });
     } else {
       const currentQty = cartQuantity;
       if (newQuantity > currentQty) {
@@ -213,12 +203,6 @@ export default function ProductDetailsClient({ product, lang, dict }) {
         setCartMessage("Item quantity decreased by 1");
       }
       setTimeout(() => setCartMessage(""), 3000);
-      
-      toast({
-        title: "Quantity Updated",
-        description: `Quantity updated to ${newQuantity}`,
-        variant: "default",
-      });
     }
 
     updateCartItemQuantity(product.id, currentVariation, newQuantity, availableStock);
@@ -355,6 +339,23 @@ export default function ProductDetailsClient({ product, lang, dict }) {
                   ) : (
                     <span className="text-accent-red text-3xl font-bold">
                       ₦{finalPrice}
+                    </span>
+                  )}
+                </div>
+                
+                {/* Stock indicator */}
+                <div className="mt-2">
+                  {getCurrentStock() === 0 ? (
+                    <span className="text-red-600 font-semibold text-sm">
+                      ⚠️ Out of Stock
+                    </span>
+                  ) : getCurrentStock() <= 5 ? (
+                    <span className="text-orange-600 font-semibold text-sm">
+                      ⚠️ Only {getCurrentStock()} left in stock
+                    </span>
+                  ) : (
+                    <span className="text-green-600 font-semibold text-sm">
+                      ✓ {getCurrentStock()} in stock
                     </span>
                   )}
                 </div>
@@ -549,9 +550,13 @@ export default function ProductDetailsClient({ product, lang, dict }) {
                     <button
                       onClick={handleAddToCart}
                       disabled={getCurrentStock() === 0}
-                      className="p-4 bg-accent-red text-white rounded-lg font-semibold text-base hover:bg-red-700 transition disabled:opacity-50"
+                      className={`p-4 rounded-lg font-semibold text-base transition ${
+                        getCurrentStock() === 0
+                          ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                          : 'bg-accent-red text-white hover:bg-red-700'
+                      }`}
                     >
-                      Add to cart
+                      {getCurrentStock() === 0 ? 'Out of Stock' : 'Add to cart'}
                     </button>
                   )}
 
@@ -559,9 +564,13 @@ export default function ProductDetailsClient({ product, lang, dict }) {
                   <button
                     onClick={handleBuyNow}
                     disabled={getCurrentStock() === 0}
-                    className="p-4 border-2 border-accent-red text-accent-red rounded-lg font-semibold text-lg hover:bg-accent-red hover:text-white transition disabled:opacity-50"
+                    className={`p-4 rounded-lg font-semibold text-lg transition ${
+                      getCurrentStock() === 0
+                        ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                        : 'border-2 border-accent-red text-accent-red hover:bg-accent-red hover:text-white'
+                    }`}
                   >
-                    Buy Now
+                    {getCurrentStock() === 0 ? 'Out of Stock' : 'Buy Now'}
                   </button>
                 </div>
 
