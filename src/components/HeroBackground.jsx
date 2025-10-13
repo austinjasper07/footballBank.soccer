@@ -5,7 +5,8 @@ import Image from "next/image";
 
 export default function HeroBackground() {
   const [index, setIndex] = useState(0);
-  const images = ["/heroPhotos/WhatsApp Image 2025-10-07 at 23.49.32_5d88ced2.jpg", "/heroPhotos/WhatsApp Image 2025-10-07 at 23.59.12_d7afb017.jpg"];
+  // const images = ["/heroPhotos/WhatsApp Image 2025-10-07 at 23.49.32_5d88ced2.jpg", "/heroPhotos/WhatsApp Image 2025-10-07 at 23.59.12_d7afb017.jpg"];
+  const images = ["/ball-bg.jpg"];
 
   useEffect(() => {
     const timer = setInterval(() => {

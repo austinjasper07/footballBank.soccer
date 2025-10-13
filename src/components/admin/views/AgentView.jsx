@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { uploadFileWithProgress } from "@/lib/uploadWithProgress";
+import { UpdateConfirmationModal } from "@/components/admin/dialogs/UpdateConfirmationModal";
 import Image from "next/image";
 
 export default function AgentView() {
@@ -16,6 +17,8 @@ export default function AgentView() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [formData, setFormData] = useState(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -96,10 +99,18 @@ export default function AgentView() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData(e.target);
+    setFormData(formData);
+    setUpdateDialogOpen(true);
+  };
+
+  const confirmUpdate = async () => {
+    if (!formData) return;
+    
     setSaving(true);
+    setUpdateDialogOpen(false);
 
     try {
-      const formData = new FormData(e.target);
       const response = await fetch('/api/admin/agent', {
         method: 'PUT',
         body: formData,
@@ -124,6 +135,7 @@ export default function AgentView() {
       });
     } finally {
       setSaving(false);
+      setFormData(null);
     }
   };
 
@@ -260,6 +272,16 @@ export default function AgentView() {
           </form>
         </CardContent>
       </Card>
+
+      <UpdateConfirmationModal
+        open={updateDialogOpen}
+        onOpenChange={setUpdateDialogOpen}
+        onConfirm={confirmUpdate}
+        title="Update Agent Information"
+        description="Please confirm that you want to update the agent information."
+        itemName={agentInfo?.name || "agent information"}
+        isLoading={saving}
+      />
     </div>
   );
 }

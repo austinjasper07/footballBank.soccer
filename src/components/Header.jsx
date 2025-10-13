@@ -77,10 +77,10 @@ export default function Header({ lang = 'en' }) {
                 height={60}
                   className="object-contain h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16"
               />
-                <span className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800">
+                <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800">
                 FootballBank
                 <span className="text-base md:text-lg text-accent-red">.soccer</span>
-              </span>
+              </h1>
             </div>
           </Link>
           </div>

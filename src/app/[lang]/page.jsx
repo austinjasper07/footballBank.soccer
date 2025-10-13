@@ -344,7 +344,7 @@ export default async function HomePage({ params }) {
 
                   {/* Card Content */}
                   <div className="p-4 lg:p-6 space-y-4">
-                    <p className="text-slate-950 text-sm leading-relaxed line-clamp-3">
+                    <p className="text-white text-sm leading-relaxed line-clamp-3">
                       {player.description?.slice(0, 120)}...
                     </p>
 
