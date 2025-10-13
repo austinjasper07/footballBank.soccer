@@ -64,7 +64,13 @@ export default async function BlogArticlePage({ params }) {
   }
 
   // Fetch additional data for sidebar
-  const allPosts = await Post.find({}).sort({ createdAt: -1 }).lean();
+  let allPosts = [];
+  try {
+    allPosts = await Post.find({}).sort({ createdAt: -1 }).lean();
+  } catch (error) {
+    console.error('Error fetching all posts:', error);
+    allPosts = [];
+  }
   const recentPosts = allPosts.slice(0, 4).map((p) => ({
     id: p._id.toString(),
     title: p.title,
@@ -166,7 +172,7 @@ export default async function BlogArticlePage({ params }) {
               </div>
 
               {/* Article Content */}
-              <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+              <div className="prose prose-lg prose-gray max-w-none text-gray-700 leading-relaxed prose-headings:text-gray-900 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-code:text-gray-800 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-900 prose-pre:text-gray-100">
                 <article dangerouslySetInnerHTML={{ __html: post.content }} />
               </div>
 

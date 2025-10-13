@@ -491,7 +491,7 @@ export default async function HomePage({ params }) {
                 >
                   <div className="relative overflow-hidden">
                     <Image
-                      src={post.imageUrl && post.imageUrl.length > 0 && post.imageUrl[0] ? post.imageUrl[0] : "/logo.jpg"}
+                      src={post.imageUrl && post.imageUrl.length > 0 && post.imageUrl[0] ? post.imageUrl[0] : "/logo/logo-1.png"}
                       alt={post.title}
                       width={400}
                       height={250}

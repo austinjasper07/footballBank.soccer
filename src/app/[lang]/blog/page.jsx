@@ -22,7 +22,15 @@ export const metadata = generateSEOMetadata({
 export default async function BlogPage() {
   'use server'
 
-  const posts = await Post.find({}).sort({ createdAt: -1 }).lean()
+  let posts = [];
+  try {
+    posts = await Post.find({}).sort({ createdAt: -1 }).lean();
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    // Return empty array if database is not available
+    posts = [];
+  }
+  
   const formattedPosts = posts.map((post) => ({
     id: post._id.toString(),
     title: post.title,
@@ -39,7 +47,13 @@ export default async function BlogPage() {
     updatedAt: post.updatedAt.toISOString(),
   }))
 
-  const featuredPosts = await Post.find({ featured: true }).sort({ createdAt: -1 }).lean()
+  let featuredPosts = [];
+  try {
+    featuredPosts = await Post.find({ featured: true }).sort({ createdAt: -1 }).lean();
+  } catch (error) {
+    console.error('Error fetching featured posts:', error);
+    featuredPosts = [];
+  }
   const formattedFeaturedPosts = featuredPosts.map((post) => ({
     id: post._id.toString(),
     title: post.title,

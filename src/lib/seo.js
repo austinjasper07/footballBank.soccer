@@ -46,6 +46,7 @@ export function generateMetadata({
   const allKeywords = [...siteConfig.keywords, ...keywords].join(", ");
 
   const metadata = {
+    metadataBase: new URL(siteConfig.url),
     title: fullTitle,
     description: fullDescription,
     keywords: allKeywords,

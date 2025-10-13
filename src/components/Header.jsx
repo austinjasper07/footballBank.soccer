@@ -98,7 +98,7 @@ export default function Header({ lang = 'en' }) {
                 <Link
                   key={path}
                   href={path}
-                  className={`transition-colors text-sm xl:text-base ${
+                  className={`transition-colors text-sm xl:text-lg ${
                     isActive
                       ? "text-accent-red font-semibold"
                       : "text-primary-text hover:text-accent-red"

@@ -55,7 +55,7 @@ export async function POST(req) {
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${baseUrl}/en/payment-successful?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${baseUrl}/en/cancel`,
+      cancel_url: `${baseUrl}/en/payment-cancel`,
       billing_address_collection: 'auto',
       client_reference_id: `subscription_${plan}_${duration}_${Date.now()}`,
       metadata: {
