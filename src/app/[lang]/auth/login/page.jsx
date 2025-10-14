@@ -55,14 +55,14 @@ export default function LoginPage({ params }) {
             const userRole = data.user.role;
             let redirectPath;
             
-            // if (userRole === 'admin') {
-            //   redirectPath = `/${lang}/admin`;
-            // } else if (userRole === 'editor') {
-            //   redirectPath = `/${lang}/editor`;
-            // } else {
+            if (userRole === 'admin') {
+              redirectPath = `/${lang}/admin`;
+            } else if (userRole === 'editor') {
+              redirectPath = `/${lang}/editor`;
+            } else {
               // Ensure redirect URL has proper language prefix
               redirectPath = redirectUrl.startsWith('/') ? redirectUrl : `/${lang}${redirectUrl}`;
-            // }
+            }
             
             console.log('Redirecting to:', redirectPath);
             router.replace(redirectPath); // Use replace instead of push to avoid back button issues
