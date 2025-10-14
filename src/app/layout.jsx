@@ -1,59 +1,72 @@
 // app/layout.tsx
 import "./globals.css";
-import { DM_Serif_Text, Funnel_Display } from "next/font/google";
+import { Oswald } from "next/font/google";
 import Script from "next/script";
-import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
-import { AuthProvider } from "@/context/AuthContext";
-import { KindeClientProvider } from "./KindeClientProvider";
+import { NewAuthProvider } from "@/context/NewAuthContext";
 import { Analytics } from "@vercel/analytics/next";
 import { CartProvider } from "@/context/CartContext";
 import AOSProvider from "@/components/AOSProvider";
+import { generateMetadata as generateSEOMetadata, generateStructuredData } from "@/lib/seo";
 
-const funnelDisplay = Funnel_Display({
+const oswald = Oswald({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-funnel-display",
+  weight: ["200", "300", "400", "500", "600", "700"],
+  variable: "--font-oswald",
   display: "swap",
 });
 
-const dmSerifText = DM_Serif_Text({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-dm-serif-text",
-  display: "swap",
+export const metadata = generateSEOMetadata({
+  title: "Global Football Talent Platform",
+  description: "Discover and showcase football talent worldwide. Connect players with scouts, clubs, and opportunities through our comprehensive talent banking platform.",
+  keywords: ["football talent", "soccer players", "football scouts", "player profiles", "football recruitment"],
+  url: "/",
 });
-
-export const metadata = {
-  title: "FootballBank.soccer",
-  description: "Empowering football talent worldwide",
-};
 
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${funnelDisplay.variable} ${dmSerifText.variable}`}
+      className={`${oswald.variable}`}
     >
       <head>
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
+        {/* Favicon and Icons */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        
+        {/* DNS Prefetch for Performance */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
+        
+        {/* Preconnect for Critical Resources */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Google Fonts - DM Serif Text */}
+        <link 
+          href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital,wght@0,400;1,400&display=swap" 
+          rel="stylesheet" 
         />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
+        
+        {/* Structured Data - Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateStructuredData("organization"))
+          }}
         />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
+        
+        {/* Structured Data - Website */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateStructuredData("website"))
+          }}
         />
-        {/* <link rel="manifest" href="/site.webmanifest" /> */}
+        
+        {/* Font Awesome Configuration */}
         <script
           dangerouslySetInnerHTML={{
             __html: `window.FontAwesomeConfig = { autoReplaceSvg: 'nest' };`,
@@ -66,16 +79,14 @@ export default function RootLayout({ children }) {
           strategy="afterInteractive"
         />
       </head>
-      <body className="font-body bg-primary-bg text-primary-text">
+      <body className="font-body bg-gray-50 text-primary-text">
         <Analytics />
         <AOSProvider>
-          <KindeClientProvider>
-            <AuthProvider>
-              <CartProvider>
-                <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
-              </CartProvider>
-            </AuthProvider>
-          </KindeClientProvider>
+          <NewAuthProvider>
+            <CartProvider>
+              {children}
+            </CartProvider>
+          </NewAuthProvider>
         </AOSProvider>
       </body>
     </html>

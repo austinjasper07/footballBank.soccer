@@ -18,9 +18,11 @@ import {
 } from '@/components/ui/pagination';
 
 import { ProductDialog } from '@/components/admin/dialogs/ProductDialog';
+import { DeleteConfirmationModal } from '@/components/admin/dialogs/DeleteConfirmationModal';
 import { SearchBar } from '../SearchBar';
 import { getAllProducts } from '@/actions/publicActions';
 import { deleteProduct, updateProduct } from '@/actions/adminActions';
+import LoadingSplash from '@/components/ui/loading-splash';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -28,17 +30,24 @@ export default function ProductsView() {
   const [searchQuery, setSearchQuery] = useState('');
   const { toast } = useToast();
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [productDialogOpen, setProductDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setIsLoading(true);
         const response = await getAllProducts();
         setProducts(response);
       } catch (error) {
         console.error('Error fetching products:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchProducts();
@@ -67,20 +76,33 @@ export default function ProductsView() {
   };
 
   const handleDeleteProduct = async (id) => {
+    const product = products.find(p => p.id === id);
+    setProductToDelete(product);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteProduct = async () => {
+    if (!productToDelete) return;
+    
     try {
-      await deleteProduct(id);
+      setIsDeleting(true);
+      await deleteProduct(productToDelete.id);
       toast({
         title: 'Product Deleted',
         description: 'The product has been removed successfully.',
       });
       const updated = await getAllProducts();
       setProducts(updated);
+      setDeleteDialogOpen(false);
+      setProductToDelete(null);
     } catch {
       toast({
         title: 'Error',
         description: 'Failed to delete product.',
         variant: 'destructive',
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -120,6 +142,10 @@ export default function ProductsView() {
   };
 
   const { total, inStock, lowStock, outOfStock } = countStock();
+
+  if (isLoading) {
+    return <LoadingSplash message="Loading products..." />;
+  }
 
   return (
     <div className="space-y-6">
@@ -186,10 +212,15 @@ export default function ProductsView() {
           />
         </div>
 
-        <Button onClick={() => setProductDialogOpen(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Product
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => window.open('/shop/products', '_blank')}>
+            View Shop
+          </Button>
+          <Button onClick={() => setProductDialogOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Product
+          </Button>
+        </div>
       </div>
 
       {/* Products Table */}
@@ -311,6 +342,16 @@ export default function ProductsView() {
         }}
         product={editingProduct || undefined}
         onSave={handleAddOrUpdateProduct}
+      />
+
+      <DeleteConfirmationModal
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDeleteProduct}
+        title="Delete Product"
+        description="This will permanently remove the product from the system."
+        itemName={productToDelete ? productToDelete.name : ''}
+        isLoading={isDeleting}
       />
     </div>
   );

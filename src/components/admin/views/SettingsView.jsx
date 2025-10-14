@@ -101,7 +101,7 @@ export function SettingsView() {
           </div>
           <div>
             <Label htmlFor="from-email">From Email</Label>
-            <Input id="from-email" defaultValue="admin@footballbank.soccer" />
+            <Input id="from-email" defaultValue="contact@footballbank.soccer" />
           </div>
         </CardContent>
       </Card>

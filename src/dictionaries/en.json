@@ -1,0 +1,488 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "close": "Close",
+    "open": "Open"
+  },
+  "amazonAds": {
+    "title": "Amazon Deals",
+    "subtitle": "Handpicked products for football enthusiasts",
+    "ctaTitle": "More Deals Available",
+    "ctaSubtitle": "Discover exclusive offers on Amazon",
+    "ctaButton": "Shop Now",
+    "disclosureLabel": "Affiliate Disclosure:",
+    "disclosureText": "We earn from qualifying purchases."
+  },
+  "agentPage": {
+    "metadata": {
+      "title": "About Our Agent | FootballBank.soccer",
+      "description": "Representing football talent globally with integrity, insight, and strategic vision."
+    },
+    "hero": {
+      "name": "Ayodeji Fatade",
+      "title": "Representing global football talents with vision, integrity, and developmental expertise.",
+      "description": "Ayodeji is a United State based FIFA licenced agent at FootballBank.soccer, an international organization dedicated to discovering, developing and representing talented players across the globe.",
+      "license": {
+        "title": "FIFA Licenced Agent",
+        "id": "License ID: 202309-4469"
+      },
+      "stats": {
+        "experience": {
+          "title": "15+ Years Experience",
+          "subtitle": "In football industry"
+        },
+        "certification": {
+          "title": "PFSA Certified",
+          "subtitle": "Scouting qualification"
+        },
+        "network": {
+          "title": "Global Network",
+          "subtitle": "Africa, Europe, USA, Asia, South America"
+        },
+        "focus": {
+          "title": "Youth Focus",
+          "subtitle": "Player development"
+        }
+      },
+      "bio": "With a Certificate in Football Management (UK), he's an experienced agent focused on career growth, youth transfers, and transparent representation. He partners with clubs and academies across Africa, Europe, Asia, USA and South America to unlock global opportunities."
+    },
+    "coreValues": {
+      "title": "Our Core Values",
+      "subtitle": "The principles that guide our approach to representing football talent worldwide",
+      "values": [
+        {
+          "title": "Integrity",
+          "icon": "fa-handshake",
+          "color": "red",
+          "desc": "We uphold the highest standards of transparency and ethics in every representation, negotiation, and transfer.",
+          "features": ["Transparent Communication", "Ethical Practices", "Honest Representation"]
+        },
+        {
+          "title": "Opportunity",
+          "icon": "fa-door-open",
+          "color": "green",
+          "desc": "We unlock doors to international clubs, academies, and trials—connecting talent to the world stage.",
+          "features": ["Global Network Access", "International Trials", "Club Connections"]
+        },
+        {
+          "title": "Development",
+          "icon": "fa-chart-line",
+          "color": "amber",
+          "desc": "From grassroots to global, we prioritize player growth with coaching, mentorship, and career planning.",
+          "features": ["Career Planning", "Skill Development", "Mentorship Programs"]
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Take the Next Step?",
+      "subtitle": "Whether you're a rising star or a seasoned player, FootballBank is here to represent you with purpose, precision, and global reach.",
+      "consultation": {
+        "title": "Free Consultation",
+        "subtitle": "30-minute strategy session",
+        "description": "Discuss your career goals and get personalized advice on your football journey."
+      },
+      "profile": {
+        "title": "Profile Submission",
+        "subtitle": "Join our talent database",
+        "description": "Submit your profile to be considered for opportunities with our partner clubs."
+      },
+      "buttons": {
+        "consultation": "Schedule Consultation",
+        "profile": "Submit Your Profile"
+      },
+      "trust": "Trusted by players worldwide • FIFA Licensed • 25+ Years Experience"
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "players": "Players",
+    "agent": "Agent",
+    "pricing": "Pricing",
+    "blog": "Blog",
+    "shop": "Shop",
+    "contact": "Contact",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "submitProfile": "Submit Profile"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Where football's future is banked",
+      "titleHighlight": "future",
+      "subtitle": "Connecting exceptional players with opportunities. Showcase your skills, get discovered, and take your football career to the next level.",
+      "submitProfile": "Submit Your Profile",
+      "browsePlayers": "Browse Players",
+      "starOnTheRise": "Star on the rise"
+    },
+    "whyFootballBank": {
+      "title": "Why FootballBank.soccer?",
+      "fifaCertified": {
+        "title": "FIFA Licenced Agent",
+        "description": "Licensed professional representation ensuring compliance with international football regulations."
+      },
+      "globalNetwork": {
+        "title": "Global Club Network",
+        "description": "Extensive connections with top clubs across Europe, Asia, and the Americas."
+      },
+      "rapidVisibility": {
+        "title": "Rapid Profile Visibility",
+        "description": "Fast-track your talent exposure to scouts and clubs worldwide within 48 hours."
+      }
+    },
+    "featuredPlayers": {
+      "title": "Featured Players",
+      "viewAll": "View All",
+      "viewProfile": "View Profile"
+    },
+    "blog": {
+      "title": "From Our Blog",
+      "readMore": "Read More",
+      "visitBlog": "Visit Blog"
+    },
+    "cta": {
+      "title": "Club or Brand Looking to <span class=\"text-accent-red\">Collaborate</span>?",
+      "subtitle": "We connect talent with trusted organizations.",
+      "getInTouch": "Get in Touch"
+    }
+  },
+  "playerProfile": {
+    "position": "Position",
+    "age": "Age",
+    "foot": "Foot",
+    "height": "Height",
+    "weight": "Weight",
+    "country": "Country",
+    "email": "Email",
+    "phone": "Phone",
+    "description": "Description",
+    "stats": "Stats",
+    "clubHistory": "Club History",
+    "contractStatus": "Contract Status",
+    "availableFrom": "Available From",
+    "preferredLeagues": "Preferred Leagues",
+    "salaryExpectation": "Salary Expectation"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember Me",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "createAccount": "Create Account",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithGithub": "Sign in with GitHub",
+    "address": "Address",
+    "street": "Street Address",
+    "city": "City",
+    "state": "State/Province",
+    "postalCode": "Postal Code",
+    "country": "Country",
+    "shippingAddress": "Shipping Address",
+    "sameAsAddress": "Same as address",
+    "acceptTerms": "I accept the Terms of Service and Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy"
+  },
+  "footer": {
+    "description": "Empowering football talent worldwide through visibility and opportunity.",
+    "quickLinks": "Quick Links",
+    "resources": "Resources",
+    "contact": "Contact",
+    "home": "Home",
+    "players": "Players",
+    "submitProfile": "Submit Profile",
+    "aboutUs": "About Us",
+    "blog": "Blog",
+    "careerTips": "Career Tips",
+    "shop": "Shop",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies",
+    "allRightsReserved": "All rights reserved.",
+    "poweredBy": "powered by"
+  },
+  "about": {
+    "title": "About FootballBank",
+    "subtitle": "Empowering Football Dreams Worldwide",
+    "description": "FootballBank is the premier platform connecting talented football players with scouts, clubs, and opportunities around the globe.",
+    "mission": "Our Mission",
+    "missionText": "To democratize football talent discovery and provide equal opportunities for players worldwide to showcase their skills and achieve their dreams.",
+    "vision": "Our Vision",
+    "visionText": "A world where every talented football player has the opportunity to be discovered and reach their full potential, regardless of their background or location.",
+    "values": "Our Values",
+    "valuesItems": {
+      "excellence": "Excellence in everything we do",
+      "integrity": "Integrity and transparency in all our dealings",
+      "opportunity": "Equal opportunity for all talented players",
+      "innovation": "Innovation in talent discovery and development"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with our team",
+    "name": "Full Name",
+    "email": "Email Address",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send Message",
+    "sending": "Sending...",
+    "success": "Message sent successfully!",
+    "error": "Failed to send message. Please try again.",
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "contactInfo": "Contact Information",
+    "address": "Address",
+    "phone": "Phone",
+    "companyName": "Company Name",
+    "officialName": "Official Name",
+    "ourInboxOpen": "Our inbox is always open",
+    "mailingAddress": "Mailing Address",
+    "globalBranches": "Global Branches",
+    "weOperateWorldwide": "We operate worldwide",
+    "licensing": "Licensing",
+    "accreditedVerified": "Accredited & Verified",
+    "followJourney": "Follow Our Journey",
+    "connectSocialMedia": "Connect with us on social media to stay up to date with global football talent and opportunities.",
+    "selectSubject": "Select a subject",
+    "playerRepresentation": "Player Representation",
+    "trialRequest": "Trial Request",
+    "careerConsultation": "Career Consultation",
+    "businessInquiry": "Business Inquiry",
+    "scoutingInquiry": "Scouting Inquiry",
+    "transferInquiry": "Transfer Inquiry",
+    "partnershipOpportunity": "Partnership Opportunity",
+    "generalQuestion": "General Question",
+    "namePlaceholder": "Your full name",
+    "emailPlaceholder": "your@email.com",
+    "messagePlaceholder": "Tell us about your goals, experience, and how we can help you...",
+    "businessHours": "Business Hours",
+    "mondayFriday": "Monday - Friday: 9:00 AM - 6:00 PM",
+    "weekend": "Weekend: 10:00 AM - 4:00 PM"
+  },
+  "players": {
+    "title": "Talent Showcase"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to common questions about FootballBank",
+    "searchPlaceholder": "Search FAQ...",
+    "noResults": "No results found for your search.",
+    "categories": {
+      "general": "General",
+      "players": "For Players",
+      "scouts": "For Scouts",
+      "billing": "Billing"
+    }
+  },
+  "blog": {
+    "title": "Football Blog",
+    "subtitle": "Latest news, tips, and insights from the world of football",
+    "readMore": "Read More",
+    "author": "Author",
+    "publishedOn": "Published on",
+    "categories": "Categories",
+    "tags": "Tags",
+    "relatedPosts": "Related Posts",
+    "searchPlaceholder": "Search articles...",
+    "noResults": "No articles found.",
+    "loadMore": "Load More Articles"
+  },
+  "shop": {
+    "title": "Football Shop",
+    "subtitle": "Premium football gear and merchandise",
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "price": "Price",
+    "size": "Size",
+    "color": "Color",
+    "quantity": "Quantity",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "cart": "Shopping Cart",
+    "checkout": "Checkout",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
+    "remove": "Remove",
+    "continue": "Continue Shopping",
+    "proceedToCheckout": "Proceed to Checkout"
+  },
+  "profile": {
+    "title": "My Profile",
+    "dashboard": "Dashboard",
+    "personalInfo": "Personal Information",
+    "orders": "My Orders",
+    "subscriptions": "My Subscriptions",
+    "settings": "Settings",
+    "editProfile": "Edit Profile",
+    "changePassword": "Change Password",
+    "notifications": "Notifications",
+    "privacy": "Privacy Settings",
+    "orderHistory": "Order History",
+    "orderNumber": "Order #",
+    "orderDate": "Order Date",
+    "orderStatus": "Status",
+    "orderTotal": "Total",
+    "viewDetails": "View Details"
+  },
+  "players": {
+    "title": "Talent Showcase",
+    "subtitle": "Discover talented football players from around the world",
+    "searchPlaceholder": "Search players...",
+    "filterBy": "Filter by",
+    "position": "Position",
+    "country": "Country",
+    "age": "Age",
+    "sortBy": "Sort by",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "alphabetical": "Alphabetical",
+    "noResults": "No players found matching your criteria.",
+    "loadMore": "Load More Players",
+    "viewProfile": "View Profile",
+    "featured": "Featured",
+    "playerOfTheWeek": "Player of the Week"
+  },
+  "subscriptions": {
+    "title": "Subscription Plans",
+    "subtitle": "Choose the perfect plan for your needs",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "save": "Save",
+    "mostPopular": "Most Popular",
+    "features": "Features",
+    "subscribe": "Subscribe Now",
+    "currentPlan": "Current Plan",
+    "upgrade": "Upgrade",
+    "downgrade": "Downgrade",
+    "cancel": "Cancel Subscription",
+    "billing": "Billing Information",
+    "nextBilling": "Next Billing Date",
+    "paymentMethod": "Payment Method"
+  },
+  "termsOfService": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: December 2024",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing or using FootballBank.soccer, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with these terms, you are prohibited from using this site. You confirm that you are at least 18 years of age, or have the consent of a legal guardian."
+      },
+      "useOfServices": {
+        "title": "2. Use of Services",
+        "content": "FootballBank.soccer provides digital tools for players, agents, and clubs to share and access football-related data. You agree to use these services only for lawful purposes and in compliance with all applicable laws. You must not interfere with the security, availability, or integrity of our platform."
+      },
+      "accountRegistration": {
+        "title": "3. Account Registration",
+        "content": "Some services require registration. You must provide accurate information and keep your login credentials confidential. You are responsible for any activity under your account. We reserve the right to suspend or terminate accounts that violate our terms."
+      },
+      "contentSubmissions": {
+        "title": "4. Content Submissions",
+        "content": "By uploading player profiles, videos, or other materials, you grant FootballBank.soccer a worldwide, non-exclusive, royalty-free license to use, display, and promote that content for the purpose of operating and improving our services. You confirm you own the rights or have permission to submit such content."
+      },
+      "intellectualProperty": {
+        "title": "5. Intellectual Property",
+        "content": "All site materials, including text, graphics, and trademarks, are the property of FootballBank.soccer or its licensors. You may not copy, modify, or distribute any part of the website without explicit written consent."
+      },
+      "limitationOfLiability": {
+        "title": "6. Limitation of Liability",
+        "content": "FootballBank.soccer and its affiliates are not liable for indirect, incidental, or consequential damages arising from your use of the site. All services are provided \"as is\" without warranties of any kind."
+      },
+      "termination": {
+        "title": "7. Termination",
+        "content": "We may terminate or suspend your access to our services at any time, with or without cause, with or without notice. Upon termination, your right to use the services will cease immediately."
+      },
+      "governingLaw": {
+        "title": "8. Governing Law",
+        "content": "These terms are governed by and construed in accordance with applicable laws. Any disputes arising from these terms will be resolved through appropriate legal channels."
+      },
+      "changes": {
+        "title": "9. Changes to Terms",
+        "content": "We reserve the right to modify these terms at any time. We will notify users of any material changes via email or through our website. Continued use of our services after changes constitutes acceptance of the new terms."
+      },
+      "contact": {
+        "title": "10. Contact Information",
+        "content": "If you have any questions about these Terms of Service, please contact us at contact@footballbank.soccer or through our contact form."
+      }
+    }
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: December 2024",
+    "sections": {
+      "informationWeCollect": {
+        "title": "1. Information We Collect",
+        "content": "We collect personal information such as your name, email address, and phone number when you register or interact with FootballBank.soccer. We may also collect player information like bios, videos, and statistics, as well as technical data such as your IP address, browser type, and usage behavior. Cookies and similar technologies are used to enhance site functionality and analyze user activity."
+      },
+      "howWeUseYourInformation": {
+        "title": "2. How We Use Your Information",
+        "content": "We use your data to operate, improve, and personalize our services. This includes managing user accounts, processing inquiries, enabling player profiles, and providing relevant updates or communications. Your data helps us deliver a more secure and optimized experience."
+      },
+      "sharingYourInformation": {
+        "title": "3. Sharing Your Information",
+        "content": "We never sell your data. We may share your information with trusted partners, football clubs, or agents—with your consent—or as required by law. All third-party partners are obligated to handle your data securely and in compliance with applicable regulations."
+      },
+      "dataSecurity": {
+        "title": "4. Data Security",
+        "content": "We use advanced encryption, secure servers, and regular audits to protect your personal data. While no system is entirely immune, we strive to maintain the highest security standards to prevent unauthorized access or misuse."
+      },
+      "cookiesAndTracking": {
+        "title": "5. Cookies and Tracking",
+        "content": "FootballBank.soccer uses cookies to ensure essential site functionality, analyze performance, and remember preferences. You can manage or disable cookies in your browser settings, but some parts of the site may not function properly without them."
+      },
+      "yourRightsAndChoices": {
+        "title": "6. Your Rights and Choices",
+        "content": "You have the right to access, correct, or delete your personal data. You can also withdraw consent or opt out of communications at any time by contacting us. We aim to respond to all data requests promptly and transparently."
+      },
+      "childrensPrivacy": {
+        "title": "7. Children's Privacy",
+        "content": "Our services are not directed to children under 13. We do not knowingly collect personal information from children under 13. If we become aware that we have collected personal information from a child under 13, we will take steps to delete such information."
+      },
+      "internationalTransfers": {
+        "title": "8. International Data Transfers",
+        "content": "Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your data during such transfers, in compliance with applicable data protection laws."
+      },
+      "changesToPolicy": {
+        "title": "9. Changes to This Policy",
+        "content": "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the \"Last updated\" date. Your continued use of our services after any changes constitutes acceptance of the updated policy."
+      },
+      "contactUs": {
+        "title": "10. Contact Us",
+        "content": "If you have any questions about this Privacy Policy, please contact us at contact@footballbank.soccer or through our contact form."
+      }
+    }
+  },
+  "seo": {
+    "defaultTitle": "Global Football Talent Platform",
+    "defaultDescription": "Discover and showcase football talent worldwide. Connect players with scouts, clubs, and opportunities through our comprehensive talent banking platform."
+  }
+}

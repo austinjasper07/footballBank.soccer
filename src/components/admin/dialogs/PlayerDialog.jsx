@@ -213,7 +213,7 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{player ? "Edit Player" : "Add Player"}</DialogTitle>

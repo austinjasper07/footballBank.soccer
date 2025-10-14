@@ -1,10 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Funnel+Display:wght@300;400;500;600;700&display=swap');
-
 @import 'tailwindcss';
+/* @import 'tailwindcss/typography';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap'); */
 @import "swiper/css";
 @import "swiper/css/navigation";
 @import "swiper/css/pagination";
 @import "swiper/css/autoplay";
+
+/* Accordion animations */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
 
 /* ==========================
    THEME VARIABLES
@@ -17,12 +37,12 @@
   --color-primary-text: #111827;
   --color-primary-muted: #6B7280;
 
-  /* Accent colors */
-  --color-accent-blue: #1F6FEB;
-  --color-accent-green: #22C55E;
-  --color-accent-amber: #FACC15;
-  --color-accent-red: red;
-  --accent: #FACC15;
+  /* Accent colors - Enhanced professional palette */
+  --color-accent-blue: #3B82F6;
+  --color-accent-green: #10B981;
+  --color-accent-amber: #F59E0B;
+  --color-accent-red: #EF4444;
+  --accent: #F59E0B;
   --accent-foreground: #111827;
 
   /* Functional system colors */
@@ -60,8 +80,9 @@
   --chart-5: 45 100% 51%;
 
   /* Fonts */
-  --font-heading: 'DM Serif Text', serif;
-  --font-body: 'Funnel Display', sans-serif;
+  /* Fonts are centrally controlled via next/font CSS variables set on <html> */
+  --font-heading: var(--font-oswald);
+  --font-body: Roboto, Lato, serif;
   --font-sans: var(--font-body);
 
   /* Radii */
@@ -70,21 +91,6 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
 
-  /* Sports betting theme colors */
-  --sport-football: 0 84% 60%;
-  --sport-tennis: 142 71% 45%;
-  --sport-basketball: 48 96% 53%;
-  --sport-hockey: 213 94% 68%;
-  --sport-golf: 142 71% 45%;
-  --sport-volleyball: 271 100% 50%;
-  --sport-baseball: 48 96% 53%;
-  --sport-snooker: 142 71% 45%;
-  
-  /* Betting brand colors */
-  --nairabet: 213 94% 68%;
-  --oneXbet: 220 26% 14%;
-  --betano: 0 84% 60%;
-  --bet365: 142 71% 45%;
 }
 
 /* ==========================

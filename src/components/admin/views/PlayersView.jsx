@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { SearchBar } from "@/components/admin/SearchBar";
 import { PlayerDialog } from "@/components/admin/dialogs/PlayerDialog";
+import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
 import { useToast } from "@/hooks/use-toast";
 import {
   Pagination,
@@ -33,6 +34,7 @@ import {
 } from "@/actions/adminActions";
 import { calculateAge } from "@/utils/dateHelper";
 import { countries } from "@/data/countries&code";
+import LoadingSplash from "@/components/ui/loading-splash";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -46,14 +48,21 @@ export default function PlayersView() {
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [players, setPlayers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [playerToDelete, setPlayerToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
+        setIsLoading(true);
         const response = await getAllPlayers();
         setPlayers(response);
       } catch (error) {
         console.error("Error fetching players:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchPlayers();
@@ -86,20 +95,33 @@ export default function PlayersView() {
   const totalPages = Math.ceil(filteredPlayers.length / ITEMS_PER_PAGE);
 
   const handleDeletePlayer = async (id) => {
+    const player = players.find(p => p.id === id);
+    setPlayerToDelete(player);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeletePlayer = async () => {
+    if (!playerToDelete) return;
+    
     try {
-      await deletePlayer(id);
+      setIsDeleting(true);
+      await deletePlayer(playerToDelete.id);
       toast({
         title: "Player Deleted",
         description: "The player has been removed successfully.",
       });
       const updated = await getAllPlayers();
       setPlayers(updated);
+      setDeleteDialogOpen(false);
+      setPlayerToDelete(null);
     } catch {
       toast({
         title: "Error",
         description: "Failed to delete player.",
         variant: "destructive",
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -130,6 +152,10 @@ export default function PlayersView() {
       description: "Player updated successfully.",
     });
   };
+
+  if (isLoading) {
+    return <LoadingSplash message="Loading players..." />;
+  }
 
   return (
     <div className="space-y-6">
@@ -171,7 +197,8 @@ export default function PlayersView() {
 
         <Button
           onClick={() => setPlayerDialogOpen(true)}
-          className="bg-[hsl(210,74%,55%)] text-[hsl(var(--muted))]"
+          variant="outline"
+          // className="bg-[hsl(210,74%,55%)] text-[hsl(var(--muted))]"
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Player
@@ -268,7 +295,7 @@ export default function PlayersView() {
               />
             </PaginationItem>
             {Array.from({ length: totalPages }, (_, i) => (
-              <PaginationItem key={i}>
+              <PaginationItem key={`page-${i + 1}`}>
                 <PaginationLink
                   href="#"
                   isActive={i + 1 === currentPage}
@@ -298,6 +325,16 @@ export default function PlayersView() {
         }}
         player={editingPlayer || undefined}
         onSave={handleAddOrUpdatePlayer}
+      />
+
+      <DeleteConfirmationModal
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDeletePlayer}
+        title="Delete Player"
+        description="This will permanently remove the player from the system."
+        itemName={playerToDelete ? `${playerToDelete.firstName} ${playerToDelete.lastName}` : ''}
+        isLoading={isDeleting}
       />
     </div>
   );

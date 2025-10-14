@@ -1,69 +1,120 @@
 import { NextResponse } from 'next/server';
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-import { withAuth } from '@kinde-oss/kinde-auth-nextjs/middleware';
-import { redirect } from 'next/navigation';
+
+const locales = ['en', 'es'];
+const defaultLocale = 'en';
+
+// Get the preferred locale from the request
+function getLocale(request) {
+  // Check if locale is in the pathname
+  const { pathname } = request.nextUrl;
+  const pathnameLocale = locales.find(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+  
+  if (pathnameLocale) return pathnameLocale;
+
+  // Check Accept-Language header
+  const acceptLanguage = request.headers.get('accept-language');
+  if (acceptLanguage) {
+    const preferredLocale = acceptLanguage
+      .split(',')[0]
+      .split('-')[0]
+      .toLowerCase();
+    
+    if (locales.includes(preferredLocale)) {
+      return preferredLocale;
+    }
+  }
+
+  return defaultLocale;
+}
 
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
+  // Skip middleware for static files and API routes
+  if (
+    pathname.startsWith("/_next/") ||
+    pathname.startsWith("/api/") ||
+    pathname.includes(".") ||
+    pathname.startsWith("/favicon")
+  ) {
+    return NextResponse.next();
+  }
+
+  // Check if there is any supported locale in the pathname
+  const pathnameHasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+
+  // Redirect if there is no locale
+  if (!pathnameHasLocale) {
+    const locale = getLocale(request);
+    const newPathname = `/${locale}${pathname}`;
+    return NextResponse.redirect(new URL(newPathname, request.url));
+  }
+
+  // Extract locale and clean pathname for auth checks
+  const locale = pathname.split('/')[1];
+  const cleanPathname = pathname.replace(`/${locale}`, '') || '/';
+
+  // Public routes that don't require authentication
   const publicRoutes = [
-    '/api/player',
-    '/api/product',
-    '/api/post',
-    '/api/auth',
+    '/',
+    '/about',
+    '/contact',
+    '/faq',
+    '/terms-of-service',
+    '/privacy-policy',
+    '/career-tips',
+    '/auth', // All auth pages are public
+    '/pricing', // Pricing page should be accessible
+    '/secure-payment', // Payment page should be accessible
+    '/order-confirmation', // Order confirmation page should be accessible
+    '/payment-successful', // Stripe redirect page
+    '/payment-failed', // Stripe redirect page
+    '/cancel', // Stripe cancel page
+    '/players',
+    '/blog',
+    '/shop',
+    '/livescore',
+    '/agent' // Agent page should be public
   ];
 
-  const protectedRoutes = [
-    '/api/player/profile-submission',
-    '/submit-profile',
-  ];
-
-  const adminRoutePrefixes = [
-    '/api/admin',
-  ];
-
+  // Check if route is public
   const isPublic = publicRoutes.some(route =>
-    pathname === route || pathname.startsWith(route + '/')
+    cleanPathname === route || cleanPathname.startsWith(route + '/')
   );
 
-  if (isPublic) return NextResponse.next();
-
-  const { getUser, getRoles, isAuthenticated } = getKindeServerSession();
-  const user = await getUser();
-
-  if (!user || !(await isAuthenticated())) {
-     return NextResponse.redirect(new URL('/api/auth/login', request.url));
+  if (isPublic) {
+    return NextResponse.next();
   }
 
-  const isProtected = protectedRoutes.some(route =>
-    pathname === route || pathname.startsWith(route + '/')
-  );
-
-  if (isProtected) return NextResponse.next();
-
-  const isAdminRoute = adminRoutePrefixes.some(prefix =>
-    pathname === prefix || pathname.startsWith(prefix + '/')
-  );
-
-  if (isAdminRoute) {
-    const canAccess = await getRoles();
-    if (!canAccess) {
-      return NextResponse.json(
-        { error: 'Admin access required' },
-        { status: 403 }
-      );
-    }
+  // For protected routes, check if session cookie exists
+  // We'll do the actual authentication check in the page components
+  const sessionToken = request.cookies.get('session')?.value;
+  
+  if (!sessionToken) {
+    // Redirect to login page, preserving the original path as a redirect parameter
+    const loginUrl = new URL(`/${locale}/auth/login`, request.url);
+    loginUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
+  // For admin routes, we'll let the page component handle the role check
+  // since we can't use Prisma in middleware
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    '/api/:path*',
-    '/api/admin/:path*',
-    '/api/player/profile-submission',
-    '/submit-profile',
-    '/admin'
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
 };

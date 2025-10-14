@@ -27,7 +27,7 @@ export default function AffiliateDialog({ open, onOpenChange, product, onSave })
   const [formData, setFormData] = useState({
     image: "",
     url: "",
-    category: "boots",
+    category: "clothing",
     description: "",
     price: 0,
   });
@@ -63,7 +63,7 @@ export default function AffiliateDialog({ open, onOpenChange, product, onSave })
       setFormData({
         image: "",
         url: "",
-        category: "boots",
+        category: "clothing",
         description: "",
         price: 0,
       });
@@ -84,7 +84,7 @@ export default function AffiliateDialog({ open, onOpenChange, product, onSave })
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>
@@ -144,10 +144,26 @@ export default function AffiliateDialog({ open, onOpenChange, product, onSave })
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="boots">Boots</SelectItem>
-                <SelectItem value="jerseys">Jerseys</SelectItem>
-                <SelectItem value="kits">Kits</SelectItem>
+                <SelectItem value="clothing">Clothing</SelectItem>
+                <SelectItem value="shoes">Shoes</SelectItem>
+                <SelectItem value="bags">Bags</SelectItem>
                 <SelectItem value="accessories">Accessories</SelectItem>
+                <SelectItem value="jewelry">Jewelry</SelectItem>
+                <SelectItem value="watches">Watches</SelectItem>
+                <SelectItem value="electronics">Electronics</SelectItem>
+                <SelectItem value="home">Home & Garden</SelectItem>
+                <SelectItem value="sports">Sports & Fitness</SelectItem>
+                <SelectItem value="beauty">Beauty & Personal Care</SelectItem>
+                <SelectItem value="books">Books & Media</SelectItem>
+                <SelectItem value="toys">Toys & Games</SelectItem>
+                <SelectItem value="automotive">Automotive</SelectItem>
+                <SelectItem value="health">Health & Wellness</SelectItem>
+                <SelectItem value="office">Office Supplies</SelectItem>
+                <SelectItem value="travel">Travel & Luggage</SelectItem>
+                <SelectItem value="food">Food & Beverages</SelectItem>
+                <SelectItem value="pets">Pet Supplies</SelectItem>
+                <SelectItem value="baby">Baby & Kids</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
               </SelectContent>
             </Select>
           </div>

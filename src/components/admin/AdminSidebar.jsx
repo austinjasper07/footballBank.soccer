@@ -11,6 +11,7 @@ import {
   Menu,
   ChevronLeft,
   ChevronRight,
+  Crown,
 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -19,11 +20,14 @@ const navigationItems = [
   { id: 'dashboard', icon: BarChart3, label: 'Dashboard' },
   { id: 'players', icon: Users, label: 'Players' },
   { id: 'users', icon: Users, label: 'Users' },
+  { id: 'subscriptions', icon: Crown, label: 'Subscriptions' },
   { id: 'submissions', icon: Inbox, label: 'Submissions', badge: 0 },
+  
   { id: 'shop', icon: Store, label: 'Shop' },
   { id: 'affiliate', icon: Store, label: 'Affiliate' },
   { id: 'orders', icon: ShoppingCart, label: 'Orders' },
   { id: 'blog', icon: FileText, label: 'Blog' },
+  { id: 'agent', icon: Users, label: 'Agent' },
   { id: 'settings', icon: Settings, label: 'Settings' },
 ];
 
@@ -89,15 +93,15 @@ export function AdminSidebar({ activeView, onViewChange, collapsed, onToggleColl
               const Icon = item.icon;
 
               return (
-                <li key={item.id}>
+                <li key={item.id} >
                   <button
                     onClick={() => {
                       onViewChange(item.id);
                       setMobileOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                    className={`w-full cursor-pointer flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
                       isActive
-                        ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]'
+                        ? 'bg-accent-red text-[hsl(var(--primary-foreground))]'
                         : 'hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]'
                     }`}
                   >

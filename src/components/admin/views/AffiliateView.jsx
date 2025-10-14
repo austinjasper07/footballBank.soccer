@@ -23,6 +23,8 @@ import {
   deleteAffiliateProduct,
 } from "@/actions/adminActions";
 import AffiliateDialog from "@/components/admin/dialogs/AffiliateDialog";
+import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
+import LoadingSplash from "@/components/ui/loading-splash";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -32,14 +34,19 @@ export function AffiliateView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setIsLoading(true);
         const res = await getAffiliateProducts();
         setProducts(res);
       } catch (error) {
@@ -49,6 +56,8 @@ export function AffiliateView() {
           description: "Failed to load affiliate products.",
           variant: "destructive",
         });
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -85,19 +94,32 @@ export function AffiliateView() {
 
   // 🗑 Delete
   const handleDelete = async (id) => {
+    const product = products.find(p => p.id === id);
+    setProductToDelete(product);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteProduct = async () => {
+    if (!productToDelete) return;
+    
     try {
-      await deleteAffiliateProduct(String(id));
-      setProducts((prev) => prev.filter((p) => p.id !== id));
+      setIsDeleting(true);
+      await deleteAffiliateProduct(String(productToDelete.id));
+      setProducts((prev) => prev.filter((p) => p.id !== productToDelete.id));
       toast({
         title: "Deleted",
         description: "Affiliate product deleted successfully.",
       });
+      setDeleteDialogOpen(false);
+      setProductToDelete(null);
     } catch {
       toast({
         title: "Error",
         description: "Failed to delete product.",
         variant: "destructive",
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -112,6 +134,10 @@ export function AffiliateView() {
     setSelectedProduct(null);
     setDialogOpen(true);
   };
+
+  if (isLoading) {
+    return <LoadingSplash message="Loading affiliate products..." />;
+  }
 
   return (
     <div className="space-y-6">
@@ -227,7 +253,7 @@ export function AffiliateView() {
                 ))}
 
                 {paginatedProducts.length === 0 && (
-                  <tr>
+                  <tr key="no-products">
                     <td
                       colSpan={4}
                       className="p-6 text-center text-muted-foreground"
@@ -253,7 +279,7 @@ export function AffiliateView() {
               />
             </PaginationItem>
             {Array.from({ length: totalPages }, (_, i) => (
-              <PaginationItem key={i}>
+              <PaginationItem key={`affiliate-page-${i + 1}`}>
                 <PaginationLink
                   href="#"
                   isActive={i + 1 === currentPage}
@@ -289,6 +315,16 @@ export function AffiliateView() {
             setProducts((prev) => [newProduct, ...prev]);
           }
         }}
+      />
+
+      <DeleteConfirmationModal
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDeleteProduct}
+        title="Delete Affiliate Product"
+        description="This will permanently remove the affiliate product from the system."
+        itemName={productToDelete ? productToDelete.description : ''}
+        isLoading={isDeleting}
       />
     </div>
   );
