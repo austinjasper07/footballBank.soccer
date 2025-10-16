@@ -15,7 +15,11 @@
     "filter": "Filter",
     "sort": "Sort",
     "close": "Close",
-    "open": "Open"
+    "open": "Open",
+    "available": "Available",
+    "featured": "Featured",
+    "allCountries": "All Countries",
+    "allPositions": "All Positions"
   },
   "amazonAds": {
     "title": "Amazon Deals",
@@ -230,9 +234,9 @@
     "poweredBy": "powered by"
   },
   "about": {
-    "title": "About FootballBank",
+    "title": "About FootballBank.soccer",
     "subtitle": "Empowering Football Dreams Worldwide",
-    "description": "FootballBank is the premier platform connecting talented football players with scouts, clubs, and opportunities around the globe.",
+    "description": "FootballBank.soccer is the premier platform connecting talented football players with scouts, clubs, and opportunities around the globe.",
     "mission": "Our Mission",
     "missionText": "To democratize football talent discovery and provide equal opportunities for players worldwide to showcase their skills and achieve their dreams.",
     "vision": "Our Vision",
@@ -243,6 +247,57 @@
       "integrity": "Integrity and transparency in all our dealings",
       "opportunity": "Equal opportunity for all talented players",
       "innovation": "Innovation in talent discovery and development"
+    },
+    "badge": "About Us",
+    "missionItems": [
+      "Identify and represent emerging football talent from underrepresented regions",
+      "Provide transparent and structured platform for player visibility",
+      "Deliver tailored career support and representation",
+      "Foster ethical football agency practices"
+    ],
+    "whatWeDo": {
+      "items": [
+        {
+          "title": "Player Profiles",
+          "description": "Footballers can submit professional profiles and gain global exposure"
+        },
+        {
+          "title": "Talent Discovery",
+          "description": "Scouts and clubs can discover vetted, up-and-coming talents"
+        },
+        {
+          "title": "Progress Tracking",
+          "description": "Parents and mentors can track progress and stay involved in the journey"
+        },
+        {
+          "title": "Brand Partnerships",
+          "description": "Brands can connect with grassroots football communities for sponsorship"
+        }
+      ]
+    },
+    "whatWeDoSection": {
+      "title": "What We Do",
+      "subtitle": "FootballBank.soccer is more than just a player database—we're a digital ecosystem where talent meets opportunity."
+    },
+    "valuesSection": {
+      "subtitle": "The principles that guide everything we do at FootballBank.soccer"
+    },
+    "joinMovement": {
+      "title": "Join the Movement",
+      "subtitle": "Whether you're a footballer ready to be seen, a scout seeking fresh talent, or a supporter of grassroots development—FootballBank.soccer is your trusted partner in the beautiful game.",
+      "description": "Let's connect talent to opportunity.",
+      "buttons": {
+        "getStarted": "Get Started",
+        "contactUs": "Contact Us"
+      }
+    },
+    "contactSection": {
+      "title": "Get in Touch",
+      "subtitle": "Ready to take the next step? We're here to help you achieve your football dreams.",
+      "buttons": {
+        "email": "contact@footballbank.soccer",
+        "learnMore": "Learn More"
+      }
     }
   },
   "contact": {
@@ -484,5 +539,192 @@
   "seo": {
     "defaultTitle": "Global Football Talent Platform",
     "defaultDescription": "Discover and showcase football talent worldwide. Connect players with scouts, clubs, and opportunities through our comprehensive talent banking platform."
+  },
+  "pricing": {
+    "title": "Subscription Plans",
+    "subtitle": "Choose the perfect plan for your needs",
+    "hero": {
+      "title": "Grow with <span class=\"text-red-600\">Fewer Fees</span> & More Power",
+      "subtitle": "Choose a plan that fits your goals. Cancel anytime. No hidden fees."
+    },
+    "billing": {
+      "monthly": "Monthly",
+      "quarterly": "Quarterly (Save 10%)"
+    },
+    "plans": {
+      "free": {
+        "name": "Free Plan",
+        "description": "Get started with essential tools and one profile submission.",
+        "features": [
+          "1 player profile submission",
+          "Basic profile visibility",
+          "Email support"
+        ],
+        "cta": "Start for Free"
+      },
+      "basic": {
+        "name": "Basic Plan",
+        "description": "For scouts and agents ready to scale their work.",
+        "features": [
+          "Submit up to 3 player profiles",
+          "Enhanced profile visibility",
+          "Priority support",
+          "Email support"
+        ],
+        "cta": "Get Basic"
+      },
+      "premium": {
+        "name": "Premium Plan",
+        "description": "For professionals managing multiple players and agencies.",
+        "features": [
+          "Everything in Basic",
+          "Unlimited player profiles",
+          "Maximum visibility boost",
+          "24/7 premium support"
+        ],
+        "cta": "Go Premium"
+      }
+    },
+    "footer": {
+      "title": "Get started with <span class=\"text-red-500\">Your career</span> today",
+      "subtitle": "Try the Free plan or upgrade anytime. No credit card required to begin.",
+      "cta": "Start for Free"
+    },
+    "whatWeDo": {
+      "title": "What We Do",
+      "subtitle": "FootballBank.soccer is more than just a player database—we're a digital ecosystem where talent meets opportunity.",
+      "items": [
+        {
+          "title": "Player Profiles",
+          "description": "Footballers can submit professional profiles and gain global exposure"
+        },
+        {
+          "title": "Talent Discovery",
+          "description": "Scouts and clubs can discover vetted, up-and-coming talents"
+        },
+        {
+          "title": "Progress Tracking",
+          "description": "Parents and mentors can track progress and stay involved in the journey"
+        },
+        {
+          "title": "Brand Partnerships",
+          "description": "Brands can connect with grassroots football communities for sponsorship"
+        }
+      ]
+    },
+    "mission": {
+      "items": [
+        "Identify and represent emerging football talent from underrepresented regions",
+        "Provide transparent and structured platform for player visibility",
+        "Deliver tailored career support and representation",
+        "Foster ethical football agency practices"
+      ]
+    },
+    "joinMovement": {
+      "title": "Join the Movement",
+      "subtitle": "Whether you're a footballer ready to be seen, a scout seeking fresh talent, or a supporter of grassroots development—FootballBank.soccer is your trusted partner in the beautiful game.",
+      "description": "Let's connect talent to opportunity.",
+      "buttons": {
+        "getStarted": "Get Started",
+        "contactUs": "Contact Us"
+      }
+    },
+    "contact": {
+      "title": "Get in Touch",
+      "subtitle": "Ready to take the next step? We're here to help you achieve your football dreams.",
+      "buttons": {
+        "email": "contact@footballbank.soccer",
+        "learnMore": "Learn More"
+      }
+    },
+    "missionItems": [
+      "Identify and represent emerging football talent from underrepresented regions",
+      "Provide transparent and structured platform for player visibility",
+      "Deliver tailored career support and representation",
+      "Foster ethical football agency practices"
+    ],
+    "whatWeDoSection": {
+      "title": "What We Do",
+      "subtitle": "FootballBank.soccer is more than just a player database—we're a digital ecosystem where talent meets opportunity."
+    },
+    "valuesSection": {
+      "subtitle": "The principles that guide everything we do at FootballBank.soccer"
+    },
+    "joinMovement": {
+      "title": "Join the Movement",
+      "subtitle": "Whether you're a footballer ready to be seen, a scout seeking fresh talent, or a supporter of grassroots development—FootballBank.soccer is your trusted partner in the beautiful game.",
+      "description": "Let's connect talent to opportunity.",
+      "buttons": {
+        "getStarted": "Get Started",
+        "contactUs": "Contact Us"
+      }
+    },
+    "contactSection": {
+      "title": "Get in Touch",
+      "subtitle": "Ready to take the next step? We're here to help you achieve your football dreams.",
+      "buttons": {
+        "email": "contact@footballbank.soccer",
+        "learnMore": "Learn More"
+      }
+    },
+    "badge": "About Us",
+    "featuredPlayers": {
+      "subtitle": "Discover exceptional talent from around the world"
+    },
+    "playerOfTheWeek": {
+      "description": "This player stands out for their dedication, talent and extraordinary performance on the pitch.",
+      "viewProfile": "View Profile"
+    }
+  },
+  "payment": {
+    "success": {
+      "title": "Payment Successful!",
+      "thankYou": "Thank you for your purchase",
+      "valuedCustomer": "Valued Customer",
+      "orderSummary": "Order Summary",
+      "total": "Total",
+      "email": "Email",
+      "status": "Status",
+      "completed": "Completed",
+      "goToProfile": "Go to Profile",
+      "viewPlans": "View Plans",
+      "continueShopping": "Continue Shopping",
+      "backToHomepage": "Back to Homepage",
+      "goToHome": "Go to Home",
+      "visitShop": "Visit Shop",
+      "needHelp": "Need help with your order?",
+      "contactSupport": "Contact Support",
+      "viewOrderHistory": "View Order History",
+      "loadingOrder": "Loading your order information..."
+    },
+    "failed": {
+      "title": "Payment Failed",
+      "subtitle": "Something went wrong with your transaction.",
+      "transactionDetails": "Transaction Details",
+      "failed": "Failed",
+      "transactionId": "Transaction ID",
+      "dateTime": "Date & Time",
+      "paymentMethod": "Payment Method",
+      "status": "Status",
+      "declined": "Declined",
+      "paymentDeclined": "Payment Declined",
+      "cardDeclinedMessage": "Your card was declined by your bank. This could be due to:",
+      "reasons": {
+        "insufficientFunds": "Insufficient funds",
+        "securityRestrictions": "Card security restrictions",
+        "expiredCard": "Expired or invalid card information"
+      },
+      "attemptedPurchase": "Attempted Purchase",
+      "totalAmount": "Total Amount:",
+      "tryAgain": "Try Again",
+      "goBackToCart": "Go Back to Cart",
+      "stillHavingIssues": "Still Having Issues?",
+      "supportMessage": "If you continue to experience payment problems, our support team can help you complete your purchase.",
+      "contactSupport": "Contact Support",
+      "alternativePayments": "Try Alternative Payment Methods",
+      "paypal": "PayPal",
+      "applePay": "Apple Pay",
+      "googlePay": "Google Pay"
+    }
   }
 }

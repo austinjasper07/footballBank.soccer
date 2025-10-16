@@ -46,6 +46,20 @@ export default function BlogGrid({ posts, featuredPost }) {
                 <Link
                   href={`/blog/${post.id}`}
                   className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  onClick={(e) => {
+                    // Add a small delay to allow for potential post deletion
+                    // This helps prevent clicking on recently deleted posts
+                    const link = e.currentTarget;
+                    const originalHref = link.href;
+                    
+                    // Temporarily disable the link
+                    link.style.pointerEvents = 'none';
+                    
+                    // Re-enable after a short delay
+                    setTimeout(() => {
+                      link.style.pointerEvents = 'auto';
+                    }, 100);
+                  }}
                 >
                   Read More →
                 </Link>

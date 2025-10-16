@@ -1,10 +1,26 @@
+'use client';
+import { use } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { getClientDictionary } from '@/lib/client-dictionaries';
 
-export default function PaymentFailedPage() {
+export default function PaymentFailedPage({ params }) {
+  const resolvedParams = use(params);
+  const lang = resolvedParams?.lang || 'en';
+  const [dict, setDict] = useState(null);
+
+  useEffect(() => {
+    getClientDictionary(lang).then(setDict);
+  }, [lang]);
+
+  if (!dict) {
+    return <div className="text-center p-12">{lang === 'es' ? 'Cargando...' : 'Loading...'}</div>;
+  }
+
   return (
     <>
       <Head>
-        <title>Payment Failed - FootballBank</title>
+        <title>{dict.payment.failed.title} - FootballBank</title>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
@@ -24,20 +40,20 @@ export default function PaymentFailedPage() {
                   </div>
                 </div>
                 <h1 className=" font-bold text-4xl md:text-5xl mb-4 text-accent-red">
-                  Payment Failed
+                  {dict.payment.failed.title}
                 </h1>
                 <p className="text-primary-muted text-lg md:text-xl">
-                  Something went wrong with your transaction.
+                  {dict.payment.failed.subtitle}
                 </p>
               </div>
 
               {/* Details Card */}
               <div className="bg-primary-secondary rounded-2xl border border-divider p-8 mb-8 text-left shadow-2xl">
                 <div className="flex items-center justify-between mb-8 pb-6 border-b border-divider">
-                  <h2 className=" font-semibold text-2xl">Transaction Details</h2>
+                  <h2 className=" font-semibold text-2xl">{dict.payment.failed.transactionDetails}</h2>
                   <div className="flex items-center gap-2 bg-accent-red bg-opacity-20 px-4 py-2 rounded-full">
                     <i className="fa-solid fa-circle-xmark text-accent-red"></i>
-                    <span className="text-accent-red font-medium">Failed</span>
+                    <span className="text-accent-red font-medium">{dict.payment.failed.failed}</span>
                   </div>
                 </div>
 
@@ -47,7 +63,7 @@ export default function PaymentFailedPage() {
                     <div className="space-y-4">
                       <div>
                         <label className="text-primary-muted text-sm font-medium block mb-1">
-                          Transaction ID
+                          {dict.payment.failed.transactionId}
                         </label>
                         <span className="font-mono text-accent-red font-medium">
                           #TXN-2024-FB-8848
@@ -55,7 +71,7 @@ export default function PaymentFailedPage() {
                       </div>
                       <div>
                         <label className="text-primary-muted text-sm font-medium block mb-1">
-                          Date &amp; Time
+                          {dict.payment.failed.dateTime}
                         </label>
                         <span className="text-primary-text">December 15, 2024 at 3:45 PM</span>
                       </div>
@@ -63,7 +79,7 @@ export default function PaymentFailedPage() {
                     <div className="space-y-4">
                       <div>
                         <label className="text-primary-muted text-sm font-medium block mb-1">
-                          Payment Method
+                          {dict.payment.failed.paymentMethod}
                         </label>
                         <div className="flex items-center gap-2">
                           <i className="fa-brands fa-cc-visa text-accent-blue text-lg"></i>
@@ -72,9 +88,9 @@ export default function PaymentFailedPage() {
                       </div>
                       <div>
                         <label className="text-primary-muted text-sm font-medium block mb-1">
-                          Status
+                          {dict.payment.failed.status}
                         </label>
-                        <span className="text-accent-red font-medium">Declined</span>
+                        <span className="text-accent-red font-medium">{dict.payment.failed.declined}</span>
                       </div>
                     </div>
                   </div>
@@ -86,16 +102,16 @@ export default function PaymentFailedPage() {
                     <i className="fa-solid fa-circle-exclamation text-accent-red text-xl mt-1"></i>
                     <div>
                       <h3 className=" font-semibold text-lg mb-2 text-accent-red">
-                        Payment Declined
+                        {dict.payment.failed.paymentDeclined}
                       </h3>
                       <p className="text-primary-text mb-3">
-                        Your card was declined by your bank. This could be due to:
+                        {dict.payment.failed.cardDeclinedMessage}
                       </p>
                       <ul className="text-primary-muted space-y-2">
                         {[
-                          'Insufficient funds',
-                          'Card security restrictions',
-                          'Expired or invalid card information',
+                          dict.payment.failed.reasons.insufficientFunds,
+                          dict.payment.failed.reasons.securityRestrictions,
+                          dict.payment.failed.reasons.expiredCard,
                         ].map((reason, index) => (
                           <li key={index} className="flex items-center gap-2">
                             <i className="fa-solid fa-circle text-accent-red text-xs"></i>
@@ -109,7 +125,7 @@ export default function PaymentFailedPage() {
 
                 {/* Purchase Summary */}
                 <div className="mb-8">
-                  <h3 className=" font-semibold text-lg mb-4">Attempted Purchase</h3>
+                  <h3 className=" font-semibold text-lg mb-4">{dict.payment.failed.attemptedPurchase}</h3>
                   <div className="space-y-4">
                     <PurchaseItem
                       icon="fa-crown"
@@ -129,7 +145,7 @@ export default function PaymentFailedPage() {
                 </div>
 
                 <div className="pt-6 border-t border-divider flex justify-between text-2xl font-bold text-primary-muted">
-                  <span>Total Amount:</span>
+                  <span>{dict.payment.failed.totalAmount}</span>
                   <span>$90.62</span>
                 </div>
               </div>
@@ -137,10 +153,10 @@ export default function PaymentFailedPage() {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                 <button className="bg-accent-blue hover:bg-opacity-80 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-3 transform hover:scale-105">
-                  <i className="fa-solid fa-redo"></i> Try Again
+                  <i className="fa-solid fa-redo"></i> {dict.payment.failed.tryAgain}
                 </button>
                 <button className="bg-primary-secondary hover:bg-opacity-80 text-primary-text border border-divider px-8 py-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-3 hover:border-accent-blue">
-                  <i className="fa-solid fa-shopping-cart"></i> Go Back to Cart
+                  <i className="fa-solid fa-shopping-cart"></i> {dict.payment.failed.goBackToCart}
                 </button>
               </div>
 
@@ -148,24 +164,24 @@ export default function PaymentFailedPage() {
               <div className="bg-primary-secondary rounded-xl border border-divider p-6 mb-6 text-center">
                 <div className="flex items-center justify-center gap-3 mb-4">
                   <i className="fa-solid fa-headset text-accent-amber text-xl"></i>
-                  <h3 className=" font-semibold text-lg">Still Having Issues?</h3>
+                  <h3 className=" font-semibold text-lg">{dict.payment.failed.stillHavingIssues}</h3>
                 </div>
                 <p className="text-primary-muted mb-4">
-                  If you continue to experience payment problems, our support team can help you complete your purchase.
+                  {dict.payment.failed.supportMessage}
                 </p>
                 <button className="text-accent-blue hover:text-accent-amber font-medium transition-colors flex items-center justify-center gap-2 mx-auto">
-                  <i className="fa-solid fa-envelope"></i> Contact Support
+                  <i className="fa-solid fa-envelope"></i> {dict.payment.failed.contactSupport}
                 </button>
               </div>
 
               {/* Alt Payments */}
               <div className="bg-primary-secondary rounded-xl border border-divider p-6 mt-6 text-center">
-                <h3 className=" font-semibold text-lg mb-4">Try Alternative Payment Methods</h3>
+                <h3 className=" font-semibold text-lg mb-4">{dict.payment.failed.alternativePayments}</h3>
                 <div className="flex flex-wrap justify-center gap-4">
                   {[
-                    ['fa-paypal', 'PayPal', 'text-accent-blue'],
-                    ['fa-apple-pay', 'Apple Pay', 'text-primary-text'],
-                    ['fa-google-pay', 'Google Pay', 'text-accent-green'],
+                    ['fa-paypal', dict.payment.failed.paypal, 'text-accent-blue'],
+                    ['fa-apple-pay', dict.payment.failed.applePay, 'text-primary-text'],
+                    ['fa-google-pay', dict.payment.failed.googlePay, 'text-accent-green'],
                   ].map(([icon, label, text], i) => (
                     <div
                       key={i}

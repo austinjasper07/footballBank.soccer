@@ -185,20 +185,37 @@ const orderSchema = new mongoose.Schema({
   items: [{
     name: { type: String, required: true },
     quantity: { type: Number, required: true },
-    price: { type: Number, required: true }
+    price: { type: Number, required: true },
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+    variationId: { type: String }
   }],
   status: { 
     type: String, 
-    enum: ['pending', 'fulfilled', 'completed', 'cancelled'],
+    enum: ['pending', 'processing', 'shipped', 'delivered', 'fulfilled', 'completed', 'cancelled', 'refunded'],
     default: 'pending' 
   },
   paymentStatus: {
     type: String,
-    enum: ['pending', 'completed', 'failed', 'refunded'],
+    enum: ['pending', 'completed', 'failed', 'refunded', 'partially_refunded'],
+    default: 'pending'
+  },
+  fulfillmentStatus: {
+    type: String,
+    enum: ['pending', 'processing', 'shipped', 'delivered', 'completed'],
     default: 'pending'
   },
   totalAmount: { type: Number, required: true },
-  stripeSessionId: { type: String }, // Store Stripe session ID for reference
+  stripeSessionId: { type: String, unique: true, sparse: true }, // Store Stripe session ID for reference
+  stripePaymentIntentId: { type: String }, // Store payment intent ID for refunds
+  trackingNumber: { type: String }, // Shipping tracking number
+  estimatedDelivery: { type: Date }, // Estimated delivery date
+  actualDelivery: { type: Date }, // Actual delivery date
+  statusHistory: [{
+    status: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now },
+    note: { type: String },
+    updatedBy: { type: String, enum: ['system', 'admin', 'customer'] }
+  }],
   shippingAddress: {
     id: { type: String },
     name: { type: String },
@@ -211,6 +228,40 @@ const orderSchema = new mongoose.Schema({
   },
   createdAt: { type: Date, default: Date.now }
 });
+
+// Add methods to Order schema
+orderSchema.methods.updateStatus = function(newStatus, note = '', updatedBy = 'system') {
+  this.status = newStatus;
+  this.statusHistory.push({
+    status: newStatus,
+    note: note,
+    updatedBy: updatedBy
+  });
+  this.updatedAt = new Date();
+  return this.save();
+};
+
+orderSchema.methods.updatePaymentStatus = function(newStatus, note = '', updatedBy = 'system') {
+  this.paymentStatus = newStatus;
+  this.statusHistory.push({
+    status: `payment_${newStatus}`,
+    note: note,
+    updatedBy: updatedBy
+  });
+  this.updatedAt = new Date();
+  return this.save();
+};
+
+orderSchema.methods.updateFulfillmentStatus = function(newStatus, note = '', updatedBy = 'system') {
+  this.fulfillmentStatus = newStatus;
+  this.statusHistory.push({
+    status: `fulfillment_${newStatus}`,
+    note: note,
+    updatedBy: updatedBy
+  });
+  this.updatedAt = new Date();
+  return this.save();
+};
 
 // Payment Method Schema
 const paymentMethodSchema = new mongoose.Schema({

@@ -37,13 +37,18 @@ export function generateMetadata({
   modifiedTime,
   author,
   section,
-  noIndex = false
+  noIndex = false,
+  locale = "en"
 }) {
   const fullTitle = title ? `${title} | ${siteConfig.name}` : siteConfig.title;
   const fullDescription = description || siteConfig.description;
   const fullUrl = url ? `${siteConfig.url}${url}` : siteConfig.url;
   const fullImage = image ? `${siteConfig.url}${image}` : `${siteConfig.url}${siteConfig.ogImage}`;
   const allKeywords = [...siteConfig.keywords, ...keywords].join(", ");
+
+  // Determine locale for OpenGraph
+  const ogLocale = locale === "es" ? "es_ES" : "en_US";
+  const alternateLocale = locale === "es" ? "en" : "es";
 
   const metadata = {
     metadataBase: new URL(siteConfig.url),
@@ -69,7 +74,7 @@ export function generateMetadata({
           alt: fullTitle,
         }
       ],
-      locale: "en_US",
+      locale: ogLocale,
     },
     twitter: {
       card: "summary_large_image",
@@ -81,6 +86,10 @@ export function generateMetadata({
     },
     alternates: {
       canonical: fullUrl,
+      languages: {
+        [locale]: fullUrl,
+        [alternateLocale]: fullUrl.replace(`/${locale}`, `/${alternateLocale}`)
+      }
     },
   };
 
@@ -247,6 +256,68 @@ export function generateStructuredData(type, data) {
             }
           }))
         }
+      };
+
+    case "sportsTeam":
+      return {
+        ...baseData,
+        "@type": "SportsTeam",
+        name: data.name,
+        description: data.description,
+        sport: "Football/Soccer",
+        url: `${siteConfig.url}${data.url}`,
+        ...(data.logo && { logo: data.logo }),
+        ...(data.foundedDate && { foundingDate: data.foundedDate }),
+        ...(data.location && { location: data.location })
+      };
+
+    case "event":
+      return {
+        ...baseData,
+        "@type": "SportsEvent",
+        name: data.name,
+        description: data.description,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        location: data.location,
+        organizer: {
+          "@type": "Organization",
+          name: siteConfig.name,
+          url: siteConfig.url
+        },
+        sport: "Football/Soccer"
+      };
+
+    case "faq":
+      return {
+        ...baseData,
+        "@type": "FAQPage",
+        mainEntity: data.questions?.map(qa => ({
+          "@type": "Question",
+          name: qa.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: qa.answer
+          }
+        }))
+      };
+
+    case "localBusiness":
+      return {
+        ...baseData,
+        "@type": "LocalBusiness",
+        name: data.name || siteConfig.name,
+        description: data.description || siteConfig.description,
+        url: `${siteConfig.url}${data.url}`,
+        telephone: "+1-862-372-9817",
+        email: "contact@footballbank.soccer",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "New Jersey",
+          addressCountry: "US"
+        },
+        openingHours: "Mo-Fr 09:00-18:00, Sa 10:00-16:00",
+        priceRange: "$$"
       };
 
     default:

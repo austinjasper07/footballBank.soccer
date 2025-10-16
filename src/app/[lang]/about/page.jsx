@@ -49,7 +49,7 @@ export default async function AboutPage({ params }) {
     }
   ]
 
-  const whatWeDo = [
+  const whatWeDo = dict.about?.whatWeDo?.items || [
     {
       icon: Users,
       title: "Player Profiles",
@@ -80,7 +80,7 @@ export default async function AboutPage({ params }) {
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 bg-accent-red/10 text-accent-red rounded-full px-4 py-2 mb-8">
               <Star className="w-4 h-4" />
-              <span className="text-sm font-medium">About Us</span>
+              <span className="text-sm font-medium">{dict.about?.badge || "About Us"}</span>
             </div>
             <h1 
               className="font-bold text-3xl lg:text-4xl leading-tight tracking-tight text-primary-text mb-6"
@@ -112,9 +112,9 @@ export default async function AboutPage({ params }) {
                 className="border-2 border-accent-red text-accent-red hover:bg-red-50 px-8 py-4 rounded-xl"
                 asChild
               >
-                <Link href="/contact">
+                <Link href={`/${lang}/contact`}>
                   <Mail className="w-5 h-5 mr-2" />
-                  Contact Us
+                  {dict.about?.joinMovement?.buttons?.contactUs || "Contact Us"}
                 </Link>
               </Button>
             </div>
@@ -139,22 +139,17 @@ export default async function AboutPage({ params }) {
                 {dict.about.missionText}
               </p>
               <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-accent-red mt-0.5 flex-shrink-0" />
-                  <span className="text-primary-muted">Identify and represent emerging football talent from underrepresented regions</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-accent-red mt-0.5 flex-shrink-0" />
-                  <span className="text-primary-muted">Provide transparent and structured platform for player visibility</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-accent-red mt-0.5 flex-shrink-0" />
-                  <span className="text-primary-muted">Deliver tailored career support and representation</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-accent-red mt-0.5 flex-shrink-0" />
-                  <span className="text-primary-muted">Foster ethical football agency practices</span>
-                </li>
+                {(dict.about?.missionItems || [
+                  "Identify and represent emerging football talent from underrepresented regions",
+                  "Provide transparent and structured platform for player visibility",
+                  "Deliver tailored career support and representation",
+                  "Foster ethical football agency practices"
+                ]).map((item, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-accent-red mt-0.5 flex-shrink-0" />
+                    <span className="text-primary-muted">{item}</span>
+                  </li>
+                ))}
               </ul>
             </CardContent>
           </Card>
@@ -180,11 +175,10 @@ export default async function AboutPage({ params }) {
         <div className="mb-20" data-aos="fade-up">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-primary-text mb-4">
-              What We Do
+              {dict.about?.whatWeDoSection?.title || "What We Do"}
             </h2>
             <p className="text-base text-primary-muted max-w-3xl mx-auto">
-              FootballBank.soccer is more than just a player database—we're a digital ecosystem 
-              where talent meets opportunity.
+              {dict.about?.whatWeDoSection?.subtitle || "FootballBank.soccer is more than just a player database—we're a digital ecosystem where talent meets opportunity."}
             </p>
           </div>
           
@@ -224,7 +218,7 @@ export default async function AboutPage({ params }) {
               {dict.about.values}
             </h2>
             <p className="text-base text-primary-muted max-w-3xl mx-auto">
-              The principles that guide everything we do at FootballBank.soccer
+              {dict.about?.valuesSection?.subtitle || "The principles that guide everything we do at FootballBank.soccer"}
             </p>
           </div>
           
@@ -266,15 +260,13 @@ export default async function AboutPage({ params }) {
               <Zap className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-3xl font-bold mb-6">
-              Join the Movement
+              {dict.about?.joinMovement?.title || "Join the Movement"}
             </h2>
             <p className="text-base text-red-100 leading-relaxed mb-8">
-              Whether you're a footballer ready to be seen, a scout seeking fresh talent, 
-              or a supporter of grassroots development—FootballBank.soccer is your trusted 
-              partner in the beautiful game.
+              {dict.about?.joinMovement?.subtitle || "Whether you're a footballer ready to be seen, a scout seeking fresh talent, or a supporter of grassroots development—FootballBank.soccer is your trusted partner in the beautiful game."}
             </p>
             <p className="text-base text-red-200 mb-8">
-              Let's connect talent to opportunity.
+              {dict.about?.joinMovement?.description || "Let's connect talent to opportunity."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
@@ -282,9 +274,9 @@ export default async function AboutPage({ params }) {
                 className="bg-white text-accent-red hover:bg-gray-100 px-8 py-4 rounded-xl shadow-lg"
                 asChild
               >
-                <Link href="/submit-profile">
+                <Link href={`/${lang}/submit-profile`}>
                   <Users className="w-5 h-5 mr-2" />
-                  Get Started
+                  {dict.about?.joinMovement?.buttons?.getStarted || "Get Started"}
                 </Link>
               </Button>
               <Button 
@@ -293,9 +285,9 @@ export default async function AboutPage({ params }) {
                 className="border-2 border-white/30 text-white px-8 py-4 rounded-xl backdrop-blur-sm"
                 asChild
               >
-                <Link href="/contact">
+                <Link href={`/${lang}/contact`}>
                   <Mail className="w-5 h-5 mr-2" />
-                  Contact Us
+                  {dict.about?.joinMovement?.buttons?.contactUs || "Contact Us"}
                 </Link>
               </Button>
             </div>
@@ -305,10 +297,10 @@ export default async function AboutPage({ params }) {
         {/* Contact Information */}
         <div className="text-center" data-aos="fade-up">
           <h3 className="text-3xl font-bold text-primary-text mb-4">
-            Get in Touch
+            {dict.about?.contactSection?.title || "Get in Touch"}
           </h3>
           <p className="text-base text-primary-muted mb-8 max-w-3xl mx-auto">
-            Ready to take the next step? We're here to help you achieve your football dreams.
+            {dict.about?.contactSection?.subtitle || "Ready to take the next step? We're here to help you achieve your football dreams."}
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Button 
@@ -318,7 +310,7 @@ export default async function AboutPage({ params }) {
             >
               <a href="mailto:contact@footballbank.soccer">
                 <Mail className="w-5 h-5 mr-2" />
-                contact@footballbank.soccer
+                {dict.about?.contactSection?.buttons?.email || "contact@footballbank.soccer"}
               </a>
             </Button>
             <Button 
@@ -327,9 +319,9 @@ export default async function AboutPage({ params }) {
               className="border-2 border-accent-red text-accent-red hover:bg-red-50 px-8 py-4 rounded-xl"
               asChild
             >
-              <Link href="/career-tips">
+              <Link href={`/${lang}/career-tips`}>
                 <ArrowRight className="w-5 h-5 mr-2" />
-                Learn More
+                {dict.about?.contactSection?.buttons?.learnMore || "Learn More"}
               </Link>
             </Button>
           </div>

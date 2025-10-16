@@ -10,7 +10,6 @@ export default function SubscribeButton({ plan, duration, label }) {
   const router = useRouter();
   const isMountedRef = useRef(true);
 
-
   const handleCheckout = async () => {
     
     setLoading(true);

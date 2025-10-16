@@ -13,6 +13,7 @@ const oswald = Oswald({
   weight: ["200", "300", "400", "500", "600", "700"],
   variable: "--font-oswald",
   display: "swap",
+  fallback: ["Arial", "sans-serif"],
 });
 
 export const metadata = generateSEOMetadata({

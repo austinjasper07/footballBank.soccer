@@ -15,7 +15,11 @@
     "filter": "Filtrar",
     "sort": "Ordenar",
     "close": "Cerrar",
-    "open": "Abrir"
+    "open": "Abrir",
+    "available": "Disponible",
+    "featured": "Destacado",
+    "allCountries": "Todos los Países",
+    "allPositions": "Todas las Posiciones"
   },
   "amazonAds": {
     "title": "Ofertas de Amazon",
@@ -230,9 +234,9 @@
     "poweredBy": "desarrollado por"
   },
   "about": {
-    "title": "Acerca de FootballBank",
+    "title": "Acerca de FootballBank.soccer",
     "subtitle": "Empoderando Sueños Futbolísticos en Todo el Mundo",
-    "description": "FootballBank es la plataforma líder que conecta jugadores de fútbol talentosos con ojeadores, clubes y oportunidades alrededor del mundo.",
+    "description": "FootballBank.soccer es la plataforma líder que conecta jugadores de fútbol talentosos con ojeadores, clubes y oportunidades alrededor del mundo.",
     "mission": "Nuestra Misión",
     "missionText": "Democratizar el descubrimiento de talento futbolístico y brindar oportunidades equitativas para que los jugadores de todo el mundo muestren sus habilidades y alcancen sus sueños.",
     "vision": "Nuestra Visión",
@@ -243,6 +247,57 @@
       "integrity": "Integridad y transparencia en todos nuestros tratos",
       "opportunity": "Oportunidad equitativa para todos los jugadores talentosos",
       "innovation": "Innovación en el descubrimiento y desarrollo de talentos"
+    },
+    "badge": "Acerca de Nosotros",
+    "missionItems": [
+      "Identificar y representar talento futbolístico emergente de regiones subrepresentadas",
+      "Proporcionar una plataforma transparente y estructurada para la visibilidad de jugadores",
+      "Entregar apoyo profesional y representación personalizada",
+      "Fomentar prácticas éticas de agencia futbolística"
+    ],
+    "whatWeDo": {
+      "items": [
+        {
+          "title": "Perfiles de Jugadores",
+          "description": "Los futbolistas pueden enviar perfiles profesionales y obtener exposición global"
+        },
+        {
+          "title": "Descubrimiento de Talento",
+          "description": "Los ojeadores y clubes pueden descubrir talentos verificados y emergentes"
+        },
+        {
+          "title": "Seguimiento de Progreso",
+          "description": "Los padres y mentores pueden seguir el progreso y mantenerse involucrados en el viaje"
+        },
+        {
+          "title": "Asociaciones de Marca",
+          "description": "Las marcas pueden conectarse con comunidades de fútbol de base para patrocinio"
+        }
+      ]
+    },
+    "whatWeDoSection": {
+      "title": "Lo Que Hacemos",
+      "subtitle": "FootballBank.soccer es más que solo una base de datos de jugadores—somos un ecosistema digital donde el talento se encuentra con la oportunidad."
+    },
+    "valuesSection": {
+      "subtitle": "Los principios que guían todo lo que hacemos en FootballBank.soccer"
+    },
+    "joinMovement": {
+      "title": "Únete al Movimiento",
+      "subtitle": "Ya seas un futbolista listo para ser visto, un ojeador buscando talento fresco, o un partidario del desarrollo de base—FootballBank.soccer es tu socio de confianza en el hermoso juego.",
+      "description": "Conectemos talento con oportunidad.",
+      "buttons": {
+        "getStarted": "Comenzar",
+        "contactUs": "Contáctanos"
+      }
+    },
+    "contactSection": {
+      "title": "Ponte en Contacto",
+      "subtitle": "¿Listo para dar el siguiente paso? Estamos aquí para ayudarte a lograr tus sueños futbolísticos.",
+      "buttons": {
+        "email": "contact@footballbank.soccer",
+        "learnMore": "Aprender Más"
+      }
     }
   },
   "contact": {
@@ -484,5 +539,192 @@
   "seo": {
     "defaultTitle": "Plataforma Global de Talento Futbolístico",
     "defaultDescription": "Descubre y muestra talento futbolístico en todo el mundo. Conecta jugadores con ojeadores, clubes y oportunidades a través de nuestra plataforma integral de banco de talentos."
+  },
+  "pricing": {
+    "title": "Planes de Suscripción",
+    "subtitle": "Elige el plan perfecto para tus necesidades",
+    "hero": {
+      "title": "Crece con <span class=\"text-red-600\">Menos Tarifas</span> y Más Poder",
+      "subtitle": "Elige un plan que se ajuste a tus objetivos. Cancela en cualquier momento. Sin tarifas ocultas."
+    },
+    "billing": {
+      "monthly": "Mensual",
+      "quarterly": "Trimestral (Ahorra 10%)"
+    },
+    "plans": {
+      "free": {
+        "name": "Plan Gratuito",
+        "description": "Comienza con herramientas esenciales y una presentación de perfil.",
+        "features": [
+          "1 presentación de perfil de jugador",
+          "Visibilidad básica del perfil",
+          "Soporte por correo electrónico"
+        ],
+        "cta": "Comenzar Gratis"
+      },
+      "basic": {
+        "name": "Plan Básico",
+        "description": "Para ojeadores y agentes listos para escalar su trabajo.",
+        "features": [
+          "Presentar hasta 3 perfiles de jugadores",
+          "Visibilidad mejorada del perfil",
+          "Soporte prioritario",
+          "Soporte por correo electrónico"
+        ],
+        "cta": "Obtener Básico"
+      },
+      "premium": {
+        "name": "Plan Premium",
+        "description": "Para profesionales que gestionan múltiples jugadores y agencias.",
+        "features": [
+          "Todo en Básico",
+          "Perfiles de jugadores ilimitados",
+          "Impulso máximo de visibilidad",
+          "Soporte premium 24/7"
+        ],
+        "cta": "Ir Premium"
+      }
+    },
+    "footer": {
+      "title": "Comienza con <span class=\"text-red-500\">Tu carrera</span> hoy",
+      "subtitle": "Prueba el plan gratuito o actualiza en cualquier momento. No se requiere tarjeta de crédito para comenzar.",
+      "cta": "Comenzar Gratis"
+    },
+    "whatWeDo": {
+      "title": "Lo Que Hacemos",
+      "subtitle": "FootballBank.soccer es más que solo una base de datos de jugadores—somos un ecosistema digital donde el talento se encuentra con la oportunidad.",
+      "items": [
+        {
+          "title": "Perfiles de Jugadores",
+          "description": "Los futbolistas pueden enviar perfiles profesionales y obtener exposición global"
+        },
+        {
+          "title": "Descubrimiento de Talento",
+          "description": "Los ojeadores y clubes pueden descubrir talentos verificados y emergentes"
+        },
+        {
+          "title": "Seguimiento de Progreso",
+          "description": "Los padres y mentores pueden seguir el progreso y mantenerse involucrados en el viaje"
+        },
+        {
+          "title": "Asociaciones de Marca",
+          "description": "Las marcas pueden conectarse con comunidades de fútbol de base para patrocinio"
+        }
+      ]
+    },
+    "mission": {
+      "items": [
+        "Identificar y representar talento futbolístico emergente de regiones subrepresentadas",
+        "Proporcionar una plataforma transparente y estructurada para la visibilidad de jugadores",
+        "Entregar apoyo profesional y representación personalizada",
+        "Fomentar prácticas éticas de agencia futbolística"
+      ]
+    },
+    "joinMovement": {
+      "title": "Únete al Movimiento",
+      "subtitle": "Ya seas un futbolista listo para ser visto, un ojeador buscando talento fresco, o un partidario del desarrollo de base—FootballBank.soccer es tu socio de confianza en el hermoso juego.",
+      "description": "Conectemos talento con oportunidad.",
+      "buttons": {
+        "getStarted": "Comenzar",
+        "contactUs": "Contáctanos"
+      }
+    },
+    "contact": {
+      "title": "Ponte en Contacto",
+      "subtitle": "¿Listo para dar el siguiente paso? Estamos aquí para ayudarte a lograr tus sueños futbolísticos.",
+      "buttons": {
+        "email": "contact@footballbank.soccer",
+        "learnMore": "Aprender Más"
+      }
+    },
+    "missionItems": [
+      "Identificar y representar talento futbolístico emergente de regiones subrepresentadas",
+      "Proporcionar una plataforma transparente y estructurada para la visibilidad de los jugadores",
+      "Entregar apoyo y representación profesional personalizada",
+      "Fomentar prácticas éticas de agencia futbolística"
+    ],
+    "whatWeDoSection": {
+      "title": "Lo Que Hacemos",
+      "subtitle": "FootballBank.soccer es más que solo una base de datos de jugadores—somos un ecosistema digital donde el talento se encuentra con la oportunidad."
+    },
+    "valuesSection": {
+      "subtitle": "Los principios que guían todo lo que hacemos en FootballBank.soccer"
+    },
+    "joinMovement": {
+      "title": "Únete al Movimiento",
+      "subtitle": "Ya seas un futbolista listo para ser visto, un ojeador buscando talento fresco, o un partidario del desarrollo de base—FootballBank.soccer es tu socio de confianza en el hermoso juego.",
+      "description": "Conectemos talento con oportunidad.",
+      "buttons": {
+        "getStarted": "Comenzar",
+        "contactUs": "Contáctanos"
+      }
+    },
+    "contactSection": {
+      "title": "Ponte en Contacto",
+      "subtitle": "¿Listo para dar el siguiente paso? Estamos aquí para ayudarte a lograr tus sueños futbolísticos.",
+      "buttons": {
+        "email": "contact@footballbank.soccer",
+        "learnMore": "Aprender Más"
+      }
+    },
+    "badge": "Acerca de Nosotros",
+    "featuredPlayers": {
+      "subtitle": "Descubre talento excepcional de todo el mundo"
+    },
+    "playerOfTheWeek": {
+      "description": "Este jugador se destaca por su dedicación, talento y rendimiento extraordinario en el campo.",
+      "viewProfile": "Ver Perfil"
+    }
+  },
+  "payment": {
+    "success": {
+      "title": "¡Pago Exitoso!",
+      "thankYou": "Gracias por tu compra",
+      "valuedCustomer": "Cliente Valioso",
+      "orderSummary": "Resumen del Pedido",
+      "total": "Total",
+      "email": "Correo",
+      "status": "Estado",
+      "completed": "Completado",
+      "goToProfile": "Ir al Perfil",
+      "viewPlans": "Ver Planes",
+      "continueShopping": "Continuar Comprando",
+      "backToHomepage": "Volver a la Página de Inicio",
+      "goToHome": "Ir al Inicio",
+      "visitShop": "Visitar Tienda",
+      "needHelp": "¿Necesitas ayuda con tu pedido?",
+      "contactSupport": "Contactar Soporte",
+      "viewOrderHistory": "Ver Historial de Pedidos",
+      "loadingOrder": "Cargando la información de tu pedido..."
+    },
+    "failed": {
+      "title": "Pago Fallido",
+      "subtitle": "Algo salió mal con tu transacción.",
+      "transactionDetails": "Detalles de la Transacción",
+      "failed": "Fallido",
+      "transactionId": "ID de Transacción",
+      "dateTime": "Fecha y Hora",
+      "paymentMethod": "Método de Pago",
+      "status": "Estado",
+      "declined": "Rechazado",
+      "paymentDeclined": "Pago Rechazado",
+      "cardDeclinedMessage": "Tu tarjeta fue rechazada por tu banco. Esto podría deberse a:",
+      "reasons": {
+        "insufficientFunds": "Fondos insuficientes",
+        "securityRestrictions": "Restricciones de seguridad de la tarjeta",
+        "expiredCard": "Información de tarjeta expirada o inválida"
+      },
+      "attemptedPurchase": "Compra Intentada",
+      "totalAmount": "Monto Total:",
+      "tryAgain": "Intentar de Nuevo",
+      "goBackToCart": "Volver al Carrito",
+      "stillHavingIssues": "¿Aún Tienes Problemas?",
+      "supportMessage": "Si continúas experimentando problemas de pago, nuestro equipo de soporte puede ayudarte a completar tu compra.",
+      "contactSupport": "Contactar Soporte",
+      "alternativePayments": "Prueba Métodos de Pago Alternativos",
+      "paypal": "PayPal",
+      "applePay": "Apple Pay",
+      "googlePay": "Google Pay"
+    }
   }
 }

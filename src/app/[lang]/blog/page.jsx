@@ -2,29 +2,37 @@ import Link from "next/link";
 import { Post } from "@/lib/schemas"
 import ClientSideFilterWrapper from "./components/ClientSideFilterWrapper"
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
+import { getDictionary } from "@/lib/dictionaries";
 
-export const metadata = generateSEOMetadata({
-  title: "Football Blog & News",
-  description: "Stay updated with the latest football insights, player spotlights, career tips, and industry news. Expert analysis and talent updates from FootballBank.",
-  keywords: [
-    "football blog",
-    "soccer news",
-    "player spotlights",
-    "football insights",
-    "career tips",
-    "football industry news",
-    "talent updates",
-    "football analysis"
-  ],
-  url: "/blog",
-});
+export async function generateMetadata({ params }) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
 
-export default async function BlogPage() {
-  'use server'
+  return generateSEOMetadata({
+    title: dict.blog.title,
+    description: dict.blog.subtitle,
+    keywords: [
+      "football blog",
+      "soccer news",
+      "player spotlights",
+      "football insights",
+      "career tips",
+      "football industry news",
+      "talent updates",
+      "football analysis"
+    ],
+    url: `/${lang}/blog`,
+    locale: lang,
+  });
+}
+
+export default async function BlogPage({ params }) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
 
   let posts = [];
   try {
-    posts = await Post.find({}).sort({ createdAt: -1 }).lean();
+    posts = await Post.find({ status: 'published' }).sort({ createdAt: -1 }).lean();
   } catch (error) {
     console.error('Error fetching posts:', error);
     // Return empty array if database is not available
@@ -49,7 +57,7 @@ export default async function BlogPage() {
 
   let featuredPosts = [];
   try {
-    featuredPosts = await Post.find({ featured: true }).sort({ createdAt: -1 }).lean();
+    featuredPosts = await Post.find({ featured: true, status: 'published' }).sort({ createdAt: -1 }).lean();
   } catch (error) {
     console.error('Error fetching featured posts:', error);
     featuredPosts = [];
@@ -89,17 +97,17 @@ export default async function BlogPage() {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="breadcrumb-content-main">
-                <h1 className="text-4xl font-bold text-white mb-6">Blog Posts</h1>
+                <h1 className="text-4xl font-bold text-white mb-6">{dict.blog.title}</h1>
                 <div className="breadcrumb-links">
                   <div className="content-inner">
                     <nav className="breadcrumb" aria-labelledby="system-breadcrumb">
                       <ol className="flex items-center gap-2 text-sm text-white">
                         <li>
-                          <Link href="/" className="hover:text-blue-300">Home</Link>
+                          <Link href={`/${lang}`} className="hover:text-blue-300">{dict.navigation.home}</Link>
                           <span className="mx-2">-</span>
                         </li>
                         <li>
-                          <span className="text-white">Blog posts</span>
+                          <span className="text-white">{dict.blog.title}</span>
                         </li>
                       </ol>
                     </nav>
@@ -119,6 +127,8 @@ export default async function BlogPage() {
               posts={formattedPosts}
               featuredPost={formattedFeaturedPosts}
               categories={categories}
+              lang={lang}
+              dict={dict}
             />
           </div>
         </div>

@@ -52,14 +52,18 @@ export default function BuyNowButton({ cartItems, selectedAddressId }) {
 
       const data = await res.json();
 
-      if (data.url) window.location.href = data.url;
-      else alert(data.error || "Failed to create checkout session");
+      if (data.url) {
+        // Only clear cart after successful redirect to Stripe
+        clearCart();
+        window.location.href = data.url;
+      } else {
+        alert(data.error || "Failed to create checkout session");
+        setLoading(false);
+      }
     } catch (err) {
       console.error("Checkout error:", err);
       alert("An unexpected error occurred");
-    } finally {
       setLoading(false);
-      clearCart();
     }
   };
 

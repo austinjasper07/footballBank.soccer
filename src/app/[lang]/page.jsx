@@ -87,17 +87,17 @@ export default async function HomePage({ params }) {
               {dict.homepage.hero.subtitle}
             </p>
             <div
-              className="flex sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start pt-8"
+              className=" flex sm:flex-row gap-2 md:gap-4 justify-center lg:justify-start pt-8"
               data-aos="fade-up"
               data-aos-delay="200"
             >
               <Link href={`/${lang}/submit-profile`}>
-                <span className="bg-accent-red text-white text-sm md:text-base px-4 py-2 md:px-6 md:py-3 rounded-md font-medium text-center transition-all hover:opacity-90 shadow-lg">
+                <span className="text-nowrap bg-accent-red text-white text-sm md:text-base px-2 sm:px-4 py-2 md:px-6 md:py-3 rounded-md font-medium text-center transition-all hover:opacity-90 shadow-lg">
                   {dict.homepage.hero.submitProfile}
                 </span>
               </Link>
               <Link href={`/${lang}/players`}>
-                <span className="border-2 border-accent-red text-accent-red text-sm md:text-base px-4 py-2 md:px-6 md:py-3 rounded-md font-medium text-center transition hover:bg-accent-red hover:text-white shadow-sm">
+                <span className="text-nowrap border-2 border-accent-red text-accent-red text-sm md:text-base px-2 sm:px-4 py-2 md:px-6 md:py-3 rounded-md font-medium text-center transition hover:bg-accent-red hover:text-white shadow-sm">
                   {dict.homepage.hero.browsePlayers}
                 </span>
               </Link>
@@ -164,12 +164,12 @@ export default async function HomePage({ params }) {
 
                   <p className="text-blue-100 text-xs sm:text-sm leading-relaxed line-clamp-3 sm:line-clamp-4">
                     {playerOfTheWeek?.description ||
-                      "This player stands out for their dedication, talent and extraordinary performance on the pitch."}
+                      dict.pricing.playerOfTheWeek.description}
                   </p>
 
                   <div className="pt-2">
                     <span className="inline-flex items-center text-white text-xs sm:text-sm font-medium group-hover:text-red-300 transition-colors">
-                      View Profile
+                      {dict.pricing.playerOfTheWeek.viewProfile}
                       <svg
                         className="ml-2 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform"
                         fill="none"
@@ -260,7 +260,7 @@ export default async function HomePage({ params }) {
             </h2>
             <div className="w-24 h-1 bg-accent-red/80 mx-auto mb-4" />
             <p className="text-white/90 text-lg lg:text-xl max-w-2xl mx-auto">
-              Discover exceptional talent from around the world
+              {dict.pricing.featuredPlayers.subtitle}
             </p>
           </div>
           <div className="relative z-10 max-w-7xl mx-auto ">
@@ -312,7 +312,7 @@ export default async function HomePage({ params }) {
 
                     {/* Featured Badge */}
                     <div className="absolute top-4 right-4 bg-gradient-to-r from-red-400 to-red-500 text-white px-3 py-1 text-xs font-semibold rounded-full shadow-lg">
-                      Featured
+                      {dict.common.featured}
                     </div>
 
                     {/* Player Info Overlay */}

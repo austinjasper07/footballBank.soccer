@@ -78,7 +78,7 @@ export async function POST(req) {
       payment_method_types: ["card"],
       line_items,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/en/payment-successful?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/en/payment-cancel`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/en/payment-failed`,
       // Add metadata to help with debugging
       metadata: {
         source: "product_checkout",

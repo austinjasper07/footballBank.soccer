@@ -75,9 +75,9 @@ export default function Header({ lang = 'en' }) {
                 alt="FootballBank Logo"
                 width={60}
                 height={60}
-                  className="object-contain h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16"
+                  className="object-contain h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14"
               />
-                <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800">
+                <h1 className="text-sm sm:text-lg md:block md:text-xl font-semibold text-gray-800">
                 FootballBank
                 <span className="text-base md:text-lg text-accent-red">.soccer</span>
               </h1>

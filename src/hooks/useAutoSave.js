@@ -58,7 +58,7 @@ export function useAutoSave(data, saveFunction, options = {}) {
   // Schedule save when data changes
   useEffect(() => {
     scheduleSave();
-  }, [scheduleSave, ...dependencies]);
+  }, [scheduleSave, dependencies]);
 
   // Cleanup on unmount
   useEffect(() => {

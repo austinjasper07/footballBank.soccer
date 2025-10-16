@@ -10,6 +10,7 @@ const oswald = Oswald({
   weight: ["200", "300", "400", "500", "600", "700"],
   variable: "--font-oswald",
   display: "swap",
+  fallback: ["Arial", "sans-serif"],
 });
 
 const dmSerifText = DM_Serif_Text({
@@ -18,6 +19,7 @@ const dmSerifText = DM_Serif_Text({
   style: ["normal", "italic"],
   variable: "--font-dm-serif-text",
   display: "swap",
+  fallback: ["Georgia", "serif"],
 });
 
 export async function generateStaticParams() {
