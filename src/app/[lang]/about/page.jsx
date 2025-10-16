@@ -49,28 +49,13 @@ export default async function AboutPage({ params }) {
     }
   ]
 
-  const whatWeDo = dict.about?.whatWeDo?.items || [
-    {
-      icon: Users,
-      title: "Player Profiles",
-      description: "Footballers can submit professional profiles and gain global exposure"
-    },
-    {
-      icon: Search,
-      title: "Talent Discovery",
-      description: "Scouts and clubs can discover vetted, up-and-coming talents"
-    },
-    {
-      icon: Users2,
-      title: "Progress Tracking",
-      description: "Parents and mentors can track progress and stay involved in the journey"
-    },
-    {
-      icon: Briefcase,
-      title: "Brand Partnerships",
-      description: "Brands can connect with grassroots football communities for sponsorship"
-    }
-  ]
+  // Icons mapped to dictionary items
+  const iconMap = [Users, Search, Users2, Briefcase];
+  const whatWeDo = (dict.about?.whatWeDo?.items || []).map((item, index) => ({
+    icon: iconMap[index],
+    title: item.title,
+    description: item.description
+  }))
 
   return (
     <div className="bg-primary-bg min-h-screen">
