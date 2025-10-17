@@ -12,10 +12,14 @@ import {
 import Head from "next/head";
 import ImageCarousel from "@/components/ui/ImageCarousel";
 import { FaSquareXTwitter } from "react-icons/fa6";
+import dbConnect from "@/lib/mongodb";
 
 // Dynamic metadata generation
 export async function generateMetadata({ params }) {
   const postId = (await params).id;
+
+  // Ensure database connection
+  await dbConnect();
 
   try {
     const post = await Post.findById(postId);
@@ -53,6 +57,10 @@ export async function generateMetadata({ params }) {
 
 export default async function BlogArticlePage({ params }) {
   const postId = (await params).id;
+  
+  // Ensure database connection
+  await dbConnect();
+  
   let post;
   try {
     post = await Post.findById(postId);

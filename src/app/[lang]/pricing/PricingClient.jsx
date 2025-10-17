@@ -159,47 +159,7 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SubscribeButton from "@/components/SubscribeButton";
 
-const PLANS = [
-  {
-    id: "free",
-    name: "Free Plan",
-    price: { monthly: 0, quarterly: 0 },
-    description: "Get started with essential tools and one profile submission.",
-    features: [
-      "1 player profile submission",
-      "Basic profile visibility",
-      "Email support",
-    ],
-    cta: "Start for Free",
-  },
-  {
-    id: "basic",
-    name: "Basic Plan",
-    price: { monthly: 3, quarterly: 8 },
-    description: "For scouts and agents ready to scale their work.",
-    features: [
-      "Submit up to 3 player profiles",
-      "Enhanced profile visibility",
-      "Priority support",
-      "Access to analytics dashboard",
-    ],
-    cta: "Get Basic",
-  },
-  {
-    id: "premium",
-    name: "Premium Plan",
-    price: { monthly: 5, quarterly: 13 },
-    description: "For professionals managing multiple players and agencies.",
-    features: [
-      "Unlimited player profiles",
-      "Maximum visibility boost",
-      "24/7 premium support",
-      "Advanced analytics and insights",
-      "Custom templates and API access",
-    ],
-    cta: "Go Premium",
-  },
-];
+// Plans are derived from dictionary for full i18n
 
 export default function PricingClient({ lang, dict }) {
   const [billingCycle, setBillingCycle] = useState("monthly");
@@ -208,6 +168,33 @@ export default function PricingClient({ lang, dict }) {
     AOS.init({ duration: 700, once: true });
   }, []);
 
+  const PLANS = [
+    {
+      id: "free",
+      name: dict.pricing.plans.free.name,
+      price: { monthly: 0, quarterly: 0 },
+      description: dict.pricing.plans.free.description,
+      features: dict.pricing.plans.free.features,
+      cta: dict.pricing.plans.free.cta,
+    },
+    {
+      id: "basic",
+      name: dict.pricing.plans.basic.name,
+      price: { monthly: 3, quarterly: 8 },
+      description: dict.pricing.plans.basic.description,
+      features: dict.pricing.plans.basic.features,
+      cta: dict.pricing.plans.basic.cta,
+    },
+    {
+      id: "premium",
+      name: dict.pricing.plans.premium.name,
+      price: { monthly: 5, quarterly: 13 },
+      description: dict.pricing.plans.premium.description,
+      features: dict.pricing.plans.premium.features,
+      cta: dict.pricing.plans.premium.cta,
+    },
+  ];
+
   return (
     <div className="bg-white min-h-screen text-gray-900">
       {/* Header Section */}
@@ -215,16 +202,14 @@ export default function PricingClient({ lang, dict }) {
         <h1
           className="text-5xl font-extrabold tracking-tight mb-4"
           data-aos="fade-up"
-        >
-          Grow with <span className="text-red-600">Fewer Fees</span> & More
-          Power
-        </h1>
+          dangerouslySetInnerHTML={{ __html: dict.pricing.hero.title }}
+        />
         <p
           className="text-gray-600 text-lg max-w-2xl mx-auto mb-8"
           data-aos="fade-up"
           data-aos-delay="100"
         >
-          Choose a plan that fits your goals. Cancel anytime. No hidden fees.
+          {dict.pricing.hero.subtitle}
         </p>
 
         {/* Billing Toggle */}
@@ -243,7 +228,7 @@ export default function PricingClient({ lang, dict }) {
                   : "text-gray-600 hover:text-gray-800"
               }`}
             >
-              {cycle === "monthly" ? "Monthly" : "Quarterly (Save 10%)"}
+              {cycle === "monthly" ? dict.pricing.billing.monthly : dict.pricing.billing.quarterly}
             </button>
           ))}
         </div>
@@ -300,19 +285,15 @@ export default function PricingClient({ lang, dict }) {
       {/* Footer CTA */}
       <footer className="bg-gray-900 text-white py-20 text-center">
         <div className="max-w-3xl mx-auto" data-aos="fade-up">
-          <h2 className="text-3xl font-bold mb-4">
-            Get started with <span className="text-red-500">Your career</span>{" "}
-            today
-          </h2>
+          <h2
+            className="text-3xl font-bold mb-4"
+            dangerouslySetInnerHTML={{ __html: dict.pricing.footer.title }}
+          />
           <p className="text-gray-400 mb-8">
-            Try the Free plan or upgrade anytime. No credit card required to
-            begin.
+            {dict.pricing.footer.subtitle}
           </p>
-          <Button
-            onClick={() => handleSubscribe("free")}
-            className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl text-lg"
-          >
-            Start for Free
+          <Button className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl text-lg">
+            {dict.pricing.footer.cta}
           </Button>
         </div>
       </footer>

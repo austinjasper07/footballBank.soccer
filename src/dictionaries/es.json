@@ -92,7 +92,7 @@
     },
     "cta": {
       "title": "¿Listo para Dar el Siguiente Paso?",
-      "subtitle": "Ya seas una estrella en ascenso o un jugador experimentado, FootballBank está aquí para representarte con propósito, precisión y alcance global.",
+      "subtitle": "Ya seas una estrella en ascenso o un jugador experimentado, FootballBank.soccer está aquí para representarte con propósito, precisión y alcance global.",
       "consultation": {
         "title": "Consulta Gratuita",
         "subtitle": "Sesión de estrategia de 30 minutos",
@@ -107,7 +107,7 @@
         "consultation": "Programar Consulta",
         "profile": "Enviar Tu Perfil"
       },
-      "trust": "Confiable por jugadores mundialmente • Licenciado FIFA • 25+ Años de Experiencia"
+      "trust": "Confiable por jugadores mundialmente • Licenciado FIFA • 15+ Años de Experiencia"
     }
   },
   "navigation": {
@@ -222,6 +222,33 @@
     "aboutUs": "Acerca de Nosotros",
     "blog": "Blog",
     "careerTips": "Consejos de Carrera",
+    "careerTipsPage": {
+      "title": "Consejos de Carrera",
+      "subtitle": "Ya seas un futbolista en ascenso, un estudiante o un profesional que busca dejar huella, recorre tu camino profesional con intención, estrategia y perseverancia.",
+      "searchPlaceholder": "Buscar consejos de carrera...",
+      "categories": {
+        "all": "Todos los Consejos",
+        "planning": "Planificación",
+        "skills": "Habilidades",
+        "networking": "Red de Contactos",
+        "growth": "Crecimiento"
+      },
+      "featured": "Consejos Destacados",
+      "allTips": "Todos los Consejos de Carrera",
+      "tipsCount": "consejos",
+      "finalWord": {
+        "title": "Tu Carrera es Tu Legado",
+        "subtitle": "Planifica con anticipación, mantente enfocado y nunca dejes de invertir en tu crecimiento. En FootballBank.soccer, estamos comprometidos a guiar y representar a quienes están listos para tomar las riendas de su futuro.",
+        "mentorshipCta": "Obtener Mentoría",
+        "downloadGuide": "Descargar Guía"
+      },
+      "contact": {
+        "title": "¿Listo para Dar el Siguiente Paso?",
+        "subtitle": "Únete a miles de jugadores y profesionales que están construyendo sus carreras con FootballBank.soccer",
+        "submitProfile": "Enviar Tu Perfil",
+        "getInTouch": "Ponte en Contacto"
+      }
+    },
     "shop": "Tienda",
     "pricing": "Precios",
     "faq": "Preguntas Frecuentes",
@@ -243,10 +270,16 @@
     "visionText": "Un mundo donde cada jugador de fútbol talentoso tenga la oportunidad de ser descubierto y alcanzar su máximo potencial, sin importar su origen o ubicación.",
     "values": "Nuestros Valores",
     "valuesItems": {
-      "excellence": "Excelencia en todo lo que hacemos",
-      "integrity": "Integridad y transparencia en todos nuestros tratos",
-      "opportunity": "Oportunidad equitativa para todos los jugadores talentosos",
-      "innovation": "Innovación en el descubrimiento y desarrollo de talentos"
+      "integrity": "Integridad y Transparencia en Todos Nuestros Tratos",
+      "excellence": "Excelencia en Todo lo que Hacemos",
+      "opportunity": "Igualdad de Oportunidades para Todos los Jugadores Talentosos",
+      "innovation": "Innovación en el Descubrimiento y Desarrollo de Talentos"
+    },
+    "valuesDescriptions": {
+      "integrity": "Mantenemos la honestidad, la equidad y la responsabilidad en cada interacción. Nuestro compromiso con la transparencia construye confianza con jugadores, socios y aficionados, asegurando que cada decisión se tome con integridad y claridad.",
+      "excellence": "Apuntamos a los más altos estándares en todas las áreas — desde la gestión del talento hasta la innovación digital. Nuestro objetivo es ofrecer experiencias sobresalientes que reflejen nuestra pasión por el fútbol y nuestro impulso por la mejora continua.",
+      "opportunity": "Creemos que cada jugador dotado merece una oportunidad justa para brillar, sin importar su origen o circunstancia. Nuestra plataforma crea un espacio inclusivo donde el mérito y la dedicación son los únicos calificadores para el éxito.",
+      "innovation": "Aprovechamos la tecnología y métodos creativos de scouting para descubrir talento emergente y apoyar su crecimiento. Al combinar conocimientos basados en datos con mentoría experta, redefinimos cómo se descubre y se fomenta el potencial futbolístico."
     },
     "badge": "Acerca de Nosotros",
     "missionItems": [
@@ -347,9 +380,13 @@
   },
   "faq": {
     "title": "Preguntas Frecuentes",
-    "subtitle": "Encuentra respuestas a preguntas comunes sobre FootballBank",
+    "subtitle": "Encuentra respuestas a preguntas comunes sobre FootballBank.soccer",
     "searchPlaceholder": "Buscar FAQ...",
     "noResults": "No se encontraron resultados para tu búsqueda.",
+    "contactTitle": "¿Aún tienes preguntas?",
+    "contactSubtitle": "¿No encuentras lo que buscas? ¡Estamos aquí para ayudarte!",
+    "contactUs": "Contáctanos",
+    "submitProfile": "Enviar Perfil",
     "categories": {
       "general": "General",
       "players": "Para Jugadores",

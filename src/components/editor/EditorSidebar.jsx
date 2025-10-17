@@ -247,70 +247,82 @@ export function EditorSidebar({ activeView, onViewChange, collapsed, onToggleCol
         </div>
       </div>
 
-      {/* Mobile Sidebar */}
-      <div className={`md:hidden fixed inset-0 z-50 ${mobileOpen ? "block" : "hidden"}`}>
-        <div className="fixed inset-0 bg-black bg-opacity-50" onClick={toggleMobile} />
-        <div className="fixed left-0 top-0 h-full w-64 bg-[hsl(var(--card))] border-r border-[hsl(var(--border))] flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between p-4 border-b border-[hsl(var(--border))]">
-              <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">
-                Editor Dashboard
-              </h2>
-              <button onClick={toggleMobile} className="p-1 rounded-md hover:bg-[hsl(var(--accent))]">
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <nav className="p-4 flex-1 overflow-y-auto">
-              <ul className="space-y-2">
-                {navigationItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeView === item.id;
-
-                  return (
-                    <li key={item.id}>
-                      <Link
-                        href={item.href}
-                        onClick={() => {
-                          onViewChange(item.id);
-                          toggleMobile();
-                        }}
-                        className={`
-                          flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors
-                          ${
-                            isActive
-                              ? "bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"
-                              : "text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]"
-                          }
-                        `}
-                      >
-                        <Icon className="w-4 h-4 flex-shrink-0" />
-                        <span>{item.label}</span>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </nav>
-          </div>
-
-          <div className="p-4 border-t border-[hsl(var(--border))]">
-            <div className="text-xs text-[hsl(var(--muted-foreground))]">
-              Editor Dashboard v1.0
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Header */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-[hsl(var(--card))] border-b border-[hsl(var(--border))]">
-        <button onClick={toggleMobile} className="p-2 rounded-md hover:bg-[hsl(var(--accent))]">
+      {/* Mobile Toggle Button */}
+      <div className="md:hidden fixed top-4 left-4 z-50">
+        <button
+          onClick={toggleMobile}
+          className="bg-[hsl(var(--card))] border border-[hsl(var(--border))] p-2 rounded-md"
+        >
           <Menu className="w-5 h-5" />
         </button>
-        <h1 className="text-lg font-semibold text-[hsl(var(--foreground))]">
-          Editor Dashboard
-        </h1>
-        <div className="w-9" />
+      </div>
+
+      {/* Mobile Overlay */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={toggleMobile}
+        />
+      )}
+
+      {/* Mobile Sidebar */}
+      <div
+        className={`
+          fixed top-0 left-0 h-full z-50 md:hidden
+          bg-[hsl(var(--card))] border-r border-[hsl(var(--border))] 
+          transition-all duration-300 ease-in-out
+          ${mobileOpen ? "translate-x-0" : "-translate-x-full"}
+          w-64 flex flex-col justify-between
+        `}
+      >
+        <div>
+          <div className="flex items-center justify-between p-4 border-b border-[hsl(var(--border))]">
+            <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">
+              Editor Dashboard
+            </h2>
+            <button onClick={toggleMobile} className="p-1 rounded-md hover:bg-[hsl(var(--accent))]">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <nav className="p-4 flex-1 overflow-y-auto">
+            <ul className="space-y-2">
+              {navigationItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = activeView === item.id;
+
+                return (
+                  <li key={item.id}>
+                    <Link
+                      href={item.href}
+                      onClick={() => {
+                        onViewChange(item.id);
+                        toggleMobile();
+                      }}
+                      className={`
+                        flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors
+                        ${
+                          isActive
+                            ? "bg-accent-red text-[hsl(var(--primary-foreground))]"
+                            : "text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]"
+                        }
+                      `}
+                    >
+                      <Icon className="w-4 h-4 flex-shrink-0" />
+                      <span>{item.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        </div>
+
+        <div className="p-4 border-t border-[hsl(var(--border))]">
+          <div className="text-xs text-[hsl(var(--muted-foreground))]">
+            Editor Dashboard v1.0
+          </div>
+        </div>
       </div>
     </>
   );

@@ -124,15 +124,13 @@ const EditorDashboard = () => {
 
   return (
     <div className="flex h-screen bg-[hsl(var(--background))] overflow-hidden">
-      {/* Sidebar */}
-      <div className="fixed inset-y-0 left-0 z-40">
-        <EditorSidebar
-          activeView={activeView}
-          onViewChange={setActiveView}
-          collapsed={collapsed}
-          onToggleCollapse={() => setCollapsed(!collapsed)}
-        />
-      </div>
+      {/* Sidebar - only visible on desktop */}
+      <EditorSidebar
+        activeView={activeView}
+        onViewChange={setActiveView}
+        collapsed={collapsed}
+        onToggleCollapse={() => setCollapsed(!collapsed)}
+      />
 
       {/* Desktop */}
       <div
@@ -148,12 +146,12 @@ const EditorDashboard = () => {
       </div>
 
       {/* Mobile */}
-      <div className="block md:hidden w-full">
+      <div className="flex md:hidden flex-col w-full h-screen overflow-hidden">
         <EditorHeader
           title={getViewTitle().title}
           subtitle={getViewTitle().subtitle}
         />
-        <main className="p-6">{renderView()}</main>
+        <main className="flex-1 overflow-auto p-4">{renderView()}</main>
       </div>
     </div>
   );

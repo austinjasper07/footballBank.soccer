@@ -82,7 +82,7 @@ const AboutAgent = async ({ params }) => {
                       <div className="w-10 h-10 bg-accent-red/10 rounded-full flex items-center justify-center">
                         <i className="fa-solid fa-calendar text-accent-red"></i>
                       </div>
-                      <div>
+                      <div className="text-left">
                         <p className="font-semibold text-primary-text">
                           {dict.agentPage.hero.stats.experience.title}
                         </p>
@@ -96,7 +96,7 @@ const AboutAgent = async ({ params }) => {
                       <div className="w-10 h-10 bg-accent-green/10 rounded-full flex items-center justify-center">
                         <i className="fa-solid fa-graduation-cap text-accent-green"></i>
                       </div>
-                      <div>
+                      <div className="text-left">
                         <p className="font-semibold text-primary-text">
                           {dict.agentPage.hero.stats.certification.title}
                         </p>
@@ -110,7 +110,7 @@ const AboutAgent = async ({ params }) => {
                       <div className="w-10 h-10 bg-accent-amber/10 rounded-full flex items-center justify-center">
                         <i className="fa-solid fa-globe text-accent-amber"></i>
                       </div>
-                      <div>
+                      <div className="text-left">
                         <p className="font-semibold text-primary-text">
                           {dict.agentPage.hero.stats.network.title}
                         </p>
@@ -124,7 +124,7 @@ const AboutAgent = async ({ params }) => {
                       <div className="w-10 h-10 bg-accent-red/10 rounded-full flex items-center justify-center">
                         <i className="fa-solid fa-trophy text-accent-red"></i>
                       </div>
-                      <div>
+                      <div className="text-left">
                         <p className="font-semibold text-primary-text">
                           {dict.agentPage.hero.stats.focus.title}
                         </p>
@@ -262,15 +262,15 @@ const AboutAgent = async ({ params }) => {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link href={`/${lang}/contact`} className="group">
-              <span className="bg-white text-accent-red px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/90 transition-all duration-300 inline-flex items-center gap-3 shadow-xl hover:shadow-2xl transform hover:scale-105">
+			<div className="flex flex-col md:flex-row gap-6 justify-center">
+				<Link href={`/${lang}/contact`} className="group w-full md:w-auto">
+					<span className="bg-white text-accent-red px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/90 transition-all duration-300 inline-flex items-center gap-3 justify-center shadow-xl hover:shadow-2xl transform hover:scale-105 w-full md:w-auto">
                 <i className="fa-solid fa-calendar-plus"></i>
                 {dict.agentPage.cta.buttons.consultation}
               </span>
             </Link>
-            <Link href={`/${lang}/submit-profile`} className="group">
-              <span className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent-red transition-all duration-300 inline-flex items-center gap-3 backdrop-blur-sm hover:shadow-xl transform hover:scale-105">
+				<Link href={`/${lang}/submit-profile`} className="group w-full md:w-auto">
+					<span className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent-red transition-all duration-300 inline-flex items-center gap-3 justify-center backdrop-blur-sm hover:shadow-xl transform hover:scale-105 w-full md:w-auto">
                 <i className="fa-solid fa-file-upload"></i>
                 {dict.agentPage.cta.buttons.profile}
               </span>

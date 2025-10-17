@@ -1,14 +1,23 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Search, ExternalLink } from 'lucide-react'
 import "aos/dist/aos.css"
+import { useParams } from 'next/navigation'
+import { getClientDictionary } from '@/lib/client-dictionaries'
 
 export default function FAQPage() {
+  const params = useParams()
+  const lang = params?.lang || 'en'
+  const [dict, setDict] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
+
+  useEffect(() => {
+    getClientDictionary(lang).then(setDict)
+  }, [lang])
 
   const faqData = [
     {
@@ -49,7 +58,7 @@ export default function FAQPage() {
     {
       id: 'players-4',
       question: 'How long until I hear back after submitting?',
-      answer: 'Usually 3-7 days. If we\'re interested, we\'ll request verification materials or a live assessment.'
+      answer: 'Usually 3-7 business days. If we\'re interested, we\'ll request verification materials or a live assessment.'
     },
     {
       id: 'players-5',
@@ -110,11 +119,6 @@ export default function FAQPage() {
       id: 'highlights-2',
       question: 'Do you offer live streaming?',
       answer: 'Only where rights permit and subject to geoblocking. Otherwise, we link users to the official broadcasters/OTT platforms.'
-    },
-    {
-      id: 'highlights-3',
-      question: 'Where do live scores/fixtures come from?',
-      answer: 'From reputable data partners/APIs. Scores update automatically; occasional delays or discrepancies can occur.'
     },
     {
       id: 'highlights-4',
@@ -189,10 +193,10 @@ export default function FAQPage() {
       <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-16 max-w-4xl">
           <h1 className="text-4xl font-bold text-gray-900 text-center mb-4">
-            Frequently asked questions
+            {dict?.faq?.title || 'Frequently Asked Questions'}
           </h1>
           <p className="text-lg text-gray-600 text-center">
-            Everything you need to know about FootballBank.soccer
+            {dict?.faq?.subtitle || 'Find answers to common questions about FootballBank.soccer'}
           </p>
         </div>
       </div>
@@ -204,7 +208,7 @@ export default function FAQPage() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
             <Input
               type="text"
-              placeholder="Search FAQs..."
+              placeholder={dict?.faq?.searchPlaceholder || 'Search FAQ...'}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 pr-4 py-3 w-full border-gray-300 focus:border-accent-red focus:ring-accent-red"
@@ -218,7 +222,7 @@ export default function FAQPage() {
             <FAQAccordion faqs={filteredFAQs} />
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No FAQs found matching your search.</p>
+              <p className="text-gray-500 text-lg">{dict?.faq?.noResults || 'No results found for your search.'}</p>
             </div>
           )}
         </div>
@@ -226,10 +230,10 @@ export default function FAQPage() {
         {/* Contact Section */}
         <div className="mt-16 bg-gray-50 rounded-lg p-8 text-center">
           <h3 className="text-xl font-semibold text-gray-900 mb-4">
-            Still have questions?
+            {dict?.faq?.contactTitle || 'Still have questions?'}
           </h3>
           <p className="text-gray-600 mb-6">
-            Can't find what you're looking for? We're here to help!
+            {dict?.faq?.contactSubtitle || "Can't find what you're looking for? We're here to help!"}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
@@ -237,7 +241,7 @@ export default function FAQPage() {
               className="bg-accent-red hover:bg-accent-red/90 text-white px-6 py-2"
             >
               <a href="mailto:contact@footballbank.soccer">
-                Contact Us
+                {dict?.faq?.contactUs || 'Contact Us'}
               </a>
             </Button>
             <Button 
@@ -245,8 +249,8 @@ export default function FAQPage() {
               variant="outline"
               className="border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-2"
             >
-              <a href="/submit-profile">
-                Submit Profile
+              <a href={`/${lang}/submit-profile`}>
+                {dict?.faq?.submitProfile || 'Submit Profile'}
               </a>
             </Button>
           </div>

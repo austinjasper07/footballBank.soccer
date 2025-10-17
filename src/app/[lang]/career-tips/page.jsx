@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { getClientDictionary } from "@/lib/client-dictionaries";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -34,16 +36,23 @@ import {
 import "aos/dist/aos.css";
 
 export default function CareerTipsPage() {
+  const params = useParams();
+  const lang = params?.lang || "en";
+  const [dict, setDict] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [hoveredCard, setHoveredCard] = useState(null);
 
+  useEffect(() => {
+    getClientDictionary(lang).then(setDict);
+  }, [lang]);
+
   const categories = [
-    { id: "all", name: "All Tips", icon: Globe },
-    { id: "planning", name: "Planning", icon: Target },
-    { id: "skills", name: "Skills", icon: BookOpen },
-    { id: "networking", name: "Networking", icon: Network },
-    { id: "growth", name: "Growth", icon: TrendingUp },
+    { id: "all", name: dict?.careerTipsPage?.categories?.all || "All Tips", icon: Globe },
+    { id: "planning", name: dict?.careerTipsPage?.categories?.planning || "Planning", icon: Target },
+    { id: "skills", name: dict?.careerTipsPage?.categories?.skills || "Skills", icon: BookOpen },
+    { id: "networking", name: dict?.careerTipsPage?.categories?.networking || "Networking", icon: Network },
+    { id: "growth", name: dict?.careerTipsPage?.categories?.growth || "Growth", icon: TrendingUp },
   ];
 
   const tips = [
@@ -135,7 +144,7 @@ export default function CareerTipsPage() {
       id: 7,
       title: "Network Purposefully",
       description:
-        "Make intentional efforts to connect with people in your industry. Attend local tournaments, career expos, webinars, and conferences. Use social media platforms like LinkedIn or Instagram to follow key figures and engage thoughtfully.",
+        "Make intentional efforts to connect with people in your industry. Attend local tournaments, career expos, webinars, and conferences. Use social media platforms like Facebook, X, Youtube, TikTok and Instagram to follow key figures and engage thoughtfully.",
       icon: Network,
       color: "from-indigo-500 to-indigo-600",
       bgColor: "bg-indigo-50",
@@ -209,12 +218,10 @@ export default function CareerTipsPage() {
         {/* Page Header */}
         <div className="text-center mb-16" data-aos="fade-up">
           <h1 className="font-bold text-4xl lg:text-5xl leading-tight tracking-tight text-primary-text mb-6">
-            Career Tips
+            {dict?.careerTipsPage?.title || "Career Tips"}
           </h1>
           <p className="text-xl text-primary-muted mb-8 max-w-4xl mx-auto">
-            Whether you're an aspiring footballer, a student, or a professional
-            looking to make your mark, navigate your career path with intention,
-            strategy, and perseverance.
+            {dict?.careerTipsPage?.subtitle || "Whether you're an aspiring footballer, a student, or a professional looking to make your mark, navigate your career path with intention, strategy, and perseverance."}
           </p>
         </div>
 
@@ -227,7 +234,7 @@ export default function CareerTipsPage() {
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary-muted w-5 h-5" />
                   <Input
                     type="text"
-                    placeholder="Search career tips..."
+                    placeholder={dict?.careerTipsPage?.searchPlaceholder || "Search career tips..."}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-12 pr-4 py-4 w-full border-divider focus:border-accent-red rounded-xl text-lg bg-primary-bg"
@@ -266,7 +273,7 @@ export default function CareerTipsPage() {
             <div className="flex items-center gap-4 mb-8">
               <Star className="w-6 h-6 text-accent-red" />
               <h2 className="text-3xl font-bold text-primary-text">
-                Featured Tips
+                {dict?.careerTipsPage?.featured || "Featured Tips"}
               </h2>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -337,11 +344,11 @@ export default function CareerTipsPage() {
             <Lightbulb className="w-6 h-6 text-accent-red" />
             <h2 className="text-3xl font-bold text-primary-text">
               {selectedCategory === "all"
-                ? "All Career Tips"
-                : `${categories.find((c) => c.id === selectedCategory)?.name} Tips`}
+                ? (dict?.careerTipsPage?.allTips || "All Career Tips")
+                : `${categories.find((c) => c.id === selectedCategory)?.name} ${dict?.careerTipsPage?.tipsCount || "tips"}`}
             </h2>
             <Badge variant="outline" className="text-sm border-divider">
-              {filteredTips.length} tips
+              {filteredTips.length} {dict?.careerTipsPage?.tipsCount || "tips"}
             </Badge>
           </div>
 
@@ -402,13 +409,10 @@ export default function CareerTipsPage() {
               <Award className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-4xl font-bold mb-6">
-              Your Career is Your Legacy
+              {dict?.careerTipsPage?.finalWord?.title || "Your Career is Your Legacy"}
             </h2>
             <p className="text-xl text-red-100 leading-relaxed mb-8">
-              Plan ahead, stay focused, and never stop investing in your growth.
-              At FootballBank.soccer, we are committed to guiding and
-              representing individuals who are ready to take charge of their
-              future.
+              {dict?.careerTipsPage?.finalWord?.subtitle || "Plan ahead, stay focused, and never stop investing in your growth. At FootballBank.soccer, we are committed to guiding and representing individuals who are ready to take charge of their future."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -416,9 +420,9 @@ export default function CareerTipsPage() {
                 className="bg-white text-accent-red hover:bg-gray-100 px-8 py-4 rounded-xl shadow-lg"
                 asChild
               >
-                <Link href="/contact">
+                <Link href={`/${lang}/contact`}>
                   <MessageCircle className="w-5 h-5 mr-2" />
-                  Get Mentorship
+                  {dict?.careerTipsPage?.finalWord?.mentorshipCta || "Get Mentorship"}
                 </Link>
               </Button>
                <Button
@@ -427,15 +431,15 @@ export default function CareerTipsPage() {
                  className="border-2 border-white/30 text-white  px-8 py-4 rounded-xl backdrop-blur-sm"
                  asChild
                >
-                 <a
-                   href="/career-guide.pdf"
+                <a
+                  href="/career-guide.pdf"
                    download
                    target="_blank"
                    rel="noopener noreferrer"
                    style={{ textDecoration: "none" }}
                  >
                    <Download className="w-5 h-5 mr-2" />
-                   Download Guide
+                  {dict?.careerTipsPage?.finalWord?.downloadGuide || "Download Guide"}
                  </a>
                </Button>
             </div>
@@ -445,11 +449,10 @@ export default function CareerTipsPage() {
         {/* Contact Section */}
         <div className="text-center" data-aos="fade-up">
           <h3 className="text-3xl font-bold text-primary-text mb-4">
-            Ready to Take the Next Step?
+            {dict?.careerTipsPage?.contact?.title || "Ready to Take the Next Step?"}
           </h3>
           <p className="text-xl text-primary-muted mb-12 max-w-3xl mx-auto">
-            Join thousands of players and professionals who are building their
-            careers with FootballBank.soccer
+            {dict?.careerTipsPage?.contact?.subtitle || "Join thousands of players and professionals who are building their careers with FootballBank.soccer"}
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Button 
@@ -457,9 +460,9 @@ export default function CareerTipsPage() {
               className="bg-accent-red hover:bg-red-700 text-white px-8 py-4 rounded-xl shadow-lg"
               asChild
             >
-              <Link href="/submit-profile">
+              <Link href={`/${lang}/submit-profile`}>
                 <Users className="w-5 h-5 mr-2" />
-                Submit Your Profile
+                {dict?.careerTipsPage?.contact?.submitProfile || "Submit Your Profile"}
               </Link>
             </Button>
             <Button 
@@ -468,9 +471,9 @@ export default function CareerTipsPage() {
               className="border-2 border-accent-red text-accent-red hover:bg-red-50 px-8 py-4 rounded-xl"
               asChild
             >
-              <Link href="/contact">
+              <Link href={`/${lang}/contact`}>
                 <MessageCircle className="w-5 h-5 mr-2" />
-                Get in Touch
+                {dict?.careerTipsPage?.contact?.getInTouch || "Get in Touch"}
               </Link>
             </Button>
           </div>

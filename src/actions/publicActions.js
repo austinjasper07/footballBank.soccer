@@ -4,13 +4,63 @@ import dbConnect from "@/lib/mongodb";
 import { Post, Player, Product } from "@/lib/schemas";
 
 // 🔧 Helper: normalize MongoDB docs to plain serializable objects
-const normalize = (doc) => ({
-  ...doc,
-  id: doc._id?.toString(),
-  _id: undefined,
-  createdAt: doc.createdAt ? new Date(doc.createdAt).toISOString() : null,
-  updatedAt: doc.updatedAt ? new Date(doc.updatedAt).toISOString() : null,
-});
+const normalize = (doc) => {
+  if (!doc) return null;
+  
+  // Helper to recursively convert ObjectIds to strings
+  const convertObjectIds = (obj) => {
+    if (obj === null || obj === undefined) return obj;
+    
+    if (Array.isArray(obj)) {
+      return obj.map(item => convertObjectIds(item));
+    }
+    
+    // Handle Map objects (convert to plain object)
+    if (obj instanceof Map) {
+      const plainObj = {};
+      obj.forEach((value, key) => {
+        plainObj[key] = convertObjectIds(value);
+      });
+      return plainObj;
+    }
+    
+    if (typeof obj === 'object') {
+      // Check if it's an ObjectId
+      if (obj.constructor && obj.constructor.name === 'ObjectId') {
+        return obj.toString();
+      }
+      
+      const converted = {};
+      for (const key in obj) {
+        if (key === '_id' && obj[key]) {
+          // Convert _id to string
+          converted[key] = obj[key].toString();
+        } else if (obj[key] && typeof obj[key] === 'object' && obj[key].constructor && obj[key].constructor.name === 'ObjectId') {
+          // Convert any ObjectId to string
+          converted[key] = obj[key].toString();
+        } else if (typeof obj[key] === 'object') {
+          // Recursively convert nested objects
+          converted[key] = convertObjectIds(obj[key]);
+        } else {
+          converted[key] = obj[key];
+        }
+      }
+      return converted;
+    }
+    
+    return obj;
+  };
+
+  const converted = convertObjectIds(doc);
+  
+  return {
+    ...converted,
+    id: doc._id?.toString(),
+    _id: undefined,
+    createdAt: doc.createdAt ? new Date(doc.createdAt).toISOString() : null,
+    updatedAt: doc.updatedAt ? new Date(doc.updatedAt).toISOString() : null,
+  };
+};
 
 // POSTS
 export async function getAllPosts() {

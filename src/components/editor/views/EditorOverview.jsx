@@ -113,7 +113,7 @@ export default function EditorOverview({ onNavigateToEditor }) {
             <h3 className="text-lg font-semibold mb-4">Recent Posts</h3>
             <div className="space-y-3">
               {recentPosts.map((post) => (
-                <div key={post.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={post.id} className="flex flex-col lg:flex-row items-start lg:items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex-1">
                     <h4 className="font-medium text-sm truncate">{post.title}</h4>
                     <p className="text-xs text-gray-500">

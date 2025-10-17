@@ -2,8 +2,9 @@
 import 'server-only'
 
 const dictionaries = {
-  en: () => import('../dictionaries/en.json').then((module) => module.default),
-  es: () => import('../dictionaries/es.json').then((module) => module.default),
+  // Use JSON import assertions to keep Turbopack's module type stable
+  en: () => import('../dictionaries/en.json', { assert: { type: 'json' } }).then((module) => module.default),
+  es: () => import('../dictionaries/es.json', { assert: { type: 'json' } }).then((module) => module.default),
 }
 
 export const getDictionary = async (locale) => {

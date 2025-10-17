@@ -3,6 +3,7 @@ import { Post } from "@/lib/schemas"
 import ClientSideFilterWrapper from "./components/ClientSideFilterWrapper"
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { getDictionary } from "@/lib/dictionaries";
+import dbConnect from "@/lib/mongodb";
 
 export async function generateMetadata({ params }) {
   const { lang } = await params;
@@ -30,9 +31,12 @@ export default async function BlogPage({ params }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
 
+  // Ensure database connection
+  await dbConnect();
+
   let posts = [];
   try {
-    posts = await Post.find({ status: 'published' }).sort({ createdAt: -1 }).lean();
+    posts = await Post.find({ status: 'Published' }).sort({ createdAt: -1 }).lean();
   } catch (error) {
     console.error('Error fetching posts:', error);
     // Return empty array if database is not available
@@ -57,7 +61,7 @@ export default async function BlogPage({ params }) {
 
   let featuredPosts = [];
   try {
-    featuredPosts = await Post.find({ featured: true, status: 'published' }).sort({ createdAt: -1 }).lean();
+    featuredPosts = await Post.find({ featured: true, status: 'Published' }).sort({ createdAt: -1 }).lean();
   } catch (error) {
     console.error('Error fetching featured posts:', error);
     featuredPosts = [];

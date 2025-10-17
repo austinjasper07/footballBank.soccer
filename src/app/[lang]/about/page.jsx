@@ -30,22 +30,22 @@ export default async function AboutPage({ params }) {
     {
       icon: Shield,
       title: dict.about.valuesItems.integrity,
-      description: dict.about.valuesItems.integrity
+      description: dict.about.valuesDescriptions?.integrity || dict.about.valuesItems.integrity
     },
     {
       icon: Award,
       title: dict.about.valuesItems.excellence, 
-      description: dict.about.valuesItems.excellence
+      description: dict.about.valuesDescriptions?.excellence || dict.about.valuesItems.excellence
     },
     {
       icon: Globe,
       title: dict.about.valuesItems.opportunity,
-      description: dict.about.valuesItems.opportunity
+      description: dict.about.valuesDescriptions?.opportunity || dict.about.valuesItems.opportunity
     },
     {
       icon: Heart,
       title: dict.about.valuesItems.innovation,
-      description: dict.about.valuesItems.innovation
+      description: dict.about.valuesDescriptions?.innovation || dict.about.valuesItems.innovation
     }
   ]
 

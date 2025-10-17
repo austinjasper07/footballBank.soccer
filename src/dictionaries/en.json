@@ -92,7 +92,7 @@
     },
     "cta": {
       "title": "Ready to Take the Next Step?",
-      "subtitle": "Whether you're a rising star or a seasoned player, FootballBank is here to represent you with purpose, precision, and global reach.",
+      "subtitle": "Whether you're a rising star or a seasoned player, FootballBank.soccer is here to represent you with purpose, precision, and global reach.",
       "consultation": {
         "title": "Free Consultation",
         "subtitle": "30-minute strategy session",
@@ -107,7 +107,7 @@
         "consultation": "Schedule Consultation",
         "profile": "Submit Your Profile"
       },
-      "trust": "Trusted by players worldwide • FIFA Licensed • 25+ Years Experience"
+      "trust": "Trusted by players worldwide • FIFA Licensed • 15+ Years Experience"
     }
   },
   "navigation": {
@@ -143,7 +143,7 @@
       },
       "globalNetwork": {
         "title": "Global Club Network",
-        "description": "Extensive connections with top clubs across Europe, Asia, and the Americas."
+        "description": "Extensive connections with top clubs across Europe, Asia, North America and South Americas."
       },
       "rapidVisibility": {
         "title": "Rapid Profile Visibility",
@@ -222,6 +222,33 @@
     "aboutUs": "About Us",
     "blog": "Blog",
     "careerTips": "Career Tips",
+    "careerTipsPage": {
+      "title": "Career Tips",
+      "subtitle": "Whether you're an aspiring footballer, a student, or a professional looking to make your mark, navigate your career path with intention, strategy, and perseverance.",
+      "searchPlaceholder": "Search career tips...",
+      "categories": {
+        "all": "All Tips",
+        "planning": "Planning",
+        "skills": "Skills",
+        "networking": "Networking",
+        "growth": "Growth"
+      },
+      "featured": "Featured Tips",
+      "allTips": "All Career Tips",
+      "tipsCount": "tips",
+      "finalWord": {
+        "title": "Your Career is Your Legacy",
+        "subtitle": "Plan ahead, stay focused, and never stop investing in your growth. At FootballBank.soccer, we are committed to guiding and representing individuals who are ready to take charge of their future.",
+        "mentorshipCta": "Get Mentorship",
+        "downloadGuide": "Download Guide"
+      },
+      "contact": {
+        "title": "Ready to Take the Next Step?",
+        "subtitle": "Join thousands of players and professionals who are building their careers with FootballBank.soccer",
+        "submitProfile": "Submit Your Profile",
+        "getInTouch": "Get in Touch"
+      }
+    },
     "shop": "Shop",
     "pricing": "Pricing",
     "faq": "FAQ",
@@ -243,14 +270,20 @@
     "visionText": "A world where every talented football player has the opportunity to be discovered and reach their full potential, regardless of their background or location.",
     "values": "Our Values",
     "valuesItems": {
-      "excellence": "Excellence in everything we do",
-      "integrity": "Integrity and transparency in all our dealings",
-      "opportunity": "Equal opportunity for all talented players",
-      "innovation": "Innovation in talent discovery and development"
+      "integrity": "Integrity and Transparency in All Our Dealings",
+      "excellence": "Excellence in Everything We Do",
+      "opportunity": "Equal Opportunity for All Talented Players",
+      "innovation": "Innovation in Talent Discovery and Development"
+    },
+    "valuesDescriptions": {
+      "integrity": "We uphold honesty, fairness, and accountability in every interaction. Our commitment to transparency builds trust with players, partners, and fans, ensuring that every decision is made with integrity and clarity.",
+      "excellence": "We strive for the highest standards across all areas — from talent management to digital innovation. Our goal is to consistently deliver outstanding experiences that reflect our passion for football and our drive for continuous improvement.",
+      "opportunity": "We believe that every gifted player deserves a fair chance to shine, regardless of background or circumstance. Our platform creates an inclusive space where merit and dedication are the only qualifiers for success.",
+      "innovation": "We leverage technology and creative scouting methods to uncover emerging talent and support their growth. By combining data-driven insights with expert mentorship, we redefine how football potential is discovered and nurtured."
     },
     "badge": "About Us",
     "missionItems": [
-      "Identify and represent emerging football talent from underrepresented regions",
+      "Identify and represent emerging football talent from under-represented regions",
       "Provide transparent and structured platform for player visibility",
       "Deliver tailored career support and representation",
       "Foster ethical football agency practices"
@@ -342,14 +375,15 @@
     "mondayFriday": "Monday - Friday: 9:00 AM - 6:00 PM",
     "weekend": "Weekend: 10:00 AM - 4:00 PM"
   },
-  "players": {
-    "title": "Talent Showcase"
-  },
   "faq": {
     "title": "Frequently Asked Questions",
     "subtitle": "Find answers to common questions about FootballBank",
     "searchPlaceholder": "Search FAQ...",
     "noResults": "No results found for your search.",
+    "contactTitle": "Still have questions?",
+    "contactSubtitle": "Can't find what you're looking for? We're here to help!",
+    "contactUs": "Contact Us",
+    "submitProfile": "Submit Profile",
     "categories": {
       "general": "General",
       "players": "For Players",
@@ -650,23 +684,7 @@
     "valuesSection": {
       "subtitle": "The principles that guide everything we do at FootballBank.soccer"
     },
-    "joinMovement": {
-      "title": "Join the Movement",
-      "subtitle": "Whether you're a footballer ready to be seen, a scout seeking fresh talent, or a supporter of grassroots development—FootballBank.soccer is your trusted partner in the beautiful game.",
-      "description": "Let's connect talent to opportunity.",
-      "buttons": {
-        "getStarted": "Get Started",
-        "contactUs": "Contact Us"
-      }
-    },
-    "contactSection": {
-      "title": "Get in Touch",
-      "subtitle": "Ready to take the next step? We're here to help you achieve your football dreams.",
-      "buttons": {
-        "email": "contact@footballbank.soccer",
-        "learnMore": "Learn More"
-      }
-    },
+    
     "badge": "About Us",
     "featuredPlayers": {
       "subtitle": "Discover exceptional talent from around the world"

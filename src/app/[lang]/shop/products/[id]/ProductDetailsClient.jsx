@@ -327,10 +327,10 @@ export default function ProductDetailsClient({ product, lang, dict }) {
                   {product.discount > 0 ? (
                     <>
                       <span className="text-accent-red text-3xl font-bold">
-                        ₦{finalPrice}
+                        ${finalPrice}
                       </span>
                       <span className="line-through text-gray-400 text-lg">
-                        ₦{product.price}
+                        ${product.price}
                       </span>
                       <span className="bg-green-600 text-white px-2 py-1 rounded text-sm font-semibold">
                         {product.discount}% OFF
@@ -338,7 +338,7 @@ export default function ProductDetailsClient({ product, lang, dict }) {
                     </>
                   ) : (
                     <span className="text-accent-red text-3xl font-bold">
-                      ₦{finalPrice}
+                      ${finalPrice}
                     </span>
                   )}
                 </div>

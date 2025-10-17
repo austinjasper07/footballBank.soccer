@@ -123,7 +123,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="flex h-screen bg-[hsl(var(--background))] overflow-x-scroll">
+    <div className="flex h-screen bg-[hsl(var(--background))] overflow-hidden">
       <AdminSidebar
         activeView={activeView}
         onViewChange={setActiveView}
@@ -146,12 +146,12 @@ const AdminDashboard = () => {
       </div>
 
       {/* Mobile */}
-      <div className="block md:hidden w-full">
+      <div className="flex md:hidden flex-col w-full h-screen overflow-hidden">
         <AdminHeader
           title={getViewTitle().title}
           subtitle={getViewTitle().subtitle}
         />
-        <main className="p-6">{renderView()}</main>
+        <main className="flex-1 overflow-auto p-4">{renderView()}</main>
       </div>
     </div>
   );
