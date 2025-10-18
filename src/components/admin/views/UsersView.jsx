@@ -34,6 +34,13 @@ import {
 
 const ITEMS_PER_PAGE = 5;
 
+// Utility function to truncate text to 100 characters for mobile
+const truncateText = (text, maxLength = 100) => {
+  if (!text || typeof text !== 'string') return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength).trim() + '...';
+};
+
 export default function UsersView() {
   const { toast } = useToast();
   const [users, setUsers] = useState([]);
@@ -208,10 +215,14 @@ export default function UsersView() {
               <tbody>
                 {paginatedUsers.map((user) => (
                   <tr key={user.id} className="border-t border-border hover:bg-muted/40">
-                    <td className="p-4">
-                      {user.firstName} {user.lastName}
+                    <td className="p-4" title={`${user.firstName} ${user.lastName}`}>
+                      <span className="hidden sm:inline">{user.firstName} {user.lastName}</span>
+                      <span className="sm:hidden">{truncateText(`${user.firstName} ${user.lastName}`, 100)}</span>
                     </td>
-                    <td className="p-4">{user.email}</td>
+                    <td className="p-4" title={user.email}>
+                      <span className="hidden sm:inline">{user.email}</span>
+                      <span className="sm:hidden">{truncateText(user.email, 100)}</span>
+                    </td>
                     <td className="p-4 capitalize">{user.role}</td>
                     <td className="p-4">
                       <Badge
@@ -225,7 +236,32 @@ export default function UsersView() {
                       </Badge>
                     </td>
                     <td className="p-4">
-                      <div className="flex items-center gap-2">
+                      {/* Mobile Layout */}
+                      <div className="block sm:hidden">
+                        <div className="flex gap-2">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleEditUser(user)}
+                            className="flex-1"
+                          >
+                            <Edit className="h-4 w-4 mr-1" />
+                            <span className="text-xs">Edit</span>
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleDeleteUser(user.id)}
+                            className="flex-1"
+                          >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            <span className="text-xs">Delete</span>
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Desktop Layout */}
+                      <div className="hidden sm:flex items-center gap-2">
                         <Button variant="ghost" size="sm" onClick={() => handleEditUser(user)}>
                           <Edit className="h-4 w-4" />
                         </Button>

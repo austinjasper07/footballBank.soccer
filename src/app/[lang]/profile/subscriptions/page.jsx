@@ -107,14 +107,14 @@ export default function SubscriptionsPage() {
 
   return (
     <ProfileLayout title="Subscriptions" userRole={user?.role}>
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-primary-text">My Subscriptions</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-primary-text">My Subscriptions</h1>
             <p className="text-primary-muted">Manage your active subscriptions</p>
           </div>
-          <Button asChild>
+          <Button asChild className="self-start sm:self-auto">
             <Link href="/pricing">
               <Plus className="w-4 h-4 mr-2" />
               View Plans
@@ -123,43 +123,43 @@ export default function SubscriptionsPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <Card className="bg-primary-card border border-divider">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-primary-muted">Active Subscriptions</p>
-                  <p className="text-2xl font-bold text-primary-text">{activeSubscriptions.length}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-primary-muted truncate">Active Subscriptions</p>
+                  <p className="text-lg sm:text-xl lg:text-2xl font-bold text-primary-text">{activeSubscriptions.length}</p>
                 </div>
-                <CheckCircle className="w-8 h-8 text-green-500" />
+                <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-500 flex-shrink-0" />
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-primary-card border border-divider">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-primary-muted">Total Subscriptions</p>
-                  <p className="text-2xl font-bold text-primary-text">{Array.isArray(subscriptions) ? subscriptions.length : 0}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-primary-muted truncate">Total Subscriptions</p>
+                  <p className="text-lg sm:text-xl lg:text-2xl font-bold text-primary-text">{Array.isArray(subscriptions) ? subscriptions.length : 0}</p>
                 </div>
-                <Crown className="w-8 h-8 text-accent-red" />
+                <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-accent-red flex-shrink-0" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-primary-card border border-divider">
-            <CardContent className="p-6">
+          <Card className="bg-primary-card border border-divider sm:col-span-2 lg:col-span-1">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-primary-muted">Monthly Cost</p>
-                  <p className="text-2xl font-bold text-primary-text">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-primary-muted truncate">Monthly Cost</p>
+                  <p className="text-lg sm:text-xl lg:text-2xl font-bold text-primary-text truncate">
                     {formatCurrency(
                       activeSubscriptions.reduce((total, sub) => total + (sub.price || 0), 0)
                     )}
                   </p>
                 </div>
-                <DollarSign className="w-8 h-8 text-accent-red" />
+                <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 text-accent-red flex-shrink-0" />
               </div>
             </CardContent>
           </Card>
@@ -168,14 +168,14 @@ export default function SubscriptionsPage() {
         {/* Active Subscriptions */}
         {activeSubscriptions.length > 0 && (
           <Card className="bg-primary-card border border-divider">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                 <CheckCircle className="w-5 h-5 text-green-500" />
                 Active Subscriptions
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {activeSubscriptions.map((subscription) => (
                   <SubscriptionCard
                     key={subscription._id || subscription.id || `active-${Math.random()}`}
@@ -191,14 +191,14 @@ export default function SubscriptionsPage() {
         {/* Inactive Subscriptions */}
         {inactiveSubscriptions.length > 0 && (
           <Card className="bg-primary-card border border-divider">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                 <Settings className="w-5 h-5 text-primary-muted" />
                 Inactive Subscriptions
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {inactiveSubscriptions.map((subscription) => (
                   <SubscriptionCard
                     key={subscription._id || subscription.id || `inactive-${Math.random()}`}

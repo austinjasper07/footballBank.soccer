@@ -19,7 +19,23 @@ const oswald = Oswald({
 export const metadata = generateSEOMetadata({
   title: "Global Football Talent Platform",
   description: "Discover and showcase football talent worldwide. Connect players with scouts, clubs, and opportunities through our comprehensive talent banking platform.",
-  keywords: ["football talent", "soccer players", "football scouts", "player profiles", "football recruitment"],
+  keywords: [
+    "football talent", 
+    "soccer players", 
+    "football scouts", 
+    "player profiles", 
+    "football recruitment",
+    "player publication",
+    "football agency",
+    "football bank",
+    "football talent management",
+    "soccer agent services",
+    "player representation",
+    "football career development",
+    "soccer talent scouting",
+    "football player database",
+    "soccer recruitment platform"
+  ],
   url: "/",
 });
 

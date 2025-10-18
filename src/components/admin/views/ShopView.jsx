@@ -26,6 +26,13 @@ import LoadingSplash from '@/components/ui/loading-splash';
 
 const ITEMS_PER_PAGE = 5;
 
+// Utility function to truncate text to 100 characters for mobile
+const truncateText = (text, maxLength = 50) => {
+  if (!text || typeof text !== 'string') return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength).trim() + '...';
+};
+
 export default function ProductsView() {
   const [searchQuery, setSearchQuery] = useState('');
   const { toast } = useToast();
@@ -201,24 +208,33 @@ export default function ProductsView() {
       </div>
 
       {/* Table Header */}
-      <div className="flex md:items-center justify-between gap-3">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
           <h2 className="text-xl font-semibold">Products</h2>
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
             placeholder="Search products..."
-            className="md:w-80"
+            className="w-full sm:w-80"
           />
         </div>
 
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => window.open('/shop/products', '_blank')}>
-            View Shop
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button 
+            variant="outline" 
+            onClick={() => window.open('/shop/products', '_blank')}
+            className="w-full sm:w-auto"
+          >
+            <span className="hidden sm:inline">View Shop</span>
+            <span className="sm:hidden">View Shop</span>
           </Button>
-          <Button onClick={() => setProductDialogOpen(true)}>
+          <Button 
+            onClick={() => setProductDialogOpen(true)}
+            className="w-full sm:w-auto"
+          >
             <Plus className="h-4 w-4 mr-2" />
-            Add Product
+            <span className="hidden sm:inline">Add Product</span>
+            <span className="sm:hidden">Add Product</span>
           </Button>
         </div>
       </div>
@@ -250,10 +266,16 @@ export default function ProductsView() {
                           height={48}
                           className="w-12 h-12 rounded-lg object-cover"
                         />
-                        <p className="font-medium">{product.name}</p>
+                        <p className="font-medium" title={product.name}>
+                          <span className="hidden sm:inline">{product.name}</span>
+                          <span className="sm:hidden">{truncateText(product.name, 100)}</span>
+                        </p>
                       </div>
                     </td>
-                    <td className="p-4">{product.category}</td>
+                    <td className="p-4" title={product.category}>
+                      <span className="hidden sm:inline">{product.category}</span>
+                      <span className="sm:hidden">{truncateText(product.category, 100)}</span>
+                    </td>
                     <td className="p-4 font-medium">${product.price.toFixed(2)}</td>
                     <td className="p-4">
                       <span

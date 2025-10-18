@@ -5,6 +5,7 @@ import { useAuth } from "@/context/NewAuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import {
   ArrowLeft,
   CheckCircle,
@@ -24,6 +25,7 @@ import Image from "next/image";
 
 export default function OrderDetailPage({ params }) {
   const { user, isAuthenticated, loading: isLoading } = useAuth();
+  const { toast } = useToast();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -76,9 +78,17 @@ export default function OrderDetailPage({ params }) {
   const copyOrderId = async (orderId) => {
     try {
       await navigator.clipboard.writeText(orderId);
-      // You could add a toast notification here if needed
+      toast({
+        title: "Order ID Copied",
+        description: "Order ID has been copied to clipboard",
+      });
     } catch (err) {
       console.error('Failed to copy order ID:', err);
+      toast({
+        title: "Copy Failed",
+        description: "Failed to copy order ID to clipboard",
+        variant: "destructive",
+      });
     }
   };
 
@@ -157,10 +167,15 @@ export default function OrderDetailPage({ params }) {
     );
   }
 
-  const subtotal = (order.items || []).reduce(
+  // Use totalAmount from order if available, otherwise calculate from items
+  const subtotal = order.totalAmount || (order.items || []).reduce(
     (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
     0
   );
+  
+  // Calculate tax and shipping from order data
+  const taxAmount = order.taxAmount || 0;
+  const shippingAmount = order.shippingAmount || 0;
 
   return (
     <ProfileLayout title="Order Details" userRole={user?.role}>
@@ -323,16 +338,18 @@ export default function OrderDetailPage({ params }) {
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping:</span>
-                    <span className="text-green-600 font-medium">FREE</span>
+                    <span className={shippingAmount === 0 ? "text-green-600 font-medium" : ""}>
+                      {shippingAmount === 0 ? "FREE" : formatCurrency(shippingAmount)}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span>Tax:</span>
-                    <span>{formatCurrency(subtotal * 0.06625)}</span>
+                    <span>{formatCurrency(taxAmount)}</span>
                   </div>
                   <div className="border-t border-divider pt-3">
                     <div className="flex justify-between font-semibold text-lg">
                       <span>Total:</span>
-                      <span className="text-accent-red">{formatCurrency(order.totalAmount || subtotal)}</span>
+                      <span className="text-accent-red">{formatCurrency(subtotal + taxAmount + shippingAmount)}</span>
                     </div>
                   </div>
                 </div>

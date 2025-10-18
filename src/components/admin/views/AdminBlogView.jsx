@@ -119,9 +119,9 @@ export default function AdminBlogView() {
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <Card className="border-0 shadow-sm">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center gap-4">
               <div className="h-8 w-8 bg-blue-500 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">T</span>
@@ -135,7 +135,7 @@ export default function AdminBlogView() {
         </Card>
 
         <Card className="border-0 shadow-sm">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center gap-4">
               <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">P</span>
@@ -163,7 +163,7 @@ export default function AdminBlogView() {
         </Card>
 
         <Card className="border-0 shadow-sm">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center gap-4">
               <Eye className="h-8 w-8 text-purple-500" />
               <div>
@@ -176,20 +176,25 @@ export default function AdminBlogView() {
       </div>
 
       {/* Table Header */}
-      <div className="flex md:items-center justify-between">
-        <div className="flex flex-col md:flex-row md:items-center gap-4">
-          <h2 className="text-xl font-semibold text-nowrap">Blog Posts</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+          <h2 className="text-xl font-semibold">Blog Posts</h2>
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
             placeholder="Search posts..."
-            className="w-50 md:w-80"
+            className="w-full sm:w-80"
           />
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => window.open('/editor', '_blank')} variant="outline">
+          <Button 
+            onClick={() => window.open('/editor', '_blank')} 
+            variant="outline"
+            className="w-full sm:w-auto"
+          >
             <Eye className="h-4 w-4 mr-2" />
-            Go to Editor Dashboard
+            <span className="hidden sm:inline">Go to Editor Dashboard</span>
+            <span className="sm:hidden">Editor Dashboard</span>
           </Button>
         </div>
       </div>
@@ -252,7 +257,41 @@ export default function AdminBlogView() {
                     {new Date(post.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex items-center gap-2">
+                    {/* Mobile Layout */}
+                    <div className="block sm:hidden">
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleViewPost(post)}
+                          className="flex-1 text-blue-600 hover:text-blue-700"
+                        >
+                          <Eye className="h-4 w-4 mr-1" />
+                          <span className="text-xs">View</span>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditPost(post)}
+                          className="flex-1"
+                        >
+                          <Edit className="h-4 w-4 mr-1" />
+                          <span className="text-xs">Edit</span>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeletePost(post)}
+                          className="flex-1 text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          <span className="text-xs">Delete</span>
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Desktop Layout */}
+                    <div className="hidden sm:flex items-center gap-2">
                       <Button
                         variant="outline"
                         size="sm"

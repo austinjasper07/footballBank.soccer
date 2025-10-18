@@ -22,6 +22,13 @@ import LoadingSplash from '@/components/ui/loading-splash';
 
 const ITEMS_PER_PAGE = 5;
 
+// Utility function to truncate text to 100 characters for mobile
+const truncateText = (text, maxLength = 100) => {
+  if (!text || typeof text !== 'string') return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength).trim() + '...';
+};
+
 export default function OrdersView() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -276,11 +283,25 @@ export default function OrdersView() {
                 {paginatedOrders.map((order) => (
                   <tr key={order.id} className="border-t border-border hover:bg-muted/50">
                     <td className="p-4 font-mono text-sm">{order.id}</td>
-                    <td className="p-4 text-sm">
-                      {order.userId?.firstName && order.userId?.lastName 
+                    <td className="p-4 text-sm" title={
+                      order.userId?.firstName && order.userId?.lastName 
                         ? `${order.userId.firstName} ${order.userId.lastName}`
                         : order.userId?.email || 'Unknown Customer'
-                      }
+                    }>
+                      <span className="hidden sm:inline">
+                        {order.userId?.firstName && order.userId?.lastName 
+                          ? `${order.userId.firstName} ${order.userId.lastName}`
+                          : order.userId?.email || 'Unknown Customer'
+                        }
+                      </span>
+                      <span className="sm:hidden">
+                        {truncateText(
+                          order.userId?.firstName && order.userId?.lastName 
+                            ? `${order.userId.firstName} ${order.userId.lastName}`
+                            : order.userId?.email || 'Unknown Customer',
+                          100
+                        )}
+                      </span>
                     </td>
                     <td className="p-4">{order.items.length} items</td>
                     <td className="p-4 font-medium">
@@ -302,7 +323,73 @@ export default function OrdersView() {
                       {new Date(order.createdAt).toLocaleDateString()}
                     </td>
                     <td className="p-4">
-                      <div className="flex items-center gap-2">
+                      {/* Mobile Layout */}
+                      <div className="block sm:hidden">
+                        <div className="space-y-2">
+                          <div className="flex gap-2">
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => handleViewOrderDetails(order.id)}
+                              className="flex-1"
+                            >
+                              <Eye className="h-4 w-4 mr-1" />
+                              <span className="text-xs">View</span>
+                            </Button>
+                            {order.status === 'pending' && (
+                              <>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleOrderStatusUpdate(order.id, 'fulfilled')}
+                                  disabled={loadingStates[order.id]}
+                                  className="flex-1 text-blue-600 border-blue-600 hover:bg-blue-50"
+                                >
+                                  {loadingStates[order.id] ? (
+                                    <RefreshCw className="h-4 w-4 animate-spin" />
+                                  ) : (
+                                    <Truck className="h-4 w-4" />
+                                  )}
+                                  <span className="ml-1 text-xs">Fulfill</span>
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleOrderStatusUpdate(order.id, 'cancelled')}
+                                  disabled={loadingStates[order.id]}
+                                  className="flex-1 text-red-600 border-red-600 hover:bg-red-50"
+                                >
+                                  {loadingStates[order.id] ? (
+                                    <RefreshCw className="h-4 w-4 animate-spin" />
+                                  ) : (
+                                    <XCircle className="h-4 w-4" />
+                                  )}
+                                  <span className="ml-1 text-xs">Cancel</span>
+                                </Button>
+                              </>
+                            )}
+                            {order.status === 'fulfilled' && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleOrderStatusUpdate(order.id, 'completed')}
+                                disabled={loadingStates[order.id]}
+                                className="flex-1 text-green-600 border-green-600 hover:bg-green-50"
+                              >
+                                {loadingStates[order.id] ? (
+                                  <RefreshCw className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <CheckCircle className="h-4 w-4" />
+                                )}
+                                <span className="ml-1 text-xs">Complete</span>
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Desktop Layout */}
+                      <div className="hidden sm:flex items-center gap-2">
                         <Button 
                           variant="ghost" 
                           size="sm"

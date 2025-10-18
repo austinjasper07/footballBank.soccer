@@ -38,6 +38,13 @@ import LoadingSplash from "@/components/ui/loading-splash";
 
 const ITEMS_PER_PAGE = 5;
 
+// Utility function to truncate text to 100 characters for mobile
+const truncateText = (text, maxLength = 100) => {
+  if (!text || typeof text !== 'string') return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength).trim() + '...';
+};
+
 export default function PlayersView() {
   const { toast } = useToast();
 
@@ -235,8 +242,13 @@ export default function PlayersView() {
                           className="w-10 h-10 rounded-full object-cover"
                         />
                         <div>
-                          <p className="font-medium">
-                            {player.firstName} {player.lastName}
+                          <p className="font-medium" title={`${player.firstName} ${player.lastName}`}>
+                            <span className="hidden sm:inline">
+                              {player.firstName} {player.lastName}
+                            </span>
+                            <span className="sm:hidden">
+                              {truncateText(`${player.firstName} ${player.lastName}`, 100)}
+                            </span>
                           </p>
                           <p className="text-sm text-[hsl(var(--muted-foreground))]">
                             Age {calculateAge(player.dob)}
@@ -245,7 +257,10 @@ export default function PlayersView() {
                       </div>
                     </td>
                     <td className="p-4">{player.position}</td>
-                    <td className="p-4">{player.email}</td>
+                    <td className="p-4" title={player.email}>
+                      <span className="hidden sm:inline">{player.email}</span>
+                      <span className="sm:hidden">{truncateText(player.email, 100)}</span>
+                    </td>
                     <td className="p-4">{player.country}</td>
                     <td className="p-4">
                       <Badge
@@ -260,7 +275,32 @@ export default function PlayersView() {
                       </Badge>
                     </td>
                     <td className="p-4">
-                      <div className="flex items-center gap-2">
+                      {/* Mobile Layout */}
+                      <div className="block sm:hidden">
+                        <div className="flex gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditPlayer(player)}
+                            className="flex-1"
+                          >
+                            <Edit className="h-4 w-4 mr-1" />
+                            <span className="text-xs">Edit</span>
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeletePlayer(player.id)}
+                            className="flex-1"
+                          >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            <span className="text-xs">Delete</span>
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Desktop Layout */}
+                      <div className="hidden sm:flex items-center gap-2">
                         <Button
                           variant="ghost"
                           size="sm"

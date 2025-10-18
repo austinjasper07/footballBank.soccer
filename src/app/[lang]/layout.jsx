@@ -33,7 +33,23 @@ export async function generateMetadata({ params }) {
   return generateSEOMetadata({
     title: dict.seo.defaultTitle,
     description: dict.seo.defaultDescription,
-    keywords: ["football talent", "soccer players", "football scouts", "player profiles", "football recruitment"],
+    keywords: [
+      "football talent", 
+      "soccer players", 
+      "football scouts", 
+      "player profiles", 
+      "football recruitment",
+      "player publication",
+      "football agency",
+      "football bank",
+      "football talent management",
+      "soccer agent services",
+      "player representation",
+      "football career development",
+      "soccer talent scouting",
+      "football player database",
+      "soccer recruitment platform"
+    ],
     url: "/",
   });
 }

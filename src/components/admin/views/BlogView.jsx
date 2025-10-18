@@ -277,24 +277,34 @@ export default function BlogView() {
       </div>
 
       {/* Table Header */}
-      <div className="flex md:items-center justify-between">
-        <div className="flex flex-col md:flex-row md:items-center gap-4">
-          <h2 className="text-xl font-semibold text-nowrap">Blog Posts</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+          <h2 className="text-xl font-semibold">Blog Posts</h2>
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
             placeholder="Search posts..."
-            className="w-50 md:w-80"
+            className="w-full sm:w-80"
           />
         </div>
-        <div className="flex gap-2">
-          <Button onClick={() => setPostDialogOpen(true)} variant="outline">
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button 
+            onClick={() => setPostDialogOpen(true)} 
+            variant="outline"
+            className="w-full sm:w-auto"
+          >
             <Plus className="h-4 w-4 mr-2" />
-            Quick Post
+            <span className="hidden sm:inline">Quick Post</span>
+            <span className="sm:hidden">Quick Post</span>
           </Button>
-          <Button onClick={handleCreateNewPost} variant="outline">
+          <Button 
+            onClick={handleCreateNewPost} 
+            variant="outline"
+            className="w-full sm:w-auto"
+          >
             <Plus className="h-4 w-4 mr-2" />
-            Inline Editor
+            <span className="hidden sm:inline">Inline Editor</span>
+            <span className="sm:hidden">Inline Editor</span>
           </Button>
         </div>
       </div>
@@ -304,19 +314,27 @@ export default function BlogView() {
         <Card className="mb-6">
           <CardContent className="p-6">
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <h3 className="text-lg font-semibold">Create New Post</h3>
-                <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => setShowInlineEditor(false)}>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowInlineEditor(false)}
+                    className="w-full sm:w-auto"
+                  >
                     Cancel
                   </Button>
-                  <Button onClick={handleSaveNewPost} disabled={isSaving}>
+                  <Button 
+                    onClick={handleSaveNewPost} 
+                    disabled={isSaving}
+                    className="w-full sm:w-auto"
+                  >
                     {isSaving ? 'Saving...' : 'Save Post'}
                   </Button>
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div className="lg:col-span-1 space-y-4">
                   <div>
                     <label className="text-sm font-medium">Title *</label>
@@ -359,7 +377,7 @@ export default function BlogView() {
                     content={newPostData.content}
                     onChange={(content) => setNewPostData({ ...newPostData, content })}
                     placeholder="Start writing your blog post here..."
-                    className="min-h-[400px]"
+                    className="min-h-[300px] sm:min-h-[400px]"
                   />
                 </div>
               </div>
@@ -408,7 +426,41 @@ export default function BlogView() {
                       {post.views || 0}
                     </td>
                     <td className="p-4">
-                      <div className="flex items-center gap-2">
+                      {/* Mobile Layout */}
+                      <div className="block sm:hidden">
+                        <div className="flex gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleViewPost(post)}
+                            className="flex-1 text-blue-600 hover:text-blue-700"
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            <span className="text-xs">View</span>
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditPost(post)}
+                            className="flex-1"
+                          >
+                            <Edit className="h-4 w-4 mr-1" />
+                            <span className="text-xs">Edit</span>
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeletePost(post.id)}
+                            className="flex-1"
+                          >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            <span className="text-xs">Delete</span>
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Desktop Layout */}
+                      <div className="hidden sm:flex items-center gap-2">
                         <Button
                           variant="ghost"
                           size="sm"

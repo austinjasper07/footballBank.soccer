@@ -45,6 +45,13 @@ const userSchema = new mongoose.Schema({
     countryCode: { type: String },
     isSameAsBilling: { type: Boolean, default: true }
   },
+  // Notification Preferences
+  notificationPreferences: {
+    email: { type: Boolean, default: true },
+    sms: { type: Boolean, default: false },
+    push: { type: Boolean, default: true },
+    marketing: { type: Boolean, default: false }
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

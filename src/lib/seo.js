@@ -22,7 +22,27 @@ export const siteConfig = {
     "football opportunities",
     "player showcase",
     "football agent",
-    "soccer careers"
+    "soccer careers",
+    "player publication",
+    "football agency",
+    "football bank",
+    "football talent management",
+    "soccer agent services",
+    "player representation",
+    "football career development",
+    "soccer talent scouting",
+    "football player database",
+    "soccer recruitment platform",
+    "football talent showcase",
+    "player career management",
+    "soccer talent agency",
+    "football player development",
+    "soccer career opportunities",
+    "football talent platform",
+    "player talent bank",
+    "soccer talent management",
+    "football career services",
+    "player talent agency"
   ]
 };
 

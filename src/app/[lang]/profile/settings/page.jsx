@@ -61,8 +61,21 @@ export default function SettingsPage() {
         newPassword: "",
         confirmPassword: "",
       });
+      fetchNotificationPreferences();
     }
   }, [isAuthenticated, user]);
+
+  const fetchNotificationPreferences = async () => {
+    try {
+      const response = await fetch("/api/profile/notifications");
+      if (response.ok) {
+        const data = await response.json();
+        setNotifications(data);
+      }
+    } catch (error) {
+      console.error("Error fetching notification preferences:", error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -72,11 +85,47 @@ export default function SettingsPage() {
     }));
   };
 
-  const handleNotificationChange = (key) => {
+  const handleNotificationChange = async (key) => {
+    const newValue = !notifications[key];
+    
+    // Optimistically update UI
     setNotifications(prev => ({
       ...prev,
-      [key]: !prev[key]
+      [key]: newValue
     }));
+
+    try {
+      const response = await fetch("/api/profile/notifications", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          [key]: newValue
+        }),
+      });
+
+      if (response.ok) {
+        setMessage("Notification preference updated successfully!");
+        setTimeout(() => setMessage(""), 3000);
+      } else {
+        // Revert on error
+        setNotifications(prev => ({
+          ...prev,
+          [key]: !newValue
+        }));
+        setError("Failed to update notification preference");
+        setTimeout(() => setError(""), 3000);
+      }
+    } catch (error) {
+      // Revert on error
+      setNotifications(prev => ({
+        ...prev,
+        [key]: !newValue
+      }));
+      setError("Failed to update notification preference");
+      setTimeout(() => setError(""), 3000);
+    }
   };
 
   const handleSaveProfile = async (e) => {

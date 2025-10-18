@@ -24,6 +24,13 @@ import { updatePost, deletePost } from "@/actions/adminActions";
 
 const ITEMS_PER_PAGE = 5;
 
+// Utility function to truncate text to 100 characters for mobile
+const truncateText = (text, maxLength = 100) => {
+  if (!text || typeof text !== 'string') return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength).trim() + '...';
+};
+
 export default function EditorPosts({ onNavigateToEditor }) {
   const { toast } = useToast();
 
@@ -239,21 +246,32 @@ export default function EditorPosts({ onNavigateToEditor }) {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div>
-                          <div className="text-sm font-medium text-gray-900">
-                            {post.title}
+                          <div className="text-sm font-medium text-gray-900" title={post.title}>
+                            <span className="hidden sm:inline">{post.title}</span>
+                            <span className="sm:hidden">{truncateText(post.title, 100)}</span>
                           </div>
                           <div className="text-sm text-gray-500 truncate max-w-xs">
-                            {post.summary ||
-                              post.content
-                                .replace(/<[^>]*>/g, "")
-                                .substring(0, 100)}
-                            ...
+                            <span className="hidden sm:inline">
+                              {post.summary ||
+                                post.content
+                                  .replace(/<[^>]*>/g, "")
+                                  .substring(0, 100)}
+                              ...
+                            </span>
+                            <span className="sm:hidden">
+                              {truncateText(
+                                post.summary ||
+                                  post.content.replace(/<[^>]*>/g, ""),
+                                100
+                              )}
+                            </span>
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {post.author}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900" title={post.author}>
+                      <span className="hidden sm:inline">{post.author}</span>
+                      <span className="sm:hidden">{truncateText(post.author, 100)}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Badge
