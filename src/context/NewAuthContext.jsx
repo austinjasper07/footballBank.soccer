@@ -136,7 +136,7 @@ export const NewAuthProvider = ({ children }) => {
   /**
    * Logs out user, clears local state, and revalidates session asynchronously
    */
-  const logout = async () => {
+  const logout = async (redirectToHome = false) => {
     try {
       console.log("🔐 Logging out user...");
       await fetch("/api/auth/logout", {
@@ -150,6 +150,11 @@ export const NewAuthProvider = ({ children }) => {
       // Non-blocking refresh for smoother UX
       checkUser();
       console.log("🔐 User state cleared and refreshed");
+      
+      // Redirect to home page if requested
+      if (redirectToHome) {
+        window.location.replace('/');
+      }
     }
   };
 

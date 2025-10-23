@@ -354,7 +354,7 @@ const agentSchema = new mongoose.Schema({
   name: { type: String, required: true, default: "Ayodeji Fatade" },
   profilePhoto: { type: String, default: "/FootballBank_agent.jpg" },
   bio: { type: String, default: "Experienced football agent with a proven track record of helping players achieve their professional goals." },
-  credentials: { type: String, default: "Licensed Agent" },
+  credentials: { type: String, default: "Licenced Agent" },
   location: { type: String, default: "United States" },
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },

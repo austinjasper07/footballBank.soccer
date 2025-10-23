@@ -6,22 +6,96 @@ import { useRouter } from "next/navigation";
 
 export default function SubscribeButton({ plan, duration, label }) {
   const [loading, setLoading] = useState(false);
+  const [currentSubscription, setCurrentSubscription] = useState(null);
+  const [checkingSubscription, setCheckingSubscription] = useState(false);
   const { user, isAuthenticated, loading: authLoading } = useAuth();
   const router = useRouter();
   const isMountedRef = useRef(true);
 
+  // Check current subscription status
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      checkCurrentSubscription();
+    }
+  }, [isAuthenticated, user]);
+
+  const checkCurrentSubscription = async () => {
+    setCheckingSubscription(true);
+    try {
+      const res = await fetch("/api/subscriptions/check");
+      if (res.ok) {
+        const data = await res.json();
+        setCurrentSubscription(data.subscription);
+      }
+    } catch (err) {
+      console.error("Error checking subscription:", err);
+    } finally {
+      setCheckingSubscription(false);
+    }
+  };
+
   const handleCheckout = async () => {
-    
     setLoading(true);
     
     if (!isAuthenticated) {
       router.push("/auth/login?redirect=/pricing");
       return;
     }
+
+    // Check if user already has an active subscription
+    if (currentSubscription && currentSubscription.isActive) {
+      const currentPlan = currentSubscription.plan || currentSubscription.planName;
+      if (currentPlan === plan) {
+        alert(`You already have an active ${plan} subscription. You can upgrade or downgrade from your profile.`);
+        setLoading(false);
+        return;
+      }
+      
+      // If user has a different plan, handle upgrade/downgrade
+      if (currentPlan !== plan) {
+        try {
+          const res = await fetch("/api/subscriptions/change", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ plan, duration }),
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            if (data.success) {
+              if (data.redirect && data.checkoutUrl) {
+                window.location.href = data.checkoutUrl;
+              } else {
+                alert(data.message || "Subscription changed successfully!");
+                router.push("/profile");
+              }
+            } else {
+              throw new Error(data.error || "Failed to change subscription");
+            }
+          } else {
+            const errorData = await res.json();
+            throw new Error(errorData.error || "Failed to change subscription");
+          }
+        } catch (err) {
+          console.error("Subscription change error:", err);
+          alert(err.message || "Failed to change subscription. Please try again.");
+        } finally {
+          setLoading(false);
+        }
+        return;
+      }
+    }
     
     if (plan === "free") {
       // Handle free plan activation
       try {
+        // Map duration to expected format
+        const durationMap = {
+          monthly: "1m",
+          quarterly: "3m"
+        };
+        const mappedDuration = durationMap[duration] || duration;
+
         const res = await fetch("/api/subscriptions/free", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -31,6 +105,7 @@ export default function SubscribeButton({ plan, duration, label }) {
         if (res.ok) {
           const data = await res.json();
           if (data.success) {
+            alert("Free plan activated successfully!");
             router.push("/profile");
           } else {
             throw new Error(data.error || "Failed to activate free plan");
@@ -42,6 +117,8 @@ export default function SubscribeButton({ plan, duration, label }) {
       } catch (err) {
         console.error("Free plan activation error:", err);
         alert(err.message || "Failed to activate free plan. Please try again.");
+      } finally {
+        setLoading(false);
       }
       return;
     }
@@ -82,13 +159,37 @@ export default function SubscribeButton({ plan, duration, label }) {
     }
   };
 
+  // Determine button state and text
+  const getButtonState = () => {
+    if (checkingSubscription) {
+      return { disabled: true, text: "Checking..." };
+    }
+    
+    if (currentSubscription && currentSubscription.isActive) {
+      const currentPlan = currentSubscription.plan || currentSubscription.planName;
+      if (currentPlan === plan) {
+        return { disabled: true, text: "Current Plan" };
+      } else if (currentPlan === "free" && plan !== "free") {
+        return { disabled: false, text: `Upgrade to ${plan}` };
+      } else if (plan === "free" && currentPlan !== "free") {
+        return { disabled: false, text: "Downgrade to Free" };
+      } else {
+        return { disabled: false, text: `Switch to ${plan}` };
+      }
+    }
+    
+    return { disabled: false, text: label };
+  };
+
+  const buttonState = getButtonState();
+
   return (
     <Button
       onClick={handleCheckout}
-      disabled={loading}
+      disabled={loading || buttonState.disabled}
       className="px-4 py-2 transition"
     >
-      {loading ? "Processing..." : label}
+      {loading ? "Processing..." : buttonState.text}
     </Button>
   );
 }

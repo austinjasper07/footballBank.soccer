@@ -292,9 +292,11 @@ export default function PricingClient({ lang, dict }) {
           <p className="text-gray-400 mb-8">
             {dict.pricing.footer.subtitle}
           </p>
-          <Button className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl text-lg">
-            {dict.pricing.footer.cta}
-          </Button>
+          <SubscribeButton
+            plan="free"
+            duration="monthly"
+            label={dict.pricing.footer.cta}
+          />
         </div>
       </footer>
     </div>

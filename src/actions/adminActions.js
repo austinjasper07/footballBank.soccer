@@ -526,7 +526,7 @@ export async function getAgentInfo() {
         title: "United States Based Agent",
         profilePhoto: "/FootballBank_agent.jpg",
         bio: "Experienced football agent with a proven track record of helping players achieve their professional goals.",
-        credentials: "Licensed Agent",
+        credentials: "Licenced Agent",
         location: "United States"
       });
     }
@@ -548,7 +548,7 @@ export async function updateAgentInfo(formData) {
         name: name || "Ayodeji Fatade",
         profilePhoto: profilePhoto || "/FootballBank_agent.jpg",
         bio: bio || "Experienced football agent with a proven track record of helping players achieve their professional goals.",
-        credentials: credentials || "Licensed Agent",
+        credentials: credentials || "Licenced Agent",
         location: location || "United States"
       });
     } else {

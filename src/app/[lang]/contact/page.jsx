@@ -9,14 +9,14 @@ export async function generateMetadata({ params }) {
   
   return generateSEOMetadata({
     title: `${dict.contact.title} - ${dict.contact.subtitle}`,
-    description: `${dict.contact.title} FootballBank for player representation, scouting services, or partnership opportunities. FIFA licensed, global football talent management.`,
+    description: `${dict.contact.title} FootballBank for player representation, scouting services, or partnership opportunities. FIFA licenced, global football talent management.`,
     keywords: [
       "contact footballbank",
       "football agent contact",
       "soccer representation",
       "player management contact",
       "football scouting services",
-      "FIFA licensed agent"
+      "FIFA licenced agent"
     ],
     url: `/${lang}/contact`,
     locale: lang,

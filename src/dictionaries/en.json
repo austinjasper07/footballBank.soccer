@@ -39,9 +39,9 @@
       "name": "Ayodeji Fatade",
       "title": "Representing global football talents with vision, integrity, and developmental expertise.",
       "description": "Ayodeji is a United State based FIFA licenced agent at FootballBank.soccer, an international organization dedicated to discovering, developing and representing talented players across the globe.",
-      "license": {
+      "licence": {
         "title": "FIFA Licenced Agent",
-        "id": "License ID: 202309-4469"
+        "id": "Licence ID: 202309-4469"
       },
       "stats": {
         "experience": {
@@ -107,7 +107,7 @@
         "consultation": "Schedule Consultation",
         "profile": "Submit Your Profile"
       },
-      "trust": "Trusted by players worldwide • FIFA Licensed • 15+ Years Experience"
+      "trust": "Trusted by players worldwide • FIFA Licenced • 15+ Years Experience"
     }
   },
   "navigation": {
@@ -139,11 +139,11 @@
       "title": "Why FootballBank.soccer?",
       "fifaCertified": {
         "title": "FIFA Licenced Agent",
-        "description": "Licensed professional representation ensuring compliance with international football regulations."
+        "description": "Licenced professional representation ensuring compliance with international football regulations."
       },
       "globalNetwork": {
         "title": "Global Club Network",
-        "description": "Extensive connections with top clubs across Europe, Asia, North America and South Americas."
+        "description": "Extensive connections with top clubs across Europe, Asia, North America and South America."
       },
       "rapidVisibility": {
         "title": "Rapid Profile Visibility",
@@ -263,7 +263,7 @@
   "about": {
     "title": "About FootballBank.soccer",
     "subtitle": "Empowering Football Dreams Worldwide",
-    "description": "FootballBank.soccer is the premier platform connecting talented football players with scouts, clubs, and opportunities around the globe.",
+    "description": "FootballBank.soccer is a premier platform connecting talented football players with scouts, clubs, and opportunities around the globe.",
     "mission": "Our Mission",
     "missionText": "To democratize football talent discovery and provide equal opportunities for players worldwide to showcase their skills and achieve their dreams.",
     "vision": "Our Vision",
@@ -496,7 +496,7 @@
       },
       "contentSubmissions": {
         "title": "4. Content Submissions",
-        "content": "By uploading player profiles, videos, or other materials, you grant FootballBank.soccer a worldwide, non-exclusive, royalty-free license to use, display, and promote that content for the purpose of operating and improving our services. You confirm you own the rights or have permission to submit such content."
+        "content": "By uploading player profiles, videos, or other materials, you grant FootballBank.soccer a worldwide, non-exclusive, royalty-free licence to use, display, and promote that content for the purpose of operating and improving our services. You confirm you own the rights or have permission to submit such content."
       },
       "intellectualProperty": {
         "title": "5. Intellectual Property",
@@ -578,8 +578,8 @@
     "title": "Subscription Plans",
     "subtitle": "Choose the perfect plan for your needs",
     "hero": {
-      "title": "Grow with <span class=\"text-red-600\">Fewer Fees</span> & More Power",
-      "subtitle": "Choose a plan that fits your goals. Cancel anytime. No hidden fees."
+      "title": "Grow with <span class=\"text-red-600\">Lesser Fees</span> & More Power",
+      "subtitle": "Choose a plan that fits your goals. Cancel anytime. No hidden charges."
     },
     "billing": {
       "monthly": "Monthly",

@@ -160,7 +160,7 @@ export default function PlayerPage({ params }) {
           </div>
 
           {/* Hero */}
-          <section className="pb-16 pt-8 relative z-10">
+          <section className="pb-16 pt-8 relative z-10 max-w-7xl mx-auto">
             <div className="flex lg:flex-row flex-col-reverse gap-12 items-center">
               <div className="shadow-md p-10 rounded-xl lg:w-[60%] relative bg-white/90 backdrop-blur-sm">
                 <div className="absolute inset-0 z-0 pointer-events-none">

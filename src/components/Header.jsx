@@ -44,7 +44,7 @@ export default function Header({ lang = 'en' }) {
     { label: dict.navigation.contact, path: `/${lang}/contact` },
   ] : defaultNavLinks;
 
-  const { isAuthenticated, loading: isLoading } = useAuth();
+  const { isAuthenticated, loading: isLoading, logout } = useAuth();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const { cart } = useCart();
@@ -208,10 +208,9 @@ export default function Header({ lang = 'en' }) {
           {!isLoading && (
             isAuthenticated ? (
               <button
-                onClick={() => {
+                onClick={async () => {
                   setMenuOpen(false);
-                  // Handle logout - you can call logout function from context
-                  window.location.href = '/auth/login';
+                  await logout(true);
                 }}
                 className="border border-accent-red text-accent-red text-center py-2 rounded-md w-full"
               >

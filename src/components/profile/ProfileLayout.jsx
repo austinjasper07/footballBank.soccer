@@ -23,8 +23,8 @@ export default function ProfileLayout({
   const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout(true);
   };
 
   const toggleSidebar = () => {

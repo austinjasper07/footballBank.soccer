@@ -114,7 +114,7 @@ export default function PlayerTabs({ player, onImageClick }) {
                   <strong>Available From:</strong> Immediately
                 </p>
                 <p>
-                  <strong>Preferred Leagues:</strong>{" "}
+                  <strong>Preferred Destination:</strong>{" "}
                   {player.preferredLeagues || "unavailable"}
                 </p>
                 <p>
@@ -135,7 +135,7 @@ export default function PlayerTabs({ player, onImageClick }) {
                 <i className="fa-solid fa-envelope mr-2"></i> contact@footballbank.soccer
               </p>
               <p className="text-primary-muted mb-4">
-                <i className="fa-solid fa-phone mr-2"></i> +1 (862) 372-9817
+                <i className="fa-solid fa-phone mr-2"></i> +(844) 362-9881 (Toll Free)
               </p>
             </div>
           </div>

@@ -47,16 +47,17 @@ const AboutAgent = async ({ params }) => {
                     {agentInfo?.name || dict.agentPage.hero.name}
                   </h2>
 
-                  {/* Enhanced license display */}
+                  {/* Enhanced licence display */}
                   <div className="bg-gradient-to-r from-accent-green/10 to-accent-green/5 rounded-xl p-4 border border-accent-green/20">
                     <div className="flex items-center justify-center gap-3 mb-2">
                       <i className="fa-solid fa-certificate text-accent-green text-xl" />
                       <span className="font-bold text-primary-text">
-                        {dict.agentPage.hero.license.title || agentInfo?.credentials}
+                        {dict.agentPage.hero.licence.title ||
+                          agentInfo?.credentials}
                       </span>
                     </div>
                     <p className="text-sm text-primary-muted">
-                      {dict.agentPage.hero.license.id}
+                      {dict.agentPage.hero.licence.id}
                     </p>
                   </div>
                 </div>
@@ -209,7 +210,7 @@ const AboutAgent = async ({ params }) => {
 
       {/* Enhanced CTA Section */}
       <section
-        className="py-20 bg-gradient-to-br from-accent-red to-red-600"
+        className="py-20 bg-gradient-to-br from-accent-red to-red-600 max-w-7xl mx-auto rounded-2xl"
         data-aos="zoom-in-up"
       >
         <div className="container mx-auto px-4 max-w-6xl">
@@ -262,15 +263,18 @@ const AboutAgent = async ({ params }) => {
             </div>
           </div>
 
-			<div className="flex flex-col md:flex-row gap-6 justify-center">
-				<Link href={`/${lang}/contact`} className="group w-full md:w-auto">
-					<span className="bg-white text-accent-red px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/90 transition-all duration-300 inline-flex items-center gap-3 justify-center shadow-xl hover:shadow-2xl transform hover:scale-105 w-full md:w-auto">
+          <div className="flex flex-col md:flex-row gap-6 justify-center">
+            <Link href={`/${lang}/contact`} className="group w-full md:w-auto">
+              <span className="bg-white text-accent-red px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/90 transition-all duration-300 inline-flex items-center gap-3 justify-center shadow-xl hover:shadow-2xl transform hover:scale-105 w-full md:w-auto">
                 <i className="fa-solid fa-calendar-plus"></i>
                 {dict.agentPage.cta.buttons.consultation}
               </span>
             </Link>
-				<Link href={`/${lang}/submit-profile`} className="group w-full md:w-auto">
-					<span className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent-red transition-all duration-300 inline-flex items-center gap-3 justify-center backdrop-blur-sm hover:shadow-xl transform hover:scale-105 w-full md:w-auto">
+            <Link
+              href={`/${lang}/submit-profile`}
+              className="group w-full md:w-auto"
+            >
+              <span className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent-red transition-all duration-300 inline-flex items-center gap-3 justify-center backdrop-blur-sm hover:shadow-xl transform hover:scale-105 w-full md:w-auto">
                 <i className="fa-solid fa-file-upload"></i>
                 {dict.agentPage.cta.buttons.profile}
               </span>

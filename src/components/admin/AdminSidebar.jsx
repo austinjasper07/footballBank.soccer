@@ -72,7 +72,7 @@ export function AdminSidebar({ activeView, onViewChange, collapsed, onToggleColl
               collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'
             }`}
           >
-            <Image src="/logo.png" alt="Logo" width={40} height={40} />
+            <Image src="/logo/logo-1.png" alt="Logo" width={40} height={40} />
             <p className="text-muted-foreground text-base font-semibold">Admin Console</p>
           </div>
 

@@ -74,7 +74,7 @@ export default async function AboutPage({ params }) {
               {dict.about.title}
             </h1>
             <p 
-              className="text-base text-primary-muted mb-8 leading-relaxed max-w-3xl mx-auto"
+              className="text-base md:text-lg text-primary-muted mb-8 leading-relaxed max-w-3xl mx-auto"
               data-aos="fade-up"
               data-aos-delay="100"
             >
@@ -162,7 +162,7 @@ export default async function AboutPage({ params }) {
             <h2 className="text-3xl font-bold text-primary-text mb-4">
               {dict.about?.whatWeDoSection?.title || "What We Do"}
             </h2>
-            <p className="text-base text-primary-muted max-w-3xl mx-auto">
+            <p className="text-base md:text-lg text-primary-muted max-w-3xl mx-auto">
               {dict.about?.whatWeDoSection?.subtitle || "FootballBank.soccer is more than just a player database—we're a digital ecosystem where talent meets opportunity."}
             </p>
           </div>
@@ -202,7 +202,7 @@ export default async function AboutPage({ params }) {
             <h2 className="text-3xl font-bold text-primary-text mb-4">
               {dict.about.values}
             </h2>
-            <p className="text-base text-primary-muted max-w-3xl mx-auto">
+            <p className="text-base md:text-lg text-primary-muted max-w-3xl mx-auto">
               {dict.about?.valuesSection?.subtitle || "The principles that guide everything we do at FootballBank.soccer"}
             </p>
           </div>
@@ -247,10 +247,10 @@ export default async function AboutPage({ params }) {
             <h2 className="text-3xl font-bold mb-6">
               {dict.about?.joinMovement?.title || "Join the Movement"}
             </h2>
-            <p className="text-base text-red-100 leading-relaxed mb-8">
+            <p className="text-base md:text-lg text-red-100 leading-relaxed mb-8">
               {dict.about?.joinMovement?.subtitle || "Whether you're a footballer ready to be seen, a scout seeking fresh talent, or a supporter of grassroots development—FootballBank.soccer is your trusted partner in the beautiful game."}
             </p>
-            <p className="text-base text-red-200 mb-8">
+            <p className="text-base md:text-lg text-red-200 mb-8">
               {dict.about?.joinMovement?.description || "Let's connect talent to opportunity."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -284,7 +284,7 @@ export default async function AboutPage({ params }) {
           <h3 className="text-3xl font-bold text-primary-text mb-4">
             {dict.about?.contactSection?.title || "Get in Touch"}
           </h3>
-          <p className="text-base text-primary-muted mb-8 max-w-3xl mx-auto">
+          <p className="text-base md:text-lg text-primary-muted mb-8 max-w-3xl mx-auto">
             {dict.about?.contactSection?.subtitle || "Ready to take the next step? We're here to help you achieve your football dreams."}
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">

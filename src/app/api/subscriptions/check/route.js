@@ -19,12 +19,11 @@ export async function GET() {
       // Check for active subscription
       const subscription = await Subscription.findOne({
         userId: user.id,
-        status: "active",
         isActive: true,
-        endDate: {
+        expiresAt: {
           $gt: new Date() // Not expired
         }
-      }).sort({ createdAt: -1 });
+      }).sort({ startedAt: -1 });
 
       if (!subscription) {
         return NextResponse.json({
@@ -35,13 +34,14 @@ export async function GET() {
 
       return NextResponse.json({
         subscription: {
-          id: subscription.id,
-          planId: subscription.planId,
-          planName: subscription.planName,
-          maxSubmissions: subscription.maxSubmissions,
-          usedSubmissions: subscription.usedSubmissions,
-          endDate: subscription.endDate,
-          isTrial: subscription.trialPeriod || false,
+          id: subscription._id,
+          plan: subscription.plan,
+          planName: subscription.plan,
+          isActive: subscription.isActive,
+          startedAt: subscription.startedAt,
+          expiresAt: subscription.expiresAt,
+          type: subscription.type,
+          stripeSubId: subscription.stripeSubId
         }
       });
     } catch (dbError) {

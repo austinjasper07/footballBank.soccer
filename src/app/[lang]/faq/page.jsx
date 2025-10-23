@@ -27,8 +27,8 @@ export default function FAQPage() {
     },
     {
       id: 'about-2',
-      question: 'Are you a licensed agent?',
-      answer: 'Yes. Representation is led by a FIFA-licensed Football Agent (ID: 202309-4469).'
+      question: 'Are you a licenced agent?',
+      answer: 'Yes. Representation is led by a FIFA-licenced Football Agent (ID: 202309-4469).'
     },
     {
       id: 'about-3',
@@ -112,8 +112,8 @@ export default function FAQPage() {
     },
     {
       id: 'highlights-1',
-      question: 'Are your highlights licensed?',
-      answer: 'Yes. We embed official/rights-cleared videos and follow each competition\'s usage policies. We don\'t host unlicensed content.'
+      question: 'Are your highlights licenced?',
+      answer: 'Yes. We embed official/rights-cleared videos and follow each competition\'s usage policies. We don\'t host unlicenced content.'
     },
     {
       id: 'highlights-2',

@@ -237,7 +237,7 @@ export default function AgentView() {
                   id="credentials"
                   name="credentials"
                   defaultValue={agentInfo?.credentials || ""}
-                  placeholder="e.g., Licensed Agent"
+                  placeholder="e.g., Licenced Agent"
                 />
               </div>
 

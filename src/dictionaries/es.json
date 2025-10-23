@@ -39,7 +39,7 @@
       "name": "Ayodeji Fatade",
       "title": "Representando talentos futbolísticos globales con visión, integridad y experiencia en desarrollo.",
       "description": "Ayodeji es un agente licenciado por FIFA con base en Estados Unidos en FootballBank.soccer, una organización internacional dedicada a descubrir, desarrollar y representar jugadores talentosos en todo el mundo.",
-      "license": {
+      "licence": {
         "title": "Agente Licenciado FIFA",
         "id": "ID de Licencia: 202309-4469"
       },
@@ -263,7 +263,7 @@
   "about": {
     "title": "Acerca de FootballBank.soccer",
     "subtitle": "Empoderando Sueños Futbolísticos en Todo el Mundo",
-    "description": "FootballBank.soccer es la plataforma líder que conecta jugadores de fútbol talentosos con ojeadores, clubes y oportunidades alrededor del mundo.",
+    "description": "FootballBank.soccer es ah plataforma líder que conecta jugadores de fútbol talentosos con ojeadores, clubes y oportunidades alrededor del mundo.",
     "mission": "Nuestra Misión",
     "missionText": "Democratizar el descubrimiento de talento futbolístico y brindar oportunidades equitativas para que los jugadores de todo el mundo muestren sus habilidades y alcancen sus sueños.",
     "vision": "Nuestra Visión",
@@ -582,7 +582,7 @@
     "subtitle": "Elige el plan perfecto para tus necesidades",
     "hero": {
       "title": "Crece con <span class=\"text-red-600\">Menos Tarifas</span> y Más Poder",
-      "subtitle": "Elige un plan que se ajuste a tus objetivos. Cancela en cualquier momento. Sin tarifas ocultas."
+      "subtitle": "Elige un plan que se ajuste a tus objetivos. Cancela en cualquier momento. Sin cargos ocultos."
     },
     "billing": {
       "monthly": "Mensual",

@@ -24,7 +24,7 @@ export default function Footer({ lang = "en" }) {
                 className="font-bold text-2xl inline-block cursor-pointer text-gray-600 "
               >
                 FootballBank
-                <span className="text-accent-red text-base"> .soccer</span>
+                <span className="text-accent-red text-base">.soccer</span>
               </Link>
               <div>
                 <span className="text-primary-muted text-[12px]">
