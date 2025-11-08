@@ -313,6 +313,12 @@ const submissionSchema = new mongoose.Schema({
   availableFrom: { type: String },
   preferredLeagues: { type: String },
   salaryExpectation: { type: String },
+  status: { 
+    type: String, 
+    enum: ['PENDING', 'APPROVED', 'REJECTED'],
+    default: 'PENDING' 
+  },
+  rejectionReason: { type: String },
   submittedAt: { type: Date, default: Date.now }
 });
 

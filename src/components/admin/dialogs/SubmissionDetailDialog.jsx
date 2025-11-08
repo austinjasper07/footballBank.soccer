@@ -72,7 +72,9 @@ export function SubmissionDetailDialog({
                   : ""
               }
             >
-              {submission.status.charAt(0).toUpperCase() + submission.status.slice(1)}
+              {submission.status
+                ? submission.status.charAt(0).toUpperCase() + submission.status.slice(1)
+                : "PENDING"}
             </Badge>
           </div>
 
@@ -110,7 +112,7 @@ export function SubmissionDetailDialog({
         </div>
 
         {/* Actions */}
-        {submission.status === "PENDING" && (
+        {(!submission.status || submission.status === "PENDING") && (
           <div className="flex justify-end gap-2 pt-4 border-t">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
               Close

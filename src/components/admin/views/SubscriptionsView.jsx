@@ -4,24 +4,34 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  Crown, 
-  Calendar, 
-  User, 
+import {
+  Crown,
+  Calendar,
+  User,
   DollarSign,
   CheckCircle,
   XCircle,
   AlertTriangle,
-  RefreshCw
+  RefreshCw,
 } from "lucide-react";
 import { getAllSubscriptions, updateSubscription } from "@/actions/adminActions";
 import { useToast } from "@/hooks/use-toast";
 import LoadingSplash from "@/components/ui/loading-splash";
+import { SearchBar } from "@/components/admin/SearchBar";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function SubscriptionsView() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -46,22 +56,20 @@ export default function SubscriptionsView() {
   };
 
   const handleToggleSubscription = async (subscriptionId, isActive) => {
-    setUpdating(prev => ({ ...prev, [subscriptionId]: true }));
-    
+    setUpdating((prev) => ({ ...prev, [subscriptionId]: true }));
+
     try {
       await updateSubscription(subscriptionId, { isActive });
-      
-      setSubscriptions(prev => 
-        prev.map(sub => 
-          sub._id === subscriptionId 
-            ? { ...sub, isActive } 
-            : sub
+
+      setSubscriptions((prev) =>
+        prev.map((sub) =>
+          sub.id === subscriptionId ? { ...sub, isActive } : sub
         )
       );
-      
+
       toast({
         title: "Success",
-        description: `Subscription ${isActive ? 'activated' : 'deactivated'} successfully`,
+        description: `Subscription ${isActive ? "activated" : "deactivated"} successfully`,
       });
     } catch (error) {
       console.error("Error updating subscription:", error);
@@ -71,14 +79,15 @@ export default function SubscriptionsView() {
         variant: "destructive",
       });
     } finally {
-      setUpdating(prev => ({ ...prev, [subscriptionId]: false }));
+      setUpdating((prev) => ({ ...prev, [subscriptionId]: false }));
     }
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
     });
   };
@@ -86,49 +95,57 @@ export default function SubscriptionsView() {
   const getStatusBadge = (isActive, expiresAt) => {
     const now = new Date();
     const expiry = new Date(expiresAt);
-    
+
     if (!isActive) {
       return <Badge variant="destructive">Inactive</Badge>;
     }
-    
+
     if (expiry < now) {
       return <Badge variant="destructive">Expired</Badge>;
     }
-    
-    if (expiry.getTime() - now.getTime() < 7 * 24 * 60 * 60 * 1000) { // 7 days
+
+    if (expiry.getTime() - now.getTime() < 7 * 24 * 60 * 60 * 1000) {
+      // 7 days
       return <Badge variant="secondary">Expiring Soon</Badge>;
     }
-    
-    return <Badge variant="default">Active</Badge>;
-  };
 
-  const getStatusIcon = (isActive, expiresAt) => {
-    const now = new Date();
-    const expiry = new Date(expiresAt);
-    
-    if (!isActive) {
-      return <XCircle className="w-4 h-4 text-red-500" />;
-    }
-    
-    if (expiry < now) {
-      return <AlertTriangle className="w-4 h-4 text-red-500" />;
-    }
-    
-    return <CheckCircle className="w-4 h-4 text-green-500" />;
+    return (
+      <Badge className="bg-green-500 hover:bg-green-600">
+        <CheckCircle className="h-3 w-3 mr-1" />
+        Active
+      </Badge>
+    );
   };
 
   const getPlanColor = (plan) => {
     switch (plan) {
-      case 'premium':
-        return 'text-yellow-600 bg-yellow-100';
-      case 'basic':
-        return 'text-blue-600 bg-blue-100';
-      case 'free':
-        return 'text-green-600 bg-green-100';
+      case "premium":
+        return "text-yellow-600 bg-yellow-100";
+      case "basic":
+        return "text-blue-600 bg-blue-100";
+      case "free":
+        return "text-green-600 bg-green-100";
       default:
-        return 'text-gray-600 bg-gray-100';
+        return "text-gray-600 bg-gray-100";
     }
   };
+
+  const filteredSubscriptions = subscriptions.filter((sub) => {
+    const query = searchQuery.toLowerCase();
+    const userName = sub.userId?.firstName && sub.userId?.lastName
+      ? `${sub.userId.firstName} ${sub.userId.lastName}`.toLowerCase()
+      : "";
+    const userEmail = sub.userId?.email?.toLowerCase() || "";
+    const plan = sub.plan?.toLowerCase() || "";
+    const type = sub.type?.toLowerCase() || "";
+
+    return (
+      userName.includes(query) ||
+      userEmail.includes(query) ||
+      plan.includes(query) ||
+      type.includes(query)
+    );
+  });
 
   if (loading) {
     return <LoadingSplash message="Loading subscriptions..." />;
@@ -139,12 +156,20 @@ export default function SubscriptionsView() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Subscriptions Management</h2>
-          <p className="text-gray-600">Manage user subscriptions and billing</p>
+          <p className="text-muted-foreground">Manage user subscriptions and billing</p>
         </div>
-        <Button onClick={fetchSubscriptions} variant="outline">
-          <RefreshCw className="w-4 h-4 mr-2" />
-          Refresh
-        </Button>
+        <div className="flex items-center gap-4">
+          <SearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search subscriptions..."
+            className="w-80"
+          />
+          <Button onClick={fetchSubscriptions} variant="outline">
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Refresh
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -153,35 +178,35 @@ export default function SubscriptionsView() {
             <div className="flex items-center space-x-2">
               <Crown className="w-5 h-5 text-yellow-500" />
               <div>
-                <p className="text-sm text-gray-600">Total Subscriptions</p>
+                <p className="text-sm text-muted-foreground">Total Subscriptions</p>
                 <p className="text-2xl font-bold">{subscriptions.length}</p>
               </div>
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
               <CheckCircle className="w-5 h-5 text-green-500" />
               <div>
-                <p className="text-sm text-gray-600">Active</p>
+                <p className="text-sm text-muted-foreground">Active</p>
                 <p className="text-2xl font-bold">
-                  {subscriptions.filter(sub => sub.isActive).length}
+                  {subscriptions.filter((sub) => sub.isActive).length}
                 </p>
               </div>
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
               <XCircle className="w-5 h-5 text-red-500" />
               <div>
-                <p className="text-sm text-gray-600">Inactive</p>
+                <p className="text-sm text-muted-foreground">Inactive</p>
                 <p className="text-2xl font-bold">
-                  {subscriptions.filter(sub => !sub.isActive).length}
+                  {subscriptions.filter((sub) => !sub.isActive).length}
                 </p>
               </div>
             </div>
@@ -189,123 +214,116 @@ export default function SubscriptionsView() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
-        {subscriptions.map((subscription) => (
-          <Card key={subscription._id}>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Crown className="w-6 h-6 text-yellow-500" />
-                  <div>
-                    <CardTitle className="text-lg capitalize">
-                      {subscription.plan} Plan
-                    </CardTitle>
-                    <p className="text-sm text-gray-500 capitalize">
-                      {subscription.type.replace('_', ' ')}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  {getStatusIcon(subscription.isActive, subscription.expiresAt)}
-                  {getStatusBadge(subscription.isActive, subscription.expiresAt)}
-                </div>
-              </div>
-            </CardHeader>
-            
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div className="flex items-center space-x-2">
-                  <User className="w-4 h-4 text-gray-400" />
-                  <div>
-                    <p className="text-sm text-gray-500">User</p>
-                    <p className="font-medium">
-                      {subscription.userId?.firstName} {subscription.userId?.lastName}
-                    </p>
-                    <p className="text-xs text-gray-400">{subscription.userId?.email}</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-2">
-                  <Calendar className="w-4 h-4 text-gray-400" />
-                  <div>
-                    <p className="text-sm text-gray-500">Started</p>
-                    <p className="font-medium">
-                      {formatDate(subscription.startedAt)}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-2">
-                  <Calendar className="w-4 h-4 text-gray-400" />
-                  <div>
-                    <p className="text-sm text-gray-500">Expires</p>
-                    <p className="font-medium">
-                      {formatDate(subscription.expiresAt)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {subscription.stripeSubId && (
-                <div className="mb-4">
-                  <p className="text-xs text-gray-500">Stripe Subscription ID</p>
-                  <p className="font-mono text-sm text-gray-600">
-                    {subscription.stripeSubId}
-                  </p>
-                </div>
-              )}
-
-              <div className="flex items-center justify-between">
-                <Badge className={getPlanColor(subscription.plan)}>
-                  {subscription.plan.toUpperCase()}
-                </Badge>
-                
-                <div className="flex space-x-2">
-                  {subscription.isActive ? (
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleToggleSubscription(subscription._id, false)}
-                      disabled={updating[subscription._id]}
-                    >
-                      {updating[subscription._id] ? (
-                        <RefreshCw className="w-4 h-4 animate-spin mr-2" />
-                      ) : null}
-                      Deactivate
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="default"
-                      size="sm"
-                      onClick={() => handleToggleSubscription(subscription._id, true)}
-                      disabled={updating[subscription._id]}
-                    >
-                      {updating[subscription._id] ? (
-                        <RefreshCw className="w-4 h-4 animate-spin mr-2" />
-                      ) : null}
-                      Activate
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {subscriptions.length === 0 && (
-        <Card>
-          <CardContent className="text-center py-12">
-            <Crown className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-600 mb-2">
-              No Subscriptions Found
-            </h3>
-            <p className="text-gray-500">
-              No subscriptions have been created yet.
-            </p>
-          </CardContent>
-        </Card>
-      )}
+      <Card className="border-0 shadow-sm">
+        <CardHeader>
+          <CardTitle>All Subscriptions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {filteredSubscriptions.length === 0 ? (
+            <div className="text-center py-12">
+              <Crown className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                No Subscriptions Found
+              </h3>
+              <p className="text-gray-500">
+                {searchQuery
+                  ? "No subscriptions match your search criteria."
+                  : "No subscriptions have been created yet."}
+              </p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>User</TableHead>
+                    <TableHead>Plan</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Started</TableHead>
+                    <TableHead>Expires</TableHead>
+                    <TableHead>Stripe ID</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredSubscriptions.map((subscription) => (
+                    <TableRow key={subscription.id || subscription._id}>
+                      <TableCell>
+                        <div>
+                          <p className="font-medium">
+                            {subscription.userId?.firstName && subscription.userId?.lastName
+                              ? `${subscription.userId.firstName} ${subscription.userId.lastName}`
+                              : "Unknown User"}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {subscription.userId?.email || "N/A"}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getPlanColor(subscription.plan)}>
+                          {subscription.plan?.toUpperCase() || "N/A"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="capitalize">
+                        {subscription.type?.replace("_", " ") || "N/A"}
+                      </TableCell>
+                      <TableCell>
+                        {getStatusBadge(subscription.isActive, subscription.expiresAt)}
+                      </TableCell>
+                      <TableCell>{formatDate(subscription.startedAt)}</TableCell>
+                      <TableCell>{formatDate(subscription.expiresAt)}</TableCell>
+                      <TableCell>
+                        {subscription.stripeSubId ? (
+                          <span className="font-mono text-xs text-muted-foreground">
+                            {subscription.stripeSubId.substring(0, 20)}...
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground">N/A</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          {subscription.isActive ? (
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() =>
+                                handleToggleSubscription(subscription.id || subscription._id, false)
+                              }
+                              disabled={updating[subscription.id || subscription._id]}
+                            >
+                              {updating[subscription.id || subscription._id] ? (
+                                <RefreshCw className="w-4 h-4 animate-spin mr-2" />
+                              ) : null}
+                              Deactivate
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="default"
+                              size="sm"
+                              onClick={() =>
+                                handleToggleSubscription(subscription.id || subscription._id, true)
+                              }
+                              disabled={updating[subscription.id || subscription._id]}
+                            >
+                              {updating[subscription.id || subscription._id] ? (
+                                <RefreshCw className="w-4 h-4 animate-spin mr-2" />
+                              ) : null}
+                              Activate
+                            </Button>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

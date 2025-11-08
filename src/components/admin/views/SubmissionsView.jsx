@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Check, X, Clock, Eye } from "lucide-react";
+import { Check, X, Clock, Eye, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,15 @@ import { SearchBar } from "@/components/admin/SearchBar";
 import { SubmissionDetailDialog } from "@/components/admin/dialogs/SubmissionDetailDialog";
 import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
 import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   approveSubmission,
   getAllSubmissions,
@@ -30,6 +39,7 @@ export default function SubmissionsView() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [submissionToDelete, setSubmissionToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [activeTab, setActiveTab] = useState("pending");
 
   useEffect(() => {
     const fetchSubmissions = async () => {
@@ -49,110 +59,95 @@ export default function SubmissionsView() {
   const filtered = useMemo(() => {
     const list = Array.isArray(submissions) ? submissions : [];
     return list.filter((s) =>
-      [s.firstName, s.lastName, s.country, s.position].some((field) =>
-        field.toLowerCase().includes(searchQuery.toLowerCase())
+      [s.firstName, s.lastName, s.country, s.position, s.email].some((field) =>
+        field?.toLowerCase().includes(searchQuery.toLowerCase())
       )
     );
   }, [submissions, searchQuery]);
 
   const handleApprove = useCallback(
-  async (id) => {
+    async (id) => {
+      try {
+        const data = await approveSubmission(id);
+        if (!data) throw new Error("Submission not found or approval failed");
 
-    console.log(id)
-    try {
-      const data = await approveSubmission(id);
-      if (!data) throw new Error("Submission not found or approval failed");
+        toast({ title: "Approved", description: "Submission approved." });
 
-      // ✅ Show toast
-      toast({ title: "Approved", description: "Submission approved." });
+        const updated = await getAllSubmissions();
+        setSubmissions(updated);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "An error occurred while approving the submission.",
+          variant: "destructive",
+        });
+      }
+    },
+    [toast]
+  );
 
-      // ✅ Refresh submissions
-      const updated = await getAllSubmissions();
-      setSubmissions(updated);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "An error occurred while approving the submission.",
-        variant: "destructive",
-      });
-    }
-  },
-  [toast]
-);
+  const handleReject = useCallback(
+    async (id) => {
+      try {
+        const data = await rejectSubmission(id, "Incomplete Submission");
 
-const handleReject = useCallback(
-  async (id) => {
-    try {
-      const data = await rejectSubmission(id, "Incomplete Submission");
+        toast({ title: "Rejected", description: data.rejectionReason });
 
-      // ✅ Show toast
-      toast({ title: "Rejected", description: data.rejectionReason });
+        const updated = await getAllSubmissions();
+        setSubmissions(updated);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "An error occurred while rejecting the submission.",
+          variant: "destructive",
+        });
+      }
+    },
+    [toast]
+  );
 
-      // ✅ Refresh submissions
-      const updated = await getAllSubmissions();
-      setSubmissions(updated);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "An error occurred while rejecting the submission.",
-        variant: "destructive",
-      });
-    }
-  },
-  [toast]
-);
+  const handleDeleteSubmission = useCallback(
+    async (id) => {
+      const submission = submissions.find((s) => s.id === id);
+      setSubmissionToDelete(submission);
+      setDeleteDialogOpen(true);
+    },
+    [submissions]
+  );
 
-const handleDeleteSubmission = useCallback(
-  async (id) => {
-    const submission = submissions.find(s => s.id === id);
-    setSubmissionToDelete(submission);
-    setDeleteDialogOpen(true);
-  },
-  [submissions]
-);
+  const confirmDeleteSubmission = useCallback(
+    async () => {
+      if (!submissionToDelete) return;
 
-const confirmDeleteSubmission = useCallback(
-  async () => {
-    if (!submissionToDelete) return;
-    
-    try {
-      setIsDeleting(true);
-      await deleteSubmission(submissionToDelete.id);
-      toast({
-        title: "Submission Deleted",
-        description: "The submission has been removed successfully.",
-      });
-      const updated = await getAllSubmissions();
-      setSubmissions(updated);
-      setDeleteDialogOpen(false);
-      setSubmissionToDelete(null);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to delete submission.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsDeleting(false);
-    }
-  },
-  [submissionToDelete, toast]
-);
-
+      try {
+        setIsDeleting(true);
+        await deleteSubmission(submissionToDelete.id);
+        toast({
+          title: "Submission Deleted",
+          description: "The submission has been removed successfully.",
+        });
+        const updated = await getAllSubmissions();
+        setSubmissions(updated);
+        setDeleteDialogOpen(false);
+        setSubmissionToDelete(null);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to delete submission.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsDeleting(false);
+      }
+    },
+    [submissionToDelete, toast]
+  );
 
   const handleViewDetails = async (id) => {
     const data = await getSubmissionsById(id);
     setSelectedSubmission(data);
     setDetailDialogOpen(true);
   };
-
-  useEffect(() => {
-    const fetchSubmissions = async () => {
-      const response = await getAllSubmissions();
-      setSubmissions(response);
-    };
-    fetchSubmissions();
-  }, [handleApprove, handleReject]);
 
   const pending = filtered.filter((s) => s.status === "PENDING");
   const approved = filtered.filter((s) => s.status === "APPROVED");
@@ -162,42 +157,179 @@ const confirmDeleteSubmission = useCallback(
     return <LoadingSplash message="Loading submissions..." />;
   }
 
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "PENDING":
+        return (
+          <Badge className="bg-yellow-500 hover:bg-yellow-600">
+            <Clock className="h-3 w-3 mr-1" />
+            Pending
+          </Badge>
+        );
+      case "APPROVED":
+        return (
+          <Badge className="bg-green-500 hover:bg-green-600">
+            <Check className="h-3 w-3 mr-1" />
+            Approved
+          </Badge>
+        );
+      case "REJECTED":
+        return (
+          <Badge variant="destructive">
+            <X className="h-3 w-3 mr-1" />
+            Rejected
+          </Badge>
+        );
+      default:
+        return <Badge>{status}</Badge>;
+    }
+  };
+
+  const renderTable = (data) => {
+    if (data.length === 0) {
+      return (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">No submissions found</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Country</TableHead>
+              <TableHead>Position</TableHead>
+              <TableHead>Age</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Submitted</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.map((submission) => (
+              <TableRow key={submission.id}>
+                <TableCell className="font-medium">
+                  {submission.firstName} {submission.lastName}
+                </TableCell>
+                <TableCell>{submission.email}</TableCell>
+                <TableCell>{submission.country}</TableCell>
+                <TableCell>{submission.position}</TableCell>
+                <TableCell>{calculateAge(submission.dob)}</TableCell>
+                <TableCell>{getStatusBadge(submission.status)}</TableCell>
+                <TableCell className="text-muted-foreground">
+                  {formatFullDate(submission.submittedAt)}
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex items-center justify-end gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleViewDetails(submission.id)}
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                    {submission.status === "PENDING" && (
+                      <>
+                        <Button
+                          size="sm"
+                          className="bg-green-500 hover:bg-green-600"
+                          onClick={() => handleApprove(submission.id)}
+                        >
+                          <Check className="h-4 w-4 mr-1" />
+                          Approve
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleReject(submission.id)}
+                        >
+                          <X className="h-4 w-4 mr-1" />
+                          Reject
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          onClick={() => handleDeleteSubmission(submission.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </>
+                    )}
+                    {submission.status !== "PENDING" && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        onClick={() => handleDeleteSubmission(submission.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6">
-      <SearchBar
-        value={searchQuery}
-        onChange={setSearchQuery}
-        placeholder="Search submissions..."
-        className="w-96"
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <SubmissionColumn
-          icon={<Clock className="h-5 w-5 text-yellow-500" />}
-          title="Pending Review"
-          count={pending.length}
-          data={pending}
-          onApprove={handleApprove}
-          onReject={handleReject}
-          onView={handleViewDetails}
-          onDelete={handleDeleteSubmission}
-          status="pending"
-        />
-        <SubmissionColumn
-          icon={<Check className="h-5 w-5 text-green-500" />}
-          title="Approved"
-          count={approved.length}
-          data={approved}
-          status="approved"
-        />
-        <SubmissionColumn
-          icon={<X className="h-5 w-5 text-red-500" />}
-          title="Rejected"
-          count={rejected.length}
-          data={rejected}
-          status="rejected"
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">Submissions</h2>
+          <p className="text-muted-foreground">Manage player profile submissions</p>
+        </div>
+        <SearchBar
+          value={searchQuery}
+          onChange={setSearchQuery}
+          placeholder="Search submissions..."
+          className="w-96"
         />
       </div>
+
+      <Card className="border-0 shadow-sm">
+        <CardHeader>
+          <CardTitle>All Submissions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList>
+              <TabsTrigger value="pending">
+                <Clock className="h-4 w-4 mr-2" />
+                Pending ({pending.length})
+              </TabsTrigger>
+              <TabsTrigger value="approved">
+                <Check className="h-4 w-4 mr-2" />
+                Approved ({approved.length})
+              </TabsTrigger>
+              <TabsTrigger value="rejected">
+                <X className="h-4 w-4 mr-2" />
+                Rejected ({rejected.length})
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="pending" className="mt-4">
+              {renderTable(pending)}
+            </TabsContent>
+
+            <TabsContent value="approved" className="mt-4">
+              {renderTable(approved)}
+            </TabsContent>
+
+            <TabsContent value="rejected" className="mt-4">
+              {renderTable(rejected)}
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
 
       <SubmissionDetailDialog
         open={detailDialogOpen}
@@ -213,118 +345,13 @@ const confirmDeleteSubmission = useCallback(
         onConfirm={confirmDeleteSubmission}
         title="Delete Submission"
         description="This will permanently remove the submission from the system."
-        itemName={submissionToDelete ? `${submissionToDelete.firstName} ${submissionToDelete.lastName}` : ''}
+        itemName={
+          submissionToDelete
+            ? `${submissionToDelete.firstName} ${submissionToDelete.lastName}`
+            : ""
+        }
         isLoading={isDeleting}
       />
     </div>
-  );
-}
-
-function SubmissionColumn({
-  title,
-  icon,
-  count,
-  data,
-  status,
-  onApprove,
-  onReject,
-  onView,
-  onDelete,
-}) {
-  return (
-    <Card className="border-0 shadow-sm ">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          {icon} {title} ({count})
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className=" space-y-4">
-          {data.length > 0 ? (
-            data.slice(0, 3).map((submission) => (
-              <div
-                key={submission.id}
-                className="bg-[hsl(var(--muted))]/50 rounded-lg p-4"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium">
-                    {submission.firstName} {submission.lastName}
-                  </span>
-                  {status === "pending" ? (
-                    <span className="text-xs text-[hsl(var(--muted-foreground))]">
-                      {formatFullDate(submission.submittedAt)}
-                    </span>
-                  ) : (
-                    <Badge
-                      className={
-                        status === "approved" ? "bg-green-500" : "bg-red-500"
-                      }
-                      variant={
-                        status === "rejected" ? "destructive" : "default"
-                      }
-                    >
-                      {status.charAt(0).toUpperCase() + status.slice(1)}
-                    </Badge>
-                  )}
-                </div>
-
-                <p className="text-sm text-[hsl(var(--muted-foreground))] mb-2">
-                  {submission.country} • {submission.position} • Age{" "}
-                  {calculateAge(submission.dob)}
-                </p>
-
-                {status === "rejected" && submission.rejectionReason && (
-                  <p className="text-xs text-[hsl(var(--muted-foreground))]">
-                    Reason: {submission.rejectionReason}
-                  </p>
-                )}
-
-                {status === "pending" && (
-                  <div className="flex flex-wrap gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => onView?.(submission.id)}
-                    >
-                      <Eye className="h-3 w-3 mr-1" />
-                      View
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="bg-green-500 hover:bg-green-600"
-                      onClick={() => onApprove?.(submission.id)}
-                    >
-                      <Check className="h-3 w-3 mr-1" />
-                      Approve
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => onReject?.(submission.id)}
-                    >
-                      <X className="h-3 w-3 mr-1" />
-                      Reject
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                      onClick={() => onDelete?.(submission.id)}
-                    >
-                      <X className="h-3 w-3 mr-1" />
-                      Delete
-                    </Button>
-                  </div>
-                )}
-              </div>
-            ))
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              No {status} submissions
-            </p>
-          )}
-        </div>
-      </CardContent>
-    </Card>
   );
 }

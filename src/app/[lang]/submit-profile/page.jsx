@@ -19,6 +19,7 @@ import { uploadFileWithProgress } from "@/lib/uploadWithProgress";
 import { createSubmission } from "@/actions/protectedAction";
 import { getUserById } from "@/actions/adminActions";
 import { countries } from "@/data/countries&code"; // Adjust import path as needed
+import { footballLeagues } from "@/data/footballLeagues";
 
 export default function PlayerSubmissionForm() {
   const { toast } = useToast();
@@ -341,13 +342,24 @@ export default function PlayerSubmissionForm() {
               value={formData.weight}
               onChange={(val) => setFormData({ ...formData, weight: val })}
             />
-            <InputField
-              label="Contract Status"
-              value={formData.contractStatus}
-              onChange={(val) =>
-                setFormData({ ...formData, contractStatus: val })
-              }
-            />
+            {/* Contract Status */}
+            <div>
+              <Label>Contract Status</Label>
+              <Select
+                value={formData.contractStatus}
+                onValueChange={(val) =>
+                  setFormData({ ...formData, contractStatus: val })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select contract status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Available">Available</SelectItem>
+                  <SelectItem value="Unavailable">Unavailable</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <InputField
               label="Available From"
               type="date"
@@ -356,20 +368,47 @@ export default function PlayerSubmissionForm() {
                 setFormData({ ...formData, availableFrom: val })
               }
             />
-            <InputField
-              label="Preferred Leagues"
-              value={formData.preferredLeagues}
-              onChange={(val) =>
-                setFormData({ ...formData, preferredLeagues: val })
-              }
-            />
-            <InputField
-              label="Salary Expectation"
-              value={formData.salaryExpectation}
-              onChange={(val) =>
-                setFormData({ ...formData, salaryExpectation: val })
-              }
-            />
+            {/* Preferred Leagues */}
+            <div>
+              <Label>Preferred Leagues</Label>
+              <Select
+                value={formData.preferredLeagues}
+                onValueChange={(val) =>
+                  setFormData({ ...formData, preferredLeagues: val })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select preferred league" />
+                </SelectTrigger>
+                <SelectContent>
+                  {footballLeagues.map((league) => (
+                    <SelectItem key={league.value} value={league.value}>
+                      {league.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            {/* Salary Expectation */}
+            <div>
+              <Label>Salary Expectation (USD)</Label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-muted">
+                  $
+                </span>
+                <Input
+                  type="number"
+                  min="0"
+                  step="1000"
+                  value={formData.salaryExpectation}
+                  onChange={(e) =>
+                    setFormData({ ...formData, salaryExpectation: e.target.value })
+                  }
+                  className="pl-8"
+                  placeholder="0"
+                />
+              </div>
+            </div>
             <div className="md:col-span-2">
               <Label>Description</Label>
               <Textarea

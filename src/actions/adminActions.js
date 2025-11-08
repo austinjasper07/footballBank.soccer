@@ -397,7 +397,12 @@ export async function getAllSubmissions() {
   await dbConnect();
   try {
     const submissions = await Submission.find({}).lean().sort({ submittedAt: -1 });
-    return toPlain(submissions);
+    // Ensure all submissions have a status (default to PENDING for existing submissions without status)
+    const submissionsWithStatus = submissions.map(sub => ({
+      ...sub,
+      status: sub.status || 'PENDING'
+    }));
+    return toPlain(submissionsWithStatus);
   } catch (err) {
     console.error("Error fetching submissions:", err);
     return [];
@@ -431,14 +436,18 @@ export async function approveSubmission(submissionId) {
       submittedAt,
       status,
       rejectionReason,
+      userId,
       ...submissionData
     } = approvedSubmission.toObject();
 
+    // Create player from approved submission
     const player = await Player.create(submissionData);
-    return toPlain(await getAllPlayers());
+    
+    revalidatePath("/admin/submissions");
+    return toPlain(approvedSubmission);
   } catch (err) {
     console.error("Error approving submission:", err);
-    return err;
+    throw err;
   }
 }
 
@@ -450,10 +459,11 @@ export async function rejectSubmission(id, reason) {
       { status: "REJECTED", rejectionReason: reason },
       { new: true }
     );
+    revalidatePath("/admin/submissions");
     return toPlain(rejected);
   } catch (err) {
     console.error("Error rejecting submission:", err);
-    return err;
+    throw err;
   }
 }
 
@@ -461,10 +471,11 @@ export async function deleteSubmission(id) {
   await dbConnect();
   try {
     const deleted = await Submission.findByIdAndDelete(id);
+    revalidatePath("/admin/submissions");
     return toPlain(deleted);
   } catch (err) {
     console.error("Error deleting submission:", err);
-    return err;
+    throw err;
   }
 }
 
