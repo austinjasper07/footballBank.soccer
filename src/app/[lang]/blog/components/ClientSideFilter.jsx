@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect } from "react";
 import BlogTabs from "./BlogTabs";
 import BlogSearch from "./BlogSearch";
 import BlogGrid from "./BlogGrid";
+import { getAllPosts, getFeaturedPosts } from "@/actions/publicActions";
 
 export default function ClientSideFilter({
   posts: initialPosts,
@@ -25,35 +26,26 @@ export default function ClientSideFilter({
         
         // Fetch both posts and featured posts in parallel
         const [postsResponse, featuredResponse] = await Promise.all([
-          fetch('/api/blog/posts', { 
-            cache: 'no-store',
-            headers: { 'Cache-Control': 'no-cache' }
-          }),
-          fetch('/api/blog/featured', { 
-            cache: 'no-store',
-            headers: { 'Cache-Control': 'no-cache' }
-          })
+          // fetch('/api/blog/posts', { 
+          //   cache: 'no-store',
+          //   headers: { 'Cache-Control': 'no-cache' }
+          // }),
+          // fetch('/api/blog/featured', { 
+          //   cache: 'no-store',
+          //   headers: { 'Cache-Control': 'no-cache' }
+          // })
+          getAllPosts(),
+          getFeaturedPosts()
         ]);
 
-        if (postsResponse.ok) {
-          const postsData = await postsResponse.json();
-          if (postsData.success) {
-            setPosts(postsData.posts);
-            // Update categories based on fresh posts
-            const newCategories = [
-              "All",
-              ...Array.from(new Set(postsData.posts.map((p) => p.category))),
-            ];
-            setCategories(newCategories);
-          }
-        }
+        setPosts(postsResponse);
+        setFeaturedPost(featuredResponse);
 
-        if (featuredResponse.ok) {
-          const featuredData = await featuredResponse.json();
-          if (featuredData.success) {
-            setFeaturedPost(featuredData.posts);
-          }
-        }
+        const newCategories = [
+          "All",
+          ...Array.from(new Set(postsResponse.map((p) => p.category))),
+        ];
+        setCategories(newCategories);
 
         setLastFetch(Date.now());
       } catch (error) {
