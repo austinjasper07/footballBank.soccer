@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { sendSignupOTP, verifySignupOTP } from "@/actions/authActions";
-import { countryList } from "@/lib/variousCountryListFormats";
+import { countryList, countryListAllIsoData } from "@/lib/variousCountryListFormats";
 
 import "aos/dist/aos.css";
 
@@ -556,13 +556,13 @@ function SignupPageContent() {
                         <Select
                           value={formData.address.country}
                           onValueChange={(value) => {
-                            const countryData = countryList.find(c => c.name === value);
+                            const countryData = countryListAllIsoData.find(c => c.name === value);
                             setFormData({
                               ...formData,
                               address: {
                                 ...formData.address,
                                 country: value,
-                                countryCode: countryData?.code || ""
+                                countryCode: countryData?.code3 || ""
                               }
                             });
                           }}
@@ -571,8 +571,8 @@ function SignupPageContent() {
                             <SelectValue placeholder="Select country" />
                           </SelectTrigger>
                           <SelectContent>
-                            {countryList.map((country) => (
-                              <SelectItem key={country.code} value={country.name}>
+                            {countryListAllIsoData.map((country) => (
+                              <SelectItem key={country.code3} value={country.name}>
                                 {country.name}
                               </SelectItem>
                             ))}
