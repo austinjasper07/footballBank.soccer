@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Check, Lock, Clock } from "lucide-react";
@@ -192,11 +192,13 @@ export default function PricingClient({ lang, dict }) {
                   )}
                 </Button>
               ) : (
-                <SubscribeButton
-                  plan={plan.id}
-                  duration={billingCycle}
-                  label={plan.cta}
-                />
+                <Suspense fallback={<Button disabled className="w-full mt-4">Loading...</Button>}>
+                  <SubscribeButton
+                    plan={plan.id}
+                    duration={billingCycle}
+                    label={plan.cta}
+                  />
+                </Suspense>
               )}
             </div>
           );
@@ -211,11 +213,13 @@ export default function PricingClient({ lang, dict }) {
             dangerouslySetInnerHTML={{ __html: dict.pricing.footer.title }}
           />
           <p className="text-gray-400 mb-8">{dict.pricing.footer.subtitle}</p>
-          <SubscribeButton
-            plan="basic"
-            duration={billingCycle}
-            label={dict.pricing.footer.cta}
-          />
+          <Suspense fallback={<Button disabled className="w-full">Loading...</Button>}>
+            <SubscribeButton
+              plan="basic"
+              duration={billingCycle}
+              label={dict.pricing.footer.cta}
+            />
+          </Suspense>
         </div>
       </footer>
     </div>
