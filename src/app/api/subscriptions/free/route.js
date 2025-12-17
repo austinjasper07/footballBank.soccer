@@ -1,3 +1,5 @@
+// src/app/api/subscriptions/free/route.js
+
 import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/oauth";
 import { User, Subscription } from "@/lib/schemas";

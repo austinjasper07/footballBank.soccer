@@ -8,7 +8,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Mail,
   User,
@@ -27,7 +33,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { sendSignupOTP, verifySignupOTP } from "@/actions/authActions";
-import { countryList, countryListAllIsoData } from "@/lib/variousCountryListFormats";
+import {
+  countryList,
+  countryListAllIsoData,
+} from "@/lib/variousCountryListFormats";
 
 import "aos/dist/aos.css";
 
@@ -46,7 +55,7 @@ function SignupPageContent() {
       state: "",
       postalCode: "",
       country: "",
-      countryCode: ""
+      countryCode: "",
     },
     shippingAddress: {
       street: "",
@@ -55,8 +64,8 @@ function SignupPageContent() {
       postalCode: "",
       country: "",
       countryCode: "",
-      isSameAsBilling: true
-    }
+      isSameAsBilling: true,
+    },
   });
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [sameAsBilling, setSameAsBilling] = useState(true);
@@ -72,7 +81,7 @@ function SignupPageContent() {
 
   useEffect(() => {
     // Get redirect URL from query parameters
-    const redirect = searchParams.get('redirect');
+    const redirect = searchParams.get("redirect");
     if (redirect) {
       setRedirectUrl(redirect);
     }
@@ -84,8 +93,8 @@ function SignupPageContent() {
       ...formData,
       shippingAddress: {
         ...formData.address,
-        isSameAsBilling: true
-      }
+        isSameAsBilling: true,
+      },
     });
   };
 
@@ -103,7 +112,11 @@ function SignupPageContent() {
     setMessage("");
 
     // Basic validation
-    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim()) {
+    if (
+      !formData.firstName.trim() ||
+      !formData.lastName.trim() ||
+      !formData.email.trim()
+    ) {
       setError("Please fill in all required fields");
       setLoading(false);
       return;
@@ -138,9 +151,13 @@ function SignupPageContent() {
 
     // Address validation
     const { address } = formData;
-    if (!address.street.trim() || !address.city.trim() || 
-        !address.state.trim() || !address.postalCode.trim() || 
-        !address.country.trim()) {
+    if (
+      !address.street.trim() ||
+      !address.city.trim() ||
+      !address.state.trim() ||
+      !address.postalCode.trim() ||
+      !address.country.trim()
+    ) {
       setError("Please fill in all address fields");
       setLoading(false);
       return;
@@ -155,10 +172,10 @@ function SignupPageContent() {
     try {
       if (signupMethod === "password") {
         // Password signup
-        const response = await fetch('/api/auth/password-signup', {
-          method: 'POST',
+        const response = await fetch("/api/auth/password-signup", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             email: formData.email,
@@ -166,23 +183,26 @@ function SignupPageContent() {
             lastName: formData.lastName,
             password: formData.password,
             address: formData.address,
-            shippingAddress: formData.shippingAddress
+            shippingAddress: formData.shippingAddress,
           }),
         });
 
         const data = await response.json();
 
         if (data.success) {
-          console.log("🔐 Password signup successful for user:", data.user.email);
+          console.log(
+            "🔐 Password signup successful for user:",
+            data.user.email
+          );
           setMessage("Account created successfully! Redirecting...");
-          
+
           setTimeout(() => {
             let dashboardUrl = redirectUrl;
-            
+
             if (!dashboardUrl) {
-              dashboardUrl = '/profile';
+              dashboardUrl = "/profile";
             }
-            
+
             console.log("🔐 Redirecting to:", dashboardUrl);
             window.location.href = dashboardUrl;
           }, 1000);
@@ -196,7 +216,7 @@ function SignupPageContent() {
           formData.firstName,
           formData.lastName
         );
-        
+
         if (result.success) {
           setMessage(result.message);
           setStep("otp");
@@ -230,11 +250,11 @@ function SignupPageContent() {
         setMessage("Account created successfully! Redirecting...");
         setTimeout(() => {
           let dashboardUrl = redirectUrl;
-          
+
           if (!dashboardUrl) {
-            dashboardUrl = '/profile';
+            dashboardUrl = "/profile";
           }
-          
+
           window.location.href = dashboardUrl;
         }, 1000);
       } else {
@@ -258,7 +278,7 @@ function SignupPageContent() {
         formData.firstName,
         formData.lastName
       );
-      
+
       if (result.success) {
         setMessage("New code sent to your email");
       } else {
@@ -276,7 +296,10 @@ function SignupPageContent() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-primary-muted hover:text-primary-text transition-colors mb-6">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-primary-muted hover:text-primary-text transition-colors mb-6"
+          >
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </Link>
@@ -287,10 +310,9 @@ function SignupPageContent() {
             Join FootballBank.soccer
           </h1>
           <p className="text-primary-muted">
-            {step === "form" 
+            {step === "form"
               ? "Create your account to get started"
-              : "Verify your email to complete registration"
-            }
+              : "Verify your email to complete registration"}
           </p>
         </div>
 
@@ -325,7 +347,9 @@ function SignupPageContent() {
               <div className="space-y-4">
                 {/* Signup Method Selection */}
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium">Choose Signup Method</Label>
+                  <Label className="text-sm font-medium">
+                    Choose Signup Method
+                  </Label>
                   <div className="grid grid-cols-2 gap-3 mt-2">
                     <button
                       type="button"
@@ -361,7 +385,10 @@ function SignupPageContent() {
                 <form onSubmit={handleFormSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName" className="text-sm font-medium">
+                      <Label
+                        htmlFor="firstName"
+                        className="text-sm font-medium"
+                      >
                         First Name
                       </Label>
                       <div className="relative">
@@ -371,7 +398,12 @@ function SignupPageContent() {
                           type="text"
                           placeholder="John"
                           value={formData.firstName}
-                          onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              firstName: e.target.value,
+                            })
+                          }
                           className="pl-10"
                           required
                         />
@@ -388,7 +420,12 @@ function SignupPageContent() {
                           type="text"
                           placeholder="Doe"
                           value={formData.lastName}
-                          onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              lastName: e.target.value,
+                            })
+                          }
                           className="pl-10"
                           required
                         />
@@ -407,7 +444,9 @@ function SignupPageContent() {
                         type="email"
                         placeholder="john@example.com"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
                         className="pl-10"
                         required
                       />
@@ -418,7 +457,10 @@ function SignupPageContent() {
                   {signupMethod === "password" && (
                     <>
                       <div className="space-y-2">
-                        <Label htmlFor="password" className="text-sm font-medium">
+                        <Label
+                          htmlFor="password"
+                          className="text-sm font-medium"
+                        >
                           Password
                         </Label>
                         <div className="relative">
@@ -428,7 +470,12 @@ function SignupPageContent() {
                             type={showPassword ? "text" : "password"}
                             placeholder="Enter your password"
                             value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                password: e.target.value,
+                              })
+                            }
                             className="pl-10 pr-10"
                             required
                           />
@@ -437,13 +484,20 @@ function SignupPageContent() {
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary-muted hover:text-primary-text"
                           >
-                            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            {showPassword ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
                           </button>
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="confirmPassword" className="text-sm font-medium">
+                        <Label
+                          htmlFor="confirmPassword"
+                          className="text-sm font-medium"
+                        >
                           Confirm Password
                         </Label>
                         <div className="relative">
@@ -453,16 +507,27 @@ function SignupPageContent() {
                             type={showConfirmPassword ? "text" : "password"}
                             placeholder="Confirm your password"
                             value={formData.confirmPassword}
-                            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                confirmPassword: e.target.value,
+                              })
+                            }
                             className="pl-10 pr-10"
                             required
                           />
                           <button
                             type="button"
-                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            onClick={() =>
+                              setShowConfirmPassword(!showConfirmPassword)
+                            }
                             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary-muted hover:text-primary-text"
                           >
-                            {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            {showConfirmPassword ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
                           </button>
                         </div>
                       </div>
@@ -473,7 +538,9 @@ function SignupPageContent() {
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 mb-4">
                       <Home className="w-5 h-5 text-accent-red" />
-                      <h3 className="text-lg font-semibold text-gray-900">Address</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Address
+                      </h3>
                     </div>
 
                     <div className="space-y-2">
@@ -487,10 +554,15 @@ function SignupPageContent() {
                           type="text"
                           placeholder="123 Main Street"
                           value={formData.address.street}
-                          onChange={(e) => setFormData({
-                            ...formData,
-                            address: { ...formData.address, street: e.target.value }
-                          })}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              address: {
+                                ...formData.address,
+                                street: e.target.value,
+                              },
+                            })
+                          }
                           className="pl-10"
                           required
                         />
@@ -507,10 +579,15 @@ function SignupPageContent() {
                           type="text"
                           placeholder="New York"
                           value={formData.address.city}
-                          onChange={(e) => setFormData({
-                            ...formData,
-                            address: { ...formData.address, city: e.target.value }
-                          })}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              address: {
+                                ...formData.address,
+                                city: e.target.value,
+                              },
+                            })
+                          }
                           required
                         />
                       </div>
@@ -523,10 +600,15 @@ function SignupPageContent() {
                           type="text"
                           placeholder="NY"
                           value={formData.address.state}
-                          onChange={(e) => setFormData({
-                            ...formData,
-                            address: { ...formData.address, state: e.target.value }
-                          })}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              address: {
+                                ...formData.address,
+                                state: e.target.value,
+                              },
+                            })
+                          }
                           required
                         />
                       </div>
@@ -534,7 +616,10 @@ function SignupPageContent() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="postalCode" className="text-sm font-medium">
+                        <Label
+                          htmlFor="postalCode"
+                          className="text-sm font-medium"
+                        >
                           Postal Code
                         </Label>
                         <Input
@@ -542,28 +627,38 @@ function SignupPageContent() {
                           type="text"
                           placeholder="10001"
                           value={formData.address.postalCode}
-                          onChange={(e) => setFormData({
-                            ...formData,
-                            address: { ...formData.address, postalCode: e.target.value }
-                          })}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              address: {
+                                ...formData.address,
+                                postalCode: e.target.value,
+                              },
+                            })
+                          }
                           required
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="country" className="text-sm font-medium">
+                        <Label
+                          htmlFor="country"
+                          className="text-sm font-medium"
+                        >
                           Country
                         </Label>
                         <Select
                           value={formData.address.country}
                           onValueChange={(value) => {
-                            const countryData = countryListAllIsoData.find(c => c.name === value);
+                            const countryData = countryListAllIsoData.find(
+                              (c) => c.name === value
+                            );
                             setFormData({
                               ...formData,
                               address: {
                                 ...formData.address,
                                 country: value,
-                                countryCode: countryData?.code3 || ""
-                              }
+                                countryCode: countryData?.code3 || "",
+                              },
                             });
                           }}
                         >
@@ -572,7 +667,10 @@ function SignupPageContent() {
                           </SelectTrigger>
                           <SelectContent>
                             {countryListAllIsoData.map((country) => (
-                              <SelectItem key={country.code3} value={country.name}>
+                              <SelectItem
+                                key={country.code3}
+                                value={country.name}
+                              >
                                 {country.name}
                               </SelectItem>
                             ))}
@@ -595,11 +693,17 @@ function SignupPageContent() {
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
                         I agree to the{" "}
-                        <Link href="/terms-of-service" className="text-accent-red hover:underline">
+                        <Link
+                          href="/terms-of-service"
+                          className="text-accent-red hover:underline"
+                        >
                           Terms of Service
                         </Link>{" "}
                         and{" "}
-                        <Link href="/privacy-policy" className="text-accent-red hover:underline">
+                        <Link
+                          href="/privacy-policy"
+                          className="text-accent-red hover:underline"
+                        >
                           Privacy Policy
                         </Link>
                       </label>
@@ -674,7 +778,10 @@ function SignupPageContent() {
             <div className="text-center pt-4 border-t border-divider">
               <p className="text-sm text-primary-muted">
                 Already have an account?{" "}
-                <Link href="/auth/login" className="text-accent-red hover:text-red-700 font-medium">
+                <Link
+                  href="/auth/login"
+                  className="text-accent-red hover:text-red-700 font-medium"
+                >
                   Sign in
                 </Link>
               </p>
@@ -688,18 +795,22 @@ function SignupPageContent() {
 
 export default function SignupPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-primary-bg via-blue-50 to-indigo-50 flex items-center justify-center px-4 pt-4 pb-8">
-        <div className="w-full max-w-md">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-accent-red to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Users className="w-8 h-8 text-white" />
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-primary-bg via-blue-50 to-indigo-50 flex items-center justify-center px-4 pt-4 pb-8">
+          <div className="w-full max-w-md">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-accent-red to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Users className="w-8 h-8 text-white" />
+              </div>
+              <h1 className="text-3xl font-bold text-primary-text mb-2">
+                Loading...
+              </h1>
             </div>
-            <h1 className="text-3xl font-bold text-primary-text mb-2">Loading...</h1>
           </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <SignupPageContent />
     </Suspense>
   );

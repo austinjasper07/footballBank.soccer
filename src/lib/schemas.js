@@ -96,6 +96,7 @@ const subscriptionSchema = new mongoose.Schema({
   stripeSubId: { type: String, unique: true, sparse: true } // Stripe subscription ID
 });
 
+
 // Player Schema
 const playerSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
@@ -247,6 +248,7 @@ orderSchema.methods.updateStatus = function(newStatus, note = '', updatedBy = 's
   this.updatedAt = new Date();
   return this.save();
 };
+
 
 orderSchema.methods.updatePaymentStatus = function(newStatus, note = '', updatedBy = 'system') {
   this.paymentStatus = newStatus;

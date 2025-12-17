@@ -13,6 +13,7 @@ function SuccessPageContent({ params }) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const sessionId = searchParams.get('session_id');
+  const redirect = searchParams.get('redirect');
   
   // Extract language from params (Next.js 15+ requires React.use())
   const resolvedParams = use(params);
@@ -23,7 +24,6 @@ function SuccessPageContent({ params }) {
   }, [lang]);
 
   useEffect(() => {
-    console.log("Session ID from URL:", sessionId);
     
     if (!sessionId) {
       setErrorMessage('No session ID found in URL');
@@ -33,11 +33,9 @@ function SuccessPageContent({ params }) {
     
     fetch(`/api/stripe/checkout/success/${sessionId}`)
       .then((res) => {
-        console.log("API Response status:", res.status);
         return res.json().then(data => ({ status: res.status, data }));
       })
       .then(({ status, data }) => {
-        console.log("API Response data:", data);
         
         if (status >= 400) {
           // Handle API errors with more specific messages
@@ -55,12 +53,23 @@ function SuccessPageContent({ params }) {
         }
       })
       .catch((err) => {
-        console.error('Error fetching session:', err);
         setErrorMessage(err.message || "Unknown error occurred");
         setStatus('error');
       });
   }, [sessionId]);
   
+
+  useEffect(() => {
+    if (status === 'success' && customerInfo?.mode === 'subscription' && redirect) {
+      // Wait a bit for webhook to process DB update
+      const timer = setTimeout(() => {
+        router.push(redirect);
+      }, 3000); // 4s wait
+  
+      return () => clearTimeout(timer);
+    }
+  }, [status, customerInfo, redirect, router]);
+
   if (!dict) {
     return <div className="text-center p-12">{lang === 'es' ? 'Cargando...' : 'Loading...'}</div>;
   }
