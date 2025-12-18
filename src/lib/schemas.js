@@ -93,7 +93,7 @@ const subscriptionSchema = new mongoose.Schema({
   isActive: { type: Boolean, default: true },
   startedAt: { type: Date, default: Date.now },
   expiresAt: { type: Date, required: true },
-  stripeSubId: { type: String, sparse: true } // Stripe subscription ID - only for paid plans
+  stripeSubId: { type: String, unique: true, sparse: true } // Stripe subscription ID
 });
 
 

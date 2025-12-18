@@ -465,6 +465,7 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
     try {
       const now = new Date();
       const expiresAt = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000); // 3 months
+      const stripeSubId = `free-${user._id.toString()}-${Date.now()}`; // Dummy ID for free plan
 
       const subscription = await Subscription.create({
         userId: user._id,
@@ -473,7 +474,7 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
         isActive: true,
         startedAt: now,
         expiresAt,
-        stripeSubId: null, // no Stripe for free plan
+        stripeSubId, // no Stripe for free plan
       });
 
       await subscription.save();
