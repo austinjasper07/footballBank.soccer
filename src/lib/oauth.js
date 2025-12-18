@@ -45,10 +45,6 @@ export async function getAuthUser() {
     
     // Validate required fields in JWT
     if (!decoded.userId || !decoded.email) {
-      console.log("🔍 Invalid JWT payload - missing required fields, clearing token");
-      // Debug the token to see what's actually in it
-      debugJWTToken(sessionToken);
-      // Clear the invalid token
       try {
         const cookieStore = await cookies();
         cookieStore.delete("session");

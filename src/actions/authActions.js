@@ -1,7 +1,7 @@
 
 "use server";
 
-import { User, OtpToken } from "@/lib/schemas";
+import { User, OtpToken, Subscription } from "@/lib/schemas";
 import { sendOTPEmail } from "@/lib/email";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -69,7 +69,8 @@ export async function loginWithPassword(email, password) {
     const sessionToken = generateSessionToken(user);
 
     // Set session cookie
-    cookies().set("session", sessionToken, {
+    const cookieStore = await cookies();
+    cookieStore.set("session", sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -183,11 +184,39 @@ export async function signupWithPassword(email, firstName, lastName, password, a
 
     const user = await User.create(userData);
 
+    /** ---------- 🎁 Activate 3-Month Free Subscription ---------- **/
+    try {
+      const now = new Date();
+      const expiresAt = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000); // 3 months
+
+      const subscription = await Subscription.create({
+        userId: user._id,
+        type: "player_publication",
+        plan: "free",
+        isActive: true,
+        startedAt: now,
+        expiresAt,
+        stripeSubId: null, // no Stripe for free plan
+      });
+
+      await subscription.save();
+
+      // Update user's subscription status
+      user.subscribed = true;
+      await user.save();
+
+      console.log(`✅ Activated 3-month free subscription for ${email}`);
+    } catch (subError) {
+      console.error("❌ Failed to activate free subscription:", subError);
+    }
+    /** ---------------------------------------------------------- **/
+
     // Generate session token
     const sessionToken = generateSessionToken(user);
 
     // Set session cookie
-    cookies().set("session", sessionToken, {
+    const cookieStore = await cookies();
+    cookieStore.set("session", sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -372,7 +401,8 @@ export async function verifyLoginOTP(email, otp) {
     const sessionToken = generateSessionToken(user);
 
     // Set session cookie with JWT containing user data (NO DATABASE SESSION STORAGE)
-    cookies().set("session", sessionToken, {
+    const cookieStore = await cookies();
+    cookieStore.set("session", sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -446,6 +476,8 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
         stripeSubId: null, // no Stripe for free plan
       });
 
+      await subscription.save();
+
       // Update user's subscription status
       user.subscribed = true;
       await user.save();
@@ -458,7 +490,8 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
 
     // ✅ Create session token
     const sessionToken = generateSessionToken(user);
-    cookies().set("session", sessionToken, {
+    const cookieStore = await cookies();
+    cookieStore.set("session", sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -466,7 +499,6 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
       path: "/",
     });
 
-    console.log("🔐 Session created and cookie set for new user:", email);
 
     return {
       success: true,
@@ -480,7 +512,6 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
       },
     };
   } catch (error) {
-    console.error("Error verifying signup OTP:", error);
     return { success: false, error: "Failed to create account. Please try again." };
   }
 }
@@ -491,7 +522,8 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
 
 export async function getCurrentUser() {
   try {
-    const sessionToken = cookies().get("session")?.value;
+    const cookieStore = await cookies();
+    const sessionToken = cookieStore.get("session")?.value;
     if (!sessionToken) return null;
 
     // Verify JWT token directly (NO DATABASE QUERY)
@@ -502,7 +534,8 @@ export async function getCurrentUser() {
       console.log("Invalid JWT payload - missing required fields, clearing token");
       // Clear the invalid token
       try {
-        cookies().delete("session");
+        const store = await cookies();
+        store.delete("session");
       } catch (clearError) {
         console.log("Could not clear invalid token:", clearError.message);
       }
@@ -523,7 +556,8 @@ export async function getCurrentUser() {
       console.log("Invalid JWT token, clearing cookie");
       // Clear invalid token
       try {
-        cookies().delete("session");
+        const store = await cookies();
+        store.delete("session");
       } catch (clearError) {
         console.log("Could not clear invalid token:", clearError.message);
       }
@@ -531,7 +565,8 @@ export async function getCurrentUser() {
       console.log("JWT token expired, clearing cookie");
       // Clear expired token
       try {
-        cookies().delete("session");
+        const store = await cookies();
+        store.delete("session");
       } catch (clearError) {
         console.log("Could not clear expired token:", clearError.message);
       }
@@ -545,7 +580,8 @@ export async function getCurrentUser() {
 export async function logout() {
   try {
     // Simply clear the session cookie (NO DATABASE OPERATIONS NEEDED)
-    cookies().delete("session");
+    const cookieStore = await cookies();
+    cookieStore.delete("session");
     return { success: true };
   } catch (error) {
     console.error("Error logging out:", error);
