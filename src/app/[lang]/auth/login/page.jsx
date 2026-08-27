@@ -373,7 +373,7 @@ function LoginPageContent() {
         }
       } catch (error) {
         // User is not authenticated, continue with login process
-        console.log('User not authenticated, showing login form');
+        // console.log('User not authenticated, showing login form');
       }
     };
 
@@ -420,7 +420,7 @@ function LoginPageContent() {
       const data = await response.json();
 
       if (data.success) {
-        console.log("🔐 Password login successful for user:", data.user.email);
+        // console.log("🔐 Password login successful for user:", data.user.email);
         setMessage("Login successful! Redirecting...");
         
         setTimeout(() => {
@@ -436,7 +436,7 @@ function LoginPageContent() {
             }
           }
           
-          console.log("🔐 Redirecting to:", dashboardUrl);
+          // console.log("🔐 Redirecting to:", dashboardUrl);
           window.location.href = dashboardUrl;
         }, 1000);
       } else {
@@ -458,7 +458,7 @@ function LoginPageContent() {
       const result = await verifyLoginOTP(email, otp);
       
       if (result.success) {
-        console.log("🔐 Login successful for user:", result.user.email);
+        // console.log("🔐 Login successful for user:", result.user.email);
         setMessage("Login successful! Redirecting...");
         // Redirect directly without page reload to avoid redirect loop
         setTimeout(() => {
@@ -475,7 +475,7 @@ function LoginPageContent() {
             }
           }
           
-          console.log("🔐 Redirecting to:", dashboardUrl);
+          // console.log("🔐 Redirecting to:", dashboardUrl);
           window.location.href = dashboardUrl;
         }, 1000);
       } else {

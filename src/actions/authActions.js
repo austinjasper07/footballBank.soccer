@@ -78,7 +78,7 @@ export async function loginWithPassword(email, password) {
       path: "/",
     });
 
-    console.log("🔐 Password login successful for user:", user.email);
+    // console.log("🔐 Password login successful for user:", user.email);
 
     return {
       success: true,
@@ -205,7 +205,7 @@ export async function signupWithPassword(email, firstName, lastName, password, a
       user.subscribed = true;
       await user.save();
 
-      console.log(`✅ Activated 3-month free subscription for ${email}`);
+      // console.log(`✅ Activated 3-month free subscription for ${email}`);
     } catch (subError) {
       console.error("❌ Failed to activate free subscription:", subError);
     }
@@ -224,7 +224,7 @@ export async function signupWithPassword(email, firstName, lastName, password, a
       path: "/",
     });
 
-    console.log("🔐 Password signup successful for user:", email);
+    // console.log("🔐 Password signup successful for user:", email);
 
     return {
       success: true,
@@ -305,29 +305,29 @@ export async function resetPasswordWithOTP(email, otp, newPassword) {
 // Send OTP for login
 export async function sendLoginOTP(email) {
   try {
-    console.log("🔍 Starting sendLoginOTP for email:", email);
-    console.log("🔍 Environment check:");
-    console.log("- JWT_SECRET exists:", !!process.env.JWT_SECRET);
-    console.log("- RESEND_API_KEY exists:", !!process.env.RESEND_API_KEY);
-    console.log("- DATABASE_URL exists:", !!process.env.DATABASE_URL);
+    // console.log("🔍 Starting sendLoginOTP for email:", email);
+    // console.log("🔍 Environment check:");
+    // console.log("- JWT_SECRET exists:", !!process.env.JWT_SECRET);
+    // console.log("- RESEND_API_KEY exists:", !!process.env.RESEND_API_KEY);
+    // console.log("- DATABASE_URL exists:", !!process.env.DATABASE_URL);
     
     await dbConnect();
-    console.log("🔍 Database connected successfully");
+    // console.log("🔍 Database connected successfully");
 
     await cleanExpiredOTPs();
-    console.log("🔍 Cleaned expired OTPs");
+    // console.log("🔍 Cleaned expired OTPs");
 
     const user = await User.findOne({ email });
-    console.log("🔍 User lookup result:", user ? "User found" : "User not found");
+    // console.log("🔍 User lookup result:", user ? "User found" : "User not found");
     
     if (!user) {
-      console.log("🔍 No user found for email:", email);
+      // console.log("🔍 No user found for email:", email);
       return { success: false, error: "No account found with this email address" };
     }
 
     const otp = generateOTP();
     const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
-    console.log("🔍 Generated OTP:", otp, "Expires at:", expiresAt);
+    // console.log("🔍 Generated OTP:", otp, "Expires at:", expiresAt);
 
     const otpRecord = await OtpToken.create({ 
       userId: user._id, 
@@ -337,11 +337,11 @@ export async function sendLoginOTP(email) {
       status: "PENDING", 
       expiresAt 
     });
-    console.log("🔍 OTP record created:", otpRecord._id);
+    // console.log("🔍 OTP record created:", otpRecord._id);
 
-    console.log("🔍 Attempting to send email...");
+    // console.log("🔍 Attempting to send email...");
     const emailResult = await sendOTPEmail(email, otp, "login");
-    console.log("🔍 Email send result:", emailResult);
+    // console.log("🔍 Email send result:", emailResult);
 
     return { success: true, message: "Login code sent to your email" };
   } catch (error) {
@@ -410,7 +410,7 @@ export async function verifyLoginOTP(email, otp) {
       path: "/", // Ensure cookie is available for all paths
     });
 
-    console.log("🔐 Session created and cookie set for user:", user.email);
+    // console.log("🔐 Session created and cookie set for user:", user.email);
 
     return {
       success: true,
@@ -483,7 +483,7 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
       user.subscribed = true;
       await user.save();
 
-      console.log(`✅ Activated 3-month free subscription for ${email}`);
+      // console.log(`✅ Activated 3-month free subscription for ${email}`);
     } catch (subError) {
       console.error("❌ Failed to activate free subscription:", subError);
     }
@@ -532,13 +532,13 @@ export async function getCurrentUser() {
     
     // Validate required fields in JWT
     if (!decoded.userId || !decoded.email) {
-      console.log("Invalid JWT payload - missing required fields, clearing token");
+      // console.log("Invalid JWT payload - missing required fields, clearing token");
       // Clear the invalid token
       try {
         const store = await cookies();
         store.delete("session");
       } catch (clearError) {
-        console.log("Could not clear invalid token:", clearError.message);
+        // console.log("Could not clear invalid token:", clearError.message);
       }
       return null;
     }
@@ -554,22 +554,22 @@ export async function getCurrentUser() {
     };
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
-      console.log("Invalid JWT token, clearing cookie");
+      // console.log("Invalid JWT token, clearing cookie");
       // Clear invalid token
       try {
         const store = await cookies();
         store.delete("session");
       } catch (clearError) {
-        console.log("Could not clear invalid token:", clearError.message);
+        // console.log("Could not clear invalid token:", clearError.message);
       }
     } else if (error.name === 'TokenExpiredError') {
-      console.log("JWT token expired, clearing cookie");
+      // console.log("JWT token expired, clearing cookie");
       // Clear expired token
       try {
         const store = await cookies();
         store.delete("session");
       } catch (clearError) {
-        console.log("Could not clear expired token:", clearError.message);
+        // console.log("Could not clear expired token:", clearError.message);
       }
     } else {
       console.error("JWT verification error:", error.message);

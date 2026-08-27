@@ -311,12 +311,12 @@ export function ProductDialog({
         });
 
       // Debug logging
-      console.log("Form Data:", {
-        description: formData.description,
-        colorsInput: colorsInput,
-        processedColors: processedColors,
-        sizesInput: sizesInput
-      });
+      // console.log("Form Data:", {
+      //   description: formData.description,
+      //   colorsInput: colorsInput,
+      //   processedColors: processedColors,
+      //   sizesInput: sizesInput
+      // });
 
       const finalData = {
         ...formData,

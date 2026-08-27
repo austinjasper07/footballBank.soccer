@@ -1,6 +1,6 @@
 export async function GET(req, { params }) {
 
-  console.log("Lineup api was hit")
+  // console.log("Lineup api was hit")
   const { id } = await params;
   const { LIVESCORE_API_KEY, LIVESCORE_API_SECRET } = process.env;
 

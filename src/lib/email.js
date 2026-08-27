@@ -4,10 +4,10 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendEmail({ to, subject, html, text }) {
   try {
-    console.log("🔍 Starting sendEmail to:", to);
-    console.log("🔍 Resend API key exists:", !!process.env.RESEND_API_KEY);
-    console.log("🔍 Resend API key length:", process.env.RESEND_API_KEY?.length || 0);
-    console.log("🔍 Resend API key prefix:", process.env.RESEND_API_KEY?.substring(0, 10) + "...");
+    // console.log("🔍 Starting sendEmail to:", to);
+    // console.log("🔍 Resend API key exists:", !!process.env.RESEND_API_KEY);
+    // console.log("🔍 Resend API key length:", process.env.RESEND_API_KEY?.length || 0);
+    // console.log("🔍 Resend API key prefix:", process.env.RESEND_API_KEY?.substring(0, 10) + "...");
     
     // Validate required environment variables
     if (!process.env.RESEND_API_KEY) {
@@ -18,7 +18,7 @@ export async function sendEmail({ to, subject, html, text }) {
       throw new Error('Missing required email parameters: to and subject are required');
     }
 
-    console.log("🔍 Attempting to send email with Resend API...");
+    // console.log("🔍 Attempting to send email with Resend API...");
     
     const { data, error } = await resend.emails.send({
       from: 'FootballBank.soccer <contact@footballbank.soccer>',
@@ -28,7 +28,7 @@ export async function sendEmail({ to, subject, html, text }) {
       text,
     });
 
-    console.log("🔍 Resend response - data:", data, "error:", error);
+    // console.log("🔍 Resend response - data:", data, "error:", error);
 
     if (error) {
       console.error('🔍 Email sending error:', error);
@@ -45,7 +45,7 @@ export async function sendEmail({ to, subject, html, text }) {
       }
     }
 
-    console.log("🔍 Email sent successfully with ID:", data?.id);
+    // console.log("🔍 Email sent successfully with ID:", data?.id);
     return { success: true, messageId: data?.id };
   } catch (error) {
     console.error('🔍 Email service error:', error);
@@ -185,16 +185,16 @@ export function generateOTPEmailTemplate(otp, type) {
 
 export async function sendOTPEmail(email, otp, type) {
   try {
-    console.log("🔍 Starting sendOTPEmail for:", email, "type:", type);
+    // console.log("🔍 Starting sendOTPEmail for:", email, "type:", type);
     
     const subject = type === 'signup' 
       ? 'Welcome to FootballBank.soccer - Verify Your Email'
       : `Your FootballBank.soccer ${type === 'login' ? 'Login' : type === 'reset' ? 'Password Reset' : 'Verification'} Code`;
 
-    console.log("🔍 Email subject:", subject);
+    // console.log("🔍 Email subject:", subject);
 
     const html = generateOTPEmailTemplate(otp, type);
-    console.log("🔍 Email template generated");
+    // console.log("🔍 Email template generated");
     
     const result = await sendEmail({
       to: email,
@@ -203,14 +203,14 @@ export async function sendOTPEmail(email, otp, type) {
       text: `Your verification code is: ${otp}. This code expires in 10 minutes.`
     });
     
-    console.log("🔍 Email sent successfully:", result);
+    // console.log("🔍 Email sent successfully:", result);
     return result;
   } catch (error) {
     console.error("🔍 Error in sendOTPEmail:", error);
     console.error("🔍 Error stack:", error.stack);
     
     // Add fallback mechanism - you could implement alternative email services here
-    console.log("🔍 Attempting fallback email service...");
+    // console.log("🔍 Attempting fallback email service...");
     
     // For now, we'll just re-throw the error, but you could add:
     // - Alternative email service (SendGrid, Mailgun, etc.)

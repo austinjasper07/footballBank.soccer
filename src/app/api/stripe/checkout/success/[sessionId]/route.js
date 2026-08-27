@@ -24,20 +24,20 @@ export async function GET(request, { params }) {
       }, { status: 400 });
     }
 
-    console.log("🔍 Fetching Stripe session:", sessionId);
+    // console.log("🔍 Fetching Stripe session:", sessionId);
 
     // Retrieve the checkout session from Stripe
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ['line_items', 'customer']
     });
 
-    console.log("🔍 Session details:", {
-      id: session.id,
-      payment_status: session.payment_status,
-      status: session.status,
-      mode: session.mode,
-      amount_total: session.amount_total
-    });
+    // console.log("🔍 Session details:", {
+    //   id: session.id,
+    //   payment_status: session.payment_status,
+    //   status: session.status,
+    //   mode: session.mode,
+    //   amount_total: session.amount_total
+    // });
 
     // Check if payment was successful
     if (session.payment_status !== 'paid') {
@@ -61,7 +61,7 @@ export async function GET(request, { params }) {
       session_id: session.id
     };
 
-    console.log("✅ Payment verified successfully:", customerInfo);
+    // console.log("✅ Payment verified successfully:", customerInfo);
 
     return NextResponse.json(customerInfo);
 

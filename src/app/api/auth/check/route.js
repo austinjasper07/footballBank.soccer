@@ -45,12 +45,12 @@ import { getAuthUser } from "@/lib/oauth";
 
 export async function GET() {
   try {
-    console.log("🔍 Auth check called");
+    // console.log("🔍 Auth check called");
 
     // Try to get user (don't race against an artificial timeout here)
     const user = await getAuthUser();
 
-    console.log("🔍 Auth check result:", { user: user ? 'found' : 'null' });
+    // console.log("🔍 Auth check result:", { user: user ? 'found' : 'null' });
 
     return NextResponse.json({
       authenticated: !!user,

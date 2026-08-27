@@ -89,9 +89,9 @@ export default function UsersView() {
   const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
 
   const handleDeleteUser = async (id) => {
-    console.log("Delete user clicked - ID:", id, "Type:", typeof id);
+    // console.log("Delete user clicked - ID:", id, "Type:", typeof id);
     const user = users.find(u => u.id === id);
-    console.log("Found user:", user);
+    // console.log("Found user:", user);
     setUserToDelete(user);
     setDeleteDialogOpen(true);
   };
@@ -99,8 +99,8 @@ export default function UsersView() {
   const confirmDeleteUser = async () => {
     if (!userToDelete) return;
     
-    console.log("Confirming delete for user:", userToDelete);
-    console.log("User ID to delete:", userToDelete.id, "Type:", typeof userToDelete.id);
+    // console.log("Confirming delete for user:", userToDelete);
+    // console.log("User ID to delete:", userToDelete.id, "Type:", typeof userToDelete.id);
     
     try {
       setIsDeleting(true);

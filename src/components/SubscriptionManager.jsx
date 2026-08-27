@@ -21,7 +21,7 @@ export default function SubscriptionManager({ subscriptions, onUpdate }) {
     setLoading(prev => ({ ...prev, [subscriptionId]: true }));
     setError(null);
 
-    console.log('Attempting to cancel subscription:', subscriptionId);
+    // console.log('Attempting to cancel subscription:', subscriptionId);
 
     try {
       const response = await fetch("/api/profile/subscriptions", {
@@ -35,7 +35,7 @@ export default function SubscriptionManager({ subscriptions, onUpdate }) {
         }),
       });
 
-      console.log('API response status:', response.status);
+      // console.log('API response status:', response.status);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -44,7 +44,7 @@ export default function SubscriptionManager({ subscriptions, onUpdate }) {
       }
 
       const result = await response.json();
-      console.log('API success response:', result);
+      // console.log('API success response:', result);
 
       // Refresh subscriptions
       if (onUpdate) onUpdate();
@@ -61,7 +61,7 @@ export default function SubscriptionManager({ subscriptions, onUpdate }) {
     setLoading(prev => ({ ...prev, [subscriptionId]: true }));
     setError(null);
 
-    console.log('Attempting to reactivate subscription:', subscriptionId);
+    // console.log('Attempting to reactivate subscription:', subscriptionId);
 
     try {
       const response = await fetch("/api/profile/subscriptions", {
@@ -75,7 +75,7 @@ export default function SubscriptionManager({ subscriptions, onUpdate }) {
         }),
       });
 
-      console.log('API response status:', response.status);
+      // console.log('API response status:', response.status);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -84,7 +84,7 @@ export default function SubscriptionManager({ subscriptions, onUpdate }) {
       }
 
       const result = await response.json();
-      console.log('API success response:', result);
+      // console.log('API success response:', result);
 
       // Refresh subscriptions
       if (onUpdate) onUpdate();

@@ -56,12 +56,12 @@ export function initializeAnalytics() {
   
   if (preferences.analytics) {
     // Initialize Google Analytics or other analytics services
-    console.log("Analytics initialized");
+    // console.log("Analytics initialized");
     
     // Example: Initialize Google Analytics
     // gtag('config', 'GA_MEASUREMENT_ID');
   } else {
-    console.log("Analytics disabled by user preference");
+    // console.log("Analytics disabled by user preference");
   }
 }
 
@@ -73,9 +73,9 @@ export function initializeFunctionalCookies() {
   
   if (preferences.functional) {
     // Initialize functional features like theme persistence, language settings, etc.
-    console.log("Functional cookies initialized");
+    // console.log("Functional cookies initialized");
   } else {
-    console.log("Functional cookies disabled by user preference");
+    // console.log("Functional cookies disabled by user preference");
   }
 }
 

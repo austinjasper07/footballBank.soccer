@@ -7,7 +7,7 @@ export async function GET() {
   const CACHE_DURATION = 30 * 1000; // 30 seconds
 
   if (cache && now - cacheTime < CACHE_DURATION) {
-    console.log("Serving from cache...");
+    // console.log("Serving from cache...");
     return new Response(JSON.stringify(cache), {
       status: 200,
       headers: { "Content-Type": "application/json" },

@@ -19,12 +19,12 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'Order ID is required' }, { status: 400 });
     }
 
-    console.log('Looking for order with ID:', id);
-    console.log('User ID:', user.id);
+    // console.log('Looking for order with ID:', id);
+    // console.log('User ID:', user.id);
 
     // Validate ObjectId format
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      console.log('Invalid ObjectId format:', id);
+      // console.log('Invalid ObjectId format:', id);
       return NextResponse.json({ error: 'Invalid order ID format' }, { status: 400 });
     }
 
@@ -34,7 +34,7 @@ export async function GET(request, { params }) {
       userId: user.id 
     }).populate('userId', 'firstName lastName email');
 
-    console.log('Found order:', order ? 'Yes' : 'No');
+    // console.log('Found order:', order ? 'Yes' : 'No');
 
     if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });

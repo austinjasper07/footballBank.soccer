@@ -86,7 +86,7 @@ export async function POST(req) {
     }
 
     const { plan, duration, redirect } = await req.json();
-    console.log(redirect);
+    // console.log(redirect);
 
     // ✅ Validate required fields
     if (!plan || !duration) {

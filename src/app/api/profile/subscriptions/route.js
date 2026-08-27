@@ -18,7 +18,7 @@ export async function GET(request) {
     const subscriptions = await Subscription.find({ userId: user.id })
       .sort({ createdAt: -1 });
 
-    console.log('Found subscriptions for user:', user.id, 'Count:', subscriptions.length);
+    // console.log('Found subscriptions for user:', user.id, 'Count:', subscriptions.length);
 
     return NextResponse.json(subscriptions);
   } catch (error) {
@@ -41,25 +41,25 @@ export async function PATCH(request) {
     }
 
     const body = await request.json();
-    console.log('Raw request body:', body);
+    // console.log('Raw request body:', body);
     
     const { subscriptionId, isActive } = body;
 
-    console.log('PATCH subscription request:', { subscriptionId, isActive, userId: user.id });
+    // console.log('PATCH subscription request:', { subscriptionId, isActive, userId: user.id });
 
     if (!subscriptionId) {
-      console.log('Missing subscriptionId in request');
+      // console.log('Missing subscriptionId in request');
       return NextResponse.json({ error: 'Subscription ID is required' }, { status: 400 });
     }
 
     if (typeof isActive !== 'boolean') {
-      console.log('Invalid isActive type:', typeof isActive, 'value:', isActive);
+      // console.log('Invalid isActive type:', typeof isActive, 'value:', isActive);
       return NextResponse.json({ error: 'isActive must be a boolean' }, { status: 400 });
     }
 
     // Validate ObjectId format
     if (!mongoose.Types.ObjectId.isValid(subscriptionId)) {
-      console.log('Invalid ObjectId format:', subscriptionId);
+      // console.log('Invalid ObjectId format:', subscriptionId);
       return NextResponse.json({ error: 'Invalid subscription ID format' }, { status: 400 });
     }
 
@@ -73,13 +73,13 @@ export async function PATCH(request) {
       { new: true }
     );
 
-    console.log('Database update result:', subscription ? 'Found and updated' : 'Not found');
+    // console.log('Database update result:', subscription ? 'Found and updated' : 'Not found');
 
     if (!subscription) {
       return NextResponse.json({ error: 'Subscription not found' }, { status: 404 });
     }
 
-    console.log('Subscription updated successfully:', subscription._id, 'isActive:', subscription.isActive);
+    // console.log('Subscription updated successfully:', subscription._id, 'isActive:', subscription.isActive);
 
     return NextResponse.json({ 
       success: true, 

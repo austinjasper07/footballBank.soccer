@@ -91,9 +91,9 @@ export async function POST(req) {
       }
     });
 
-    console.log(`🛒 Checkout session created: ${session.id}`);
-    console.log(`🛒 Success URL: ${session.success_url}`);
-    console.log(`🛒 Webhook endpoint: ${process.env.STRIPE_WEBHOOK_ENDPOINT || 'Not configured'}`);
+    // console.log(`🛒 Checkout session created: ${session.id}`);
+    // console.log(`🛒 Success URL: ${session.success_url}`);
+    // console.log(`🛒 Webhook endpoint: ${process.env.STRIPE_WEBHOOK_ENDPOINT || 'Not configured'}`);
 
     return NextResponse.json({ url: session.url });
   } catch (err) {

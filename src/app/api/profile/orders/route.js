@@ -18,7 +18,7 @@ export async function GET(request) {
     const limit = 10;
     const skip = (page - 1) * limit;
 
-    console.log(`Fetching orders for user: ${user.id}`);
+    // console.log(`Fetching orders for user: ${user.id}`);
 
     try {
       // Get user's orders
@@ -31,7 +31,7 @@ export async function GET(request) {
 
       const totalPages = Math.ceil(totalOrders / limit);
 
-      console.log(`Found ${orders.length} orders for user ${user.id}`);
+      // console.log(`Found ${orders.length} orders for user ${user.id}`);
 
       return NextResponse.json({
         orders: orders || [],

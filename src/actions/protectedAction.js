@@ -16,7 +16,7 @@ const normalize = (doc) => ({
 export async function createSubmission(data) {
   await dbConnect();
   try {
-    console.log("Creating submission with data:", data);
+    // console.log("Creating submission with data:", data);
     const submission = await Submission.create(data);
     return normalize(submission.toObject()); // ✅ plain JSON-safe object
   } catch (error) {

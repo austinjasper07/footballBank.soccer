@@ -14,19 +14,19 @@ function debugJWTToken(token) {
   try {
     // Decode without verification to see payload structure
     const decoded = jwt.decode(token);
-    console.log("🔍 JWT Debug - Token payload:", {
-      hasUserId: !!decoded?.userId,
-      hasEmail: !!decoded?.email,
-      hasFirstName: !!decoded?.firstName,
-      hasLastName: !!decoded?.lastName,
-      hasRole: !!decoded?.role,
-      payloadKeys: Object.keys(decoded || {}),
-      iat: decoded?.iat,
-      exp: decoded?.exp
-    });
+    // console.log("🔍 JWT Debug - Token payload:", {
+    //   hasUserId: !!decoded?.userId,
+    //   hasEmail: !!decoded?.email,
+    //   hasFirstName: !!decoded?.firstName,
+    //   hasLastName: !!decoded?.lastName,
+    //   hasRole: !!decoded?.role,
+    //   payloadKeys: Object.keys(decoded || {}),
+    //   iat: decoded?.iat,
+    //   exp: decoded?.exp
+    // });
     return decoded;
   } catch (error) {
-    console.log("🔍 JWT Debug - Could not decode token:", error.message);
+    // console.log("🔍 JWT Debug - Could not decode token:", error.message);
     return null;
   }
 }
@@ -49,7 +49,7 @@ export async function getAuthUser() {
         const cookieStore = await cookies();
         cookieStore.delete("session");
       } catch (clearError) {
-        console.log("Could not clear invalid token:", clearError.message);
+        // console.log("Could not clear invalid token:", clearError.message);
       }
       return null;
     }
@@ -65,22 +65,22 @@ export async function getAuthUser() {
     };
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
-      console.log("🔍 Invalid JWT token, clearing cookie");
+      // console.log("🔍 Invalid JWT token, clearing cookie");
       // Clear invalid token
       try {
         const cookieStore = await cookies();
         cookieStore.delete("session");
       } catch (clearError) {
-        console.log("Could not clear invalid token:", clearError.message);
+        // console.log("Could not clear invalid token:", clearError.message);
       }
     } else if (error.name === 'TokenExpiredError') {
-      console.log("🔍 JWT token expired, clearing cookie");
+      // console.log("🔍 JWT token expired, clearing cookie");
       // Clear expired token
       try {
         const cookieStore = await cookies();
         cookieStore.delete("session");
       } catch (clearError) {
-        console.log("Could not clear expired token:", clearError.message);
+        // console.log("Could not clear expired token:", clearError.message);
       }
     } else {
       console.error("🔍 JWT verification error:", error.message);

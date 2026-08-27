@@ -34,9 +34,9 @@ export const getAllUsers = async () => {
   await dbConnect();
   try {
     const users = await User.find({}).lean().sort({ createdAt: -1 });
-    console.log("Raw users from DB:", users.slice(0, 1)); // Log first user to see structure
+    // console.log("Raw users from DB:", users.slice(0, 1)); // Log first user to see structure
     const convertedUsers = toPlain(users);
-    console.log("Converted users:", convertedUsers.slice(0, 1)); // Log first user after conversion
+    // console.log("Converted users:", convertedUsers.slice(0, 1)); // Log first user after conversion
     return convertedUsers;
   } catch (err) {
     console.error("Error fetching users:", err);
@@ -94,7 +94,7 @@ export async function updateUser(userId, data) {
 export async function deleteUser(id) {
   await dbConnect();
   try {
-    console.log("Delete user - ID received:", id, "Type:", typeof id);
+    // console.log("Delete user - ID received:", id, "Type:", typeof id);
     
     // Convert string ID to ObjectId if needed
     let objectId;
@@ -105,14 +105,14 @@ export async function deleteUser(id) {
       throw new Error("Invalid user ID");
     }
     
-    console.log("Converted ObjectId:", objectId);
+    // console.log("Converted ObjectId:", objectId);
     
     // First, let's check if the user exists
     const userExists = await User.findById(objectId);
-    console.log("User exists check:", userExists);
+    // console.log("User exists check:", userExists);
     
     const result = await User.findByIdAndDelete(objectId);
-    console.log("Delete result:", result);
+    // console.log("Delete result:", result);
     
     if (!result) {
       throw new Error("User not found");

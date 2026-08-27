@@ -138,7 +138,7 @@ export const NewAuthProvider = ({ children }) => {
    */
   const logout = async (redirectToHome = false) => {
     try {
-      console.log("🔐 Logging out user...");
+      // console.log("🔐 Logging out user...");
       await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
@@ -149,7 +149,7 @@ export const NewAuthProvider = ({ children }) => {
       setUser(null);
       // Non-blocking refresh for smoother UX
       checkUser();
-      console.log("🔐 User state cleared and refreshed");
+      // console.log("🔐 User state cleared and refreshed");
       
       // Redirect to home page if requested
       if (redirectToHome) {

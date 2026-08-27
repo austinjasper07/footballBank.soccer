@@ -190,10 +190,10 @@ function SignupPageContent() {
         const data = await response.json();
 
         if (data.success) {
-          console.log(
-            "🔐 Password signup successful for user:",
-            data.user.email
-          );
+          // console.log(
+          //   "🔐 Password signup successful for user:",
+          //   data.user.email
+          // );
           setMessage("Account created successfully! Redirecting...");
 
           setTimeout(() => {
@@ -203,7 +203,7 @@ function SignupPageContent() {
               dashboardUrl = "/profile";
             }
 
-            console.log("🔐 Redirecting to:", dashboardUrl);
+            // console.log("🔐 Redirecting to:", dashboardUrl);
             window.location.href = dashboardUrl;
           }, 1000);
         } else {

@@ -10,7 +10,7 @@ export async function handleContactSubmit(formData) {
 
   try {
     const result = await sendContactEmail({ name, email, message, subject });
-    console.log(result);
+    // console.log(result);
 
     if (result.error) {
       throw new Error(result.error.message);

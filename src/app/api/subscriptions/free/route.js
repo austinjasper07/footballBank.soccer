@@ -58,7 +58,7 @@ export async function POST(request) {
     // Update user subscription status
     await User.findByIdAndUpdate(user.id, { subscribed: true });
 
-    console.log(`✅ Free subscription created for user ${user.id}`);
+    // console.log(`✅ Free subscription created for user ${user.id}`);
 
     return NextResponse.json({
       success: true,
