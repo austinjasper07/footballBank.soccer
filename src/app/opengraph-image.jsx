@@ -1,7 +1,5 @@
 import { ImageResponse } from 'next/og'
- 
-export const runtime = 'edge'
- 
+
 export const alt = 'FootballBank - Global Football Talent Platform'
 export const size = {
   width: 1200,

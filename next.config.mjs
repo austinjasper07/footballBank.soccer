@@ -36,7 +36,6 @@ const nextConfig = {
     // Increase timeout for external images
     minimumCacheTTL: 60,
   },
-  // This is required to ensure middleware behaves as expected
   experimental: {
     serverActions: {
       // Add properties as needed, e.g.
@@ -44,7 +43,9 @@ const nextConfig = {
       allowedOrigins: ['https://localhost:3000', 'https://www.footballbank.soccer'], // or some other valid string[]
     },
   },
-  // Add webpack configuration to handle network timeouts
+  // Next.js 16 builds with Turbopack by default. An empty config acknowledges
+  // that the webpack fallbacks below are webpack-only (client Node polyfills).
+  turbopack: {},
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {

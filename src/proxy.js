@@ -29,10 +29,10 @@ function getLocale(request) {
   return defaultLocale;
 }
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
-  // Skip middleware for static files and API routes
+  // Skip proxy for static files and API routes
   if (
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/api/") ||
@@ -102,7 +102,6 @@ export async function middleware(request) {
   }
 
   // For admin routes, we'll let the page component handle the role check
-  // since we can't use Prisma in middleware
   return NextResponse.next();
 }
 
