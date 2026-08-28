@@ -64,17 +64,19 @@
     "resend": "^4.8.0",
     "stripe": "^18.3.0",
     "swiper": "^14.2.0",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "tailwindcss": "^4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4.3.3",
+    
     "@types/aos": "^3.0.7",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "eslint": "^9",
-    "eslint-config-next": "15.4.5",
-    "tailwindcss": "^4"
+    "eslint-config-next": "15.4.5"
+    
   },
   "allowScripts": {
     "@firebase/util@1.15.3": true,
