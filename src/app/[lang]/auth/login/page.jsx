@@ -330,7 +330,6 @@ import {
   EyeOff,
 } from "lucide-react";
 import Link from "next/link";
-// import { signIn } from "next-auth/react"; // Disabled to avoid openid-client issues
 import { sendLoginOTP, verifyLoginOTP } from "@/actions/authActions";
 
 import "aos/dist/aos.css";

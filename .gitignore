@@ -12,6 +12,8 @@
 
 # testing
 /coverage
+/src/scripts
+/src/scripts/ping.js
 
 # next.js
 /.next/
