@@ -7,7 +7,6 @@ import { EditorHeader } from "@/components/editor/EditorHeader";
 import EditorOverview from "@/components/editor/views/EditorOverview";
 import EditorPosts from "@/components/editor/views/EditorPosts";
 import EditorEditor from "@/components/editor/views/EditorEditor";
-import { AffiliateView } from "@/components/admin/views/AffiliateView";
 import { useAuth } from "@/context/NewAuthContext";
 import { useToast } from "@/hooks/use-toast";
 import SplashScreen from "@/components/SplashScreen";
@@ -81,8 +80,6 @@ const EditorDashboard = () => {
         );
       case "shop":
         return <EditorOverview onNavigateToEditor={handleNavigateToEditor} />;
-      case "affiliate":
-        return <AffiliateView />;
       default:
         return <EditorOverview />;
     }
@@ -107,10 +104,6 @@ const EditorDashboard = () => {
       shop: {
         title: "Shop",
         subtitle: "Manage products and inventory",
-      },
-      affiliate: {
-        title: "Affiliate Marketing",
-        subtitle: "Manage affiliates and track commissions",
       },
     };
     return (

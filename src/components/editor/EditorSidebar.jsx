@@ -158,9 +158,7 @@ import {
   ChevronLeft, 
   ChevronRight,
   Menu,
-  X,
-  ShoppingBag,
-  Users
+  X
 } from "lucide-react";
 import Link from "next/link";
 
@@ -171,8 +169,6 @@ export function EditorSidebar({ activeView, onViewChange, collapsed, onToggleCol
     { id: 'overview', icon: BarChart3, label: 'Overview', href: '/editor' },
     { id: 'posts', icon: FileText, label: 'Posts', href: '/editor' },
     { id: 'editor', icon: Edit, label: 'Editor', href: '/editor' },
-    // { id: 'shop', icon: ShoppingBag, label: 'Shop', href: '/editor' },
-    { id: 'affiliate', icon: Users, label: 'Affiliate', href: '/editor' },
   ];
 
   const toggleMobile = () => setMobileOpen(!mobileOpen);
@@ -227,7 +223,7 @@ export function EditorSidebar({ activeView, onViewChange, collapsed, onToggleCol
                         }
                       `}
                     >
-                      <Icon className="w-4 h-4 flex-shrink-0" />
+                      <Icon className="w-4 h-4 shrink-0" />
                       {!collapsed && <span>{item.label}</span>}
                     </Link>
                   </li>
@@ -308,7 +304,7 @@ export function EditorSidebar({ activeView, onViewChange, collapsed, onToggleCol
                         }
                       `}
                     >
-                      <Icon className="w-4 h-4 flex-shrink-0" />
+                      <Icon className="w-4 h-4 shrink-0" />
                       <span>{item.label}</span>
                     </Link>
                   </li>

@@ -304,7 +304,7 @@ export default function MediaManager({
                     <Card key={file.id} className="group hover:bg-gray-50">
                       <CardContent className="p-4">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 flex-shrink-0">
+                          <div className="w-12 h-12 shrink-0">
                             {file.type === "image" ? (
                               <img
                                 src={file.url}

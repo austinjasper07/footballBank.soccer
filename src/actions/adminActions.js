@@ -1,6 +1,6 @@
 "use server";
 
-import { User, Post, Player, Message, Submission, AffiliateProduct, Agent } from "@/lib/schemas";
+import { User, Post, Player, Message, Submission, Agent } from "@/lib/schemas";
 import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongodb";
 import mongoose from "mongoose";
@@ -367,53 +367,6 @@ export async function deleteSubmission(id) {
     throw err;
   }
 }
-
-
-// AFFILIATE PRODUCTS
-export async function getAffiliateProducts() {
-  await dbConnect();
-  try {
-    const products = await AffiliateProduct.find({}).lean().sort({ createdAt: -1 });
-    return toPlain(products);
-  } catch (err) {
-    console.error("Error fetching affiliate products:", err);
-    return [];
-  }
-}
-
-export async function createAffiliateProduct(data) {
-  await dbConnect();
-  try {
-    const product = await AffiliateProduct.create(data);
-    return toPlain(product);
-  } catch (err) {
-    console.error("Error creating affiliate product:", err);
-    return err;
-  }
-}
-
-export async function updateAffiliateProduct(id, data) {
-  await dbConnect();
-  try {
-    const product = await AffiliateProduct.findByIdAndUpdate(id, data, { new: true });
-    return toPlain(product);
-  } catch (err) {
-    console.error("Error updating affiliate product:", err);
-    return err;
-  }
-}
-
-export async function deleteAffiliateProduct(id) {
-  await dbConnect();
-  try {
-    await AffiliateProduct.findByIdAndDelete(id);
-    return await getAffiliateProducts();
-  } catch (err) {
-    console.error("Error deleting affiliate product:", err);
-    return err;
-  }
-}
-
 // Agent Management Functions
 export async function getAgentInfo() {
   await dbConnect();

@@ -27,13 +27,13 @@ export default function ProfileNavigation({ userRole = "user", onItemClick }) {
       description: "Account overview and quick stats",
     },
     // {
-      href: "/profile/__orders",
+      // href: "/profile/__orders",
     //   label: "Orders",
     //   icon: ShoppingBag,
     //   description: "Order history and management",
     // },
     // {
-      href: "/profile/__subscriptions",
+    //  href: "/profile/__subscriptions",
     //   label: "Subscriptions",
     //   icon: Crown,
     //   description: "Manage your subscriptions",
@@ -60,13 +60,13 @@ export default function ProfileNavigation({ userRole = "user", onItemClick }) {
       description: "View and manage your player profile",
     },
     // {
-      href: "/profile/__orders",
+      // href: "/profile/__orders",
     //   label: "Orders",
     //   icon: ShoppingBag,
     //   description: "Order history and management",
     // },
     // {
-      href: "/profile/__subscriptions",
+      // href: "/profile/__subscriptions",
     //   label: "Subscriptions",
     //   icon: Crown,
     //   description: "Manage your subscriptions",

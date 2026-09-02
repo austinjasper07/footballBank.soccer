@@ -225,7 +225,6 @@ export default function ProfileDashboard({
                   <p className="font-semibold text-primary-text">{formatCurrency(order.totalAmount || 0)}</p>
                 </div>
               ))}
-              </div>
             </div>
           ) : (
             <div className="text-center py-8">

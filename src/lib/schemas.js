@@ -179,31 +179,6 @@ const submissionSchema = new mongoose.Schema({
   submittedAt: { type: Date, default: Date.now }
 });
 
-// Affiliate Product Schema
-const affiliateProductSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  originalPrice: { type: Number },
-  discount: { type: Number, default: 0 },
-  image: { type: String, required: true },
-  images: [{ type: String }],
-  category: { type: String, required: true },
-  brand: { type: String },
-  rating: { type: Number, default: 0 },
-  reviewCount: { type: Number, default: 0 },
-  affiliateUrl: { type: String, required: true },
-  amazonAsin: { type: String },
-  featured: { type: Boolean, default: false },
-  inStock: { type: Boolean, default: true },
-  sizes: [{ type: String }],
-  colors: [{ type: String }],
-  tags: [{ type: String }],
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-});
-
-
 // Agent Schema for managing agent profile information
 const agentSchema = new mongoose.Schema({
   name: { type: String, required: true, default: "Ayodeji Fatade" },
@@ -224,5 +199,4 @@ export const Post = mongoose.models.Post || mongoose.model('Post', postSchema);
 export const PaymentMethod = mongoose.models.PaymentMethod || mongoose.model('PaymentMethod', paymentMethodSchema);
 export const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
 export const Submission = mongoose.models.Submission || mongoose.model('Submission', submissionSchema);
-export const AffiliateProduct = mongoose.models.AffiliateProduct || mongoose.model('AffiliateProduct', affiliateProductSchema);
 export const Agent = mongoose.models.Agent || mongoose.model('Agent', agentSchema);

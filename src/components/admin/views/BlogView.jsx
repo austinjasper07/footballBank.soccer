@@ -377,7 +377,7 @@ export default function BlogView() {
                     content={newPostData.content}
                     onChange={(content) => setNewPostData({ ...newPostData, content })}
                     placeholder="Start writing your blog post here..."
-                    className="min-h-[300px] sm:min-h-[400px]"
+                    className="min-h-75 sm:min-h-100"
                   />
                 </div>
               </div>
@@ -405,7 +405,7 @@ export default function BlogView() {
                 {paginatedPosts.map((post) => (
                   <tr key={post.id} className="border-t hover:bg-muted/40">
                     <td className="p-4 font-medium">{post.title}</td>
-                    <td className="p-4 text-muted-foreground line-clamp-2 max-w-[300px]">
+                    <td className="p-4 text-muted-foreground line-clamp-2 max-w-75">
                       {post.summary || post.content.replace(/<[^>]*>/g, '').substring(0, 100)}...
                     </td>
                     <td className="p-4">

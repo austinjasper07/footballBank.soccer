@@ -21,15 +21,6 @@
     "allCountries": "Todos los Países",
     "allPositions": "Todas las Posiciones"
   },
-  "amazonAds": {
-    "title": "Ofertas de Amazon",
-    "subtitle": "Productos seleccionados para entusiastas del fútbol",
-    "ctaTitle": "Más Ofertas Disponibles",
-    "ctaSubtitle": "Descubre ofertas exclusivas en Amazon",
-    "ctaButton": "Comprar Ahora",
-    "disclosureLabel": "Divulgación de Afiliados:",
-    "disclosureText": "Ganamos con las compras calificadas."
-  },
   "agentPage": {
     "metadata": {
       "title": "Sobre Nuestro Agente | FootballBank.soccer",

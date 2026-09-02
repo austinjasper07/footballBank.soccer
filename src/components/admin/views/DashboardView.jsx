@@ -12,7 +12,6 @@ import {
   FileText,
   TrendingUp,
   Package,
-  Star,
 } from "lucide-react";
 
 import {
@@ -24,7 +23,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useEffect, useMemo, useState } from "react";
 import { formatDistanceToNow, isSameMonth, parseISO } from "date-fns";
-import { getAllUsers, getAllPosts, getAllOrders, getAllPlayers, getAllSubmissions, getAllProducts, getAffiliateProducts } from "@/actions/adminActions";
+import { getAllUsers, getAllPosts, getAllOrders, getAllPlayers, getAllSubmissions, getAllProducts } from "@/actions/adminActions";
 import { formatFullDate } from "@/utils/dateHelper";
 import { useToast } from "@/hooks/use-toast";
 import LoadingSplash from "@/components/ui/loading-splash";
@@ -36,7 +35,6 @@ export function DashboardView() {
   const [orders, setOrders] = useState([]);
   const [submissions, setSubmissions] = useState([]);
   const [products, setProducts] = useState([]);
-  const [affiliateProducts, setAffiliateProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -50,7 +48,6 @@ export function DashboardView() {
         const ordersRes = await getAllOrders();
         const submissionsRes = await getAllSubmissions();
         const productsRes = await getAllProducts();
-        const affiliateProductsRes = await getAffiliateProducts();
 
         setPlayers(playersRes);
         setUsers(usersRes);
@@ -58,7 +55,6 @@ export function DashboardView() {
         setOrders(ordersRes);
         setSubmissions(submissionsRes);
         setProducts(productsRes);
-        setAffiliateProducts(affiliateProductsRes);
         setLoading(false);
       } catch (error) {
         toast({
@@ -242,21 +238,6 @@ export function DashboardView() {
           }))
       : [];
 
-    // Affiliate product activities
-    const affiliateActivity = Array.isArray(affiliateProducts)
-      ? affiliateProducts
-          .filter((product) => new Date(product.createdAt) >= oneWeekAgo)
-          .map((product) => ({
-            icon: Star,
-            variant: "amber",
-            title: "New affiliate product",
-            description: `${product.description} – $${product.price}`,
-            time: formatDistanceToNow(new Date(product.createdAt), { addSuffix: true }),
-            createdAt: new Date(product.createdAt)
-          }))
-      : [];
-
-
     // Submission activities
     const submissionActivity = Array.isArray(submissions)
       ? submissions
@@ -277,12 +258,11 @@ export function DashboardView() {
       ...orderActivity, 
       ...postActivity, 
       ...productActivity, 
-      ...affiliateActivity, 
       ...submissionActivity
     ]
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .slice(0, 8);
-  }, [orders, players, posts, users, products, affiliateProducts, submissions]);
+  }, [orders, players, posts, users, products, submissions]);
 
 
   return (

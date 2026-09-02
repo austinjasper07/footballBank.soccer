@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Image from "next/image";
-import AmazonAd from "@/components/AmazonAd";
 import MatchSkeleton from "../../components/MatchSkeleton";
 
 const TABS = ["Events", "Statistics", "Lineups", "Head2Head"];
@@ -20,14 +19,6 @@ export default function MatchPage() {
   const [activeTab, setActiveTab] = useState("Events");
   const [loading, setLoading] = useState(true);
   const [tabLoading, setTabLoading] = useState(false);
-
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
-
-  useEffect(() => {
-    if (window.innerWidth > 1024) {
-      setIsLargeScreen(true);
-    }
-  }, []);
 
   // ✅ fetch events + base match info
   const fetchMatch = async () => {
@@ -176,11 +167,6 @@ export default function MatchPage() {
             {match.location}
           </div>
         </div>
-        {/* Ads Placement */}
-        <div className="lg:hidden my-4">
-          <AmazonAd lang={lang} />
-        </div>
-
         {/* Tabs */}
         <div>
           <div className="flex border-b mb-4 overflow-x-scroll">
@@ -230,12 +216,6 @@ export default function MatchPage() {
                           </li>
                         ))}
                       </ul>
-                    )}
-
-                    {half.toLowerCase().includes("1st") && (
-                      <div className="my-6">
-                        <AmazonAd lang={lang} displayInContent={isLargeScreen} />
-                      </div>
                     )}
                   </div>
                 ))}
@@ -375,16 +355,7 @@ export default function MatchPage() {
             )}
           </div>
         </div>
-
-        <div className="my-4 hidden lg:block">
-          <AmazonAd lang={lang} displayInContent={isLargeScreen} />
-        </div>
       </div>
-
-      {/* Sidebar */}
-      <aside className="w-full md:w-72 mt-4">
-        <AmazonAd lang={lang} />
-      </aside>
     </div>
   );
 }

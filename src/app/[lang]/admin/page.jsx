@@ -9,7 +9,6 @@ import PlayersView from "@/components/admin/views/PlayersView";
 import SubmissionsView from "@/components/admin/views/SubmissionsView";
 import AdminBlogView from "@/components/admin/views/AdminBlogView";
 import { SettingsView } from "@/components/admin/views/SettingsView";
-import { AffiliateView } from "@/components/admin/views/AffiliateView";
 import UsersView from "@/components/admin/views/UsersView";
 import AgentView from "@/components/admin/views/AgentView";
 import { useAuth } from "@/context/NewAuthContext";
@@ -73,8 +72,6 @@ const AdminDashboard = () => {
         return <DashboardView />;
       case "blog":
         return <AdminBlogView />;
-      case "affiliate":
-        return <AffiliateView />;
       case "agent":
         return <AgentView />;
       case "settings":
@@ -106,10 +103,6 @@ const AdminDashboard = () => {
       shop: { title: "Shop", subtitle: "Manage products and inventory" },
       orders: { title: "Orders", subtitle: "View and process customer orders" },
       blog: { title: "Blog", subtitle: "Create and manage blog content" },
-      affiliate: {
-        title: "Affiliate Marketing",
-        subtitle: "Manage affiliates and track commissions",
-      },
       agent: {
         title: "Agent Management",
         subtitle: "Manage agent profile and information",

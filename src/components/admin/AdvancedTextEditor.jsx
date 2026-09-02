@@ -402,7 +402,7 @@ export default function AdvancedTextEditor({
       <div className="relative">
         {showPreviewMode ? (
           <div 
-            className="prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto p-4 min-h-[400px]"
+            className="prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto p-4 min-h-100"
             dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
           />
         ) : (

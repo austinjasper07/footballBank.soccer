@@ -128,7 +128,7 @@ export default function FAQPage() {
     {
       id: 'partnerships-1',
       question: 'Can brands advertise on FootballBank.soccer?',
-      answer: 'Yes. We offer banner placements, sponsored content, and affiliate integrations. Request our media kit our email contact@footballbank.soccer.'
+      answer: 'Yes. We offer banner placements and sponsored content. Request our media kit via email at contact@footballbank.soccer.'
     },
     {
       id: 'partnerships-2',

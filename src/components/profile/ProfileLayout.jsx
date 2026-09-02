@@ -46,7 +46,7 @@ export default function ProfileLayout({
                       variant="outline"
                       size="sm"
                       onClick={toggleSidebar}
-                      className="flex-shrink-0"
+                      className="shrink-0"
                     >
                       <Menu className="w-4 h-4" />
                     </Button>
@@ -67,7 +67,7 @@ export default function ProfileLayout({
                   variant="outline"
                   size="sm"
                   onClick={handleLogout}
-                  className="text-red-600 hover:text-red-700 hover:bg-red-50 flex-shrink-0"
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50 shrink-0"
                 >
                   <LogOut className="w-4 h-4" />
                 </Button>
@@ -84,7 +84,7 @@ export default function ProfileLayout({
                     {userRole?.toUpperCase()}
                   </Badge>
                   {user?.email && (
-                    <Badge variant="outline" className="text-primary-muted text-xs truncate max-w-[200px]">
+                    <Badge variant="outline" className="text-primary-muted text-xs truncate max-w-50">
                       {user.email}
                     </Badge>
                   )}
@@ -156,7 +156,7 @@ export default function ProfileLayout({
                 </div>
                 
                 {/* Desktop action buttons */}
-                <div className="flex items-center gap-2 lg:gap-3 flex-shrink-0">
+                <div className="flex items-center gap-2 lg:gap-3 shrink-0">
                   {actions.map((action, index) => (
                     <Button
                       key={`action-${index}-${action.label || action.href || 'button'}`}

@@ -21,15 +21,6 @@
     "allCountries": "All Countries",
     "allPositions": "All Positions"
   },
-  "amazonAds": {
-    "title": "Amazon Deals",
-    "subtitle": "Handpicked products for football enthusiasts",
-    "ctaTitle": "More Deals Available",
-    "ctaSubtitle": "Discover exclusive offers on Amazon",
-    "ctaButton": "Shop Now",
-    "disclosureLabel": "Affiliate Disclosure:",
-    "disclosureText": "We earn from qualifying purchases."
-  },
   "agentPage": {
     "metadata": {
       "title": "About Our Agent | FootballBank.soccer",

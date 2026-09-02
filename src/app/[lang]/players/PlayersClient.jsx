@@ -14,8 +14,6 @@ import {
 import { countryList } from "@/lib/variousCountryListFormats";
 import "aos/dist/aos.css";
 import { getAllPlayers } from "@/actions/publicActions";
-import PlayerCarousel from "@/components/PlayerCarousel";
-import { AmazonAdDesktop, AmazonAdMobile } from "@/components/AmazonAd";
 
 export default function PlayersClient({ lang, dict }) {
   const [players, setPlayers] = useState([]);
@@ -171,12 +169,6 @@ export default function PlayersClient({ lang, dict }) {
               </div>
             </section>
   
-            {/* Mobile ad after filters */}
-            <div className="my-4">
-              <AmazonAdMobile lang={lang} />
-            </div>
-            
-  
             {/* Main content */}
             <section className="py-8 sm:py-16 bg-white/5 rounded-lg px-3 sm:px-6">
               <div className="grid lg:grid-cols-[3fr_1fr] gap-4 lg:gap-8">
@@ -210,7 +202,7 @@ export default function PlayersClient({ lang, dict }) {
                                 className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                               />
                               {/* Gradient Overlay */}
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
                               
                               {/* Country Badge */}
                               <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 text-xs font-semibold rounded-full flex items-center gap-2 shadow-lg">
@@ -225,7 +217,7 @@ export default function PlayersClient({ lang, dict }) {
                               </div>
                               
                               {/* Available Badge */}
-                              <div className="absolute top-4 right-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1 text-xs font-semibold rounded-full shadow-lg">
+                              <div className="absolute top-4 right-4 bg-linear-to-r from-green-500 to-emerald-500 text-white px-3 py-1 text-xs font-semibold rounded-full shadow-lg">
                                 Available
                               </div>
                               
@@ -321,19 +313,8 @@ export default function PlayersClient({ lang, dict }) {
                   </div>
                 )}
   
-                {/* Mobile ad after pagination */}
-  
-                {/* <AmazonAdMobile /> */}
-  
-                {/* Right Sidebar Ads (desktop only) */}
-  
-                <AmazonAdDesktop lang={lang} />
               </div>
             </section>
-  
-            <div className="my-4">
-              <AmazonAdMobile lang={lang} />
-            </div>
   
             {/* Animation styles */}
             <style jsx global>{`

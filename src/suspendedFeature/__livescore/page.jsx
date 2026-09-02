@@ -3,7 +3,6 @@
 
 "use client";
 
-import AmazonAd from "@/components/AmazonAd";
 import LiveScoresSkeleton from "./components/LiveScoresSkeleton";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -13,13 +12,6 @@ export default function LiveScores() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("LIVE");
   const [selectedLeague, setSelectedLeague] = useState(null);
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
-
-  useEffect(() => {
-    if (window.innerWidth > 1024) {
-      setIsLargeScreen(true);
-    }
-  }, []);
 
   // Fetch matches
   useEffect(() => {
@@ -69,14 +61,6 @@ export default function LiveScores() {
     acc[match.competition].push(match);
     return acc;
   }, {});
-
-  // Fake ad component
-  const AdBlock = ({ label }) => (
-    <div className="bg-yellow-100 border border-yellow-300 text-yellow-800 text-center py-6 rounded-md shadow-sm">
-      <p className="text-sm font-semibold">Advertisement</p>
-      <p className="text-xs">{label}</p>
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row">
@@ -225,14 +209,6 @@ export default function LiveScores() {
                     ))}
                   </div>
                 </div>
-
-                {/* Mobile + md ads: insert after every few competitions */}
-                {index % 2 === 1 && (
-                  <div className="my-4 w-full">
-                    <AmazonAd lang={lang} displayInContent={isLargeScreen}/>
-                  </div>
-                  
-                )}
               </div>
             ))}
           </div>
@@ -240,15 +216,6 @@ export default function LiveScores() {
           <p className="text-gray-500 text-center">No matches available</p>
         )}
       </main>
-
-      {/* Right Sidebar Ads (desktop only) */}
-      <aside className="hidden lg:block w-64 border-l p-4 space-y-4">
-        <AmazonAd lang={lang} />
-        {/* <AdBlock /> */}
-        {/* <AmazonAd /> */}
-        
-        
-      </aside>
     </div>
   );
 }

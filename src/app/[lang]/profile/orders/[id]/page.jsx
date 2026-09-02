@@ -228,7 +228,7 @@ export default function OrderDetailPage({ params }) {
                 <div className="space-y-4">
                   {(order.items || []).map((item, index) => (
                     <div key={index} className="flex items-center space-x-4 p-4 border border-divider rounded-lg">
-                      <div className="w-16 h-16 flex-shrink-0">
+                      <div className="w-16 h-16 shrink-0">
                         <Image
                           src={item.image || '/placeholder-product.jpg'}
                           alt={item.name || 'Product'}

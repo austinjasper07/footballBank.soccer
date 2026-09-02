@@ -597,7 +597,7 @@ export default async function HomePage({ params }) {
           >
             <Link href={`/${lang}/players/${playerOfTheWeek.id}`}>
               <div className="group relative w-full max-w-sm lg:max-w-md bg-primary-navy/60 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-primary-accent/20 hover:border-primary-accent/40 transition-all duration-300 transform hover:scale-105">
-                <div className="absolute top-4 right-4 z-20 bg-gradient-to-r from-primary-accent to-amber-500 text-primary-text px-3 py-1 text-xs sm:text-sm font-semibold rounded-full shadow-lg">
+                <div className="absolute top-4 right-4 z-20 bg-linear-to-r from-primary-accent to-amber-500 text-primary-text px-3 py-1 text-xs sm:text-sm font-semibold rounded-full shadow-lg">
                   {dict.homepage.hero.starOnTheRise}
                 </div>
 
@@ -609,7 +609,7 @@ export default async function HomePage({ params }) {
                     height={400}
                     className="object-cover w-full h-56 sm:h-56 lg:h-80"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
                 </div>
 
                 <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
@@ -785,9 +785,9 @@ export default async function HomePage({ params }) {
                       fill
                       className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
 
-                    <div className="absolute top-4 right-4 bg-gradient-to-r from-primary-accent to-amber-500 text-primary-text px-3 py-1 text-xs font-semibold rounded-full shadow-lg">
+                    <div className="absolute top-4 right-4 bg-linear-to-r from-primary-accent to-amber-500 text-primary-text px-3 py-1 text-xs font-semibold rounded-full shadow-lg">
                       {dict.common.featured}
                     </div>
 
