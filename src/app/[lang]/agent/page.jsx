@@ -25,7 +25,7 @@ const AboutAgent = async ({ params }) => {
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="flex flex-col lg:flex-row gap-16 items-start">
             {/* Left Side - Enhanced Profile Card */}
-            <div className="flex-shrink-0 w-full lg:w-auto">
+            <div className="shrink-0 w-full lg:w-auto">
               <div className="bg-primary-card rounded-2xl p-8 shadow-xl border border-divider/50 backdrop-blur-sm">
                 <div className="text-center">
                   <div className="relative inline-block mb-6">
@@ -34,10 +34,10 @@ const AboutAgent = async ({ params }) => {
                       alt={`${agentInfo?.name || "Ayodeji Fatade"} headshot`}
                       width={140}
                       height={175}
-                      className="rounded-xl border-3 border-accent-red object-cover shadow-lg"
+                      className="rounded-xl border-3 border-primary-action object-cover shadow-lg"
                     />
                     {/* Verification badge */}
-                    <div className="absolute -top-2 -right-2 bg-accent-green text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
+                    <div className="absolute -top-2 -right-2 bg-primary-accent text-primary-text w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
                       <i className="fa-solid fa-check text-sm"></i>
                     </div>
                   </div>
@@ -48,9 +48,9 @@ const AboutAgent = async ({ params }) => {
                   </h2>
 
                   {/* Enhanced licence display */}
-                  <div className="bg-gradient-to-r from-accent-green/10 to-accent-green/5 rounded-xl p-4 border border-accent-green/20">
+                  <div className="bg-linear-to-r from-primary-accent/10 to-primary-action/5 rounded-xl p-4 border border-primary-accent/20">
                     <div className="flex items-center justify-center gap-3 mb-2">
-                      <i className="fa-solid fa-certificate text-accent-green text-xl" />
+                      <i className="fa-solid fa-certificate text-primary-accent text-xl" />
                       <span className="font-bold text-primary-text">
                         {dict.agentPage.hero.licence.title ||
                           agentInfo?.credentials}
@@ -80,8 +80,8 @@ const AboutAgent = async ({ params }) => {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-accent-red/10 rounded-full flex items-center justify-center">
-                        <i className="fa-solid fa-calendar text-accent-red"></i>
+                      <div className="w-10 h-10 bg-primary-action/10 rounded-full flex items-center justify-center">
+                        <i className="fa-solid fa-calendar text-primary-action"></i>
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-primary-text">
@@ -94,8 +94,8 @@ const AboutAgent = async ({ params }) => {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-accent-green/10 rounded-full flex items-center justify-center">
-                        <i className="fa-solid fa-graduation-cap text-accent-green"></i>
+                      <div className="w-10 h-10 bg-primary-action/10 rounded-full flex items-center justify-center">
+                        <i className="fa-solid fa-graduation-cap text-primary-action"></i>
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-primary-text">
@@ -108,8 +108,8 @@ const AboutAgent = async ({ params }) => {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-accent-amber/10 rounded-full flex items-center justify-center">
-                        <i className="fa-solid fa-globe text-accent-amber"></i>
+                      <div className="w-10 h-10 bg-primary-accent/10 rounded-full flex items-center justify-center">
+                        <i className="fa-solid fa-globe text-primary-accent"></i>
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-primary-text">
@@ -122,8 +122,8 @@ const AboutAgent = async ({ params }) => {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-accent-red/10 rounded-full flex items-center justify-center">
-                        <i className="fa-solid fa-trophy text-accent-red"></i>
+                      <div className="w-10 h-10 bg-primary-action/10 rounded-full flex items-center justify-center">
+                        <i className="fa-solid fa-trophy text-primary-action"></i>
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-primary-text">
@@ -148,12 +148,12 @@ const AboutAgent = async ({ params }) => {
 
       {/* Enhanced Core Values */}
       <section
-        className="py-12 bg-gradient-to-br from-primary-card/20 to-primary-bg"
+        className="py-12 bg-linear-to-br from-primary-card/20 to-primary-bg"
         data-aos="fade-up"
       >
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-16">
-            <h2 className="font-bold text-[clamp(2rem,4vw,3rem)] mb-4 bg-gradient-to-r from-primary-text to-accent-red bg-clip-text text-transparent">
+            <h2 className="font-bold text-[clamp(2rem,4vw,3rem)] mb-4 bg-linear-to-r from-primary-text to-primary-action bg-clip-text text-transparent">
               {dict.agentPage.coreValues.title}
             </h2>
             <p className="text-primary-muted text-xl max-w-3xl mx-auto">
@@ -163,46 +163,55 @@ const AboutAgent = async ({ params }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {dict.agentPage.coreValues.values.map(
-              ({ title, icon, color, desc, features }, i) => (
-                <div
-                  key={title}
-                  className="group bg-primary-card rounded-2xl p-8 border border-divider/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-accent-red/30 backdrop-blur-sm"
-                  data-aos="fade-up"
-                  data-aos-delay={i * 150}
-                >
-                  <div className="text-center mb-6">
-                    <div
-                      className={`w-16 h-16 bg-accent-${color}/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      <i
-                        className={`fa-solid ${icon} text-accent-${color} text-2xl`}
-                      />
-                    </div>
-                    <h3
-                      className={`font-bold text-2xl mb-3 text-accent-${color}`}
-                    >
-                      {title}
-                    </h3>
-                  </div>
+              ({ title, icon, color, desc, features }, i) => {
+                const colorClass =
+                  color === "red"
+                    ? { bg: "bg-primary-action/10", text: "text-primary-action", dot: "bg-primary-action" }
+                    : color === "green"
+                      ? { bg: "bg-primary-accent/10", text: "text-primary-accent", dot: "bg-primary-accent" }
+                      : { bg: "bg-primary-action/10", text: "text-primary-action", dot: "bg-primary-action" };
 
-                  <p className="text-primary-muted leading-relaxed mb-6 text-center">
-                    {desc}
-                  </p>
-
-                  <div className="space-y-2">
-                    {features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-3">
-                        <div
-                          className={`w-2 h-2 bg-accent-${color} rounded-full flex-shrink-0`}
-                        ></div>
-                        <span className="text-sm text-primary-muted">
-                          {feature}
-                        </span>
+                return (
+                  <div
+                    key={title}
+                    className="group bg-primary-card rounded-2xl p-8 border border-divider/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-primary-action/30 backdrop-blur-sm"
+                    data-aos="fade-up"
+                    data-aos-delay={i * 150}
+                  >
+                    <div className="text-center mb-6">
+                      <div
+                        className={`w-16 h-16 ${colorClass.bg} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
+                      >
+                        <i
+                          className={`fa-solid ${icon} ${colorClass.text} text-2xl`}
+                        />
                       </div>
-                    ))}
+                      <h3
+                        className={`font-bold text-2xl mb-3 ${colorClass.text}`}
+                      >
+                        {title}
+                      </h3>
+                    </div>
+
+                    <p className="text-primary-muted leading-relaxed mb-6 text-center">
+                      {desc}
+                    </p>
+
+                    <div className="space-y-2">
+                      {features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-3">
+                          <div
+                            className={`w-2 h-2 ${colorClass.dot} rounded-full shrink-0`}
+                          ></div>
+                          <span className="text-sm text-primary-muted">
+                            {feature}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )
+                );
+              }
             )}
           </div>
         </div>
@@ -210,7 +219,7 @@ const AboutAgent = async ({ params }) => {
 
       {/* Enhanced CTA Section */}
       <section
-        className="py-20 bg-gradient-to-br from-accent-red to-red-600 max-w-7xl mx-auto rounded-2xl"
+        className="py-20 bg-linear-to-br from-primary-action to-primary-action-hover max-w-7xl mx-auto rounded-2xl"
         data-aos="zoom-in-up"
       >
         <div className="container mx-auto px-4 max-w-6xl">
@@ -265,7 +274,7 @@ const AboutAgent = async ({ params }) => {
 
           <div className="flex flex-col md:flex-row gap-6 justify-center">
             <Link href={`/${lang}/contact`} className="group w-full md:w-auto">
-              <span className="bg-white text-accent-red px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/90 transition-all duration-300 inline-flex items-center gap-3 justify-center shadow-xl hover:shadow-2xl transform hover:scale-105 w-full md:w-auto">
+              <span className="bg-white text-primary-action px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/90 transition-all duration-300 inline-flex items-center gap-3 justify-center shadow-xl hover:shadow-2xl transform hover:scale-105 w-full md:w-auto">
                 <i className="fa-solid fa-calendar-plus"></i>
                 {dict.agentPage.cta.buttons.consultation}
               </span>
@@ -274,7 +283,7 @@ const AboutAgent = async ({ params }) => {
               href={`/${lang}/submit-profile`}
               className="group w-full md:w-auto"
             >
-              <span className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent-red transition-all duration-300 inline-flex items-center gap-3 justify-center backdrop-blur-sm hover:shadow-xl transform hover:scale-105 w-full md:w-auto">
+              <span className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-primary-action transition-all duration-300 inline-flex items-center gap-3 justify-center backdrop-blur-sm hover:shadow-xl transform hover:scale-105 w-full md:w-auto">
                 <i className="fa-solid fa-file-upload"></i>
                 {dict.agentPage.cta.buttons.profile}
               </span>

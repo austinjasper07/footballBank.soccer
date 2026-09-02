@@ -21,8 +21,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import StatsCard from "./StatsCard";
-import OrderCard from "./OrderCard";
-import SubscriptionCard from "./SubscriptionCard";
 
 export default function ProfileDashboard({ 
   userData, 
@@ -113,7 +111,7 @@ export default function ProfileDashboard({
                 <p className="text-xs sm:text-sm text-primary-muted truncate">Total Orders</p>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-primary-text">{orders.length}</p>
               </div>
-              <ShoppingBag className="w-6 h-6 sm:w-8 sm:h-8 text-accent-red flex-shrink-0" />
+              <ShoppingBag className="w-6 h-6 sm:w-8 sm:h-8 text-primary-action shrink-0" />
             </div>
           </CardContent>
         </Card>
@@ -125,7 +123,7 @@ export default function ProfileDashboard({
                 <p className="text-xs sm:text-sm text-primary-muted truncate">Active Subscriptions</p>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-primary-text">{getActiveSubscriptions()}</p>
               </div>
-              <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-accent-red flex-shrink-0" />
+              <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-primary-action shrink-0" />
             </div>
           </CardContent>
         </Card>
@@ -137,7 +135,7 @@ export default function ProfileDashboard({
                 <p className="text-xs sm:text-sm text-primary-muted truncate">Total Spent</p>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-primary-text truncate">{formatCurrency(getTotalSpent())}</p>
               </div>
-              <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-accent-red flex-shrink-0" />
+              <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-primary-action shrink-0" />
             </div>
           </CardContent>
         </Card>
@@ -151,7 +149,7 @@ export default function ProfileDashboard({
                   {userData?.createdAt ? formatDate(userData.createdAt) : 'N/A'}
                 </p>
               </div>
-              <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-accent-red flex-shrink-0" />
+              <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-primary-action shrink-0" />
             </div>
           </CardContent>
         </Card>
@@ -168,14 +166,14 @@ export default function ProfileDashboard({
           <Card className="bg-primary-card border border-divider">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Star className="w-5 h-5 text-accent-red" />
+                <Star className="w-5 h-5 text-primary-action" />
                 Player Highlights
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-primary-muted">Position</span>
-                <Badge className="bg-accent-red/10 text-accent-red">
+                <Badge className="bg-primary-action/10 text-primary-action">
                   {playerData.position}
                 </Badge>
               </div>
@@ -207,38 +205,26 @@ export default function ProfileDashboard({
         <CardHeader className="pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-              <ShoppingBag className="w-5 h-5 text-accent-red" />
+              <ShoppingBag className="w-5 h-5 text-primary-action" />
               Recent Orders
             </CardTitle>
             <Button variant="outline" size="sm" asChild className="self-start sm:self-auto">
-              <Link href="/profile/orders">View All</Link>
+              <Link href="/profile/__orders">View All</Link>
             </Button>
           </div>
         </CardHeader>
         <CardContent>
           {getRecentOrders().length > 0 ? (
-            <div className="overflow-x-auto">
-              {/* Desktop Table Header */}
-              <div className="hidden md:grid grid-cols-8 gap-4 items-center text-sm font-medium text-muted-foreground border-b border-divider pb-3 mb-4">
-                <div>Order ID</div>
-                <div>Customer</div>
-                <div>Items</div>
-                <div>Total</div>
-                <div>Status</div>
-                <div>Payment</div>
-                <div>Date</div>
-                <div>Actions</div>
-              </div>
-              
-              {/* Orders List */}
-              <div className="space-y-0">
-                {getRecentOrders().map((order, index) => (
-                  <OrderCard
-                    key={order.id || `order-${index}`}
-                    order={order}
-                    showActions={true}
-                  />
-                ))}
+            <div className="space-y-3">
+              {getRecentOrders().map((order, index) => (
+                <div key={order.id || `order-${index}`} className="p-4 rounded-lg border border-divider bg-primary-bg flex items-center justify-between gap-4">
+                  <div>
+                    <p className="font-medium text-primary-text">{order.id || order._id || "Order"}</p>
+                    <p className="text-sm text-primary-muted">{formatDate(order.createdAt)}</p>
+                  </div>
+                  <p className="font-semibold text-primary-text">{formatCurrency(order.totalAmount || 0)}</p>
+                </div>
+              ))}
               </div>
             </div>
           ) : (
@@ -246,7 +232,7 @@ export default function ProfileDashboard({
               <ShoppingBag className="w-12 h-12 text-primary-muted mx-auto mb-4" />
               <p className="text-primary-muted mb-4">No orders yet</p>
               <Button asChild>
-                <Link href="/shop">Start Shopping</Link>
+                <Link href="#">Start Shopping</Link>
               </Button>
             </div>
           )}
@@ -258,11 +244,11 @@ export default function ProfileDashboard({
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
-              <Crown className="w-5 h-5 text-accent-red" />
+              <Crown className="w-5 h-5 text-primary-action" />
               Active Subscriptions
             </CardTitle>
             <Button variant="outline" size="sm" asChild>
-              <Link href="/profile/subscriptions">Manage All</Link>
+              <Link href="/profile/__subscriptions">Manage All</Link>
             </Button>
           </div>
         </CardHeader>
@@ -270,11 +256,15 @@ export default function ProfileDashboard({
           {getRecentSubscriptions().length > 0 ? (
             <div className="space-y-4">
               {getRecentSubscriptions().map((subscription, index) => (
-                <SubscriptionCard
-                  key={subscription.id || `subscription-${index}`}
-                  subscription={subscription}
-                  showActions={false}
-                />
+                <div key={subscription.id || `subscription-${index}`} className="p-4 rounded-lg border border-divider bg-primary-bg flex items-center justify-between gap-4">
+                  <div>
+                    <p className="font-medium text-primary-text capitalize">{subscription.plan || "Plan"}</p>
+                    <p className="text-sm text-primary-muted">{subscription.type || "Subscription"}</p>
+                  </div>
+                  <Badge className={subscription.isActive ? "bg-green-100 text-green-800" : "bg-primary-muted/15 text-primary-muted"}>
+                    {subscription.isActive ? "Active" : "Inactive"}
+                  </Badge>
+                </div>
               ))}
             </div>
           ) : (
@@ -282,7 +272,7 @@ export default function ProfileDashboard({
               <Crown className="w-12 h-12 text-primary-muted mx-auto mb-4" />
               <p className="text-primary-muted mb-4">No subscriptions yet</p>
               <Button asChild>
-                <Link href="/pricing">View Plans</Link>
+                <Link href="#">View Plans</Link>
               </Button>
             </div>
           )}
@@ -293,7 +283,7 @@ export default function ProfileDashboard({
       <Card className="bg-primary-card border border-divider">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Users className="w-5 h-5 text-accent-red" />
+            <Users className="w-5 h-5 text-primary-action" />
             Quick Actions
           </CardTitle>
         </CardHeader>

@@ -7,13 +7,10 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { DashboardView } from "@/components/admin/views/DashboardView";
 import PlayersView from "@/components/admin/views/PlayersView";
 import SubmissionsView from "@/components/admin/views/SubmissionsView";
-import ShopView from "@/components/admin/views/ShopView";
-import OrdersView from "@/components/admin/views/OrdersView";
 import AdminBlogView from "@/components/admin/views/AdminBlogView";
 import { SettingsView } from "@/components/admin/views/SettingsView";
 import { AffiliateView } from "@/components/admin/views/AffiliateView";
 import UsersView from "@/components/admin/views/UsersView";
-import SubscriptionsView from "@/components/admin/views/SubscriptionsView";
 import AgentView from "@/components/admin/views/AgentView";
 import { useAuth } from "@/context/NewAuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -67,13 +64,13 @@ const AdminDashboard = () => {
       case "users":
         return <UsersView />;
       case "subscriptions":
-        return <SubscriptionsView />;
+        return <DashboardView />;
       case "submissions":
         return <SubmissionsView />;
       case "shop":
-        return <ShopView />;
+        return <DashboardView />;
       case "orders":
-        return <OrdersView />;
+        return <DashboardView />;
       case "blog":
         return <AdminBlogView />;
       case "affiliate":

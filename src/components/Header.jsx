@@ -4,8 +4,7 @@ import { useAuth } from "@/context/NewAuthContext";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
-import { useCart } from "@/context/CartContext";
+import { FaBars, FaTimes } from "react-icons/fa";
 import Image from "next/image";
 import { UserHeader } from "./UserHeader";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -26,9 +25,9 @@ export default function Header({ lang = 'en' }) {
     { label: "About", path: `/${lang}/about` },
     { label: "Players", path: `/${lang}/players` },
     { label: "Agent", path: `/${lang}/agent` },
-    { label: "Pricing", path: `/${lang}/pricing` },
+    // { label: "Pricing", path: `/${lang}/pricing` },
     { label: "Blog", path: `/${lang}/blog` },
-    { label: "Shop", path: `/${lang}/shop/products` },
+    // { label: "Shop", path: `/${lang}/shop/products` },
     { label: "Contact", path: `/${lang}/contact` },
   ];
 
@@ -38,33 +37,26 @@ export default function Header({ lang = 'en' }) {
     { label: dict.navigation.about, path: `/${lang}/about` },
     { label: dict.navigation.players, path: `/${lang}/players` },
     { label: dict.navigation.agent || "Agent", path: `/${lang}/agent` },
-    { label: dict.navigation.pricing || "Pricing", path: `/${lang}/pricing` },
+    // { label: dict.navigation.pricing || "Pricing", path: `/${lang}/pricing` },
     { label: dict.navigation.blog, path: `/${lang}/blog` },
-    { label: dict.navigation.shop, path: `/${lang}/shop/products` },
+    // { label: dict.navigation.shop, path: `/${lang}/shop/products` },
     { label: dict.navigation.contact, path: `/${lang}/contact` },
   ] : defaultNavLinks;
 
   const { isAuthenticated, loading: isLoading, logout } = useAuth();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { cart } = useCart();
-
-  const isShopOrCart =
-    pathname.includes("/shop") ||
-    pathname.endsWith("/cart") ||
-    pathname.includes("/shop/cart");
-  const isCartPage = pathname.endsWith("/cart") || pathname.includes("/shop/cart");
-  const isShopPage = pathname.includes("/shop");
+  const isShopPage = false;
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <header className="bg-gray-50 sticky top-0 z-50 border-b border-divider shadow-sm">
+    <header className="bg-primary-navy sticky top-0 z-50 border-b border-white/10 shadow-sm lg:h-28 h-16 md:h-20 flex items-center">
       
-      <div className="max-w-full mx-auto px-3 sm:px-4 lg:px-12">
-        <div className="flex items-center justify-between h-12 sm:h-14 md:h-16">
+      <div className="max-w-full mx-auto px-3 sm:px-4 lg:px-12 w-full flex ">
+        <div className="w-full flex items-center justify-between h-12 sm:h-14 md:h-16">
           {/* Logo - Fixed width */}
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
           <Link
               href={`/${lang}`}
               className="font-bold text-2xl cursor-pointer flex items-center gap-2"
@@ -75,12 +67,14 @@ export default function Header({ lang = 'en' }) {
                 alt="FootballBank Logo"
                 width={60}
                 height={60}
-                  className="object-contain h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14"
+                  className="object-contain h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16"
               />
-                <h1 className="text-sm sm:text-lg md:block md:text-xl font-semibold text-gray-800">
-                FootballBank
-                <span className="text-base md:text-lg text-accent-red">.soccer</span>
-              </h1>
+              <div className="flex flex-col">
+                <h1 className="text-base sm:text-lg md:block md:text-xl font-semibold text-white tracking-wider">
+                  FootballBank
+                </h1>
+                <h3 className="text-[8px] md:text-[10px] tracking-[0.15em] text-primary-accent">INTERNATIONAL</h3>
+              </div>
             </div>
           </Link>
           </div>
@@ -100,8 +94,8 @@ export default function Header({ lang = 'en' }) {
                   href={path}
                   className={`transition-colors text-sm xl:text-lg ${
                     isActive
-                      ? "text-accent-red font-semibold"
-                      : "text-primary-text hover:text-accent-red"
+                      ? "text-primary-action font-semibold"
+                      : "text-white hover:text-primary-action"
                   }`}
                 >
                   {label}
@@ -112,7 +106,7 @@ export default function Header({ lang = 'en' }) {
           </nav>
 
           {/* Right Actions - Fixed width */}
-          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+          <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
             {/* Language Switcher */}
             {mounted && <LanguageSwitcher currentLang={lang} />}
             
@@ -120,31 +114,20 @@ export default function Header({ lang = 'en' }) {
             {!isShopPage && (
               <Link
                 href={`/${lang}/submit-profile`}
-                className="hidden md:block bg-gradient-to-r from-accent-red to-red-600 hover:from-red-600 hover:to-red-700 text-white px-3 lg:px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200 shadow-sm hover:shadow-md text-sm lg:text-base"
+                className="hidden md:block bg-primary-action hover:bg-primary-action-hover text-white px-3 lg:px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200 shadow-sm hover:shadow-md text-sm lg:text-base"
               >
                 {(dict && mounted) ? dict?.navigation?.submitProfile : "Submit Profile"}
               </Link>
             )}
             
-            {isShopOrCart && mounted && (
-              <Link href={`/${lang}/shop/cart`} className="relative">
-                <FaShoppingCart
-                  className={`text-xl `}
-                />
-                {cart.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-accent-red text-white text-xs w-4 h-4 rounded-full flex items-center justify-center font-bold text-center ">
-                    {cart.length}
-                  </span>
-                )}
-              </Link>
-            )}
+            {/* Shop/cart shortcut disabled */}
             {mounted && !isLoading && (
               isAuthenticated ? (
                 <UserHeader slug={"Dashboard"} href={"/admin"}/>
               ) : (
                 <Link
                   href={`/${lang}/auth/login`}
-                  className="hidden lg:block border border-accent-red text-accent-red hover:bg-accent-red hover:text-white px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200"
+                  className="hidden lg:block border border-primary-action text-primary-action hover:bg-primary-action hover:text-white hover:border-primary-action px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200"
                 >
                   {(dict && mounted) ? dict?.navigation?.signIn : "Sign in"}
                 </Link>
@@ -152,7 +135,7 @@ export default function Header({ lang = 'en' }) {
             )}
             <button
               onClick={toggleMenu}
-              className="lg:hidden text-primary-text"
+              className="lg:hidden text-white"
             >
               {menuOpen ? (
                 <FaTimes className="text-xl" />
@@ -167,7 +150,7 @@ export default function Header({ lang = 'en' }) {
       {/* Mobile Menu */}
       {mounted && (
       <div
-          className={`fixed top-0 right-0 h-full w-72 sm:w-80 bg-primary-card z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+          className={`fixed top-0 right-0 h-full w-72 sm:w-80 bg-primary-navy z-50 shadow-lg transform transition-transform duration-300 ease-in-out border-l border-white/10 ${
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -184,8 +167,8 @@ export default function Header({ lang = 'en' }) {
                 href={path}
                 className={`text-base sm:text-lg py-2 px-3 rounded-md transition-colors ${
                   isActive
-                    ? "text-accent-red font-semibold bg-red-50"
-                    : "text-primary-text hover:text-accent-red hover:bg-gray-50"
+                    ? "text-primary-action font-semibold bg-primary-action/10"
+                    : "text-white/80 hover:text-primary-action hover:bg-white/5"
                 }`}
                 onClick={() => setMenuOpen(false)}
               >
@@ -199,7 +182,7 @@ export default function Header({ lang = 'en' }) {
             <Link
                 href={`/${lang}/submit-profile`}
               onClick={() => setMenuOpen(false)}
-              className="bg-gradient-to-r from-accent-red to-red-600 text-white text-center py-3 rounded-md block font-medium"
+              className="bg-primary-action hover:bg-primary-action-hover text-white text-center py-3 rounded-md block font-medium transition-colors"
             >
                 {(dict && mounted) ? dict?.navigation?.submitProfile : "Submit Profile"}
             </Link>
@@ -212,7 +195,7 @@ export default function Header({ lang = 'en' }) {
                   setMenuOpen(false);
                   await logout(true);
                 }}
-                className="border border-accent-red text-accent-red text-center py-2 rounded-md w-full"
+                className="border border-primary-action text-primary-action text-center py-2 rounded-md w-full"
               >
                 Logout
               </button>
@@ -220,7 +203,7 @@ export default function Header({ lang = 'en' }) {
               <Link
                   href={`/${lang}/auth/login`}
                 onClick={() => setMenuOpen(false)}
-                className="border border-accent-red text-accent-red text-center py-2 rounded-md block"
+                className="border border-primary-action text-primary-action text-center py-2 rounded-md block"
               >
                   {(dict && mounted) ? dict?.navigation?.signIn : "Sign in"}
               </Link>
@@ -233,7 +216,7 @@ export default function Header({ lang = 'en' }) {
       {/* Backdrop */}
       {mounted && menuOpen && (
         <div
-          className="fixed inset-0 bg-black/20 z-40"
+          className="fixed inset-0 bg-black/40 z-40"
           onClick={() => setMenuOpen(false)}
         />
       )}

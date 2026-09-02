@@ -1,6 +1,8 @@
 'use server';
-import { PendingOrder } from "../lib/schemas";
-import dbConnect from "@/lib/mongodb";
+// import { PendingOrder } from "../lib/schemas";
+// import dbConnect from "@/lib/mongodb";
+
+const ORDERS_DISABLED = true;
 
 // 🧩 Helper to normalize MongoDB documents
 const normalize = (doc) => ({
@@ -13,6 +15,11 @@ const normalize = (doc) => ({
 
 // 💾 Save or update a pending order
 export const savePendingOrder = async (userId, items, type) => {
+  if (ORDERS_DISABLED) {
+    return { success: false, message: "Pending orders are disabled." };
+  }
+
+  /*
   await dbConnect();
   const existing = await PendingOrder.findOne({ userId });
 
@@ -21,24 +28,37 @@ export const savePendingOrder = async (userId, items, type) => {
   } else {
     await PendingOrder.create({ userId, items, type });
   }
+  */
 };
 
 // 📦 Get pending order for a user
 export const getPendingOrder = async (userId) => {
+  if (ORDERS_DISABLED) {
+    return null;
+  }
+
+  /*
   await dbConnect();
   const order = await PendingOrder.findOne({ userId }).lean();
 
   if (!order) return null;
 
   return normalize(order);
+  */
 };
 
 // ❌ Delete pending order for a user
 export const deletePendingOrder = async (userId) => {
+  if (ORDERS_DISABLED) {
+    return { success: false, message: "Pending orders are disabled." };
+  }
+
+  /*
   await dbConnect();
   const existing = await PendingOrder.findOne({ userId }).lean();
 
   if (existing) {
     await PendingOrder.findByIdAndDelete(existing._id);
   }
+  */
 };

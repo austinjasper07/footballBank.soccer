@@ -128,19 +128,19 @@ export default async function BlogArticlePage({ params }) {
             </div>
           </div>
         </section>
-        <section className="bg-gray-100 py-4">
+        <section className="bg-primary-surface py-4">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <nav className="flex items-center gap-2 text-sm text-gray-600">
-                <Link href="/" className="hover:text-blue-600">
+              <nav className="flex items-center gap-2 text-sm text-primary-muted">
+                <Link href="/" className="hover:text-primary-action">
                   Home
                 </Link>
-                <span className="text-gray-400">-</span>
-                <Link href="/blog" className="hover:text-blue-600">
+                <span className="text-primary-muted">-</span>
+                <Link href="/blog" className="hover:text-primary-action">
                   Blog
                 </Link>
-                <span className="text-gray-400">-</span>
-                <span className="text-gray-900">{post.title}</span>
+                <span className="text-primary-muted">-</span>
+                <span className="text-primary-text">{post.title}</span>
               </nav>
             </div>
           </div>
@@ -156,14 +156,14 @@ export default async function BlogArticlePage({ params }) {
               {/* Article Header */}
               <header className="mb-8">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="bg-gray-100 px-3 py-1 rounded text-sm font-medium text-gray-700">
+                  <span className="bg-primary-surface px-3 py-1 rounded text-sm font-medium text-primary-text border border-divider">
                     {post.category || "Sport"}
                   </span>
-                  <span className="text-gray-500 text-sm">
+                  <span className="text-primary-muted text-sm">
                     {formatFullDate(post.createdAt)}
                   </span>
                 </div>
-                <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 leading-tight">
+                <h1 className="text-3xl md:text-4xl font-bold mb-4 text-primary-text leading-tight">
                   {post.title}
                 </h1>
               </header>
@@ -181,23 +181,23 @@ export default async function BlogArticlePage({ params }) {
               </div>
 
               {/* Article Content */}
-              <div className="prose prose-lg prose-gray max-w-none text-gray-700 leading-relaxed prose-headings:text-gray-900 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-code:text-gray-800 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-900 prose-pre:text-gray-100">
+              <div className="prose prose-lg prose-gray max-w-none text-primary-text leading-relaxed prose-headings:text-primary-text prose-a:text-primary-action prose-a:no-underline hover:prose-a:underline prose-strong:text-primary-text prose-code:text-primary-text prose-code:bg-primary-surface prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-primary-navy prose-pre:text-white">
                 <article dangerouslySetInnerHTML={{ __html: post.content }} />
               </div>
 
               {/* Article Footer */}
-              <div className="mt-12 pt-8 border-t border-gray-200">
+              <div className="mt-12 pt-8 border-t border-divider">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                    <span className="text-gray-600 font-bold text-lg">
+                  <div className="w-12 h-12 bg-primary-surface rounded-full flex items-center justify-center border border-divider">
+                    <span className="text-primary-text font-bold text-lg">
                       {post.author ? post.author.charAt(0) : "A"}
                     </span>
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">
+                    <p className="font-semibold text-primary-text">
                       {post.author || "Admin"}
                     </p>
-                    <p className="text-sm text-gray-500">Author</p>
+                    <p className="text-sm text-primary-muted">Author</p>
                   </div>
                 </div>
               </div>
@@ -206,88 +206,65 @@ export default async function BlogArticlePage({ params }) {
                 {/* Right Sidebar - Exact match to reference design */}
                 <div className="lg:col-span-1 bg-white p-4 max-h-fit">
                   <div className="space-y-4">
-                    {/* Search Widget */}
-                    {/* <div className="bg-gray-100 border border-gray-200 p-6">
-                      <h3 className="text-lg font-semibold mb-4 text-gray-900">Search</h3>
-                      <form className="relative">
-                        <input
-                          type="text"
-                          placeholder="Search posts..."
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                        <button
-                          type="submit"
-                          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-accent-red text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                          </svg>
-                        </button>
-                      </form>
-                    </div> */}
-
-                    {/* Categories Widget */}
-                    <div className="bg-gray-100 border border-gray-200 p-6">
-                      <h3 className="text-lg font-semibold mb-4 text-gray-900">Categories</h3>
+                    <div className="bg-primary-surface border border-divider p-6">
+                      <h3 className="text-lg font-semibold mb-4 text-primary-text">Categories</h3>
                       <ul className="space-y-3">
                         {Object.entries(categoryCounts).map(([category, count], index, array) => (
-                          <li key={category} className={index < array.length - 1 ? "border-b border-gray-100 pb-2" : ""}>
-                            <a href={`/blog?category=${encodeURIComponent(category)}`} className="text-gray-600 hover:text-blue-600 flex items-center justify-between text-sm">
+                          <li key={category} className={index < array.length - 1 ? "border-b border-divider pb-2" : ""}>
+                            <a href={`/blog?category=${encodeURIComponent(category)}`} className="text-primary-muted hover:text-primary-action flex items-center justify-between text-sm">
                               <span>{category}</span>
-                              <span className="bg-gray-100 text-gray-500 px-2 py-1 rounded-full text-xs">{count}</span>
+                              <span className="bg-white text-primary-muted px-2 py-1 rounded-full text-xs">{count}</span>
                             </a>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    {/* Recent Posts Widget */}
-                    <div className="bg-gray-100 border border-gray-200 p-6">
-                      <h3 className="text-lg font-semibold mb-4 text-gray-900">Recent Posts</h3>
+                    <div className="bg-primary-surface border border-divider p-6">
+                      <h3 className="text-lg font-semibold mb-4 text-primary-text">Recent Posts</h3>
                       <div className="space-y-4">
                         {recentPosts.map((recentPost, index) => (
-                          <div key={recentPost.id} className={`flex gap-3 ${index < recentPosts.length - 1 ? "pb-3 border-b border-gray-100" : ""}`}>
-                            <div className="w-16 h-16 bg-gray-200 rounded flex-shrink-0">
+                          <div key={recentPost.id} className={`flex gap-3 ${index < recentPosts.length - 1 ? "pb-3 border-b border-divider" : ""}`}>
+                            <div className="w-16 h-16 bg-white rounded flex-shrink-0 border border-divider">
                               <img src={recentPost.imageUrl[0]} alt={recentPost.title} className="object-cover w-16 h-16"/>
                             </div>
                             <div className="flex-1">
-                              <h4 className="text-sm font-medium text-gray-900 mb-1 leading-tight">
-                                <Link href={`/blog/${recentPost.id}`} className="hover:text-blue-600">
+                              <h4 className="text-sm font-medium text-primary-text mb-1 leading-tight">
+                                <Link href={`/blog/${recentPost.id}`} className="hover:text-primary-action">
                                   {recentPost.title}
                                 </Link>
                               </h4>
-                              <p className="text-xs text-gray-500">{formatTimeAgo(recentPost.createdAt)}</p>
+                              <p className="text-xs text-primary-muted">{formatTimeAgo(recentPost.createdAt)}</p>
                             </div>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    {/* Tags Widget */}
-                    <div className="bg-gray-100 border border-gray-200 p-6">
-                      <h3 className="text-lg font-semibold mb-4 text-gray-900">Tags</h3>
+                    <div className="bg-primary-surface border border-divider p-6">
+                      <h3 className="text-lg font-semibold mb-4 text-primary-text">Tags</h3>
                       <div className="flex flex-wrap gap-2">
                         {uniqueTags.length > 0 ? (
                           uniqueTags.map((tag) => (
                             <a 
                               key={tag} 
                               href={`/blog?tag=${encodeURIComponent(tag)}`} 
-                              className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-blue-600 hover:text-white transition-colors"
+                              className="px-3 py-1 bg-white text-primary-text rounded-full text-sm hover:bg-primary-action hover:text-white transition-colors border border-divider"
                             >
                               {tag}
                             </a>
                           ))
                         ) : (
-                          <p className="text-sm text-gray-500">No tags available</p>
+                          <p className="text-sm text-primary-muted">No tags available</p>
                         )}
                       </div>
                     </div>
 
                     {/* Social Media Widget */}
-                    <div className="bg-gray-100 border border-gray-200 p-6">
-                      <h3 className="text-lg font-semibold mb-4 text-gray-900">Follow Us</h3>
+                    <div className="bg-primary-surface border border-divider p-6">
+                      <h3 className="text-lg font-semibold mb-4 text-primary-text">Follow Us</h3>
                       <div className="flex space-x-3">
-                        <a href="https://x.com/footballbankhq" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white border border-gray-300 text-white rounded-full flex items-center justify-center  transition-colors">
+                        <a href="https://x.com/footballbankhq" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white border border-divider text-white rounded-full flex items-center justify-center transition-colors">
                           <FaSquareXTwitter className="w-5 h-5 text-black" />
                         </a>
                         <a href="https://www.facebook.com/profile.php?id=61580081775450" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-blue-800 text-white rounded-full flex items-center justify-center hover:bg-blue-900 transition-colors">

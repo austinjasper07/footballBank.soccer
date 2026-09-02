@@ -26,7 +26,7 @@ export function UpdateConfirmationModal({
         <DialogHeader>
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/20">
-              <CheckCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <CheckCircle className="h-5 w-5 text-primary-action dark:text-primary-action" />
             </div>
             <div>
               <DialogTitle className="text-lg font-semibold">
@@ -60,7 +60,7 @@ export function UpdateConfirmationModal({
           <Button
             onClick={onConfirm}
             disabled={isLoading}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-primary-action hover:bg-primary-action-hover"
           >
             {isLoading ? "Updating..." : "Update"}
           </Button>

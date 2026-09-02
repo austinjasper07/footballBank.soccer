@@ -19,7 +19,7 @@ export default function StatsCard({ title, stats, icon: Icon, className = "" }) 
     <Card className={`bg-primary-card border border-divider ${className}`}>
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
-          {Icon && <Icon className="w-5 h-5 text-accent-red" />}
+          {Icon && <Icon className="w-5 h-5 text-primary-action" />}
           {title}
         </CardTitle>
       </CardHeader>

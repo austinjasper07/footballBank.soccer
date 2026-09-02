@@ -1,4 +1,3 @@
-import { getAllProducts } from '@/actions/publicActions';
 import { getAllPosts } from '@/actions/publicActions';
 import { getAllPlayers } from '@/actions/publicActions';
 
@@ -32,22 +31,10 @@ export default async function sitemap() {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/pricing`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/shop/products`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9,
     },
     {
       url: `${baseUrl}/contact`,
@@ -113,17 +100,7 @@ export default async function sitemap() {
 
   // Dynamic pages - Products
   let productPages = [];
-  try {
-    const products = await getAllProducts();
-    productPages = products.map(product => ({
-      url: `${baseUrl}/shop/products/${product.id}`,
-      lastModified: new Date(product.updatedAt || product.createdAt),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    }));
-  } catch (error) {
-    console.error('Error fetching products for sitemap:', error);
-  }
+  // Product/shop URLs intentionally disabled.
 
   // Dynamic pages - Blog posts
   let blogPages = [];

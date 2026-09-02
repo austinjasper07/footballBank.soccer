@@ -171,7 +171,7 @@ export function EditorSidebar({ activeView, onViewChange, collapsed, onToggleCol
     { id: 'overview', icon: BarChart3, label: 'Overview', href: '/editor' },
     { id: 'posts', icon: FileText, label: 'Posts', href: '/editor' },
     { id: 'editor', icon: Edit, label: 'Editor', href: '/editor' },
-    { id: 'shop', icon: ShoppingBag, label: 'Shop', href: '/editor' },
+    // { id: 'shop', icon: ShoppingBag, label: 'Shop', href: '/editor' },
     { id: 'affiliate', icon: Users, label: 'Affiliate', href: '/editor' },
   ];
 

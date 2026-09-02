@@ -24,14 +24,22 @@ export default function OrdersPage() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const ORDERS_DISABLED = true;
 
   useEffect(() => {
-    if (isAuthenticated && user) {
+    if (!ORDERS_DISABLED && isAuthenticated && user) {
       fetchOrders();
     }
-  }, [isAuthenticated, user, currentPage]);
+  }, [ORDERS_DISABLED, isAuthenticated, user, currentPage]);
 
   const fetchOrders = async () => {
+    if (ORDERS_DISABLED) {
+      setOrders([]);
+      setTotalPages(1);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await fetch(`/api/profile/orders?page=${currentPage}`);
@@ -47,6 +55,10 @@ export default function OrdersPage() {
   };
 
   const handleCancelOrder = async (orderId) => {
+    if (ORDERS_DISABLED) {
+      return;
+    }
+
     try {
       const response = await fetch("/api/profile/orders", {
         method: "DELETE",
@@ -125,6 +137,15 @@ export default function OrdersPage() {
   return (
     <ProfileLayout title="Orders" userRole={user?.role}>
       <div className="space-y-6">
+        {ORDERS_DISABLED && (
+          <Card className="bg-primary-card border border-divider">
+            <CardContent className="py-8 text-center">
+              <AlertCircle className="w-10 h-10 text-amber-500 mx-auto mb-3" />
+              <p className="text-primary-muted">Orders are currently disabled.</p>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
@@ -134,7 +155,7 @@ export default function OrdersPage() {
             <p className="text-primary-muted">View and manage your orders</p>
           </div>
           <Button asChild>
-            <Link href="/shop">
+            <Link href="#">
               <Package className="w-4 h-4 mr-2" />
               Continue Shopping
             </Link>
@@ -167,7 +188,7 @@ export default function OrdersPage() {
                   <option value="completed">Completed</option>
                   <option value="cancelled">Cancelled</option>
                 </select>
-                <Button variant="outline" onClick={fetchOrders}>
+                <Button variant="outline" onClick={fetchOrders} disabled={ORDERS_DISABLED}>
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Refresh
                 </Button>
@@ -202,7 +223,7 @@ export default function OrdersPage() {
                   : "Start shopping to see your orders here"}
               </p>
               <Button asChild>
-                <Link href="/shop">Browse Products</Link>
+                <Link href="#">Browse Products</Link>
               </Button>
             </CardContent>
           </Card>

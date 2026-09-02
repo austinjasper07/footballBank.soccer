@@ -20,15 +20,18 @@ export default function UserProfilePage() {
   const [orders, setOrders] = useState([]);
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const COMMERCE_DISABLED = true;
 
   useEffect(() => {
     // Only make API calls if user is authenticated and not loading
     if (isAuthenticated && user && !isLoading) {
       fetchProfileData();
-      fetchOrders();
-      fetchSubscriptions();
+      if (!COMMERCE_DISABLED) {
+        fetchOrders();
+        fetchSubscriptions();
+      }
     }
-  }, [isAuthenticated, user, isLoading]);
+  }, [COMMERCE_DISABLED, isAuthenticated, user, isLoading]);
 
   // Redirect unauthenticated users
   useEffect(() => {
@@ -74,6 +77,11 @@ export default function UserProfilePage() {
   };
 
   const fetchOrders = async () => {
+    if (COMMERCE_DISABLED) {
+      setOrders([]);
+      return;
+    }
+
     // Don't make API calls if not authenticated
     if (!isAuthenticated || !user) {
       return;
@@ -107,6 +115,11 @@ export default function UserProfilePage() {
   };
 
   const fetchSubscriptions = async () => {
+    if (COMMERCE_DISABLED) {
+      setSubscriptions([]);
+      return;
+    }
+
     // Don't make API calls if not authenticated
     if (!isAuthenticated || !user) {
       return;

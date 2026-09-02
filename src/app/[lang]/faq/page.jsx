@@ -211,7 +211,7 @@ export default function FAQPage() {
               placeholder={dict?.faq?.searchPlaceholder || 'Search FAQ...'}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-3 w-full border-gray-300 focus:border-accent-red focus:ring-accent-red"
+              className="pl-10 pr-4 py-3 w-full border-gray-300 focus:border-primary-action focus:ring-primary-action"
             />
           </div>
         </div>
@@ -228,17 +228,17 @@ export default function FAQPage() {
         </div>
 
         {/* Contact Section */}
-        <div className="mt-16 bg-gray-50 rounded-lg p-8 text-center">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="mt-16 bg-primary-surface rounded-lg p-8 text-center">
+          <h3 className="text-xl font-semibold text-primary-text mb-4">
             {dict?.faq?.contactTitle || 'Still have questions?'}
           </h3>
-          <p className="text-gray-600 mb-6">
+          <p className="text-primary-muted mb-6">
             {dict?.faq?.contactSubtitle || "Can't find what you're looking for? We're here to help!"}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               asChild 
-              className="bg-accent-red hover:bg-accent-red/90 text-white px-6 py-2"
+              className="bg-primary-action hover:bg-primary-action-hover text-white px-6 py-2"
             >
               <a href="mailto:contact@footballbank.soccer">
                 {dict?.faq?.contactUs || 'Contact Us'}
@@ -247,7 +247,7 @@ export default function FAQPage() {
             <Button 
               asChild 
               variant="outline"
-              className="border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-2"
+              className="border-gray-300 text-primary-text hover:bg-primary-surface px-6 py-2"
             >
               <a href={`/${lang}/submit-profile`}>
                 {dict?.faq?.submitProfile || 'Submit Profile'}

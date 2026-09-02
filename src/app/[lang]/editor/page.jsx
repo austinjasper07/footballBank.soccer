@@ -7,7 +7,6 @@ import { EditorHeader } from "@/components/editor/EditorHeader";
 import EditorOverview from "@/components/editor/views/EditorOverview";
 import EditorPosts from "@/components/editor/views/EditorPosts";
 import EditorEditor from "@/components/editor/views/EditorEditor";
-import ShopView from "@/components/admin/views/ShopView";
 import { AffiliateView } from "@/components/admin/views/AffiliateView";
 import { useAuth } from "@/context/NewAuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -81,7 +80,7 @@ const EditorDashboard = () => {
           />
         );
       case "shop":
-        return <ShopView />;
+        return <EditorOverview onNavigateToEditor={handleNavigateToEditor} />;
       case "affiliate":
         return <AffiliateView />;
       default:

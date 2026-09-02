@@ -68,15 +68,15 @@ export async function proxy(request) {
     '/privacy-policy',
     '/career-tips',
     '/auth', // All auth pages are public
-    '/pricing', // Pricing page should be accessible
-    '/secure-payment', // Payment page should be accessible
-    '/order-confirmation', // Order confirmation page should be accessible
-    '/payment-successful', // Stripe redirect page
-    '/payment-failed', // Stripe redirect page
-    '/cancel', // Stripe cancel page
+    // '/pricing',
+    // '/secure-payment',
+    // '/order-confirmation',
+    // '/payment-successful',
+    // '/payment-failed',
+    // '/cancel',
     '/players',
     '/blog',
-    '/shop',
+    // '/shop',
     '/livescore',
     '/agent' // Agent page should be public
   ];

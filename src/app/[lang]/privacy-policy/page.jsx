@@ -45,11 +45,11 @@ export default async function PrivacyPolicyPage({ params }) {
     .map(s => ({ title: s.title, content: s.content }));
 
   return (
-    <div className="min-h-screen bg-white text-gray-800">
+    <div className="min-h-screen bg-primary-bg text-primary-text">
       {/* Header */}
-      <header className="border-b border-gray-200 bg-white sticky top-0 z-40">
-        <div className="max-w-4xl mx-auto px-5 sm:px-6 py-4 flex justify-between items-center text-sm text-gray-600">
-          <a href={`/${lang}`} className="hover:text-gray-900 transition">
+      <header className="border-b border-divider bg-primary-card sticky top-0 z-40">
+        <div className="max-w-4xl mx-auto px-5 sm:px-6 py-4 flex justify-between items-center text-sm text-primary-muted">
+          <a href={`/${lang}`} className="hover:text-primary-text transition">
             ← {dict.navigation?.home || 'Home'}
           </a>
           <div className="flex items-center gap-2">
@@ -60,12 +60,12 @@ export default async function PrivacyPolicyPage({ params }) {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-gray-50 to-white py-6 sm:py-10 border-b border-gray-100">
+      <section className="bg-primary-surface py-6 sm:py-10 border-b border-divider">
         <div className="max-w-3xl mx-auto px-5 sm:px-6 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 leading-tight">
+          <h1 className="text-3xl md:text-4xl font-bold text-primary-text mb-2 leading-tight">
             {dict.privacyPolicy?.title || 'Privacy Policy'}
           </h1>
-          <p className="text-base md:text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-primary-muted leading-relaxed max-w-2xl mx-auto">
             {dict.privacyPolicy?.intro || 'Your privacy matters. This Privacy Policy explains how FootballBank.soccer collects, uses, and protects your information when you use our services.'}
           </p>
         </div>
@@ -78,21 +78,21 @@ export default async function PrivacyPolicyPage({ params }) {
             key={idx}
             className="mb-4 sm:mb-6 last:mb-0 scroll-mt-20"
           >
-            <h2 className="text-xl md:text-2xl font-semibold text-gray-700  sm:mb-1">
+            <h2 className="text-xl md:text-2xl font-semibold text-primary-text  sm:mb-1">
               {section.title}
             </h2>
-            <p className="text-gray-600 leading-relaxed text-sm md:text-base whitespace-pre-line">
+            <p className="text-primary-muted leading-relaxed text-sm md:text-base whitespace-pre-line">
               {section.content}
             </p>
           </section>
         ))}
 
         {/* Footer Legal Notice */}
-        <div className="border-t border-gray-200 pt-6 mt-8 text-sm text-gray-600 leading-relaxed">
+        <div className="border-t border-divider pt-6 mt-8 text-sm text-primary-muted leading-relaxed">
           <p className="mb-4">
             {dict.privacyPolicy?.footerNote || 'This Privacy Policy outlines how FootballBank.soccer handles your personal data with transparency and care. By using our platform, you consent to the practices described here.'}
           </p>
-          <p className="text-gray-500">
+          <p className="text-primary-muted">
             © {new Date().getFullYear()} FootballBank.soccer — {dict.footer?.allRightsReserved || 'All rights reserved.'}
           </p>
         </div>

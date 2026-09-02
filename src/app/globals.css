@@ -32,18 +32,26 @@
 @theme {
   /* Primary palette */
   --color-primary-bg: #F9FAFB;
-  --primary: 213 94% 68%; /* #1F6FEB */
+  --color-primary-navy: #0B1220;
+  --color-primary-surface: #F9FAFB;
   --color-primary-card: #FFFFFF;
-  --color-primary-text: #111827;
-  --color-primary-muted: #6B7280;
+  --color-primary-text: #0B1220;
+  --color-primary-text-inverse: #FFFFFF;
+  --color-primary-muted: #9CA3AF;
 
-  /* Accent colors - Enhanced professional palette */
-  --color-accent-blue: #3B82F6;
+  /* Brand actions */
+  --color-primary-action: #2563EB;
+  --color-primary-action-hover: #1D4ED8;
+  --color-primary-accent: #FBBF24;
+  --color-primary-accent-strong: #F59E0B;
+
+  --primary: 217 91% 60%; /* #2563EB */
+  --color-accent-blue: #2563EB;
   --color-accent-green: #10B981;
-  --color-accent-amber: #F59E0B;
+  --color-accent-amber: #FBBF24;
   --color-accent-red: #EF4444;
-  --accent: #F59E0B;
-  --accent-foreground: #111827;
+  --accent: #FBBF24;
+  --accent-foreground: #0B1220;
 
   /* Functional system colors */
   --color-divider: #E5E7EB;

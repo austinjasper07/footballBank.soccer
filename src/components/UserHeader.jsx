@@ -1,8 +1,9 @@
 import { useAuth } from "@/context/NewAuthContext";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon,Home, User, LayoutDashboard, PenSquare, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { FaUser } from "react-icons/fa";
+
 
 export function UserHeader({slug, href}) {
   const { role, isAuthenticated, user, logout } = useAuth();
@@ -38,79 +39,72 @@ export function UserHeader({slug, href}) {
         className="focus:outline-none flex items-center gap-2"
         aria-label="User menu"
       >
-        <FaUser size={20} />
-        <ChevronDownIcon className="w-4 h-4" />
+        <FaUser size={20} className="text-white"/>
+        <ChevronDownIcon className="w-4 h-4 text-white" />
       </button>
 
       {open && (
-        <div
-          className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
-          onMouseLeave={closeDropdown}
+  <div
+    className="origin-top-right absolute -right-5 md:-right-10 mt-3 md:mt-6 w-42 md:w-52 rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 z-50 overflow-hidden"
+    onMouseLeave={closeDropdown}
+  >
+    <div className="py-1.5">
+      <Link
+        href="/"
+        className="group flex items-center gap-3 px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+        onClick={closeDropdown}
+      >
+        <Home className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
+        Home
+      </Link>
+
+      <Link
+        href="/profile"
+        className="group flex items-center gap-3 px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+        onClick={closeDropdown}
+      >
+        <User className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
+        My Profile
+      </Link>
+
+      {isAdmin && (
+        <Link
+          href="/admin"
+          className="group flex items-center gap-3 px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+          onClick={closeDropdown}
         >
-          <div className="py-1">
-            {/* Home Link */}
-            <Link
-              href="/"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              onClick={closeDropdown}
-            >
-              Home
-            </Link>
-            
-            {/* Profile Link */}
-            <Link
-              href="/profile"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              onClick={closeDropdown}
-            >
-              My Profile
-            </Link>
-            
-            {/* Admin Dashboard Link */}
-            {isAdmin && (
-              <Link
-                href="/admin"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                onClick={closeDropdown}
-              >
-                Admin Dashboard
-              </Link>
-            )}
-            
-            {/* Editor Dashboard Link */}
-            {isEditor && (
-              <Link
-                href="/editor"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                onClick={closeDropdown}
-              >
-                Editor Dashboard
-              </Link>
-            )}
-            
-            {/* Admin can access Editor Dashboard */}
-            {isAdmin && (
-              <Link
-                href="/editor"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                onClick={closeDropdown}
-              >
-                Editor Dashboard
-              </Link>
-            )}
-            
-            <button
-              onClick={async () => {
-                closeDropdown();
-                await logout(true);
-              }}
-              className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
+          <LayoutDashboard className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
+          Admin Dashboard
+        </Link>
       )}
+
+      {/* Admins can also access the Editor Dashboard — shown once, not duplicated */}
+      {(isEditor || isAdmin) && (
+        <Link
+          href="/editor"
+          className="group flex items-center gap-3 px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+          onClick={closeDropdown}
+        >
+          <PenSquare className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
+          Editor Dashboard
+        </Link>
+      )}
+    </div>
+
+    <div className="border-t border-gray-100 py-1.5">
+      <button
+        onClick={async () => {
+          closeDropdown();
+          await logout(true);
+        }}
+        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+      >
+        <LogOut className="w-4 h-4" />
+        Logout
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 }

@@ -51,7 +51,7 @@ export default function ProfileLayout({
                       <Menu className="w-4 h-4" />
                     </Button>
                   )}
-                  <div className="w-12 h-12 bg-gradient-to-r from-accent-red to-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-linear-to-r from-primary-action to-primary-action-hover rounded-xl flex items-center justify-center shrink-0">
                     <User className="w-6 h-6 text-white" />
                   </div>
                   <div className="min-w-0 flex-1">
@@ -78,7 +78,7 @@ export default function ProfileLayout({
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge
                     variant="outline"
-                    className="bg-accent-red/10 text-accent-red border-accent-red/20 text-xs"
+                    className="bg-primary-action/10 text-primary-action border-primary-action/20 text-xs"
                   >
                     <Crown className="w-3 h-3 mr-1" />
                     {userRole?.toUpperCase()}
@@ -126,7 +126,7 @@ export default function ProfileLayout({
             <div className="hidden sm:block">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 lg:gap-6">
-                  <div className="w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-accent-red to-red-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <div className="w-16 h-16 lg:w-20 lg:h-20 bg-linear-to-r from-primary-action to-primary-action-hover rounded-2xl flex items-center justify-center shrink-0">
                     <User className="w-8 h-8 lg:w-10 lg:h-10 text-white" />
                   </div>
                   <div className="min-w-0 flex-1">
@@ -141,7 +141,7 @@ export default function ProfileLayout({
                     <div className="flex items-center gap-2 mt-3">
                       <Badge
                         variant="outline"
-                        className="bg-accent-red/10 text-accent-red border-accent-red/20 text-sm"
+                        className="bg-primary-action/10 text-primary-action border-primary-action/20 text-sm"
                       >
                         <Crown className="w-3 h-3 mr-1" />
                         {userRole?.toUpperCase()}

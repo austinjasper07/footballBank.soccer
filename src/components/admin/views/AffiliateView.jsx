@@ -168,7 +168,7 @@ export function AffiliateView() {
           </select>
         </div>
 
-        <Button onClick={handleAdd} className="bg-blue-600 text-white">
+        <Button onClick={handleAdd} className="bg-primary-action hover:bg-primary-action-hover text-white">
           <Plus className="h-4 w-4 mr-2" />
           Add Product
         </Button>

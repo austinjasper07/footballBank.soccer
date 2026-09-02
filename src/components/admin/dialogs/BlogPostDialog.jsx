@@ -190,7 +190,7 @@ export function BlogPostDialog({ open, onOpenChange, post, onSave }) {
               {uploadProgress !== null && (
                 <div className="w-full h-2 bg-gray-200 rounded mt-2">
                   <div
-                    className="bg-blue-600 h-2 rounded transition-all"
+                    className="bg-primary-action h-2 rounded transition-all"
                     style={{ width: `${uploadProgress}%` }}
                   />
                 </div>

@@ -77,26 +77,6 @@ const otpTokenSchema = new mongoose.Schema({
 });
 
 
-// Subscription Schema
-const subscriptionSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  type: { 
-    type: String, 
-    enum: ['live_streaming', 'player_publication'],
-    required: true 
-  },
-  plan: { 
-    type: String, 
-    enum: ['free', 'basic', 'premium'],
-    required: true 
-  },
-  isActive: { type: Boolean, default: true },
-  startedAt: { type: Date, default: Date.now },
-  expiresAt: { type: Date, required: true },
-  stripeSubId: { type: String, unique: true, sparse: true } // Stripe subscription ID
-});
-
-
 // Player Schema
 const playerSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
@@ -127,46 +107,6 @@ const playerSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
-// Product Schema
-const productSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  specifications: { type: String, default: "" },
-  price: { type: Number, required: true },
-  image: [{ type: String }],
-  featured: { type: Boolean, default: false },
-  discount: { type: Number, default: 0 },
-  sizes: [{ type: String }],
-  colors: [{ type: String }],
-  stock: { type: Number, default: 0 },
-  category: { type: String, required: true },
-  
-  // Product Variation System
-  hasVariations: { type: Boolean, default: false },
-  variations: [{
-    attributes: {
-      type: Map,
-      of: String
-    },
-    price: { type: Number, required: true },
-    stock: { type: Number, default: 0 },
-    sku: { type: String }
-  }],
-  
-  // Variation attributes configuration
-  variationAttributes: [{
-    name: { type: String, required: true }, // e.g., "Color", "Size", "Memory"
-    type: { 
-      type: String, 
-      enum: ['color', 'size', 'text', 'select'],
-      default: 'text'
-    }
-  }],
-  
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-});
-
 // Post Schema
 const postSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -186,91 +126,6 @@ const postSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
-
-// Order Schema
-const orderSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  items: [{
-    name: { type: String, required: true },
-    quantity: { type: Number, required: true },
-    price: { type: Number, required: true },
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-    variationId: { type: String }
-  }],
-  status: { 
-    type: String, 
-    enum: ['pending', 'processing', 'shipped', 'delivered', 'fulfilled', 'completed', 'cancelled', 'refunded'],
-    default: 'pending' 
-  },
-  paymentStatus: {
-    type: String,
-    enum: ['pending', 'completed', 'failed', 'refunded', 'partially_refunded'],
-    default: 'pending'
-  },
-  fulfillmentStatus: {
-    type: String,
-    enum: ['pending', 'processing', 'shipped', 'delivered', 'completed'],
-    default: 'pending'
-  },
-  totalAmount: { type: Number, required: true },
-  stripeSessionId: { type: String, unique: true, sparse: true }, // Store Stripe session ID for reference
-  stripePaymentIntentId: { type: String }, // Store payment intent ID for refunds
-  trackingNumber: { type: String }, // Shipping tracking number
-  estimatedDelivery: { type: Date }, // Estimated delivery date
-  actualDelivery: { type: Date }, // Actual delivery date
-  statusHistory: [{
-    status: { type: String, required: true },
-    timestamp: { type: Date, default: Date.now },
-    note: { type: String },
-    updatedBy: { type: String, enum: ['system', 'admin', 'customer'] }
-  }],
-  shippingAddress: {
-    id: { type: String },
-    name: { type: String },
-    street: { type: String },
-    city: { type: String },
-    state: { type: String },
-    postalCode: { type: String },
-    country: { type: String },
-    countryCode: { type: String }
-  },
-  createdAt: { type: Date, default: Date.now }
-});
-
-// Add methods to Order schema
-orderSchema.methods.updateStatus = function(newStatus, note = '', updatedBy = 'system') {
-  this.status = newStatus;
-  this.statusHistory.push({
-    status: newStatus,
-    note: note,
-    updatedBy: updatedBy
-  });
-  this.updatedAt = new Date();
-  return this.save();
-};
-
-
-orderSchema.methods.updatePaymentStatus = function(newStatus, note = '', updatedBy = 'system') {
-  this.paymentStatus = newStatus;
-  this.statusHistory.push({
-    status: `payment_${newStatus}`,
-    note: note,
-    updatedBy: updatedBy
-  });
-  this.updatedAt = new Date();
-  return this.save();
-};
-
-orderSchema.methods.updateFulfillmentStatus = function(newStatus, note = '', updatedBy = 'system') {
-  this.fulfillmentStatus = newStatus;
-  this.statusHistory.push({
-    status: `fulfillment_${newStatus}`,
-    note: note,
-    updatedBy: updatedBy
-  });
-  this.updatedAt = new Date();
-  return this.save();
-};
 
 // Payment Method Schema
 const paymentMethodSchema = new mongoose.Schema({
@@ -324,14 +179,6 @@ const submissionSchema = new mongoose.Schema({
   submittedAt: { type: Date, default: Date.now }
 });
 
-// Pending Order Schema
-const pendingOrderSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  type: { type: String, required: true },
-  items: { type: mongoose.Schema.Types.Mixed }
-});
-
-
 // Affiliate Product Schema
 const affiliateProductSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -372,14 +219,10 @@ const agentSchema = new mongoose.Schema({
 // Create models with proper error handling - use existing collection names from Prisma
 export const User = mongoose.models.User || mongoose.model('User', userSchema);
 export const OtpToken = mongoose.models.OtpToken || mongoose.model('OtpToken', otpTokenSchema);
-export const Subscription = mongoose.models.Subscription || mongoose.model('Subscription', subscriptionSchema);
 export const Player = mongoose.models.Player || mongoose.model('Player', playerSchema);
-export const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 export const Post = mongoose.models.Post || mongoose.model('Post', postSchema);
-export const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 export const PaymentMethod = mongoose.models.PaymentMethod || mongoose.model('PaymentMethod', paymentMethodSchema);
 export const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
 export const Submission = mongoose.models.Submission || mongoose.model('Submission', submissionSchema);
-export const PendingOrder = mongoose.models.PendingOrder || mongoose.model('PendingOrder', pendingOrderSchema);
 export const AffiliateProduct = mongoose.models.AffiliateProduct || mongoose.model('AffiliateProduct', affiliateProductSchema);
 export const Agent = mongoose.models.Agent || mongoose.model('Agent', agentSchema);

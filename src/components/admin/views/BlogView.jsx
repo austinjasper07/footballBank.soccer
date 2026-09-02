@@ -433,7 +433,7 @@ export default function BlogView() {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleViewPost(post)}
-                            className="flex-1 text-blue-600 hover:text-blue-700"
+                            className="flex-1 text-primary-action hover:text-primary-action-hover"
                           >
                             <Eye className="h-4 w-4 mr-1" />
                             <span className="text-xs">View</span>
@@ -465,7 +465,7 @@ export default function BlogView() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleViewPost(post)}
-                          className="text-blue-600 hover:text-blue-700"
+                          className="text-primary-action hover:text-primary-action-hover"
                         >
                           <Eye className="h-4 w-4" />
                         </Button>

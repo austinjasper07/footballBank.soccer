@@ -27,6 +27,7 @@ export default function PlayerSubmissionForm() {
   const router = useRouter();
   const pathname = usePathname();
   const { user, isAuthenticated, loading: isAuthLoading } = useAuth();
+  const SUBSCRIPTIONS_DISABLED = true;
 
   const [loading, setLoading] = useState(true);
   const [submittingUser, setSubmittingUser] = useState(null);
@@ -72,6 +73,12 @@ export default function PlayerSubmissionForm() {
 
   // ✅ Subscription check
   const checkSubscription = async () => {
+    if (SUBSCRIPTIONS_DISABLED) {
+      return true;
+    }
+
+    /*
+    Subscription validation is intentionally disabled.
     try {
       const res = await fetch("/api/subscriptions/check");
       const data = await res.json();
@@ -86,6 +93,7 @@ export default function PlayerSubmissionForm() {
       console.error("Error checking subscription:", err);
       return false;
     }
+    */
   };
 
   // ✅ Auth + subscription gate
@@ -104,9 +112,6 @@ export default function PlayerSubmissionForm() {
 
       const valid = await checkSubscription();
       if (!valid) {
-        router.replace(
-          `/${lang}/pricing?required=true&redirect=${encodeURIComponent(pathname)}`
-        );
         return;
       }
 
@@ -414,7 +419,7 @@ function ProgressBar({ progress }) {
   return (
     <div className="w-full h-2 bg-gray-200 rounded mt-2 overflow-hidden">
       <div
-        className="bg-blue-600 h-full transition-all duration-300"
+        className="bg-primary-action h-full transition-all duration-300"
         style={{ width: `${Math.round(progress)}%` }}
       />
     </div>

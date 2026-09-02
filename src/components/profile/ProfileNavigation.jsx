@@ -26,18 +26,18 @@ export default function ProfileNavigation({ userRole = "user", onItemClick }) {
       icon: Home,
       description: "Account overview and quick stats",
     },
-    {
-      href: "/profile/orders",
-      label: "Orders",
-      icon: ShoppingBag,
-      description: "Order history and management",
-    },
-    {
-      href: "/profile/subscriptions",
-      label: "Subscriptions",
-      icon: Crown,
-      description: "Manage your subscriptions",
-    },
+    // {
+      href: "/profile/__orders",
+    //   label: "Orders",
+    //   icon: ShoppingBag,
+    //   description: "Order history and management",
+    // },
+    // {
+      href: "/profile/__subscriptions",
+    //   label: "Subscriptions",
+    //   icon: Crown,
+    //   description: "Manage your subscriptions",
+    // },
     {
       href: "/profile/settings",
       label: "Settings",
@@ -59,18 +59,18 @@ export default function ProfileNavigation({ userRole = "user", onItemClick }) {
       icon: User,
       description: "View and manage your player profile",
     },
-    {
-      href: "/profile/orders",
-      label: "Orders",
-      icon: ShoppingBag,
-      description: "Order history and management",
-    },
-    {
-      href: "/profile/subscriptions",
-      label: "Subscriptions",
-      icon: Crown,
-      description: "Manage your subscriptions",
-    },
+    // {
+      href: "/profile/__orders",
+    //   label: "Orders",
+    //   icon: ShoppingBag,
+    //   description: "Order history and management",
+    // },
+    // {
+      href: "/profile/__subscriptions",
+    //   label: "Subscriptions",
+    //   icon: Crown,
+    //   description: "Manage your subscriptions",
+    // },
     {
       href: "/profile/settings",
       label: "Settings",
@@ -95,11 +95,11 @@ export default function ProfileNavigation({ userRole = "user", onItemClick }) {
             className={cn(
               "flex items-center gap-3 p-3 rounded-lg transition-colors",
               isActive
-                ? "bg-accent-red text-white"
+                ? "bg-primary-action text-white"
                 : "text-primary-muted hover:bg-primary-bg hover:text-primary-text"
             )}
           >
-            <Icon className="w-5 h-5 flex-shrink-0" />
+            <Icon className="w-5 h-5 shrink-0" />
             <div className="flex-1 min-w-0">
               <div className="font-medium">{item.label}</div>
               <div className="text-xs opacity-75 truncate">

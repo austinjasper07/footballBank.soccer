@@ -29,17 +29,27 @@ export default function OrderDetailPage({ params }) {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const ORDERS_DISABLED = true;
 
   // Unwrap params using React.use()
   const resolvedParams = use(params);
 
   useEffect(() => {
-    if (isAuthenticated && user && resolvedParams.id) {
+    if (!ORDERS_DISABLED && isAuthenticated && user && resolvedParams.id) {
       fetchOrder();
+    } else if (ORDERS_DISABLED) {
+      setError("Orders are currently disabled.");
+      setLoading(false);
     }
-  }, [isAuthenticated, user, resolvedParams.id]);
+  }, [ORDERS_DISABLED, isAuthenticated, user, resolvedParams.id]);
 
   const fetchOrder = async () => {
+    if (ORDERS_DISABLED) {
+      setError("Orders are currently disabled.");
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     try {
@@ -160,7 +170,7 @@ export default function OrderDetailPage({ params }) {
             The order you're looking for doesn't exist or you don't have permission to view it.
           </p>
           <Button asChild>
-            <Link href="/profile/orders">Back to Orders</Link>
+            <Link href="/profile/__orders">Back to Orders</Link>
           </Button>
         </div>
       </ProfileLayout>
@@ -184,7 +194,7 @@ export default function OrderDetailPage({ params }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <Button variant="outline" asChild>
-              <Link href="/profile/orders">
+              <Link href="/profile/__orders">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Orders
               </Link>

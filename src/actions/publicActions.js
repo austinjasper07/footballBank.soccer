@@ -1,7 +1,7 @@
 "use server";
 
 import dbConnect from "@/lib/mongodb";
-import { Post, Player, Product } from "@/lib/schemas";
+import { Post, Player } from "@/lib/schemas";
 
 // 🔧 Helper: normalize MongoDB docs to plain serializable objects
 const normalize = (doc) => {
@@ -132,23 +132,9 @@ export async function getPlayerById(id) {
 
 // PRODUCTS
 export async function getAllProducts() {
-  await dbConnect();
-  try {
-    const products = await Product.find({}).lean().sort({ createdAt: -1 });
-    return products.map(normalize);
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
+  return [];
 }
 
 export async function getProductById(id) {
-  await dbConnect();
-  try {
-    const product = await Product.findById(id).lean();
-    return product ? normalize(product) : null;
-  } catch (error) {
-    console.error("Error fetching product by ID:", error);
-    return null;
-  }
+  return null;
 }

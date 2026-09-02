@@ -143,7 +143,7 @@ export default function AgentView() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent-red mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-action mx-auto mb-4"></div>
           <p>Loading agent information...</p>
         </div>
       </div>
@@ -196,7 +196,7 @@ export default function AgentView() {
                 <div className="space-y-2">
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className="bg-accent-red h-2 rounded-full transition-all duration-300"
+                      className="bg-primary-action h-2 rounded-full transition-all duration-300"
                       style={{ width: `${uploadProgress}%` }}
                     ></div>
                   </div>

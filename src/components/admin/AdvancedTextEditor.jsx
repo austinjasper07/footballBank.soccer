@@ -113,7 +113,7 @@ export default function AdvancedTextEditor({
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: 'text-blue-600 underline',
+          class: 'text-primary-action underline',
         },
       }),
       TextAlign.configure({

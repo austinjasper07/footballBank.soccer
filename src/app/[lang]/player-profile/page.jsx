@@ -85,25 +85,25 @@ export default function PlayerProfilePage() {
 
   const getPositionColor = (position) => {
     const colors = {
-      "Goalkeeper": "bg-blue-100 text-blue-800",
-      "Defender": "bg-green-100 text-green-800",
-      "Midfielder": "bg-yellow-100 text-yellow-800",
-      "Forward": "bg-red-100 text-red-800",
-      "Striker": "bg-red-100 text-red-800",
+      "Goalkeeper": "bg-primary-action/10 text-primary-action",
+      "Defender": "bg-primary-accent/15 text-primary-text",
+      "Midfielder": "bg-primary-action/10 text-primary-action",
+      "Forward": "bg-primary-accent/15 text-primary-text",
+      "Striker": "bg-primary-accent/15 text-primary-text",
     };
-    return colors[position] || "bg-gray-100 text-gray-800";
+    return colors[position] || "bg-primary-surface text-primary-text";
   };
 
   const getStatusColor = (status) => {
     switch (status) {
       case "Available":
-        return "bg-green-100 text-green-800";
+        return "bg-emerald-100 text-emerald-800";
       case "Under Contract":
-        return "bg-blue-100 text-blue-800";
+        return "bg-primary-action/10 text-primary-action";
       case "On Trial":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-primary-accent/20 text-primary-text";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-primary-surface text-primary-text";
     }
   };
 
@@ -111,7 +111,7 @@ export default function PlayerProfilePage() {
     return (
       <div className="min-h-screen bg-primary-bg flex items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="w-8 h-8 animate-spin text-accent-red mx-auto mb-4" />
+          <RefreshCw className="w-8 h-8 animate-spin text-primary-action mx-auto mb-4" />
           <p className="text-primary-muted">Loading player profile...</p>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default function PlayerProfilePage() {
     return (
       <div className="min-h-screen bg-primary-bg flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
-          <Shield className="w-16 h-16 text-accent-red mx-auto mb-6" />
+          <Shield className="w-16 h-16 text-primary-action mx-auto mb-6" />
           <h1 className="text-2xl font-bold text-primary-text mb-4">
             Authentication Required
           </h1>
@@ -159,7 +159,7 @@ export default function PlayerProfilePage() {
   return (
     <div className="min-h-screen bg-primary-bg">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-accent-red to-red-600 text-white">
+      <div className="bg-linear-to-br from-primary-action to-primary-action-hover text-white">
         <div className="container mx-auto px-4 py-12">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-6">
@@ -271,7 +271,7 @@ export default function PlayerProfilePage() {
               <Card className="lg:col-span-2">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <User className="w-5 h-5 text-accent-red" />
+                    <User className="w-5 h-5 text-primary-action" />
                     Personal Information
                   </CardTitle>
                 </CardHeader>
@@ -321,7 +321,7 @@ export default function PlayerProfilePage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Target className="w-5 h-5 text-accent-red" />
+                    <Target className="w-5 h-5 text-primary-action" />
                     Physical Attributes
                   </CardTitle>
                 </CardHeader>
@@ -361,7 +361,7 @@ export default function PlayerProfilePage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-accent-red" />
+                  <Clock className="w-5 h-5 text-primary-action" />
                   Availability & Preferences
                 </CardTitle>
               </CardHeader>
@@ -406,7 +406,7 @@ export default function PlayerProfilePage() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Trophy className="w-5 h-5 text-accent-red" />
+                      <Trophy className="w-5 h-5 text-primary-action" />
                       Career Statistics
                     </CardTitle>
                   </CardHeader>
@@ -428,7 +428,7 @@ export default function PlayerProfilePage() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5 text-accent-red" />
+                      <TrendingUp className="w-5 h-5 text-primary-action" />
                       Current Season
                     </CardTitle>
                   </CardHeader>
@@ -473,7 +473,7 @@ export default function PlayerProfilePage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Award className="w-5 h-5 text-accent-red" />
+                    <Award className="w-5 h-5 text-primary-action" />
                     Club History
                   </CardTitle>
                 </CardHeader>
@@ -485,7 +485,7 @@ export default function PlayerProfilePage() {
                         className="flex items-center justify-between p-4 bg-primary-bg rounded-lg"
                       >
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-gradient-to-r from-accent-red to-red-600 rounded-lg flex items-center justify-center">
+                          <div className="w-12 h-12 bg-linear-to-r from-primary-action to-primary-action-hover rounded-lg flex items-center justify-center">
                             <Trophy className="w-6 h-6 text-white" />
                           </div>
                           <div>
@@ -533,7 +533,7 @@ export default function PlayerProfilePage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Camera className="w-5 h-5 text-accent-red" />
+                    <Camera className="w-5 h-5 text-primary-action" />
                     Photos
                   </CardTitle>
                 </CardHeader>
@@ -570,7 +570,7 @@ export default function PlayerProfilePage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Video className="w-5 h-5 text-accent-red" />
+                    <Video className="w-5 h-5 text-primary-action" />
                     Videos
                   </CardTitle>
                 </CardHeader>
@@ -585,7 +585,7 @@ export default function PlayerProfilePage() {
                             className="w-full h-48 object-cover rounded-lg"
                           />
                           <div className="absolute top-2 left-2">
-                            <Badge className="bg-accent-red text-white">Primary</Badge>
+                            <Badge className="bg-primary-action text-white">Primary</Badge>
                           </div>
                         </div>
                       )}
@@ -614,14 +614,14 @@ export default function PlayerProfilePage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-accent-red" />
+                    <FileText className="w-5 h-5 text-primary-action" />
                     Resume
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between p-4 bg-primary-bg rounded-lg">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-accent-red to-red-600 rounded-lg flex items-center justify-center">
+                      <div className="w-10 h-10 bg-linear-to-r from-primary-action to-primary-action-hover rounded-lg flex items-center justify-center">
                         <FileText className="w-5 h-5 text-white" />
                       </div>
                       <div>
@@ -650,14 +650,14 @@ export default function PlayerProfilePage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-accent-red" />
+                  <MessageCircle className="w-5 h-5 text-primary-action" />
                   Contact Information
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex items-center gap-3">
-                    <Mail className="w-5 h-5 text-accent-red" />
+                    <Mail className="w-5 h-5 text-primary-action" />
                     <div>
                       <div className="text-sm text-primary-muted">Email</div>
                       <div className="font-medium text-primary-text">
@@ -666,7 +666,7 @@ export default function PlayerProfilePage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Phone className="w-5 h-5 text-accent-red" />
+                    <Phone className="w-5 h-5 text-primary-action" />
                     <div>
                       <div className="text-sm text-primary-muted">Phone</div>
                       <div className="font-medium text-primary-text">

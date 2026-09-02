@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -204,7 +203,7 @@ function LoginPageContent() {
   // No need for loading states - server-side layout handles authentication
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-bg via-blue-50 to-indigo-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-primary-bg via-primary-surface to-primary-bg flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
@@ -262,7 +261,7 @@ function LoginPageContent() {
                       onClick={() => setLoginMethod("otp")}
                       className={`p-3 rounded-lg border-2 transition-colors ${
                         loginMethod === "otp"
-                          ? "border-accent-red bg-red-50 text-accent-red"
+                          ? "border-primary-action bg-primary-action/10 text-primary-action"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
@@ -276,7 +275,7 @@ function LoginPageContent() {
                       onClick={() => setLoginMethod("password")}
                       className={`p-3 rounded-lg border-2 transition-colors ${
                         loginMethod === "password"
-                          ? "border-accent-red bg-red-50 text-accent-red"
+                          ? "border-primary-action bg-primary-action/10 text-primary-action"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
@@ -329,7 +328,7 @@ function LoginPageContent() {
 
                   <Button
                     type="submit"
-                    className="w-full bg-accent-red hover:bg-red-700"
+                    className="w-full bg-primary-action hover:bg-primary-action-hover"
                     disabled={loading}
                   >
                     {loading ? (
@@ -370,7 +369,7 @@ function LoginPageContent() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-accent-red hover:bg-red-700"
+                  className="w-full bg-primary-action hover:bg-primary-action-hover"
                   disabled={loading || otp.length !== 6}
                 >
                   {loading ? (
@@ -386,7 +385,7 @@ function LoginPageContent() {
                     type="button"
                     onClick={resendOTP}
                     disabled={loading}
-                    className="text-sm text-accent-red hover:text-red-700 disabled:opacity-50"
+                    className="text-sm text-primary-action hover:text-primary-action-hover disabled:opacity-50"
                   >
                     Didn't receive code? Resend
                   </button>
@@ -410,7 +409,6 @@ function LoginPageContent() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <Button
-                    // variant="outline"
                     onClick={() => handleOAuthLogin("google")}
                     disabled={loading}
                     className="w-full"
@@ -436,7 +434,6 @@ function LoginPageContent() {
                     Google
                   </Button>
                   <Button
-                    // variant="outline"
                     onClick={() => handleOAuthLogin("github")}
                     disabled={loading}
                     className="w-full"
@@ -476,7 +473,7 @@ function LoginPageContent() {
             <div className="text-center pt-4 border-t border-divider">
               <p className="text-sm text-primary-muted">
                 Don't have an account?{" "}
-                <Link href="/auth/signup" className="text-accent-red hover:text-red-700 font-medium">
+                <Link href="/auth/signup" className="text-primary-action hover:text-primary-action-hover font-medium">
                   Sign up
                 </Link>
               </p>
@@ -491,10 +488,10 @@ function LoginPageContent() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-primary-bg via-blue-50 to-indigo-50 flex items-center justify-center px-4 pt-4 pb-8">
+      <div className="min-h-screen bg-linear-to-br from-primary-bg via-primary-surface to-primary-bg flex items-center justify-center px-4 pt-4 pb-8">
         <div className="w-full max-w-md">
           <div className="text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-accent-red to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-linear-to-r from-primary-action to-primary-action-hover rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Shield className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-primary-text mb-2">Loading...</h1>

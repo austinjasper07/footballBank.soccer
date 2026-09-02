@@ -82,7 +82,7 @@ export function DashboardView() {
       case "amber":
         return { iconColor: "text-white", iconBg: "bg-accent-amber" };
       case "red":
-        return { iconColor: "text-white", iconBg: "bg-accent-red" };
+        return { iconColor: "text-white", iconBg: "bg-primary-action" };
       default:
         return { iconColor: "text-white", iconBg: "bg-primary" };
     }
@@ -298,7 +298,7 @@ export function DashboardView() {
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <p className="text-sm text-[hsl(var(--muted-foreground))] font-medium">{metric.title}</p>
-                    <p className="text-3xl font-[var(--heading)]">
+                    <p className="text-3xl font-(--heading)">
                       {loading ? "..." : metric.value}
                     </p>
                   </div>
@@ -322,7 +322,7 @@ export function DashboardView() {
       <div className="grid grid-cols-1 gap-6">
         <Card className="border-0 shadow-sm">
           <CardHeader>
-            <CardTitle className="font-[var(--heading)]">Recent Activity</CardTitle>
+            <CardTitle className="font-(--heading)">Recent Activity</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">

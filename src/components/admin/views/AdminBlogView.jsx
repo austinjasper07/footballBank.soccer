@@ -123,7 +123,7 @@ export default function AdminBlogView() {
         <Card className="border-0 shadow-sm">
           <CardContent className="p-4 sm:p-6">
             <div className="flex items-center gap-4">
-              <div className="h-8 w-8 bg-blue-500 rounded-full flex items-center justify-center">
+              <div className="h-8 w-8 bg-primary-action rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">T</span>
               </div>
               <div>
@@ -264,7 +264,7 @@ export default function AdminBlogView() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleViewPost(post)}
-                          className="flex-1 text-blue-600 hover:text-blue-700"
+                          className="flex-1 text-primary-action hover:text-primary-action-hover"
                         >
                           <Eye className="h-4 w-4 mr-1" />
                           <span className="text-xs">View</span>
@@ -296,7 +296,7 @@ export default function AdminBlogView() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleViewPost(post)}
-                        className="text-blue-600 hover:text-blue-700"
+                        className="text-primary-action hover:text-primary-action-hover"
                       >
                         <Eye className="h-4 w-4 mr-1" />
                         View

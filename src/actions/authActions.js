@@ -1,7 +1,7 @@
 
 "use server";
 
-import { User, OtpToken, Subscription } from "@/lib/schemas";
+import { User, OtpToken } from "@/lib/schemas";
 import { sendOTPEmail } from "@/lib/email";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -184,32 +184,8 @@ export async function signupWithPassword(email, firstName, lastName, password, a
 
     const user = await User.create(userData);
 
-    /** ---------- 🎁 Activate 3-Month Free Subscription ---------- **/
-    try {
-      const now = new Date();
-      const expiresAt = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000); // 3 months
-
-      const subscription = await Subscription.create({
-        userId: user._id,
-        type: "player_publication",
-        plan: "free",
-        isActive: true,
-        startedAt: now,
-        expiresAt,
-        stripeSubId: null, // no Stripe for free plan
-      });
-
-      await subscription.save();
-
-      // Update user's subscription status
-      user.subscribed = true;
-      await user.save();
-
-      // console.log(`✅ Activated 3-month free subscription for ${email}`);
-    } catch (subError) {
-      console.error("❌ Failed to activate free subscription:", subError);
-    }
-    /** ---------------------------------------------------------- **/
+    user.subscribed = false;
+    await user.save();
 
     // Generate session token
     const sessionToken = generateSessionToken(user);
@@ -461,33 +437,8 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
 
     const user = await User.create(userData);
 
-    /** ---------- 🎁 Activate 3-Month Free Subscription ---------- **/
-    try {
-      const now = new Date();
-      const expiresAt = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000); // 3 months
-      const stripeSubId = `free-${user._id.toString()}-${Date.now()}`; // Dummy ID for free plan
-
-      const subscription = await Subscription.create({
-        userId: user._id,
-        type: "player_publication",
-        plan: "free",
-        isActive: true,
-        startedAt: now,
-        expiresAt,
-        stripeSubId, // no Stripe for free plan
-      });
-
-      await subscription.save();
-
-      // Update user's subscription status
-      user.subscribed = true;
-      await user.save();
-
-      // console.log(`✅ Activated 3-month free subscription for ${email}`);
-    } catch (subError) {
-      console.error("❌ Failed to activate free subscription:", subError);
-    }
-    /** ---------------------------------------------------------- **/
+    user.subscribed = false;
+    await user.save();
 
     // ✅ Create session token
     const sessionToken = generateSessionToken(user);
