@@ -1,6 +1,6 @@
 // app/layout.tsx
 import "./globals.css";
-import { Oswald } from "next/font/google";
+import { Inter, Oswald } from "next/font/google";
 import Script from "next/script";
 import { NewAuthProvider } from "@/context/NewAuthContext";
 import { Analytics } from "@vercel/analytics/next";
@@ -12,6 +12,13 @@ const oswald = Oswald({
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700"],
   variable: "--font-oswald",
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
   display: "swap",
   fallback: ["Arial", "sans-serif"],
 });
@@ -43,7 +50,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${oswald.variable}`}
+      className={`${oswald.variable} ${inter.variable}`}
     >
       <head>
         {/* Favicon and Icons */}
@@ -60,12 +67,6 @@ export default function RootLayout({ children }) {
         {/* Preconnect for Critical Resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
-        {/* Google Fonts - DM Serif Text */}
-        <link 
-          href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital,wght@0,400;1,400&display=swap" 
-          rel="stylesheet" 
-        />
         
         {/* Structured Data - Organization */}
         <script
@@ -96,7 +97,7 @@ export default function RootLayout({ children }) {
           strategy="afterInteractive"
         />
       </head>
-      <body className="font-body bg-gray-50 text-primary-text">
+      <body className="font-body bg-primary-bg text-primary-text">
         <Analytics />
         <AOSProvider>
           <NewAuthProvider>

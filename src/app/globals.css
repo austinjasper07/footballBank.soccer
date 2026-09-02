@@ -38,9 +38,10 @@
   --color-primary-text: #0B1220;
   --color-primary-text-inverse: #FFFFFF;
   --color-primary-muted: #9CA3AF;
+  --color-secondary-bg: #172c53; /* Secondary background color for sections like CTA sections within a page */
 
   /* Brand actions */
-  --color-primary-action: #2563EB;
+  --color-primary-action: #2563EB;  /* #2563EB; */
   --color-primary-action-hover: #1D4ED8;
   --color-primary-accent: #FBBF24;
   --color-primary-accent-strong: #F59E0B;
@@ -90,7 +91,7 @@
   /* Fonts */
   /* Fonts are centrally controlled via next/font CSS variables set on <html> */
   --font-heading: var(--font-oswald);
-  --font-body: Roboto, Lato, serif;
+  --font-body: var(--font-inter);
   --font-sans: var(--font-body);
 
   /* Radii */

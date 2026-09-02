@@ -1,305 +1,150 @@
 import Image from "next/image";
 import Link from "next/link";
-import "aos/dist/aos.css";
+import {
+  ArrowUpRight,
+  BadgeCheck,
+  GraduationCap,
+  IdCard,
+  Mail,
+  Phone,
+  UsersRound,
+} from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 import { getAgentInfo } from "@/actions/adminActions";
 
 export async function generateMetadata({ params }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
+
   return {
     title: dict.agentPage.metadata.title,
     description: dict.agentPage.metadata.description,
   };
 }
 
-const AboutAgent = async ({ params }) => {
+export default async function RepresentationPage({ params }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
   const agentInfo = await getAgentInfo();
+  const agentName = agentInfo?.name || dict.agentPage.hero.name;
+  const credential = agentInfo?.credentials || dict.agentPage.hero.licence.title;
+  const capabilities = [
+    {
+      icon: IdCard,
+      title: dict.agentPage.hero.licence.title || credential,
+      description: dict.agentPage.hero.licence.id,
+    },
+    {
+      icon: BadgeCheck,
+      title: dict.agentPage.hero.stats.certification.title,
+      description: dict.agentPage.hero.stats.certification.subtitle,
+    },
+    {
+      icon: UsersRound,
+      title: dict.agentPage.hero.stats.network.title,
+      description: dict.agentPage.hero.stats.network.subtitle,
+    },
+    {
+      icon: GraduationCap,
+      title: "Career development",
+      description: "Guiding players with strategic planning and professional growth.",
+    },
+  ];
 
   return (
-    <main className=" text-primary-text min-h-screen">
-      {/* Hero Section with Enhanced Profile Layout */}
-      <section className="pb-12 pt-20 " data-aos="fade-up">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="flex flex-col lg:flex-row gap-16 items-start">
-            {/* Left Side - Enhanced Profile Card */}
-            <div className="shrink-0 w-full lg:w-auto">
-              <div className="bg-primary-card rounded-2xl p-8 shadow-xl border border-divider/50 backdrop-blur-sm">
-                <div className="text-center">
-                  <div className="relative inline-block mb-6">
-                    <Image
-                      src={agentInfo?.profilePhoto || "/FootballBank_agent.jpg"}
-                      alt={`${agentInfo?.name || "Ayodeji Fatade"} headshot`}
-                      width={140}
-                      height={175}
-                      className="rounded-xl border-3 border-primary-action object-cover shadow-lg"
-                    />
-                    {/* Verification badge */}
-                    <div className="absolute -top-2 -right-2 bg-primary-accent text-primary-text w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
-                      <i className="fa-solid fa-check text-sm"></i>
-                    </div>
-                  </div>
-
-                  {/* Enhanced name and credentials */}
-                  <h2 className="font-bold text-3xl text-primary-text">
-                    {agentInfo?.name || dict.agentPage.hero.name}
-                  </h2>
-
-                  {/* Enhanced licence display */}
-                  <div className="bg-linear-to-r from-primary-accent/10 to-primary-action/5 rounded-xl p-4 border border-primary-accent/20">
-                    <div className="flex items-center justify-center gap-3 mb-2">
-                      <i className="fa-solid fa-certificate text-primary-accent text-xl" />
-                      <span className="font-bold text-primary-text">
-                        {dict.agentPage.hero.licence.title ||
-                          agentInfo?.credentials}
-                      </span>
-                    </div>
-                    <p className="text-sm text-primary-muted">
-                      {dict.agentPage.hero.licence.id}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Side - Enhanced Content */}
-            <div className="flex-1 text-center lg:text-left">
-              <div className="space-y-8">
-                <div>
-                  <h1 className="font-bold text-[clamp(1.5rem,5vw,2rem)] mb-2 leading-tight text-primary-text">
-                    {dict.agentPage.hero.title}
-                  </h1>
-                </div>
-
-                <div className="bg-primary-card/50 rounded-2xl p-4 border border-divider/30 backdrop-blur-sm">
-                  <p className="text-primary-muted leading-relaxed text-xl mb-6">
-                    {dict.agentPage.hero.description}
-                  </p>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary-action/10 rounded-full flex items-center justify-center">
-                        <i className="fa-solid fa-calendar text-primary-action"></i>
-                      </div>
-                      <div className="text-left">
-                        <p className="font-semibold text-primary-text">
-                          {dict.agentPage.hero.stats.experience.title}
-                        </p>
-                        <p className="text-sm text-primary-muted">
-                          {dict.agentPage.hero.stats.experience.subtitle}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary-action/10 rounded-full flex items-center justify-center">
-                        <i className="fa-solid fa-graduation-cap text-primary-action"></i>
-                      </div>
-                      <div className="text-left">
-                        <p className="font-semibold text-primary-text">
-                          {dict.agentPage.hero.stats.certification.title}
-                        </p>
-                        <p className="text-sm text-primary-muted">
-                          {dict.agentPage.hero.stats.certification.subtitle}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary-accent/10 rounded-full flex items-center justify-center">
-                        <i className="fa-solid fa-globe text-primary-accent"></i>
-                      </div>
-                      <div className="text-left">
-                        <p className="font-semibold text-primary-text">
-                          {dict.agentPage.hero.stats.network.title}
-                        </p>
-                        <p className="text-sm text-primary-muted">
-                          {dict.agentPage.hero.stats.network.subtitle}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary-action/10 rounded-full flex items-center justify-center">
-                        <i className="fa-solid fa-trophy text-primary-action"></i>
-                      </div>
-                      <div className="text-left">
-                        <p className="font-semibold text-primary-text">
-                          {dict.agentPage.hero.stats.focus.title}
-                        </p>
-                        <p className="text-sm text-primary-muted">
-                          {dict.agentPage.hero.stats.focus.subtitle}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-primary-muted leading-relaxed text-lg">
-                    {dict.agentPage.hero.bio}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+    <main className="bg-primary-card text-primary-text">
+      <section className="relative isolate flex h-24 items-end overflow-hidden sm:h-30 lg:h-42">
+        <Image
+          src="/ball-bg.jpg"
+          alt="Football pitch"
+          fill
+          priority
+          sizes="100vw"
+          className="-z-20 object-cover object-center"
+        />
+        <div className="absolute inset-0 -z-10 bg-primary-navy/55" />
+        <div className="mx-auto w-full max-w-6xl px-5 pb-7 sm:px-10 sm:pb-9 lg:px-12">
+          <p className="text-center font-heading text-4xl font-semibold leading-none tracking-tight text-primary-text-inverse sm:text-5xl">
+            Our agent
+          </p>
         </div>
       </section>
 
-      {/* Enhanced Core Values */}
-      <section
-        className="py-12 bg-linear-to-br from-primary-card/20 to-primary-bg"
-        data-aos="fade-up"
-      >
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="font-bold text-[clamp(2rem,4vw,3rem)] mb-4 bg-linear-to-r from-primary-text to-primary-action bg-clip-text text-transparent">
-              {dict.agentPage.coreValues.title}
-            </h2>
-            <p className="text-primary-muted text-xl max-w-3xl mx-auto">
-              {dict.agentPage.coreValues.subtitle}
-            </p>
+      <section className="mx-auto grid max-w-5xl gap-10 px-5 py-12 sm:px-10 sm:py-16 lg:grid-cols-[minmax(250px,0.65fr)_minmax(0,1.4fr)] lg:items-start lg:gap-12 lg:px-12 lg:py-20">
+        <aside className="mx-auto w-full max-w-sm text-center">
+          <div className="relative aspect-4/5 overflow-hidden border-2 border-primary-action bg-primary-bg">
+            <Image
+              src={agentInfo?.profilePhoto || "/FootballBank_agent.jpg"}
+              alt={`${agentName} portrait`}
+              fill
+              sizes="(max-width: 1024px) 100vw, 30vw"
+              className="object-cover"
+            />
           </div>
+          <h1 className="mt-4 font-heading text-3xl font-semibold leading-none tracking-tight sm:text-4xl">
+            {agentName}
+          </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {dict.agentPage.coreValues.values.map(
-              ({ title, icon, color, desc, features }, i) => {
-                const colorClass =
-                  color === "red"
-                    ? { bg: "bg-primary-action/10", text: "text-primary-action", dot: "bg-primary-action" }
-                    : color === "green"
-                      ? { bg: "bg-primary-accent/10", text: "text-primary-accent", dot: "bg-primary-accent" }
-                      : { bg: "bg-primary-action/10", text: "text-primary-action", dot: "bg-primary-action" };
-
-                return (
-                  <div
-                    key={title}
-                    className="group bg-primary-card rounded-2xl p-8 border border-divider/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-primary-action/30 backdrop-blur-sm"
-                    data-aos="fade-up"
-                    data-aos-delay={i * 150}
-                  >
-                    <div className="text-center mb-6">
-                      <div
-                        className={`w-16 h-16 ${colorClass.bg} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
-                      >
-                        <i
-                          className={`fa-solid ${icon} ${colorClass.text} text-2xl`}
-                        />
-                      </div>
-                      <h3
-                        className={`font-bold text-2xl mb-3 ${colorClass.text}`}
-                      >
-                        {title}
-                      </h3>
-                    </div>
-
-                    <p className="text-primary-muted leading-relaxed mb-6 text-center">
-                      {desc}
-                    </p>
-
-                    <div className="space-y-2">
-                      {features.map((feature, idx) => (
-                        <div key={idx} className="flex items-center gap-3">
-                          <div
-                            className={`w-2 h-2 ${colorClass.dot} rounded-full shrink-0`}
-                          ></div>
-                          <span className="text-sm text-primary-muted">
-                            {feature}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              }
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Enhanced CTA Section */}
-      <section
-        className="py-20 bg-linear-to-br from-primary-action to-primary-action-hover max-w-7xl mx-auto rounded-2xl"
-        data-aos="zoom-in-up"
-      >
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-12">
-            <h2 className="font-bold text-[clamp(2.5rem,5vw,4rem)] mb-6 text-white leading-tight">
-              {dict.agentPage.cta.title}
-            </h2>
-            <p className="text-white/90 text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
-              {dict.agentPage.cta.subtitle}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                  <i className="fa-solid fa-calendar-check text-white text-xl"></i>
-                </div>
-                <div>
-                  <h3 className="font-bold text-white text-xl">
-                    {dict.agentPage.cta.consultation.title}
-                  </h3>
-                  <p className="text-white/80 text-sm">
-                    {dict.agentPage.cta.consultation.subtitle}
-                  </p>
-                </div>
-              </div>
-              <p className="text-white/90 text-sm">
-                {dict.agentPage.cta.consultation.description}
-              </p>
+          <div className="mt-4 bg-primary-navy px-5 py-6 text-left text-primary-text-inverse">
+            <div className="text-center">
+              <BadgeCheck className="mx-auto size-6 text-primary-accent" aria-hidden="true" />
+              <h2 className="mt-2 font-heading text-2xl font-semibold leading-none">Direct contact</h2>
+              <span className="mx-auto mt-3 block h-px w-24 bg-primary-accent" />
             </div>
-
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                  <i className="fa-solid fa-user-plus text-white text-xl"></i>
-                </div>
-                <div>
-                  <h3 className="font-bold text-white text-xl">
-                    {dict.agentPage.cta.profile.title}
-                  </h3>
-                  <p className="text-white/80 text-sm">
-                    {dict.agentPage.cta.profile.subtitle}
-                  </p>
-                </div>
-              </div>
-              <p className="text-white/90 text-sm">
-                {dict.agentPage.cta.profile.description}
-              </p>
+            <div className="mt-5 space-y-3 text-sm">
+              <a href="tel:+18443629881" className="flex items-center gap-3 transition-colors hover:text-primary-accent">
+                <Phone className="size-4 shrink-0 text-primary-accent" aria-hidden="true" />
+                +1 (844) 362-9881
+              </a>
+              <a href="mailto:contact@footballbank.soccer" className="flex items-center gap-3 break-all transition-colors hover:text-primary-accent">
+                <Mail className="size-4 shrink-0 text-primary-accent" aria-hidden="true" />
+                contact@footballbank.soccer
+              </a>
             </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-6 justify-center">
-            <Link href={`/${lang}/contact`} className="group w-full md:w-auto">
-              <span className="bg-white text-primary-action px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/90 transition-all duration-300 inline-flex items-center gap-3 justify-center shadow-xl hover:shadow-2xl transform hover:scale-105 w-full md:w-auto">
-                <i className="fa-solid fa-calendar-plus"></i>
-                {dict.agentPage.cta.buttons.consultation}
-              </span>
-            </Link>
             <Link
-              href={`/${lang}/submit-profile`}
-              className="group w-full md:w-auto"
+              href={`/${lang}/contact`}
+              className="mt-6 inline-flex w-full items-center justify-center gap-3 bg-primary-action px-4 py-3 text-sm font-semibold text-primary-text-inverse transition-colors hover:bg-primary-action-hover"
             >
-              <span className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-primary-action transition-all duration-300 inline-flex items-center gap-3 justify-center backdrop-blur-sm hover:shadow-xl transform hover:scale-105 w-full md:w-auto">
-                <i className="fa-solid fa-file-upload"></i>
-                {dict.agentPage.cta.buttons.profile}
-              </span>
+              Request consultation
+              <ArrowUpRight className="size-4" aria-hidden="true" />
             </Link>
           </div>
+        </aside>
 
-          <div className="mt-12 text-center">
-            <p className="text-white/70 text-sm">
-              <i className="fa-solid fa-shield-check mr-2"></i>
-              {dict.agentPage.cta.trust}
+        <div>
+          <h2 className="font-heading text-3xl font-semibold leading-[1.08] tracking-tight sm:text-4xl">
+            Meet our agent shaping modern football excellence
+          </h2>
+          <div className="mt-5 border border-divider bg-primary-bg px-5 py-6 sm:px-8 sm:py-7">
+            <p className="max-w-2xl text-lg leading-8 text-primary-text">
+              {dict.agentPage.hero.description} {dict.agentPage.hero.bio}
             </p>
+
+            <div className="mt-8 space-y-6">
+              {capabilities.map(({ icon: Icon, title, description }) => (
+                <div key={title} className="grid grid-cols-[2.5rem_1fr] gap-4 sm:grid-cols-[4.5rem_1fr] sm:gap-5">
+                  <Icon className="mt-1 size-7 text-primary-accent sm:size-9" aria-hidden="true" />
+                  <div className="border-l border-divider pl-4 sm:pl-5">
+                    <h3 className="text-xl font-semibold leading-tight tracking-tight sm:text-2xl">{title}</h3>
+                    <p className="mt-1.5 text-base leading-7 text-primary-muted">{description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 grid gap-4 border-t border-divider pt-6 sm:grid-cols-2">
+              <div>
+                <p className="text-sm font-semibold text-primary-text">{dict.agentPage.hero.stats.experience.title}</p>
+                <p className="mt-1 text-sm leading-6 text-primary-muted">{dict.agentPage.hero.stats.experience.subtitle}</p>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-primary-text">{dict.agentPage.hero.stats.focus.title}</p>
+                <p className="mt-1 text-sm leading-6 text-primary-muted">{dict.agentPage.hero.stats.focus.subtitle}</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
     </main>
   );
-};
-
-export default AboutAgent;
+}

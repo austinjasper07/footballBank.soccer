@@ -1,26 +1,8 @@
 // app/[lang]/layout.jsx
 import "../globals.css";
-import { DM_Serif_Text, Oswald } from "next/font/google";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 import { generateMetadata as generateSEOMetadata, generateStructuredData } from "@/lib/seo";
 import { getDictionary, locales } from "@/lib/dictionaries";
-
-const oswald = Oswald({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700"],
-  variable: "--font-oswald",
-  display: "swap",
-  fallback: ["Arial", "sans-serif"],
-});
-
-const dmSerifText = DM_Serif_Text({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-dm-serif-text",
-  display: "swap",
-  fallback: ["Georgia", "serif"],
-});
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ lang: locale }));

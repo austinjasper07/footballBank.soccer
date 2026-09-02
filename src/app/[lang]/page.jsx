@@ -926,7 +926,7 @@ export default async function HomePage({ params }) {
 
         {/* CTA SECTION */}
 
-        <footer className="bg-primary-navy text-white py-20 text-center">
+        <footer className="bg-secondary-bg text-white py-20 text-center">
           <div className="max-w-3xl mx-auto" data-aos="fade-up">
             <h2 className="text-3xl font-bold mb-4">
               <span
