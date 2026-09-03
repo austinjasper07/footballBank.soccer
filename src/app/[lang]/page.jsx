@@ -675,72 +675,17 @@ export default async function HomePage({ params }) {
       </div>
 
       <div className="w-full">
-        {/* WHY FOOTBALLBANK */}
-        <section className="py-16 bg-primary-surface ">
-          <div
-            className="max-w-7xl mx-auto text-center px-4"
-            data-aos="fade-up"
-          >
-            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold  text-primary-text mb-4">
-              {dict.homepage.whyFootballBank.title}
-            </h2>
-            <div className="w-24 h-1 bg-primary-accent mx-auto mb-10" />
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  icon: "fa-certificate",
-                  title: dict.homepage.whyFootballBank.fifaCertified.title,
-                  desc: dict.homepage.whyFootballBank.fifaCertified.description,
-                },
-                {
-                  icon: "fa-globe",
-                  title: dict.homepage.whyFootballBank.globalNetwork.title,
-                  desc: dict.homepage.whyFootballBank.globalNetwork.description,
-                },
-                {
-                  icon: "fa-bolt",
-                  title: dict.homepage.whyFootballBank.rapidVisibility.title,
-                  desc: dict.homepage.whyFootballBank.rapidVisibility
-                    .description,
-                },
-              ].map(({ icon, title, desc }, i) => (
-                <div
-                  key={title}
-                  className="bg-white p-8 rounded-xl shadow-sm border border-divider text-center hover:shadow-md transition-all group"
-                  data-aos="fade-up"
-                  data-aos-delay={i * 150}
-                >
-                  <div className="w-16 h-16 bg-primary-navy rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary-action transition-colors">
-                    <i className={`fa-solid ${icon} text-primary-accent text-2xl`} />
-                  </div>
-                  <h3 className="text-xl  font-semibold text-primary-text mb-4">
-                    {title}
-                  </h3>
-                  <p className="text-primary-muted leading-relaxed">{desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* FEATURED PLAYERS */}
-        <section 
-          className="py-16 relative overflow-hidden " 
-          style={{
-            backgroundImage: 'url(/5618044.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }}
+        <section
+          className="py-16 relative overflow-hidden"
           data-aos="fade-up"
         >
-          <div className="absolute inset-0 bg-primary-navy/60"></div>
           <div className="mb-8 text-center w-full relative z-10">
-            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold text-white mb-2">
+            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold text-primary-text mb-2">
               {dict.homepage.featuredPlayers.title}
             </h2>
             <div className="w-24 h-1 bg-primary-accent mx-auto mb-4" />
-            <p className="text-white/90 text-lg lg:text-xl max-w-2xl mx-auto">
+            <p className="text-primary-muted text-lg lg:text-xl max-w-2xl mx-auto">
               {dict.pricing.featuredPlayers.subtitle}
             </p>
           </div>
@@ -748,7 +693,7 @@ export default async function HomePage({ params }) {
             <div className="flex flex-col lg:flex-row justify-end items-center mb-4 px-4 sm:px-6 lg:px-8 xl:px-12">
               <Link
                 href={`/${lang}/players`}
-                className="group inline-flex items-center px-6 lg:px-8 py-3 lg:py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-primary-accent hover:bg-white/20 hover:border-white/30 transition-all duration-300"
+                className="group inline-flex items-center px-6 lg:px-8 py-3 lg:py-4 bg-primary-navy/5 backdrop-blur-sm border border-primary-navy/10 rounded-xl text-primary-action hover:bg-primary-navy/10 hover:border-primary-navy/20 transition-all duration-300"
               >
                 <span className="font-semibold text-sm lg:text-base">
                   {dict.homepage.featuredPlayers.viewAll}
