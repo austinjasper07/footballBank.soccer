@@ -158,65 +158,11 @@ export async function changePassword(userId, currentPassword, newPassword) {
 
 // Signup with password (alternative to OTP signup)
 export async function signupWithPassword(email, firstName, lastName, password, address, shippingAddress) {
-  await dbConnect();
-  try {
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return { success: false, error: "Account with this email already exists" };
-    }
+  return {
+    success: false,
+    error: "Email verification is required. Request a verification code before creating your account.",
+  };
 
-    // Hash password
-    const bcrypt = require('bcryptjs');
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    // Create user with password
-    const userData = {
-      email,
-      firstName,
-      lastName,
-      password: hashedPassword,
-      role: "user",
-      isVerified: true,
-      address,
-      shippingAddress
-    };
-
-    const user = await User.create(userData);
-
-    user.subscribed = false;
-    await user.save();
-
-    // Generate session token
-    const sessionToken = generateSessionToken(user);
-
-    // Set session cookie
-    const cookieStore = await cookies();
-    cookieStore.set("session", sessionToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: SESSION_EXPIRY_DAYS * 86400,
-      path: "/",
-    });
-
-    // console.log("🔐 Password signup successful for user:", email);
-
-    return {
-      success: true,
-      user: {
-        id: user._id.toString(),
-        email,
-        firstName,
-        lastName,
-        role: "user",
-        isVerified: true,
-      },
-    };
-  } catch (error) {
-    console.error("Error in password signup:", error);
-    return { success: false, error: "Failed to create account. Please try again." };
-  }
 }
 
 // Password recovery - send reset OTP
@@ -281,6 +227,8 @@ export async function resetPasswordWithOTP(email, otp, newPassword) {
 // Send OTP for login
 export async function sendLoginOTP(email) {
   try {
+    const normalizedEmail = email?.trim().toLowerCase();
+    if (!normalizedEmail) return { success: false, error: "Enter a valid email address" };
     // console.log("🔍 Starting sendLoginOTP for email:", email);
     // console.log("🔍 Environment check:");
     // console.log("- JWT_SECRET exists:", !!process.env.JWT_SECRET);
@@ -293,7 +241,7 @@ export async function sendLoginOTP(email) {
     await cleanExpiredOTPs();
     // console.log("🔍 Cleaned expired OTPs");
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: normalizedEmail });
     // console.log("🔍 User lookup result:", user ? "User found" : "User not found");
     
     if (!user) {
@@ -305,9 +253,10 @@ export async function sendLoginOTP(email) {
     const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
     // console.log("🔍 Generated OTP:", otp, "Expires at:", expiresAt);
 
+    await OtpToken.deleteMany({ email: normalizedEmail, type: "LOGIN", status: "PENDING" });
     const otpRecord = await OtpToken.create({ 
       userId: user._id, 
-      email, 
+      email: normalizedEmail,
       token: otp, 
       type: "LOGIN", 
       status: "PENDING", 
@@ -316,7 +265,7 @@ export async function sendLoginOTP(email) {
     // console.log("🔍 OTP record created:", otpRecord._id);
 
     // console.log("🔍 Attempting to send email...");
-    const emailResult = await sendOTPEmail(email, otp, "login");
+    const emailResult = await sendOTPEmail(normalizedEmail, otp, "login");
     // console.log("🔍 Email send result:", emailResult);
 
     return { success: true, message: "Login code sent to your email" };
@@ -335,16 +284,19 @@ export async function sendLoginOTP(email) {
 export async function sendSignupOTP(email, firstName, lastName) {
   await dbConnect();
   try {
+    const normalizedEmail = email?.trim().toLowerCase();
+    if (!normalizedEmail) return { success: false, error: "Enter a valid email address" };
     await cleanExpiredOTPs();
 
-    const existing = await User.findOne({ email });
+    const existing = await User.findOne({ email: normalizedEmail });
     if (existing) return { success: false, error: "Account with this email already exists" };
 
     const otp = generateOTP();
     const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
 
-    await OtpToken.create({ email, token: otp, type: "SIGNUP", status: "PENDING", expiresAt });
-    await sendOTPEmail(email, otp, "signup");
+    await OtpToken.deleteMany({ email: normalizedEmail, type: "SIGNUP", status: "PENDING" });
+    await OtpToken.create({ email: normalizedEmail, token: otp, type: "SIGNUP", status: "PENDING", expiresAt });
+    await sendOTPEmail(normalizedEmail, otp, "signup");
 
     return { success: true, message: "Verification code sent to your email" };
   } catch (error) {
@@ -357,8 +309,9 @@ export async function sendSignupOTP(email, firstName, lastName) {
 export async function verifyLoginOTP(email, otp) {
   await dbConnect();
   try {
+    const normalizedEmail = email?.trim().toLowerCase();
     const otpRecord = await OtpToken.findOne({
-      email,
+      email: normalizedEmail,
       token: otp,
       type: "LOGIN",
       status: "PENDING",
@@ -406,11 +359,12 @@ export async function verifyLoginOTP(email, otp) {
 }
 
 // Verify signup OTP and create user
-export async function verifySignupOTP(email, otp, firstName, lastName, address, shippingAddress) {
+export async function verifySignupOTP(email, otp, firstName, lastName, address, shippingAddress, password = "") {
   await dbConnect();
   try {
+    const normalizedEmail = email?.trim().toLowerCase();
     const otpRecord = await OtpToken.findOne({
-      email,
+      email: normalizedEmail,
       token: otp,
       type: "SIGNUP",
       status: "PENDING",
@@ -425,11 +379,12 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
 
     // ✅ Create new user
     const userData = {
-      email,
+      email: normalizedEmail,
       firstName,
       lastName,
       role: "user",
       isVerified: true,
+      ...(password ? { password: await bcrypt.hash(password, 12) } : {}),
       address,
       shippingAddress,
       subscribed: false, // default

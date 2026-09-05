@@ -20,14 +20,15 @@ export async function sendEmail({ to, subject, html, text, attachments }) {
 
     // console.log("🔍 Attempting to send email with Resend API...");
     
-    const { data, error } = await resend.emails.send({
+    const emailPayload = {
       from: 'FootballBank.soccer <contact@footballbank.soccer>',
       to: [to],
       subject,
       html,
       text,
-      attachments,
-    });
+      ...(attachments?.length ? { attachments } : {}),
+    };
+    const { data, error } = await resend.emails.send(emailPayload);
 
     // console.log("🔍 Resend response - data:", data, "error:", error);
 

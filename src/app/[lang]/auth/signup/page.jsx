@@ -170,59 +170,17 @@ function SignupPageContent() {
     }
 
     try {
-      if (signupMethod === "password") {
-        // Password signup
-        const response = await fetch("/api/auth/password-signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            password: formData.password,
-            address: formData.address,
-            shippingAddress: formData.shippingAddress,
-          }),
-        });
+      const result = await sendSignupOTP(
+        formData.email,
+        formData.firstName,
+        formData.lastName
+      );
 
-        const data = await response.json();
-
-        if (data.success) {
-          // console.log(
-          //   "🔐 Password signup successful for user:",
-          //   data.user.email
-          // );
-          setMessage("Account created successfully! Redirecting...");
-
-          setTimeout(() => {
-            let dashboardUrl = redirectUrl;
-
-            if (!dashboardUrl) {
-              dashboardUrl = "/profile";
-            }
-
-            // console.log("🔐 Redirecting to:", dashboardUrl);
-            window.location.href = dashboardUrl;
-          }, 1000);
-        } else {
-          setError(data.error);
-        }
+      if (result.success) {
+        setMessage(result.message);
+        setStep("otp");
       } else {
-        // OTP signup
-        const result = await sendSignupOTP(
-          formData.email,
-          formData.firstName,
-          formData.lastName
-        );
-
-        if (result.success) {
-          setMessage(result.message);
-          setStep("otp");
-        } else {
-          setError(result.error);
-        }
+        setError(result.error);
       }
     } catch (error) {
       setError("Something went wrong. Please try again.");
@@ -243,7 +201,8 @@ function SignupPageContent() {
         formData.firstName,
         formData.lastName,
         formData.address,
-        formData.shippingAddress
+        formData.shippingAddress,
+        signupMethod === "password" ? formData.password : ""
       );
 
       if (result.success) {
@@ -292,8 +251,12 @@ function SignupPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-bg via-blue-50 to-indigo-50 flex items-center justify-center px-4 pt-4 pb-8">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-primary-bg px-4 py-8 sm:px-6 lg:grid lg:grid-cols-[0.85fr_1.15fr] lg:gap-12 lg:px-12 lg:py-12">
+      <div className="hidden min-h-screen flex-col justify-between bg-primary-navy p-10 text-primary-text-inverse lg:flex">
+        <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-primary-accent">FootballBank International</p><h2 className="mt-8 max-w-sm font-heading text-5xl font-semibold leading-[1.02]">Build your place in the football network.</h2><p className="mt-6 max-w-sm text-sm leading-7 text-primary-text-inverse/70">Create a verified account to access player opportunities, submit profiles, and communicate with FootballBank.</p></div>
+        <p className="text-sm text-primary-text-inverse/50">Secure email verification · International football access</p>
+      </div>
+      <div className="mx-auto w-full max-w-2xl lg:py-4">
         {/* Header */}
         <div className="text-center mb-6">
           <Link
@@ -303,8 +266,8 @@ function SignupPageContent() {
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </Link>
-          <div className="w-16 h-16 bg-gradient-to-r from-accent-red to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Users className="w-8 h-8 text-white" />
+          <div className="mx-auto mb-4 flex size-14 items-center justify-center bg-primary-navy">
+            <Users className="size-7 text-primary-accent" />
           </div>
           <h1 className="text-3xl font-bold text-primary-text mb-2">
             Join FootballBank.soccer
@@ -316,7 +279,7 @@ function SignupPageContent() {
           </p>
         </div>
 
-        <Card className="bg-white/80 backdrop-blur-sm border border-white/20 shadow-xl">
+        <Card className="border border-divider bg-primary-card shadow-xl">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-xl">
               {step === "form" ? "Create Account" : "Verify Email"}
@@ -325,18 +288,18 @@ function SignupPageContent() {
           <CardContent className="space-y-6">
             {/* Messages */}
             {message && (
-              <Alert className="border-green-200 bg-green-50">
-                <CheckCircle className="w-4 h-4 text-green-600" />
-                <AlertDescription className="text-green-800">
+              <Alert className="border-primary-action/30 bg-primary-action/5">
+                <CheckCircle className="w-4 h-4 text-primary-action" />
+                <AlertDescription className="text-primary-text">
                   {message}
                 </AlertDescription>
               </Alert>
             )}
 
             {error && (
-              <Alert className="border-red-200 bg-red-50">
-                <AlertCircle className="w-4 h-4 text-red-600" />
-                <AlertDescription className="text-red-800">
+              <Alert className="border-accent-red/30 bg-accent-red/5">
+                <AlertCircle className="w-4 h-4 text-accent-red" />
+                <AlertDescription className="text-primary-text">
                   {error}
                 </AlertDescription>
               </Alert>
@@ -356,8 +319,8 @@ function SignupPageContent() {
                       onClick={() => setSignupMethod("otp")}
                       className={`p-3 rounded-lg border-2 transition-colors ${
                         signupMethod === "otp"
-                          ? "border-accent-red bg-red-50 text-accent-red"
-                          : "border-gray-200 hover:border-gray-300"
+                          ? "border-primary-action bg-primary-action/10 text-primary-action"
+                          : "border-divider hover:border-primary-action"
                       }`}
                     >
                       <div className="text-center">
@@ -370,8 +333,8 @@ function SignupPageContent() {
                       onClick={() => setSignupMethod("password")}
                       className={`p-3 rounded-lg border-2 transition-colors ${
                         signupMethod === "password"
-                          ? "border-accent-red bg-red-50 text-accent-red"
-                          : "border-gray-200 hover:border-gray-300"
+                          ? "border-primary-action bg-primary-action/10 text-primary-action"
+                          : "border-divider hover:border-primary-action"
                       }`}
                     >
                       <div className="text-center">
@@ -383,7 +346,7 @@ function SignupPageContent() {
                 </div>
 
                 <form onSubmit={handleFormSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-2">
                       <Label
                         htmlFor="firstName"
@@ -537,8 +500,8 @@ function SignupPageContent() {
                   {/* Address Section */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 mb-4">
-                      <Home className="w-5 h-5 text-accent-red" />
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <Home className="size-5 text-primary-action" />
+                      <h3 className="text-lg font-semibold text-primary-text">
                         Address
                       </h3>
                     </div>
@@ -569,7 +532,7 @@ function SignupPageContent() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-4 sm:grid-cols-2">
                       <div className="space-y-2">
                         <Label htmlFor="city" className="text-sm font-medium">
                           City
@@ -614,7 +577,7 @@ function SignupPageContent() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-4 sm:grid-cols-2">
                       <div className="space-y-2">
                         <Label
                           htmlFor="postalCode"
@@ -695,14 +658,14 @@ function SignupPageContent() {
                         I agree to the{" "}
                         <Link
                           href="/terms-of-service"
-                          className="text-accent-red hover:underline"
+                          className="text-primary-action hover:underline"
                         >
                           Terms of Service
                         </Link>{" "}
                         and{" "}
                         <Link
                           href="/privacy-policy"
-                          className="text-accent-red hover:underline"
+                          className="text-primary-action hover:underline"
                         >
                           Privacy Policy
                         </Link>
@@ -712,7 +675,7 @@ function SignupPageContent() {
 
                   <Button
                     type="submit"
-                    className="w-full bg-accent-red hover:bg-red-700"
+                    className="w-full bg-primary-action hover:bg-primary-action-hover"
                     disabled={loading}
                   >
                     {loading ? (
@@ -738,10 +701,12 @@ function SignupPageContent() {
                     <Input
                       id="otp"
                       type="text"
+                      autoFocus
+                      inputMode="numeric"
                       placeholder="Enter 6-digit code"
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
-                      className="pl-10"
+                      className="pl-10 text-center text-2xl tracking-[0.45em]"
                       maxLength={6}
                       required
                     />
@@ -750,7 +715,7 @@ function SignupPageContent() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-accent-red hover:bg-red-700"
+                    className="w-full bg-primary-action hover:bg-primary-action-hover"
                   disabled={loading || otp.length !== 6}
                 >
                   {loading ? (
@@ -766,7 +731,7 @@ function SignupPageContent() {
                     type="button"
                     onClick={handleResendOTP}
                     disabled={loading}
-                    className="text-sm text-accent-red hover:text-red-700 disabled:opacity-50"
+                    className="text-sm text-primary-action hover:text-primary-action-hover disabled:opacity-50"
                   >
                     Didn't receive code? Resend
                   </button>
@@ -780,7 +745,7 @@ function SignupPageContent() {
                 Already have an account?{" "}
                 <Link
                   href="/auth/login"
-                  className="text-accent-red hover:text-red-700 font-medium"
+                  className="font-medium text-primary-action hover:text-primary-action-hover"
                 >
                   Sign in
                 </Link>
@@ -797,11 +762,11 @@ export default function SignupPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gradient-to-br from-primary-bg via-blue-50 to-indigo-50 flex items-center justify-center px-4 pt-4 pb-8">
+        <div className="flex min-h-screen items-center justify-center bg-primary-bg px-4 py-8">
           <div className="w-full max-w-md">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-accent-red to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-white" />
+              <div className="mx-auto mb-4 flex size-14 items-center justify-center bg-primary-navy">
+                <Users className="size-7 text-primary-accent" />
               </div>
               <h1 className="text-3xl font-bold text-primary-text mb-2">
                 Loading...

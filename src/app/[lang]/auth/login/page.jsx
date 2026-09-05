@@ -203,10 +203,13 @@ function LoginPageContent() {
   // No need for loading states - server-side layout handles authentication
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-primary-bg via-primary-surface to-primary-bg flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-primary-bg px-4 py-8 sm:px-6 lg:grid lg:min-h-screen lg:grid-cols-[1.1fr_0.9fr] lg:gap-12 lg:px-12 lg:py-12">
+      <div className="hidden min-h-full flex-col justify-between bg-primary-navy p-10 text-primary-text-inverse lg:flex">
+        <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-primary-accent">FootballBank International</p><h2 className="mt-8 max-w-lg font-heading text-6xl font-semibold leading-[1.02]">The next football opportunity starts with access.</h2><p className="mt-6 max-w-md text-sm leading-7 text-primary-text-inverse/70">Sign in to manage your profile, request player information, and continue your football journey.</p></div><p className="text-sm text-primary-text-inverse/50">Secure authentication · Built for the football community</p>
+      </div>
+      <div className="mx-auto flex w-full max-w-md flex-col justify-center">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2 text-primary-muted hover:text-primary-text transition-colors mb-6">
             <ArrowLeft className="w-4 h-4" />
             Back to Home
@@ -223,7 +226,7 @@ function LoginPageContent() {
           </p>
         </div>
 
-        <Card className="bg-white/80 backdrop-blur-sm border border-white/20 shadow-xl">
+        <Card className="border border-divider bg-primary-card shadow-xl">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-xl">
               {step === "email" ? "Sign In" : "Verify Code"}
@@ -232,18 +235,18 @@ function LoginPageContent() {
           <CardContent className="space-y-6">
             {/* Messages */}
             {message && (
-              <Alert className="border-green-200 bg-green-50">
-                <CheckCircle className="w-4 h-4 text-green-600" />
-                <AlertDescription className="text-green-800">
+              <Alert className="border-primary-action/30 bg-primary-action/5">
+                <CheckCircle className="w-4 h-4 text-primary-action" />
+                <AlertDescription className="text-primary-text">
                   {message}
                 </AlertDescription>
               </Alert>
             )}
 
             {error && (
-              <Alert className="border-red-200 bg-red-50">
-                <AlertCircle className="w-4 h-4 text-red-600" />
-                <AlertDescription className="text-red-800">
+              <Alert className="border-accent-red/30 bg-accent-red/5">
+                <AlertCircle className="w-4 h-4 text-accent-red" />
+                <AlertDescription className="text-primary-text">
                   {error}
                 </AlertDescription>
               </Alert>
@@ -262,7 +265,7 @@ function LoginPageContent() {
                       className={`p-3 rounded-lg border-2 transition-colors ${
                         loginMethod === "otp"
                           ? "border-primary-action bg-primary-action/10 text-primary-action"
-                          : "border-gray-200 hover:border-gray-300"
+                          : "border-divider hover:border-primary-action"
                       }`}
                     >
                       <div className="text-center">
@@ -276,7 +279,7 @@ function LoginPageContent() {
                       className={`p-3 rounded-lg border-2 transition-colors ${
                         loginMethod === "password"
                           ? "border-primary-action bg-primary-action/10 text-primary-action"
-                          : "border-gray-200 hover:border-gray-300"
+                          : "border-divider hover:border-primary-action"
                       }`}
                     >
                       <div className="text-center">
@@ -354,6 +357,8 @@ function LoginPageContent() {
                     <Input
                       id="otp"
                       type="text"
+                      autoFocus
+                      inputMode="numeric"
                       placeholder="Enter 6-digit code"
                       value={otp}
                       onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
@@ -401,7 +406,7 @@ function LoginPageContent() {
                     <div className="w-full border-t border-divider" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-white px-2 text-primary-muted">
+                    <span className="bg-primary-card px-2 text-primary-muted">
                       Or continue with
                     </span>
                   </div>
@@ -491,8 +496,8 @@ export default function LoginPage() {
       <div className="min-h-screen bg-linear-to-br from-primary-bg via-primary-surface to-primary-bg flex items-center justify-center px-4 pt-4 pb-8">
         <div className="w-full max-w-md">
           <div className="text-center">
-            <div className="w-16 h-16 bg-linear-to-r from-primary-action to-primary-action-hover rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Shield className="w-8 h-8 text-white" />
+              <div className="mx-auto mb-4 flex size-14 items-center justify-center bg-primary-navy">
+              <Shield className="size-7 text-primary-accent" />
             </div>
             <h1 className="text-3xl font-bold text-primary-text mb-2">Loading...</h1>
           </div>
