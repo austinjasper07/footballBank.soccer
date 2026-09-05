@@ -79,6 +79,7 @@ const otpTokenSchema = new mongoose.Schema({
 
 // Player Schema
 const playerSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   dob: { type: String, required: true },
@@ -197,6 +198,8 @@ const resumeRequestSchema = new mongoose.Schema({
     position: { type: String },
   },
   locale: { type: String, default: 'en' },
+  requestType: { type: String, enum: ['PROFILE', 'CV'], default: 'PROFILE' },
+  reason: { type: String, required: true, maxlength: 2000 },
   status: {
     type: String,
     enum: ['PENDING', 'APPROVED', 'REJECTED'],

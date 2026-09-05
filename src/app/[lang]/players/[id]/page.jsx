@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getPlayerById } from "@/actions/publicActions";
-import { hasApprovedResumeAccess } from "@/actions/resumeRequestActions";
+import { getPlayerAccess } from "@/actions/resumeRequestActions";
 import { getDictionary } from "@/lib/dictionaries";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import PlayerMedia from "./PlayerMedia";
@@ -24,11 +24,11 @@ export default async function PlayerPage({ params }) {
   const player = await getPlayerById(id);
   if (!player) notFound();
 
-  let canViewDetails = false;
+  let access = { profileAccess: false, cvAccess: false };
   try {
-    canViewDetails = await hasApprovedResumeAccess(id);
+    access = await getPlayerAccess(id);
   } catch {
-    canViewDetails = false;
+    access = { profileAccess: false, cvAccess: false };
   }
 
   const publicPlayer = {
@@ -39,7 +39,7 @@ export default async function PlayerPage({ params }) {
     videoPrimary: player.videoPrimary,
     videoAdditional: player.videoAdditional || [],
   };
-  const approvedPlayer = canViewDetails ? { ...publicPlayer, ...player } : publicPlayer;
+  const approvedPlayer = access.profileAccess || access.cvAccess ? { ...publicPlayer, ...player } : publicPlayer;
 
-  return <PlayerMedia player={approvedPlayer} canViewDetails={canViewDetails} lang={lang} />;
+  return <PlayerMedia player={approvedPlayer} canViewDetails={access.profileAccess} canDownloadResume={access.cvAccess} lang={lang} />;
 }

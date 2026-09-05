@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function sendEmail({ to, subject, html, text }) {
+export async function sendEmail({ to, subject, html, text, attachments }) {
   try {
     // console.log("🔍 Starting sendEmail to:", to);
     // console.log("🔍 Resend API key exists:", !!process.env.RESEND_API_KEY);
@@ -26,6 +26,7 @@ export async function sendEmail({ to, subject, html, text }) {
       subject,
       html,
       text,
+      attachments,
     });
 
     // console.log("🔍 Resend response - data:", data, "error:", error);

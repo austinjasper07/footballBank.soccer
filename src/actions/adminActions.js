@@ -325,7 +325,6 @@ export async function approveSubmission(submissionId) {
       submittedAt,
       status,
       rejectionReason,
-      userId,
       ...submissionData
     } = approvedSubmission.toObject();
 
