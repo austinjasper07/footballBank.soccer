@@ -179,6 +179,36 @@ const submissionSchema = new mongoose.Schema({
   submittedAt: { type: Date, default: Date.now }
 });
 
+// Request from a registered user to access an existing player's resume
+const resumeRequestSchema = new mongoose.Schema({
+  requesterId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  requester: {
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true },
+    role: { type: String },
+    isVerified: { type: Boolean },
+    address: { type: mongoose.Schema.Types.Mixed },
+  },
+  playerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Player', required: true },
+  player: {
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    position: { type: String },
+  },
+  locale: { type: String, default: 'en' },
+  status: {
+    type: String,
+    enum: ['PENDING', 'APPROVED', 'REJECTED'],
+    default: 'PENDING',
+  },
+  rejectionReason: { type: String },
+  decidedAt: { type: Date },
+  decidedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
 // Agent Schema for managing agent profile information
 const agentSchema = new mongoose.Schema({
   name: { type: String, required: true, default: "Ayodeji Fatade" },
@@ -199,4 +229,5 @@ export const Post = mongoose.models.Post || mongoose.model('Post', postSchema);
 export const PaymentMethod = mongoose.models.PaymentMethod || mongoose.model('PaymentMethod', paymentMethodSchema);
 export const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
 export const Submission = mongoose.models.Submission || mongoose.model('Submission', submissionSchema);
+export const ResumeRequest = mongoose.models.ResumeRequest || mongoose.model('ResumeRequest', resumeRequestSchema);
 export const Agent = mongoose.models.Agent || mongoose.model('Agent', agentSchema);

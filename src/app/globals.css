@@ -39,7 +39,7 @@
   --color-primary-text-inverse: #FFFFFF;
   --color-primary-muted: #9CA3AF;
   --color-secondary-bg: #172c53; /* Secondary background color for sections like CTA sections within a page */
-
+  --color-secondary-bg-alt: #eef2f7;
   /* Brand actions */
   --color-primary-action: #2563EB;  /* #2563EB; */
   --color-primary-action-hover: #1D4ED8;
@@ -101,7 +101,23 @@
   --radius-lg: var(--radius);
 
 }
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent-amber);
 
+  &::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+  }
+}
 /* ==========================
    BASE STYLES
    ========================== */

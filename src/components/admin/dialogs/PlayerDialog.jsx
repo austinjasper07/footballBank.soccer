@@ -343,9 +343,15 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
           />
           <InputField
             label="Preferred Leagues"
-            value={formData.preferredLeagues}
+            value={Array.isArray(formData.preferredLeagues) ? formData.preferredLeagues.join(", ") : formData.preferredLeagues}
             onChange={(val) =>
-              setFormData({ ...formData, preferredLeagues: val })
+              setFormData({
+                ...formData,
+                preferredLeagues: val
+                  .split(",")
+                  .map((league) => league.trim())
+                  .filter(Boolean),
+              })
             }
           />
           <InputField

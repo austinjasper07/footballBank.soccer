@@ -129,7 +129,7 @@ export default function PlayerSubmissionForm() {
     return (
       <div className="min-h-screen bg-primary-bg flex items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="w-8 h-8 animate-spin text-accent-red mx-auto mb-4" />
+          {/* <RefreshCw className="w-8 h-8 animate-spin text-accent-red mx-auto mb-4" /> */}
           <p className="text-primary-muted">Checking your access...</p>
           <p className="text-primary-muted">
             Please wait while we verify your subscription.
@@ -204,39 +204,44 @@ export default function PlayerSubmissionForm() {
 
   // ✅ Form content (unchanged except gating)
   return (
-    <section className="max-w-4xl mx-auto px-4 py-12">
+    <section className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
       {/* Step indicators */}
-      <div className="flex items-center justify-center gap-4 mb-8 flex-wrap">
-        {["Details", "Stats", "Uploads", "Complete"].map((l, i) => (
-          <div key={l} className="grid grid-cols-2 lg:grid-cols-5 gap-1">
+      <div className="mb-8 -mx-1 overflow-x-auto px-1 pb-2" aria-label="Profile submission progress">
+        <div className="flex min-w-max items-center justify-center gap-3 sm:w-full sm:gap-4">
+          {["Details", "Stats", "Uploads", "Complete"].map((l, i) => (
+            <div key={l} className="flex shrink-0 items-center gap-3 sm:gap-4">
             <div
-              className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium ${
+              className={`flex size-8 shrink-0 items-center justify-center rounded-full border text-sm font-semibold transition-colors sm:size-9 ${
                 step > i + 1
-                  ? "bg-accent-red text-white"
+                  ? "border-primary-action bg-primary-action text-primary-text-inverse"
                   : step === i + 1
-                    ? "bg-accent-red text-white"
-                    : "bg-primary-secondary border border-divider text-primary-muted"
+                    ? "border-primary-action bg-primary-action text-primary-text-inverse"
+                    : "border-divider bg-primary-card text-primary-muted"
               }`}
             >
-              {step > i + 1 ? "✔" : i + 1}
+              {step > i + 1 ? "✓" : i + 1}
             </div>
             <span
-              className={
-                step >= i + 1 ? "text-primary-text" : "text-primary-muted"
-              }
+              className={`text-xs font-medium sm:text-sm ${step >= i + 1 ? "text-primary-text" : "text-primary-muted"}`}
             >
               {l}
             </span>
-            {i < 3 && <div className="w-12 h-px bg-divider" />}
-          </div>
-        ))}
+            {i < 3 && (
+              <div
+                className={`h-px w-8 sm:w-12 ${step > i + 1 ? "bg-primary-action" : "bg-divider"}`}
+                aria-hidden="true"
+              />
+            )}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* === STEP 1 === */}
       {step === 1 && (
-        <div className="bg-white p-8 rounded-xl">
-          <h2 className="text-xl mb-6">Personal & Availability</h2>
-          <div className="grid md:grid-cols-2 gap-4">
+        <div className="rounded-xl bg-primary-card p-5 shadow-sm sm:p-8">
+          <h2 className="mb-6 text-xl font-semibold">Personal &amp; Availability</h2>
+          <div className="grid gap-4 md:grid-cols-2">
             {[
               { label: "First Name", field: "firstName" },
               { label: "Last Name", field: "lastName" },

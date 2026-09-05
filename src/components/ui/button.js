@@ -8,15 +8,18 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary-action text-[hsl(var(--primary-foreground))] hover:bg-primary-action-hover",
+        default: "bg-primary-action text-primary-text-inverse hover:bg-primary-action-hover",
+        action: "bg-primary-action text-primary-text-inverse hover:bg-primary-action-hover",
+        onNavy:
+          "border border-primary-text-inverse/70 bg-transparent text-primary-text-inverse hover:bg-primary-text-inverse hover:text-primary-navy",
         destructive:
-          "bg-[hsl(var(--destructive))] text-[hsl(var(--destructive-foreground))] hover:brightness-95",
+          "bg-accent-red text-primary-text-inverse hover:brightness-95",
         outline:
-          "bg-transparent border hover:border-white hover:text-white hover:bg-primary-action text-primary-action border-primary-action",
+          "border-primary-action bg-transparent text-primary-action hover:border-primary-action hover:bg-primary-action hover:text-primary-text-inverse",
         secondary:
-          "bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))] hover:bg-[hsl(var(--secondary))]/80",
-        ghost: "hover:bg-primary-action hover:text-[hsl(var(--accent-foreground))]",
-        link: "text-[hsl(var(--primary))] underline-offset-4 hover:underline",
+          "bg-secondary-bg-alt text-primary-text hover:bg-secondary-bg-alt/80",
+        ghost: "hover:bg-primary-action hover:text-primary-text-inverse",
+        link: "text-primary-action underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",

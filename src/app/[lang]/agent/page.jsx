@@ -53,7 +53,7 @@ export default async function RepresentationPage({ params }) {
 
   return (
     <main className="bg-primary-card text-primary-text">
-      <section className="relative isolate flex h-24 items-end overflow-hidden sm:h-30 lg:h-42">
+      <section className="relative isolate flex h-14 items-end overflow-hidden sm:h-18 lg:h-24">
         <Image
           src="/ball-bg.jpg"
           alt="Football pitch"
@@ -63,14 +63,14 @@ export default async function RepresentationPage({ params }) {
           className="-z-20 object-cover object-center"
         />
         <div className="absolute inset-0 -z-10 bg-primary-navy/55" />
-        <div className="mx-auto w-full max-w-6xl px-5 pb-7 sm:px-10 sm:pb-9 lg:px-12">
+        <div className="mx-auto w-full max-w-7xl px-5 py-4 ">
           <p className="text-center font-heading text-4xl font-semibold leading-none tracking-tight text-primary-text-inverse sm:text-5xl">
-            Our agent
+            Our Agent
           </p>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-5xl gap-10 px-5 py-12 sm:px-10 sm:py-16 lg:grid-cols-[minmax(250px,0.65fr)_minmax(0,1.4fr)] lg:items-start lg:gap-12 lg:px-12 lg:py-20">
+      <section className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-10 sm:py-16 lg:grid-cols-[minmax(250px,0.65fr)_minmax(0,1.4fr)] lg:items-start lg:gap-12 lg:px-12 lg:py-20">
         <aside className="mx-auto w-full max-w-sm text-center">
           <div className="relative aspect-4/5 overflow-hidden border-2 border-primary-action bg-primary-bg">
             <Image

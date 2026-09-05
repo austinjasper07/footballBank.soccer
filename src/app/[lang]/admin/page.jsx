@@ -11,6 +11,7 @@ import AdminBlogView from "@/components/admin/views/AdminBlogView";
 import { SettingsView } from "@/components/admin/views/SettingsView";
 import UsersView from "@/components/admin/views/UsersView";
 import AgentView from "@/components/admin/views/AgentView";
+import ResumeRequestsView from "@/components/admin/views/ResumeRequestsView";
 import { useAuth } from "@/context/NewAuthContext";
 import { useToast } from "@/hooks/use-toast";
 import SplashScreen from "@/components/SplashScreen";
@@ -66,6 +67,8 @@ const AdminDashboard = () => {
         return <DashboardView />;
       case "submissions":
         return <SubmissionsView />;
+      case "resume-requests":
+        return <ResumeRequestsView />;
       case "shop":
         return <DashboardView />;
       case "orders":
@@ -99,6 +102,10 @@ const AdminDashboard = () => {
       submissions: {
         title: "Submissions",
         subtitle: "Review and moderate player submissions",
+      },
+      "resume-requests": {
+        title: "Resume Requests",
+        subtitle: "Review registered user requests for player information",
       },
       shop: { title: "Shop", subtitle: "Manage products and inventory" },
       orders: { title: "Orders", subtitle: "View and process customer orders" },

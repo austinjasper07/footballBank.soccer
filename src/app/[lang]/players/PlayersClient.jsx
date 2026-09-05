@@ -14,6 +14,9 @@ import {
 import { countryList } from "@/lib/variousCountryListFormats";
 import "aos/dist/aos.css";
 import { getAllPlayers } from "@/actions/publicActions";
+import { ArrowUpRight, Play } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function PlayersClient({ lang, dict }) {
   const [players, setPlayers] = useState([]);
@@ -55,285 +58,285 @@ export default function PlayersClient({ lang, dict }) {
   const totalPages = Math.ceil(filteredPlayers.length / perPage);
   const paginatedPlayers = filteredPlayers.slice(
     (currentPage - 1) * perPage,
-    currentPage * perPage
+    currentPage * perPage,
   );
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
-  // Collect player images for background carousel
-  const playerImages = players
-    .filter((player) => player.imageUrl && player.imageUrl.length > 0)
-    .slice(0, 10) // Limit to first 10 players with images
-    .map((player) => player.imageUrl[0]); // Take first image from each player
+  return (
+    <>
+      <main className="relative z-10 min-h-screen w-full bg-primary-surface text-primary-text">
+        <div className="mx-auto max-w-7xl px-5 sm:px-10 lg:px-12">
+          {/* Page title */}
+          <section className="border-b border-divider py-8 sm:py-10">
+            <p className="eyebrow">The player collection</p>
+            <h1 className="mt-5 max-w-3xl font-heading text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
+              {dict?.players?.title || "Find the profile. See the potential."}
+            </h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-primary-muted">
+              {dict?.players?.subtitle || "Explore player footage and football profiles. Request the full profile through FootballBank International"}
+            </p>
+          </section>
 
-    return (
-      <>
-        <main className="relative z-10 min-h-screen py-8" 
-        style={{
-              backgroundImage: 'url(/2.jpg)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }
-          }
-          >
-  
-  <div className="absolute inset-0 bg-black/30"></div>
-          {/* Background Carousel - Covers entire main content area */}
-          {/* {playerImages.length > 0 && (
-            <div className="absolute inset-0 z-0 w-screen left-1/2 transform -translate-x-1/2">
-              <PlayerCarousel images={playerImages} interval={6000} />
-              <div className="absolute inset-0 bg-black/40"></div>
-            </div>
-          )} */}
-          <div className="w-full max-w-7xl mx-auto px-2 sm:px-4">
-            {/* Page title */}
-            <section className="py-8 text-center">
-              <h1 className="font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] mb-4 text-white drop-shadow-lg">
-                {dict?.players?.title || "Talent Showcase"}
-              </h1>
-            </section>
-  
-            {/* Filters */}
-            <section className="py-8 bg-white/10 backdrop-blur-md border-y border-white/20 lg:mb-6">
-              <div className="w-full px-2 sm:px-4 flex flex-col lg:flex-row gap-4 items-center justify-between">
-                <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                  <div className="flex gap-4 mb-4 sm:mb-0 w-full">
-                    <select
-                      value={selectedCountry}
-                      onChange={(e) => {
-                        setSelectedCountry(e.target.value);
-                        setCurrentPage(1);
-                      }}
-                      className="bg-white/20 border border-white/30 text-white placeholder-white/70 px-4 py-3 pr-10 rounded-md w-[60%] backdrop-blur-sm"
-                    >
-                      <option value="" className="bg-gray-800 text-white">
-                        All Countries
-                      </option>
-                      {countryList.map((country) => (
-                        <option
-                          key={country}
-                          value={country.toLowerCase()}
-                          className="bg-gray-800 text-white"
-                        >
-                          {country}
-                        </option>
-                      ))}
-                    </select>
-  
-                    <select
-                      value={selectedPosition}
-                      onChange={(e) => {
-                        setSelectedPosition(e.target.value);
-                        setCurrentPage(1);
-                      }}
-                      className="bg-white/20 border border-white/30 text-white placeholder-white/70 px-4 py-3 pr-10 rounded-md w-[40%] backdrop-blur-sm"
-                    >
-                      <option value="" className="bg-gray-800 text-white">
-                        All Positions
-                      </option>
-                      <option value="forward" className="bg-gray-800 text-white">
-                        Forward
-                      </option>
-                      <option
-                        value="goalkeeper"
-                        className="bg-gray-800 text-white"
-                      >
-                        Goalkeeper
-                      </option>
-                      <option value="defender" className="bg-gray-800 text-white">
-                        Defender
-                      </option>
-                      <option
-                        value="midfielder"
-                        className="bg-gray-800 text-white"
-                      >
-                        Midfielder
-                      </option>
-                    </select>
-                  </div>
-                </div>
-  
-                <div className="relative w-full lg:w-80">
-                  <input
-                    type="text"
-                    value={search}
+          {/* Filters */}
+          <section className="border-b border-divider py-2 lg:mb-3">
+            <div className="flex w-full flex-col items-center justify-between gap-4 lg:flex-row">
+              <div className="flex w-full flex-col gap-4 sm:flex-row lg:w-auto">
+                <div className="flex w-full gap-3 sm:mb-0">
+                  <select
+                    value={selectedCountry}
                     onChange={(e) => {
-                      setSearch(e.target.value);
+                      setSelectedCountry(e.target.value);
                       setCurrentPage(1);
                     }}
-                    placeholder="Search players..."
-                    className="w-full bg-white/20 border border-white/30 text-white placeholder-white/70 px-4 py-3 pl-12 rounded-md backdrop-blur-sm"
-                  />
-                  <i className="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70" />
+                    className="w-[60%] rounded-md border border-divider bg-primary-card px-4 py-3 pr-10 text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
+                  >
+                    <option value="" className="bg-primary-card text-primary-text">
+                      All Countries
+                    </option>
+                    {countryList.map((country) => (
+                      <option
+                        key={country}
+                        value={country.toLowerCase()}
+                        className="bg-primary-card text-primary-text"
+                      >
+                        {country}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={selectedPosition}
+                    onChange={(e) => {
+                      setSelectedPosition(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    className="w-[40%] rounded-md border border-divider bg-primary-card px-4 py-3 pr-10 text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
+                  >
+                    <option value="" className="bg-primary-card text-primary-text">
+                      All Positions
+                    </option>
+                    <option value="forward" className="bg-primary-card text-primary-text">
+                      Forward
+                    </option>
+                    <option
+                      value="goalkeeper"
+                      className="bg-primary-card text-primary-text"
+                    >
+                      Goalkeeper
+                    </option>
+                    <option value="defender" className="bg-primary-card text-primary-text">
+                      Defender
+                    </option>
+                    <option
+                      value="midfielder"
+                      className="bg-primary-card text-primary-text"
+                    >
+                      Midfielder
+                    </option>
+                  </select>
                 </div>
               </div>
-            </section>
-  
-            {/* Main content */}
-            <section className="py-8 sm:py-16 bg-white/5 rounded-lg px-3 sm:px-6">
-              <div className="grid lg:grid-cols-[3fr_1fr] gap-4 lg:gap-8">
-                {loading ? (
-                  <div className="text-center text-primary-muted">
-                    Loading players...
-                  </div>
-                ) : paginatedPlayers.length === 0 ? (
-                  <div className="text-center text-primary-muted">
-                    No players found.
-                  </div>
-                ) : (
-                  <div>
-                    {/* Player cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                      {paginatedPlayers.map((player) => {
-                        const fullName = `${player.firstName} ${player.lastName}`;
-                        const playerAge = player.dob ? new Date().getFullYear() - new Date(player.dob).getFullYear() : 'N/A';
-                        return (
-                          <div
-                            key={player.id}
-                            className="group relative bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden border border-white/20 hover:border-white/30 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-3xl cursor-pointer"
-                            onClick={() => router.push(`/${lang}/players/${player.id}`)}
-                          >
-                            {/* Full Player Image */}
-                            <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
-                              <Image
-                                src={player.imageUrl[0]}
-                                alt={fullName}
-                                fill
-                                className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                              />
-                              {/* Gradient Overlay */}
-                              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
-                              
-                              {/* Country Badge */}
-                              <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 text-xs font-semibold rounded-full flex items-center gap-2 shadow-lg">
-                                <Image
-                                  src={`https://flagcdn.com/w20/${player.countryCode.toLowerCase()}.png`}
-                                  alt={player.country}
-                                  width={16}
-                                  height={16}
-                                  className="rounded-full"
-                                />
-                                <span>{player.country}</span>
-                              </div>
-                              
-                              {/* Available Badge */}
-                              <div className="absolute top-4 right-4 bg-linear-to-r from-green-500 to-emerald-500 text-white px-3 py-1 text-xs font-semibold rounded-full shadow-lg">
-                                Available
-                              </div>
-                              
-                              {/* Player Info Overlay */}
-                              <div className="absolute bottom-0 left-0 right-0 p-4 lg:p-6">
-                                <h3 className="text-xl lg:text-2xl font-bold text-white mb-2 group-hover:text-red-300 transition-colors">
-                                  {fullName}
-                                </h3>
-                                
-                                {/* Player Stats */}
-                                <div className="flex flex-wrap gap-2 mb-3">
-                                  <span className="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
-                                    {player.position}
-                                  </span>
-                                  <span className="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
-                                    Age: {playerAge}
-                                  </span>
-                                  {player.foot && (
-                                    <span className="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
-                                      {player.foot}
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
+
+              <div className="relative w-full lg:w-80">
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  placeholder="Search players..."
+                  className="w-full rounded-md border border-divider bg-primary-card px-4 py-3 pl-12 text-primary-text outline-none placeholder:text-primary-muted transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
+                />
+                <i className="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-primary-muted" />
+              </div>
+            </div>
+          </section>
+
+          {/* Main content */}
+          <section className=" bg-primary-bg py-5 sm:py-8">
+            <div className="w-full">
+              {loading ? (
+                <div className="text-center text-primary-muted">
+                  Loading players...
+                </div>
+              ) : paginatedPlayers.length === 0 ? (
+                <div className="text-center text-primary-muted">
+                  No players found.
+                </div>
+              ) : (
+                <div>
+                  {/* Player cards */}
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+                    {paginatedPlayers.map((player) => {
+                      const fullName = `${player.firstName} ${player.lastName}`;
+                      const playerAge = player.dob
+                        ? new Date().getFullYear() -
+                          new Date(player.dob).getFullYear()
+                        : "N/A";
+                      return (
+                        <article
+                          key={player.id}
+                          className="group overflow-hidden rounded-lg border border-divider bg-primary-card"
+                        >
+                          <div className="relative">
+                            <Image
+                              src={player.imageUrl[0]}
+                              alt={player.firstName}
+                              width={600}
+                              height={800}
+                              loading="lazy"
+                              className="h-48 w-full object-scale-down bg-blue-100  rounded-t-md md:object-fill lg:object-cover sm:h-50 lg:h-54"
+                            />
+                            <span className="absolute top-4 left-4 rounded-sm bg-primary-navy/90 px-2.5 py-1 text-[0.6rem] tracking-[0.18em] text-primary-text-inverse uppercase">
+                              {player.position}
+                            </span>
+                            <span className="absolute right-4 bottom-4 flex h-9 w-9 items-center justify-center rounded-full bg-primary-card text-primary-text transition-transform group-hover:-translate-y-1">
+                              <ArrowUpRight className="h-4 w-4" />
+                            </span>
+                          </div>
+
+                          <div className="px-5 py-2">
+                            <p className="text-[0.6rem] tracking-[0.18em] text-primary-muted uppercase">
+                              {player.country}
+                            </p>
+                            <h3 className="mt-2 font-heading text-xl">
+                              {player.firstName} {player.lastName}
+                            </h3>
+
+                            <div className="mt-4 grid grid-cols-2 gap-2 border-t border-divider pt-4 text-[0.7rem] text-primary-muted">
+                              <span>
+                                Age:{" "}
+                                {player.dob
+                                  ? new Date().getFullYear() -
+                                    new Date(player.dob).getFullYear()
+                                  : "N/A"}
+                              </span>
+                              {player.foot && <span>Foot: {player.foot}</span>}
                             </div>
-                            
-                            {/* Card Content */}
-                            <div className="p-4 lg:p-6 space-y-4">
-                              <p className="text-blue-200 text-sm leading-relaxed line-clamp-3">
-                                {player.description?.slice(0, 120)}...
-                              </p>
-                              
-                              <button className="group/btn inline-flex items-center w-full justify-center bg-accent-red/80 text-white py-3 px-4 rounded-xl font-semibold hover:red-600 transition-all duration-300 transform hover:scale-105 text-sm lg:text-base shadow-lg">
-                                View Profile
-                                <svg className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                              </button>
+                            <p className="mt-2 text-[0.7rem] text-primary-muted">
+                              Club &amp; availability on confirmation
+                            </p>
+                            <div className="mt-3 flex items-center justify-center border-t border-divider pt-2">
+                              <Link
+                                href={`/${lang}/players/${player.id}`}
+                                className="inline-flex items-center gap-1.5 text-sm font-medium text-primary-action hover:underline"
+                              >
+                                {dict.homepage.featuredPlayers.viewProfile}{" "}
+                                <ArrowUpRight className="h-3.5 w-3.5" />
+                              </Link>
+                              {/* <span className="inline-flex items-center gap-1.5 text-sm text-primary-text">
+                                <Play className="h-3.5 w-3.5" /> Watch
+                                highlights
+                              </span> */}
                             </div>
                           </div>
-                        );
-                      })}
-                    </div>
-  
-                    {/* Pagination */}
-                    <Pagination className="my-12">
-                      <PaginationContent className="gap-2">
-                        <PaginationItem>
-                          <PaginationPrevious
-                            href="#"
-                            className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setCurrentPage((prev) => Math.max(prev - 1, 1));
-                            }}
-                          />
-                        </PaginationItem>
-  
-                        {pageNumbers.map((num) => (
-                          <PaginationItem key={num}>
-                            <PaginationLink
-                              href="#"
-                              isActive={currentPage === num}
-                              className={`${
-                                currentPage === num
-                                  ? "bg-accent-red text-white border-red-500 shadow-lg"
-                                  : "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:text-white"
-                              } transition-all duration-300 font-semibold`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setCurrentPage(num);
-                              }}
-                            >
-                              {num}
-                            </PaginationLink>
-                          </PaginationItem>
-                        ))}
-  
-                        <PaginationItem>
-                          <PaginationNext
-                            href="#"
-                            className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/30 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setCurrentPage((prev) =>
-                                Math.min(prev + 1, totalPages)
-                              );
-                            }}
-                          />
-                        </PaginationItem>
-                      </PaginationContent>
-                    </Pagination>
+                        </article>
+                      );
+                    })}
                   </div>
-                )}
-  
+
+                  {/* Pagination */}
+                  <Pagination className="my-12 w-full">
+                    <PaginationContent className="gap-2">
+                      <PaginationItem>
+                          <PaginationPrevious
+                          href="#"
+                          className="border border-divider bg-primary-card text-primary-text hover:border-primary-action hover:bg-primary-action hover:text-primary-text-inverse transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage((prev) => Math.max(prev - 1, 1));
+                          }}
+                        />
+                      </PaginationItem>
+
+                      {pageNumbers.map((num) => (
+                        <PaginationItem key={num}>
+                          <PaginationLink
+                            href="#"
+                            isActive={currentPage === num}
+                            className={`${
+                              currentPage === num
+                                ? "bg-primary-action text-primary-text-inverse border-primary-action shadow-lg"
+                                : "bg-primary-card border border-divider text-primary-text hover:bg-primary-action hover:text-primary-text-inverse hover:border-primary-action"
+                            } transition-all duration-300 font-semibold`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setCurrentPage(num);
+                            }}
+                          >
+                            {num}
+                          </PaginationLink>
+                        </PaginationItem>
+                      ))}
+
+                      <PaginationItem>
+                        <PaginationNext
+                          href="#"
+                          className="border border-divider bg-primary-card text-primary-text hover:border-primary-action hover:bg-primary-action hover:text-primary-text-inverse transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage((prev) =>
+                              Math.min(prev + 1, totalPages),
+                            );
+                          }}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              )}
+            </div>
+          </section>
+
+
+          {/* Animation styles */}
+          <style jsx global>{`
+            @keyframes dropdown {
+              from {
+                opacity: 0;
+                transform: translateY(-20px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+            .animate-dropdown {
+              animation: dropdown 0.6s ease-out forwards;
+            }
+          `}</style>
+        </div>
+
+        {/* CTA SECTION*/}
+          <section className="bg-secondary-bg">
+            <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center">
+              <div className=" text-center lg:text-left">
+                <p className="eyebrow">The next conversation matters</p>
+                <h2 className="mt-5 font-heading text-4xl leading-tight text-primary-text-inverse uppercase">
+                  The right talent.
+                  <br />
+                  The right opportunity.
+                </h2>
               </div>
-            </section>
-  
-            {/* Animation styles */}
-            <style jsx global>{`
-              @keyframes dropdown {
-                from {
-                  opacity: 0;
-                  transform: translateY(-20px);
-                }
-                to {
-                  opacity: 1;
-                  transform: translateY(0);
-                }
-              }
-              .animate-dropdown {
-                animation: dropdown 0.6s ease-out forwards;
-              }
-            `}</style>
-          </div>
-        </main>
-      </>
-    );
+
+              <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+                <p className="text-sm text-primary-text-inverse/70">
+                  Recruiting for a club or ready for the next step in your
+                  career? Start with FootballBank.
+                </p>
+                <div className="mt-6 flex flex-col lg:flex-row gap-3">
+                  <Button variant="action" size="lg">
+                    Request a player <ArrowUpRight />
+                  </Button>
+                  <Button variant="onNavy" size="lg">
+                    Seek representation <ArrowUpRight />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </section>
+      </main>
+    </>
+  );
 }
