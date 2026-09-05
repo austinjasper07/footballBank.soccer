@@ -72,15 +72,15 @@ export function DashboardView() {
   const getVariantClasses = (variant) => {
     switch (variant) {
       case "blue":
-        return { iconColor: "text-white", iconBg: "bg-accent-blue" };
+        return { iconColor: "text-primary-action", iconBg: "bg-primary-action/10" };
       case "green":
-        return { iconColor: "text-white", iconBg: "bg-accent-green" };
+        return { iconColor: "text-primary-action", iconBg: "bg-primary-action/10" };
       case "amber":
-        return { iconColor: "text-white", iconBg: "bg-accent-amber" };
+        return { iconColor: "text-primary-navy", iconBg: "bg-primary-accent" };
       case "red":
-        return { iconColor: "text-white", iconBg: "bg-primary-action" };
+        return { iconColor: "text-primary-text-inverse", iconBg: "bg-secondary-bg" };
       default:
-        return { iconColor: "text-white", iconBg: "bg-primary" };
+        return { iconColor: "text-primary-text-inverse", iconBg: "bg-primary-navy" };
     }
   };
 
@@ -273,12 +273,12 @@ export function DashboardView() {
           const Icon = metric.icon;
           const variantClasses = getVariantClasses(metric.variant);
           return (
-            <Card key={`metric-${metric.title}-${index}`} className="border-0 shadow-sm">
-              <CardContent className="p-6">
+            <Card key={`metric-${metric.title}-${index}`} className="overflow-hidden border border-divider bg-primary-card shadow-sm transition-shadow hover:shadow-md">
+              <CardContent className="p-5 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-sm text-[hsl(var(--muted-foreground))] font-medium">{metric.title}</p>
-                    <p className="text-3xl font-(--heading)">
+                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-primary-muted">{metric.title}</p>
+                    <p className="mt-2 font-heading text-3xl font-semibold tracking-tight">
                       {loading ? "..." : metric.value}
                     </p>
                   </div>
@@ -300,9 +300,9 @@ export function DashboardView() {
 
       {/* Activity Feed */}
       <div className="grid grid-cols-1 gap-6">
-        <Card className="border-0 shadow-sm">
+        <Card className="border border-divider bg-primary-card shadow-sm">
           <CardHeader>
-            <CardTitle className="font-(--heading)">Recent Activity</CardTitle>
+            <CardTitle className="font-heading text-2xl">Recent Activity</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -310,15 +310,15 @@ export function DashboardView() {
                 const Icon = activity.icon;
                 const variantClasses = getVariantClasses(activity.variant);
                 return (
-                  <div key={`activity-${activity.title}-${index}`} className="flex items-center gap-4 p-3 hover:bg-[hsl(var(--muted))]/50 rounded-lg transition-colors">
+                  <div key={`activity-${activity.title}-${index}`} className="flex items-center gap-4 border-b border-divider/70 p-3 last:border-0 hover:bg-primary-bg transition-colors">
                     <div className={`p-2 rounded-lg ${variantClasses.iconBg}`}>
                       <Icon className={`h-4 w-4 ${variantClasses.iconColor}`} />
                     </div>
                     <div className="flex-1">
                       <p className="font-medium">{activity.title}</p>
-                      <p className="text-sm text-[hsl(var(--muted-foreground))]">{activity.description}</p>
+                      <p className="text-sm text-primary-muted">{activity.description}</p>
                     </div>
-                    <span className="text-sm text-[hsl(var(--muted-foreground))] whitespace-nowrap">{activity.time}</span>
+                    <span className="whitespace-nowrap text-sm text-primary-muted">{activity.time}</span>
                   </div>
                 );
               })}

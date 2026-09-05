@@ -1,216 +1,79 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowUpRight, CheckCircle2, Edit3, LogOut, Mail, MapPin, ShieldCheck, UserRound } from "lucide-react";
 import { useAuth } from "@/context/NewAuthContext";
 import { Button } from "@/components/ui/button";
-import {
-  Shield,
-  Edit,
-  Plus,
-  RefreshCw,
-} from "lucide-react";
-import Link from "next/link";
-import ProfileLayout from "@/components/profile/ProfileLayout";
-import ProfileDashboard from "@/components/profile/ProfileDashboard";
-import "aos/dist/aos.css";
 
 export default function UserProfilePage() {
-  const { user, isAuthenticated, loading: isLoading } = useAuth();
-  const [profileData, setProfileData] = useState(null);
-  const [orders, setOrders] = useState([]);
-  const [subscriptions, setSubscriptions] = useState([]);
+  const { user, isAuthenticated, loading: authLoading, logout } = useAuth();
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const COMMERCE_DISABLED = true;
+  const pathname = usePathname();
+  const router = useRouter();
+  const lang = pathname.split("/")[1] || "en";
 
   useEffect(() => {
-    // Only make API calls if user is authenticated and not loading
-    if (isAuthenticated && user && !isLoading) {
-      fetchProfileData();
-      if (!COMMERCE_DISABLED) {
-        fetchOrders();
-        fetchSubscriptions();
-      }
-    }
-  }, [COMMERCE_DISABLED, isAuthenticated, user, isLoading]);
-
-  // Redirect unauthenticated users
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      window.location.href = '/auth/login';
-    }
-  }, [isLoading, isAuthenticated]);
-
-  const fetchProfileData = async () => {
-    // Don't make API calls if not authenticated
-    if (!isAuthenticated || !user) {
-      setLoading(false);
+    if (!authLoading && !isAuthenticated) {
+      router.replace(`/${lang}/auth/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }
 
-    try {
-      const response = await fetch("/api/profile/user");
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          // User is not authenticated, redirect to login
-          window.location.href = '/auth/login';
-          return;
-        }
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const text = await response.text();
-      if (!text) {
-        console.warn("Empty response from profile API");
-        setProfileData(null);
-        return;
-      }
-      
-      const data = JSON.parse(text);
-      setProfileData(data);
-    } catch (error) {
-      console.error("Error fetching profile:", error);
-      setProfileData(null);
-    } finally {
-      setLoading(false);
+    if (isAuthenticated && user) {
+      fetch("/api/profile/user", { credentials: "include" })
+        .then((response) => {
+          if (!response.ok) throw new Error("Profile request failed");
+          return response.json();
+        })
+        .then(setProfile)
+        .catch(() => setProfile(user))
+        .finally(() => setLoading(false));
     }
-  };
+  }, [authLoading, isAuthenticated, lang, pathname, router, user]);
 
-  const fetchOrders = async () => {
-    if (COMMERCE_DISABLED) {
-      setOrders([]);
-      return;
-    }
-
-    // Don't make API calls if not authenticated
-    if (!isAuthenticated || !user) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/profile/orders?page=1&limit=3`);
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          // User is not authenticated, redirect to login
-          window.location.href = '/auth/login';
-          return;
-        }
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const text = await response.text();
-      if (!text) {
-        console.warn("Empty response from orders API");
-        setOrders([]);
-        return;
-      }
-      
-      const data = JSON.parse(text);
-      setOrders(Array.isArray(data.orders) ? data.orders : []);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-      setOrders([]);
-    }
-  };
-
-  const fetchSubscriptions = async () => {
-    if (COMMERCE_DISABLED) {
-      setSubscriptions([]);
-      return;
-    }
-
-    // Don't make API calls if not authenticated
-    if (!isAuthenticated || !user) {
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/profile/subscriptions");
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          // User is not authenticated, redirect to login
-          window.location.href = '/auth/login';
-          return;
-        }
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const text = await response.text();
-      if (!text) {
-        console.warn("Empty response from subscriptions API");
-        setSubscriptions([]);
-        return;
-      }
-      
-      const data = JSON.parse(text);
-      // console.log('Subscriptions API response:', data);
-      setSubscriptions(Array.isArray(data) ? data : []);
-    } catch (error) {
-      console.error("Error fetching subscriptions:", error);
-      setSubscriptions([]);
-    }
-  };
-
-
-  if (isLoading || loading) {
-    return (
-      <div className="min-h-screen bg-primary-bg flex items-center justify-center">
-        <div className="text-center">
-          <RefreshCw className="w-8 h-8 animate-spin text-accent-red mx-auto mb-4" />
-          <p className="text-primary-muted">Loading your profile...</p>
-        </div>
-      </div>
-    );
+  if (authLoading || loading) {
+    return <main className="flex min-h-screen items-center justify-center bg-primary-bg px-5"><p className="text-sm text-primary-muted">Loading your profile...</p></main>;
   }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-primary-bg flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto px-4">
-          <Shield className="w-16 h-16 text-accent-red mx-auto mb-6" />
-          <h1 className="text-2xl font-bold text-primary-text mb-4">
-            Authentication Required
-          </h1>
-          <p className="text-primary-muted mb-6">
-            Please log in to access your profile.
-          </p>
-          <Button asChild>
-            <Link href="/auth/login">Sign In</Link>
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  if (!isAuthenticated) return null;
 
-  const profileActions = [
-    {
-      label: "Edit Profile",
-      icon: Edit,
-      href: "/profile/settings",
-      variant: "outline"
-    },
-    {
-      label: "Submit Profile",
-      icon: Plus,
-      href: "/submit-profile"
-    }
-  ];
+  const data = profile || user;
+  const fullName = `${data?.firstName || ""} ${data?.lastName || ""}`.trim() || "FootballBank member";
+  const initials = fullName.split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase();
+  const address = data?.address || {};
 
   return (
-    <ProfileLayout
-      title={`${profileData?.firstName} ${profileData?.lastName}`}
-      subtitle={profileData?.email}
-      userRole={profileData?.role}
-      actions={profileActions}
-    >
-      <ProfileDashboard
-        userData={profileData}
-        orders={orders}
-        subscriptions={subscriptions}
-        userRole={profileData?.role}
-      />
-    </ProfileLayout>
+    <main className="min-h-screen bg-primary-bg text-primary-text">
+      <div className="mx-auto max-w-6xl px-5 py-10 sm:px-10 sm:py-14 lg:px-12">
+        <div className="flex flex-col gap-5 border-b border-divider pb-8 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="eyebrow">Account profile</p>
+            <h1 className="mt-5 max-w-2xl font-heading text-4xl font-semibold leading-[1.04] tracking-tight sm:text-6xl">Welcome, {data?.firstName || "there"}.</h1>
+            <p className="mt-4 max-w-xl text-base leading-7 text-primary-muted">Your FootballBank identity, contact details, and account access in one place.</p>
+          </div>
+          <Button variant="outline" asChild><Link href={`/${lang}/profile/settings`}><Edit3 className="size-4" />Edit profile</Link></Button>
+        </div>
+
+        <section className="mt-8 grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="bg-primary-navy p-7 text-primary-text-inverse sm:p-9">
+            <div className="flex size-16 items-center justify-center bg-primary-accent font-heading text-2xl font-semibold text-primary-navy">{initials}</div>
+            <h2 className="mt-8 font-heading text-3xl font-semibold leading-tight sm:text-4xl">{fullName}</h2>
+            <p className="mt-2 text-sm text-primary-text-inverse/65">{data?.role || "Registered member"}</p>
+            <div className="mt-8 border-t border-primary-text-inverse/15 pt-5"><p className="text-xs uppercase tracking-[0.16em] text-primary-accent">Account status</p><div className="mt-3 flex items-center gap-2 text-sm"><CheckCircle2 className="size-4 text-primary-accent" />{data?.isVerified ? "Email verified" : "Verification pending"}</div></div>
+          </div>
+
+          <div className="border border-divider bg-primary-card p-6 sm:p-9">
+            <div className="flex items-center justify-between gap-4 border-b border-divider pb-5"><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary-action">Personal information</p><h2 className="mt-2 font-heading text-2xl font-semibold">Your details</h2></div><UserRound className="size-6 text-primary-accent" aria-hidden="true" /></div>
+            <dl className="mt-7 grid gap-x-8 gap-y-6 sm:grid-cols-2"><div><dt className="text-xs uppercase tracking-[0.14em] text-primary-muted">First name</dt><dd className="mt-2 font-medium">{data?.firstName || "Not provided"}</dd></div><div><dt className="text-xs uppercase tracking-[0.14em] text-primary-muted">Last name</dt><dd className="mt-2 font-medium">{data?.lastName || "Not provided"}</dd></div><div className="sm:col-span-2"><dt className="text-xs uppercase tracking-[0.14em] text-primary-muted">Email address</dt><dd className="mt-2 flex items-center gap-2 break-all font-medium"><Mail className="size-4 shrink-0 text-primary-action" />{data?.email || "Not provided"}</dd></div></dl>
+          </div>
+        </section>
+
+        <section className="mt-6 border border-divider bg-primary-card p-6 sm:p-9"><div className="flex items-center gap-3 border-b border-divider pb-5"><MapPin className="size-5 text-primary-action" /><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary-action">Contact location</p><h2 className="mt-2 font-heading text-2xl font-semibold">Registered address</h2></div></div><div className="mt-6 grid gap-6 text-sm sm:grid-cols-2 lg:grid-cols-4"><div><p className="text-primary-muted">Street</p><p className="mt-1 font-medium">{address.street || "Not provided"}</p></div><div><p className="text-primary-muted">City</p><p className="mt-1 font-medium">{address.city || "Not provided"}</p></div><div><p className="text-primary-muted">State / region</p><p className="mt-1 font-medium">{address.state || "Not provided"}</p></div><div><p className="text-primary-muted">Country</p><p className="mt-1 font-medium">{address.country || "Not provided"}</p></div></div></section>
+
+        <section className="mt-6 flex flex-col gap-5 border-t border-divider pt-7 sm:flex-row sm:items-center sm:justify-between"><div><p className="font-heading text-2xl font-semibold">Keep your football profile current.</p><p className="mt-2 text-sm text-primary-muted">Update your account details or submit your player profile when you are ready.</p></div><div className="flex flex-wrap gap-3"><Button variant="action" asChild><Link href={`/${lang}/submit-profile`}>Submit player profile<ArrowUpRight className="size-4" /></Link></Button><Button variant="outline" onClick={() => logout(true)}><LogOut className="size-4" />Sign out</Button></div></section>
+      </div>
+    </main>
   );
 }

@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   password: { type: String },
+  failedLoginAttempts: { type: Number, default: 0 },
+  lockedUntil: { type: Date },
   role: { 
     type: String, 
     enum: ['admin', 'user', 'player', 'agent', 'editor'], 
@@ -72,6 +74,7 @@ const otpTokenSchema = new mongoose.Schema({
     default: 'PENDING' 
   },
   expiresAt: { type: Date, required: true },
+  attempts: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   verifiedAt: { type: Date }
 });

@@ -21,10 +21,8 @@ export async function POST(req) {
         message: "Login successful" 
       });
     } else {
-      return NextResponse.json(
-        { error: result.error || "Invalid OTP" },
-        { status: 400 }
-      );
+      const status = result.code === "OTP_LOCKED" ? 429 : result.code === "ACCOUNT_LOCKED" ? 423 : 400;
+      return NextResponse.json({ error: result.error || "Invalid OTP", code: result.code }, { status });
     }
   } catch (error) {
     console.error("Verify OTP error:", error);

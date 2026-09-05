@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { Search, Bell, ChevronDown } from "lucide-react";
+import { Bell } from "lucide-react";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "@/context/NewAuthContext";
 import { UserHeader } from "../UserHeader";
@@ -9,7 +9,6 @@ import { UserHeader } from "../UserHeader";
 
 
 export function AdminHeader({ title, subtitle }) {
-  const [searchQuery, setSearchQuery] = useState("");
   const { isAuthenticated, user } = useAuth();
 
   if (!isAuthenticated) {
@@ -20,43 +19,28 @@ export function AdminHeader({ title, subtitle }) {
   const userDisplayName = user ? `${user.firstName} ${user.lastName}` : "Editor";
   // const unreadCount = messages.filter(msg => !msg.read).length;
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-    // TODO: Add filtering/search behavior
-  };
-
   return (
-    <header className="bg-[hsl(var(--card))] border-b border-[hsl(var(--border))] px-4 md:px-6 py-3 md:py-4">
-      <div className="flex flex-row justify-between md:justify-end gap-4">
-        
-        {/* Title & Subtitle */}
-       
-
-        {/* Controls */}
-        <div className="flex items-center justify-end md:justify-start gap-3 md:gap-5 w-full md:w-auto">
+    <header className="border-b border-divider bg-primary-card/90 px-4 py-4 backdrop-blur md:px-8 md:py-5">
+      <div className="flex items-center justify-between gap-5">
+        <div className="min-w-0"><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-action">FootballBank console</p><h1 className="mt-1 truncate font-heading text-2xl font-semibold tracking-tight sm:text-3xl">{title}</h1><p className="hidden text-sm text-primary-muted sm:block">{subtitle}</p></div>
+        <div className="flex shrink-0 items-center gap-2 md:gap-4">
        {/* Notifications */}
-          <button className="relative p-2 rounded-lg hover:bg-[hsl(var(--accent))] transition">
-            <Bell className="h-5 w-5 text-[hsl(var(--muted-foreground))]" />
+          <button className="relative inline-flex size-10 items-center justify-center rounded-full border border-divider text-primary-muted transition hover:border-primary-action hover:text-primary-action" aria-label="Notifications">
+            <Bell className="size-4" />
             {/* {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 h-5 w-5 bg-[hsl(var(--destructive))] text-[hsl(var(--destructive-foreground))] text-xs rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full bg-accent-red text-xs text-primary-text-inverse">
                 {unreadCount}
               </span>
             )} */}
           </button>
 
           {/* Profile */}
-          <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-[hsl(var(--accent))] cursor-pointer transition">
-            <span className="text-sm font-medium hidden sm:inline">{userDisplayName}</span>
+          <div className="flex items-center gap-2 rounded-full border border-divider py-1 pl-3 pr-1">
+            <span className="hidden text-sm font-medium sm:inline">{userDisplayName}</span>
             <UserHeader slug={"Home"} href={"/"} />
           </div>
         </div>
       </div>
-      <div className="flex flex-col pl-12 md:pl-0">
-          <h1 className="font-bold text-xl sm:text-2xl md:text-3xl">{title}</h1>
-          <p className="text-sm md:text-base text-[hsl(var(--muted-foreground))]">
-            {subtitle}
-          </p>
-        </div>
     </header>
   );
 }

@@ -21,10 +21,8 @@ export async function POST(req) {
         message: "Login successful" 
       });
     } else {
-      return NextResponse.json(
-        { error: result.error || "Login failed" },
-        { status: 400 }
-      );
+      const status = result.code === "ACCOUNT_LOCKED" ? 423 : result.code === "RATE_LIMITED" ? 429 : 400;
+      return NextResponse.json({ error: result.error || "Login failed", code: result.code }, { status });
     }
   } catch (error) {
     console.error("Password login error:", error);

@@ -34,7 +34,7 @@ export function AdminSidebar({ activeView, onViewChange, collapsed, onToggleColl
       <div className="md:hidden fixed top-4 left-4 z-50">
         <button
           onClick={() => setMobileOpen(true)}
-          className="bg-[hsl(var(--card))] border border-[hsl(var(--border))] p-2 rounded-md"
+          className="rounded-full border border-divider bg-primary-card p-2 text-primary-text shadow-sm"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -52,7 +52,7 @@ export function AdminSidebar({ activeView, onViewChange, collapsed, onToggleColl
       <aside
         className={`
           fixed top-0 left-0 h-full z-50 md:z-10
-          bg-[hsl(var(--card))] border-r border-[hsl(var(--border))] 
+          bg-primary-navy border-r border-primary-text-inverse/10 text-primary-text-inverse
           transition-all duration-300 ease-in-out
           ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} 
           md:translate-x-0
@@ -60,19 +60,19 @@ export function AdminSidebar({ activeView, onViewChange, collapsed, onToggleColl
         `}
       >
         {/* Header */}
-        <div className="p-4 border-b border-[hsl(var(--border))] flex items-center justify-between">
+        <div className="flex items-center justify-between border-b border-primary-text-inverse/10 p-4">
           <div
             className={`flex items-center gap-2 transition-opacity ${
               collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'
             }`}
           >
             <Image src="/logo/logo-1.png" alt="Logo" width={40} height={40} />
-            <p className="text-muted-foreground text-base font-semibold">Admin Console</p>
+            <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-primary-accent">FootballBank</p><p className="text-sm font-medium text-primary-text-inverse/60">Admin console</p></div>
           </div>
 
           {/* Collapse toggle */}
           <button
-            className="hidden md:block text-muted-foreground ml-auto"
+            className="ml-auto hidden text-primary-text-inverse/50 transition hover:text-primary-accent md:block"
             onClick={onToggleCollapse}
           >
             {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
@@ -81,7 +81,7 @@ export function AdminSidebar({ activeView, onViewChange, collapsed, onToggleColl
 
         {/* Navigation */}
         <nav className="flex-1 p-2 overflow-y-auto">
-          <ul className="space-y-2">
+          <ul className="space-y-1.5">
             {navigationItems.map((item) => {
               const isActive = activeView === item.id;
               const Icon = item.icon;
@@ -95,14 +95,14 @@ export function AdminSidebar({ activeView, onViewChange, collapsed, onToggleColl
                     }}
                     className={`w-full cursor-pointer flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
                       isActive
-                        ? 'bg-primary-action text-[hsl(var(--primary-foreground))]'
-                        : 'hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]'
+                        ? 'bg-primary-action text-primary-text-inverse shadow-lg shadow-primary-action/20'
+                        : 'text-primary-text-inverse/65 hover:bg-primary-text-inverse/10 hover:text-primary-text-inverse'
                     }`}
                   >
                     <Icon className="w-5 h-5" />
                     {!collapsed && <span className="truncate">{item.label}</span>}
                     {item.badge !== undefined && item.badge > 0 && !collapsed && (
-                      <span className="ml-auto bg-[hsl(var(--destructive))] text-[hsl(var(--destructive-foreground))] text-xs px-2 py-1 rounded-full">
+                      <span className="ml-auto rounded-full bg-accent-red px-2 py-1 text-xs text-primary-text-inverse">
                         {item.badge}
                       </span>
                     )}

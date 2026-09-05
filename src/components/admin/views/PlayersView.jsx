@@ -166,16 +166,16 @@ export default function PlayersView() {
 
   return (
     <div className="space-y-6">
-      <div className="flex md:items-center justify-between">
-        <div className="flex flex-col md:flex-row md:items-center gap-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
             placeholder="Search players..."
-            className="w-40 md:w-80"
+            className="w-full sm:w-72"
           />
           <Select value={countryFilter} onValueChange={setCountryFilter}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="w-full sm:w-40">
               <SelectValue placeholder="All Countries" />
             </SelectTrigger>
             <SelectContent>
@@ -189,7 +189,7 @@ export default function PlayersView() {
           </Select>
 
           <Select value={positionFilter} onValueChange={setPositionFilter}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="w-full sm:w-40">
               <SelectValue placeholder="All Positions" />
             </SelectTrigger>
             <SelectContent>
@@ -204,33 +204,33 @@ export default function PlayersView() {
 
         <Button
           onClick={() => setPlayerDialogOpen(true)}
-          variant="outline"
-          // className="bg-[hsl(210,74%,55%)] text-[hsl(var(--muted))]"
+          variant="action"
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Player
         </Button>
       </div>
 
-      <Card className="border-0 shadow-md">
+      <Card className="overflow-hidden border border-divider bg-primary-card shadow-sm">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-[hsl(var(--muted))]/50">
+              <thead className="bg-secondary-bg-alt">
                 <tr>
-                  <th className="text-left p-4 font-medium">Player</th>
-                  <th className="text-left p-4 font-medium">Position</th>
-                  <th className="text-left p-4 font-medium">Email</th>
-                  <th className="text-left p-4 font-medium">Country</th>
-                  <th className="text-left p-4 font-medium">Status</th>
-                  <th className="text-left p-4 font-medium">Actions</th>
+                  <th className="p-4 text-left text-[10px] font-bold uppercase tracking-[0.12em] text-primary-muted">Player</th>
+                  <th className="p-4 text-left text-[10px] font-bold uppercase tracking-[0.12em] text-primary-muted">Position</th>
+                  <th className="p-4 text-left text-[10px] font-bold uppercase tracking-[0.12em] text-primary-muted">Email</th>
+                  <th className="p-4 text-left text-[10px] font-bold uppercase tracking-[0.12em] text-primary-muted">Country</th>
+                  <th className="p-4 text-left text-[10px] font-bold uppercase tracking-[0.12em] text-primary-muted">Status</th>
+                  <th className="p-4 text-left text-[10px] font-bold uppercase tracking-[0.12em] text-primary-muted">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {paginatedPlayers.map((player) => (
-                  <tr
+                {paginatedPlayers.map((player) => {
+                  const fullName = `${player.firstName} ${player.lastName}`;
+                  return <tr
                     key={player.id}
-                    className="border-t border-border hover:bg-[hsl(var(--muted))]/50"
+                    className="border-t border-divider/70 transition-colors hover:bg-primary-action/5"
                   >
                     <td className="p-4">
                       <div className="flex items-center gap-3">
@@ -250,7 +250,7 @@ export default function PlayersView() {
                               {truncateText(`${player.firstName} ${player.lastName}`, 100)}
                             </span>
                           </p>
-                          <p className="text-sm text-[hsl(var(--muted-foreground))]">
+                          <p className="text-sm text-primary-muted">
                             Age {calculateAge(player.dob)}
                           </p>
                         </div>
@@ -279,19 +279,21 @@ export default function PlayersView() {
                       <div className="block sm:hidden">
                         <div className="flex gap-2">
                           <Button
-                            variant="ghost"
+                            variant="outline"
                             size="sm"
                             onClick={() => handleEditPlayer(player)}
-                            className="flex-1"
+                            title={`Edit ${fullName}`}
+                            className="flex-1 hover:border-primary-action hover:bg-primary-action/10 hover:text-primary-action"
                           >
                             <Edit className="h-4 w-4 mr-1" />
                             <span className="text-xs">Edit</span>
                           </Button>
                           <Button
-                            variant="ghost"
+                            variant="outline"
                             size="sm"
                             onClick={() => handleDeletePlayer(player.id)}
-                            className="flex-1"
+                            title={`Delete ${fullName}`}
+                            className="flex-1 hover:border-accent-red hover:bg-accent-red/10 hover:text-accent-red"
                           >
                             <Trash2 className="h-4 w-4 mr-1" />
                             <span className="text-xs">Delete</span>
@@ -302,23 +304,27 @@ export default function PlayersView() {
                       {/* Desktop Layout */}
                       <div className="hidden sm:flex items-center gap-2">
                         <Button
-                          variant="ghost"
+                          variant="outline"
                           size="sm"
                           onClick={() => handleEditPlayer(player)}
+                          title={`Edit ${fullName}`}
+                          className="hover:border-primary-action hover:bg-primary-action/10 hover:text-primary-action"
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button
-                          variant="ghost"
+                          variant="outline"
                           size="sm"
                           onClick={() => handleDeletePlayer(player.id)}
+                          title={`Delete ${fullName}`}
+                          className="hover:border-accent-red hover:bg-accent-red/10 hover:text-accent-red"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </td>
-                  </tr>
-                ))}
+                  </tr>;
+                })}
               </tbody>
             </table>
           </div>

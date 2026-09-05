@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import dbConnect from "@/lib/mongodb";
+import { z } from "zod";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
@@ -14,6 +15,18 @@ if (!JWT_SECRET) {
 }
 const OTP_EXPIRY_MINUTES = 10;
 const SESSION_EXPIRY_DAYS = 30;
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_MINUTES = 15;
+const MAX_OTP_ATTEMPTS = 5;
+const OTP_RESEND_WINDOW_MS = 60 * 1000;
+
+const emailSchema = z.string().trim().toLowerCase().email().max(254);
+const passwordSchema = z.string().min(6).max(128);
+const otpSchema = z.string().regex(/^\d{6}$/, "Verification code must be 6 digits");
+const nameSchema = z.string().trim().min(1).max(80);
+
+const normalizeEmail = (email) => emailSchema.parse(email);
+const validationError = (error) => error instanceof z.ZodError ? error.issues[0]?.message : null;
 
 /** ---------- Helpers ---------- **/
 
@@ -44,7 +57,9 @@ const cleanExpiredOTPs = async () => {
 export async function loginWithPassword(email, password) {
   await dbConnect();
   try {
-    const user = await User.findOne({ email });
+    const normalizedEmail = normalizeEmail(email);
+    passwordSchema.parse(password);
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       return { success: false, error: "No account found with this email address" };
     }
@@ -57,13 +72,29 @@ export async function loginWithPassword(email, password) {
       };
     }
 
+    if (user.lockedUntil && user.lockedUntil > new Date()) {
+      const remainingMinutes = Math.ceil((user.lockedUntil.getTime() - Date.now()) / 60000);
+      return { success: false, error: `Account temporarily locked. Try again in ${remainingMinutes} minute${remainingMinutes === 1 ? "" : "s"}.`, code: "ACCOUNT_LOCKED" };
+    }
+
     // Verify password
     const bcrypt = require('bcryptjs');
     const isValidPassword = await bcrypt.compare(password, user.password);
     
     if (!isValidPassword) {
-      return { success: false, error: "Invalid password" };
+      const failedAttempts = (user.failedLoginAttempts || 0) + 1;
+      const update = { failedLoginAttempts: failedAttempts, updatedAt: new Date() };
+      if (failedAttempts >= MAX_LOGIN_ATTEMPTS) {
+        update.lockedUntil = new Date(Date.now() + LOCKOUT_MINUTES * 60 * 1000);
+        update.failedLoginAttempts = 0;
+      }
+      await User.findByIdAndUpdate(user._id, update);
+      return failedAttempts >= MAX_LOGIN_ATTEMPTS
+        ? { success: false, error: `Too many failed attempts. Account locked for ${LOCKOUT_MINUTES} minutes.`, code: "ACCOUNT_LOCKED" }
+        : { success: false, error: "Invalid password", code: "INVALID_CREDENTIALS" };
     }
+
+    await User.findByIdAndUpdate(user._id, { failedLoginAttempts: 0, lockedUntil: null, updatedAt: new Date() });
 
     // Generate session token
     const sessionToken = generateSessionToken(user);
@@ -92,6 +123,8 @@ export async function loginWithPassword(email, password) {
       },
     };
   } catch (error) {
+    const message = validationError(error);
+    if (message) return { success: false, error: message, code: "VALIDATION_ERROR" };
     console.error("Error in password login:", error);
     return { success: false, error: "Login failed. Please try again." };
   }
@@ -227,8 +260,7 @@ export async function resetPasswordWithOTP(email, otp, newPassword) {
 // Send OTP for login
 export async function sendLoginOTP(email) {
   try {
-    const normalizedEmail = email?.trim().toLowerCase();
-    if (!normalizedEmail) return { success: false, error: "Enter a valid email address" };
+    const normalizedEmail = normalizeEmail(email);
     // console.log("🔍 Starting sendLoginOTP for email:", email);
     // console.log("🔍 Environment check:");
     // console.log("- JWT_SECRET exists:", !!process.env.JWT_SECRET);
@@ -248,6 +280,13 @@ export async function sendLoginOTP(email) {
       // console.log("🔍 No user found for email:", email);
       return { success: false, error: "No account found with this email address" };
     }
+
+    if (user.lockedUntil && user.lockedUntil > new Date()) {
+      return { success: false, error: "Account temporarily locked. Try again later.", code: "ACCOUNT_LOCKED" };
+    }
+
+    const recentOtp = await OtpToken.findOne({ email: normalizedEmail, type: "LOGIN", createdAt: { $gt: new Date(Date.now() - OTP_RESEND_WINDOW_MS) } }).lean();
+    if (recentOtp) return { success: false, error: "Please wait before requesting another login code.", code: "RATE_LIMITED" };
 
     const otp = generateOTP();
     const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
@@ -272,9 +311,10 @@ export async function sendLoginOTP(email) {
   } catch (error) {
     console.error("🔍 Error sending login OTP:", error);
     console.error("🔍 Error stack:", error.stack);
+    const message = validationError(error);
     return { 
       success: false, 
-      error: "Failed to send login code. Please try again.",
+      error: message || "Failed to send login code. Please try again.",
       debug: error.message
     };
   }
@@ -285,6 +325,8 @@ export async function sendSignupOTP(email, firstName, lastName) {
   await dbConnect();
   try {
     const normalizedEmail = email?.trim().toLowerCase();
+    nameSchema.parse(firstName);
+    nameSchema.parse(lastName);
     if (!normalizedEmail) return { success: false, error: "Enter a valid email address" };
     await cleanExpiredOTPs();
 
@@ -310,15 +352,29 @@ export async function verifyLoginOTP(email, otp) {
   await dbConnect();
   try {
     const normalizedEmail = email?.trim().toLowerCase();
+    emailSchema.parse(normalizedEmail);
+    otpSchema.parse(otp);
     const otpRecord = await OtpToken.findOne({
       email: normalizedEmail,
-      token: otp,
       type: "LOGIN",
       status: "PENDING",
       expiresAt: { $gt: new Date() },
-    });
+    }).sort({ createdAt: -1 });
 
-    if (!otpRecord) return { success: false, error: "Invalid or expired verification code" };
+    if (!otpRecord) return { success: false, error: "Invalid or expired verification code", code: "INVALID_OTP" };
+
+    if (otpRecord.attempts >= MAX_OTP_ATTEMPTS) {
+      otpRecord.status = "FAILED";
+      await otpRecord.save();
+      return { success: false, error: "Too many invalid codes. Request a new code.", code: "OTP_LOCKED" };
+    }
+
+    if (otpRecord.token !== otp) {
+      otpRecord.attempts += 1;
+      if (otpRecord.attempts >= MAX_OTP_ATTEMPTS) otpRecord.status = "FAILED";
+      await otpRecord.save();
+      return { success: false, error: otpRecord.status === "FAILED" ? "Too many invalid codes. Request a new code." : "Invalid verification code", code: "INVALID_OTP" };
+    }
 
     const user = await User.findById(otpRecord.userId);
     if (!user) return { success: false, error: "User not found" };
@@ -353,6 +409,8 @@ export async function verifyLoginOTP(email, otp) {
       },
     };
   } catch (error) {
+    const message = validationError(error);
+    if (message) return { success: false, error: message, code: "VALIDATION_ERROR" };
     console.error("Error verifying login OTP:", error);
     return { success: false, error: "Failed to verify code. Please try again." };
   }
