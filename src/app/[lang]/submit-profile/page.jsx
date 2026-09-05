@@ -156,7 +156,7 @@ export default function PlayerSubmissionForm() {
         "phone",
       ].forEach((k) => !formData[k] && errs.push(k));
     }
-    if (step === 3) {
+    if (step === 2) {
       if (!formData.cvUrl) errs.push("cvUrl");
       if (formData.imageUrl.length === 0) errs.push("imageUrl");
     }
@@ -179,7 +179,7 @@ export default function PlayerSubmissionForm() {
           userId: submittingUser?.id,
         });
         setSubmitted(true);
-        setStep(4);
+        setStep(3);
         toast({
           title: "Success",
           description: "Profile submitted successfully.",
@@ -208,7 +208,7 @@ export default function PlayerSubmissionForm() {
       {/* Step indicators */}
       <div className="mb-8 -mx-1 overflow-x-auto px-1 pb-2" aria-label="Profile submission progress">
         <div className="flex min-w-max items-center justify-center gap-3 sm:w-full sm:gap-4">
-          {["Details", "Stats", "Uploads", "Complete"].map((l, i) => (
+          {["Details", "Uploads", "Complete"].map((l, i) => (
             <div key={l} className="flex shrink-0 items-center gap-3 sm:gap-4">
             <div
               className={`flex size-8 shrink-0 items-center justify-center rounded-full border text-sm font-semibold transition-colors sm:size-9 ${
@@ -226,7 +226,7 @@ export default function PlayerSubmissionForm() {
             >
               {l}
             </span>
-            {i < 3 && (
+            {i < 2 && (
               <div
                 className={`h-px w-8 sm:w-12 ${step > i + 1 ? "bg-primary-action" : "bg-divider"}`}
                 aria-hidden="true"
@@ -413,8 +413,148 @@ export default function PlayerSubmissionForm() {
         </div>
       )}
 
-      {/* === STEP 2 & STEP 3 & STEP 4 remain unchanged === */}
-      {/* (Keep your existing logic for stats, uploads, and confirmation) */}
+      {step === 2 && (
+        <div className="bg-white shadow rounded-xl border border-divider p-8">
+          <h2 className="text-xl font-semibold mb-6">Uploads</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <Label>Upload Photos (max 3)</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => {
+                  const files = Array.from(e.target.files || []).slice(0, 3);
+                  const uploaders = files.map((file, i) => {
+                    const ref = `players/${formData.email}/images/${file.name}`;
+                    return uploadFileWithProgress(ref, file, (p) => {
+                      setUploadProgress((prev) => ({
+                        ...prev,
+                        [`img-${i}`]: p,
+                      }));
+                    });
+                  });
+                  Promise.all(uploaders).then((urls) =>
+                    setFormData((prev) => ({ ...prev, imageUrl: urls }))
+                  );
+                }}
+              />
+              {[0, 1, 2].map(
+                (i) =>
+                  uploadProgress[`img-${i}`] != null && (
+                    <ProgressBar
+                      key={i}
+                      progress={uploadProgress[`img-${i}`]}
+                    />
+                  )
+              )}
+            </div>
+
+            <div>
+              <Label>Upload CV (PDF/DOC)</Label>
+              <Input
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const path = `players/${formData.email}/cv/${file.name}`;
+                  uploadFileWithProgress(path, file, (p) => {
+                    setUploadProgress((prev) => ({ ...prev, cv: p }));
+                  }).then((url) =>
+                    setFormData((prev) => ({ ...prev, cvUrl: url }))
+                  );
+                }}
+              />
+              {uploadProgress.cv != null && (
+                <ProgressBar progress={uploadProgress.cv} />
+              )}
+            </div>
+
+            <div className="md:col-span-2">
+              <Label>Primary Video</Label>
+              <Input
+                type="file"
+                accept="video/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const path = `players/${formData.email}/videoPrimary/${file.name}`;
+                  uploadFileWithProgress(path, file, (p) => {
+                    setUploadProgress((prev) => ({ ...prev, videoPrimary: p }));
+                  }).then((url) =>
+                    setFormData((prev) => ({ ...prev, videoPrimary: url }))
+                  );
+                }}
+              />
+              {uploadProgress.videoPrimary != null && (
+                <ProgressBar progress={uploadProgress.videoPrimary} />
+              )}
+            </div>
+
+            <div className="md:col-span-2">
+              <Label>Additional Videos (max 3)</Label>
+              <Input
+                type="file"
+                accept="video/*"
+                multiple
+                onChange={(e) => {
+                  const files = Array.from(e.target.files || []).slice(0, 3);
+                  const uploaders = files.map((file, i) => {
+                    const path = `players/${formData.email}/videoAdditional/${file.name}`;
+                    return uploadFileWithProgress(path, file, (p) => {
+                      setUploadProgress((prev) => ({
+                        ...prev,
+                        [`vid-${i}`]: p,
+                      }));
+                    });
+                  });
+                  Promise.all(uploaders).then((urls) =>
+                    setFormData((prev) => ({ ...prev, videoAdditional: urls }))
+                  );
+                }}
+              />
+              {[0, 1, 2].map(
+                (i) =>
+                  uploadProgress[`vid-${i}`] != null && (
+                    <ProgressBar
+                      key={i}
+                      progress={uploadProgress[`vid-${i}`]}
+                    />
+                  )
+              )}
+            </div>
+          </div>
+
+          <div className="flex justify-between mt-6">
+            <Button variant="outline" onClick={prevStep}>
+              Back
+            </Button>
+            <Button onClick={submitForm}>Submit</Button>
+          </div>
+        </div>
+      )}
+
+      {step === 3 && submitted && (
+        <div className="bg-white shadow rounded-xl border border-divider p-8 text-center">
+          <div className="text-3xl text-accent-green mb-4">
+            <i className="fa-solid fa-check-circle"></i>
+          </div>
+          <h2 className="text-2xl font-bold mb-2">Submitted Successfully</h2>
+          <p className="text-primary-muted mb-4">
+            Our team will contact you shortly.
+          </p>
+          <div className="flex justify-center gap-4">
+            <Button onClick={() => window.location.reload()}>
+            Submit Another
+          </Button>
+          <Link href="/">
+            Go to Home
+          </Link>
+          </div>
+          
+        </div>
+      )}
     </section>
   );
 }

@@ -3,14 +3,20 @@
 import { Submission, PaymentMethod } from "@/lib/schemas";
 import dbConnect from "@/lib/mongodb";
 
-// Helper: safely normalize MongoDB documents
-const normalize = (doc) => ({
-  ...doc,
-  id: doc._id?.toString(),
-  _id: undefined,
-  createdAt: doc.createdAt ? new Date(doc.createdAt).toISOString() : null,
-  updatedAt: doc.updatedAt ? new Date(doc.updatedAt).toISOString() : null,
-});
+// Helper: recursively convert Mongoose values, including nested ObjectIds, to plain JSON values.
+const normalize = (doc) => {
+  if (!doc) return null;
+
+  const plain = JSON.parse(JSON.stringify(doc));
+  const { _id, ...rest } = plain;
+
+  return {
+    ...rest,
+    id: _id ? String(_id) : undefined,
+    createdAt: plain.createdAt ? new Date(plain.createdAt).toISOString() : null,
+    updatedAt: plain.updatedAt ? new Date(plain.updatedAt).toISOString() : null,
+  };
+};
 
 // 📨 Create Submission
 export async function createSubmission(data) {
