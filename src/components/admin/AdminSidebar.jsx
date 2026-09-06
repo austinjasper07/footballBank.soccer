@@ -67,7 +67,7 @@ export function AdminSidebar({ activeView, onViewChange, collapsed, onToggleColl
               collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'
             }`}
           >
-            <Image src="/logo/logo-1.png" alt="Logo" width={40} height={40} />
+            <Image src="/logo/logo3.svg" alt="FootballBank logo" width={40} height={40} />
             <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-primary-accent">FootballBank</p><p className="text-sm font-medium text-primary-text-inverse/60">Admin console</p></div>
           </div>
 

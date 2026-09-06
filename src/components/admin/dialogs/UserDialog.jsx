@@ -28,7 +28,6 @@ export function UserDialog({ open, onOpenChange, user, onSave }) {
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
     email: user?.email || "",
-    password: user?.password || "",
     role: user?.role || "user",
     subscribed: user?.subscribed ?? false,
   });
@@ -39,7 +38,6 @@ export function UserDialog({ open, onOpenChange, user, onSave }) {
       firstName: user?.firstName || "",
       lastName: user?.lastName || "",
       email: user?.email || "",
-      password: user?.password || "",
       role: user?.role || "user",
       subscribed: user?.subscribed ?? false,
     });
@@ -53,7 +51,6 @@ export function UserDialog({ open, onOpenChange, user, onSave }) {
       !formData.firstName ||
       !formData.lastName ||
       !formData.email ||
-      !formData.password ||
       !formData.role
     ) {
       toast({
@@ -140,18 +137,6 @@ export function UserDialog({ open, onOpenChange, user, onSave }) {
                 setFormData({ ...formData, email: e.target.value })
               }
               className={!isEmailValid && formData.email ? "border-red-500" : ""}
-            />
-          </div>
-
-          <div className="md:col-span-2">
-            <Label htmlFor="password">Password *</Label>
-            <Input
-              id="password"
-              type="password"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
             />
           </div>
 

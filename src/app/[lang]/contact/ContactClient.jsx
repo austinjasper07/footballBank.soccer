@@ -74,20 +74,23 @@ export default function ContactClient({ lang = "en", dict }) {
   };
 
   return (
-    <main className=" text-primary-text">
-      <section className="py-16 text-center">
-        <h1 className="text-primary-text font-bold text-[clamp(1.2rem,2.5vw,2.5rem)] md:text-5xl mb-4">
+    <main className="bg-primary-surface text-primary-text">
+      <section className="bg-primary-navy px-5 py-10 text-primary-text-inverse sm:px-10 lg:px-12 lg:py-12">
+        <div className="mx-auto max-w-7xl">
+        <p className="eyebrow">Start a conversation</p>
+        <h1 className="mt-6 max-w-3xl font-heading text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl">
           {dict?.contact?.title || "Contact Us"}
         </h1>
-        <p className="text-primary-muted text-lg max-w-2xl mx-auto">
+        <p className="mt-6 max-w-2xl text-base leading-7 text-primary-text-inverse/70 sm:text-lg">
           {dict?.contact?.subtitle || "Get in touch with our team"}
         </p>
+        </div>
       </section>
 
-      <section className="pb-16 md:pb-24">
-        <div className="container mx-auto px-4 max-w-6xl flex flex-col md:flex-row gap-12">
+      <section className="py-8 sm:py-10 lg:py-16">
+        <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 lg:px-12">
           <div
-            className="flex flex-col gap-4 bg-primary-card rounded-xl p-8 border border-divider shadow-lg"
+            className="flex flex-col"
             data-aos="fade-down"
           >
             {[
@@ -117,33 +120,24 @@ export default function ContactClient({ lang = "en", dict }) {
                 isClickable: true,
                 type: "phone"
               },
-              {
-                title: "P.O Box",
-                icon: "fa-envelope",
-                color: "red",
-                text: "PO BOX 7268, Newark, NJ 07107",
-                subtitle: dict?.contact?.mailingAddress || "Mailing Address",
-              },
-              {
-                title: dict?.contact?.globalBranches || "Global Branches",
-                icon: "fa-globe",
-                color: "red",
-                text: "Africa, US, UK, Europe, Asia, South America",
-                subtitle:
-                  dict?.contact?.weOperateWorldwide || "We operate worldwide",
-              },
-            ].map(({ title, icon, color, text, subtitle, isClickable, type }) => (
+              // {
+              //   title: dict?.contact?.globalBranches || "Global Branches",
+              //   icon: "fa-globe",
+              //   color: "red",
+              //   text: "Africa, US, UK, Europe, Asia, South America",
+              //   subtitle:
+              //     dict?.contact?.weOperateWorldwide || "We operate worldwide",
+              // },
+            ].map(({ title, icon, text, subtitle, isClickable, type }) => (
               <div
                 key={title}
-                className="flex gap-4 items-start rounded-xl p-8 border border-divider shadow-lg"
+                className="flex items-start gap-4 border-b border-divider py-6 first:border-t"
                 data-aos="fade-left"
                 data-aos-delay="300"
               >
-                <div
-                  className={`w-16 h-16 bg-accent-${color}/10 rounded-full flex items-center justify-center `}
-                >
+                <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-action/10">
                   <i
-                    className={`fa-solid ${icon} text-accent-${color} text-2xl`}
+                    className={`fa-solid ${icon} text-xl text-primary-action`}
                   />
                 </div>
                 <div>
@@ -153,24 +147,24 @@ export default function ContactClient({ lang = "en", dict }) {
                     type === "email" ? (
                       <a 
                         href={`mailto:${text}`}
-                        className={`text-accent-${color} font-medium text-sm hover:underline cursor-pointer transition-colors`}
+                        className="cursor-pointer text-sm font-medium text-primary-action transition-colors hover:text-primary-action-hover hover:underline"
                       >
                         {text}
                       </a>
                     ) : type === "phone" ? (
                       <a 
                         href={`tel:${text.replace(/[^\d+]/g, '')}`}
-                        className={`text-accent-${color} font-medium text-sm hover:underline cursor-pointer transition-colors`}
+                        className="cursor-pointer text-sm font-medium text-primary-action transition-colors hover:text-primary-action-hover hover:underline"
                       >
                         {text}
                       </a>
                     ) : (
-                      <p className={`text-accent-${color} font-medium text-sm`}>
+                      <p className="text-sm font-medium text-primary-action">
                         {text}
                       </p>
                     )
                   ) : (
-                    <p className={`text-accent-${color} font-medium text-sm`}>
+                    <p className="text-sm font-medium text-primary-action">
                       {text}
                     </p>
                   )}
@@ -180,7 +174,7 @@ export default function ContactClient({ lang = "en", dict }) {
           </div>
 
           <div
-            className="bg-primary-card rounded-xl border border-divider shadow-lg px-4 py-8 md:px-8 md:py-12 w-full md:w-2/3 h-fit"
+            className="h-fit bg-primary-card px-5 py-8 shadow-xl sm:px-8 sm:py-10"
             data-aos="flip-left"
           >
             <h2 className=" font-bold text-2xl md:text-3xl mb-8">
@@ -196,7 +190,7 @@ export default function ContactClient({ lang = "en", dict }) {
                     name="name"
                     type="text"
                     required
-                    className="w-full bg-primary-card border border-divider rounded-lg px-4 py-3"
+                    className="w-full border border-divider bg-primary-surface px-4 py-3 outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
                     placeholder={
                       dict?.contact?.namePlaceholder || "Your full name"
                     }
@@ -210,7 +204,7 @@ export default function ContactClient({ lang = "en", dict }) {
                     name="email"
                     type="email"
                     required
-                    className="w-full bg-primary-card border border-divider rounded-lg px-4 py-3"
+                    className="w-full border border-divider bg-primary-surface px-4 py-3 outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
                     placeholder={
                       dict?.contact?.emailPlaceholder || "your@email.com"
                     }
@@ -272,7 +266,7 @@ export default function ContactClient({ lang = "en", dict }) {
                   name="message"
                   required
                   rows={6}
-                  className="w-full bg-primary-card border border-divider rounded-lg px-4 py-3 resize-none"
+                    className="w-full resize-none border border-divider bg-primary-surface px-4 py-3 outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
                   placeholder={
                     dict?.contact?.messagePlaceholder ||
                     "Tell us about your goals, experience, and how we can help you..."
@@ -281,7 +275,7 @@ export default function ContactClient({ lang = "en", dict }) {
               </div>
               <button
                 type="submit"
-                className="w-full bg-accent-red hover:bg-accent-red/90 text-white px-8 py-4 rounded-lg font-semibold"
+                className="w-full bg-primary-action px-8 py-4 font-semibold text-primary-text-inverse transition-colors hover:bg-primary-action-hover"
               >
                 {status === "loading" ? (
                   <div className="flex items-center justify-center">
@@ -300,49 +294,50 @@ export default function ContactClient({ lang = "en", dict }) {
         </div>
       </section>
 
-      <section className="pb-16 md:pb-24">
-        <div className="container mx-auto px-4 max-w-4xl text-center">
-          <h2 className=" font-bold text-2xl md:text-3xl mb-8">
+      <section className="pb-16 sm:pb-24">
+        <div className="mx-auto max-w-5xl px-5 text-center sm:px-10">
+          <p className="eyebrow justify-center">Stay connected</p>
+          <h2 className="mt-5 font-heading text-3xl font-semibold sm:text-4xl">
             {dict?.contact?.followJourney || "Follow Our Journey"}
           </h2>
           <p className="text-primary-muted text-base md:text-lg mb-12">
             {dict?.contact?.connectSocialMedia ||
               "Connect with us on social media to stay up to date with global football talent and opportunities."}
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+          <div className="grid grid-cols-5 gap-2 sm:gap-4 md:gap-6">
             {[
               {
                 name: "Instagram",
                 icon: "instagram",
-                color: "red",
+                color: "#E4405F",
                 href: "https://www.instagram.com/footballbank.soccer",
                 handle: "@FootballBank.soccer",
               },
               {
                 name: "YouTube",
                 icon: "youtube",
-                color: "red",
+                color: "#FF0000",
                 href: "http://www.youtube.com/@footballbank.soccer",
                 handle: "FootballBank.soccer",
               },
               {
                 name: "Facebook",
                 icon: "facebook",
-                color: "blue",
+                color: "#1877F2",
                 href: "https://www.facebook.com/profile.php?id=61580081775450",
                 handle: "FootballBank.soccer",
               },
               {
                 name: "X",
                 icon: "FaSquareXTwitter",
-                color: "black",
+                color: "#000000",
                 href: "https://x.com/footballbankhq?s=21&t=Ihzjw_SrtnHA4qE0nkgFfg",
                 handle: "@footballbankHQ",
               },
               {
                 name: "TikTok",
                 icon: "tiktok",
-                color: "red",
+                color: "#000000",
                 href: "http://www.tiktok.com/@footballbank.soccer",
                 handle: "@footballbank.soccer",
               },
@@ -351,17 +346,18 @@ export default function ContactClient({ lang = "en", dict }) {
                 href={href}
                 target="_blank"
                 key={name}
-                className={`bg-primary-card flex flex-col items-center justify-center rounded-xl p-2 border border-divider shadow-lg hover:border-accent-${color} transition-colors cursor-pointer`}
+                className="flex flex-col items-center justify-center border border-transparent bg-transparent p-1 transition-colors hover:border-primary-action hover:bg-primary-action/5 sm:border-divider sm:bg-primary-card sm:p-5"
               >
                 {icon === "FaSquareXTwitter" ? (
-                  <FaSquareXTwitter className={`text-accent-${color} text-3xl mb-4`} />
+                  <FaSquareXTwitter className="text-2xl sm:mb-4 sm:text-3xl" style={{ color }} />
                 ) : (
                   <i
-                    className={`fa-brands fa-${icon} text-accent-${color} text-3xl mb-4`}
+                    className={`fa-brands fa-${icon} text-2xl sm:mb-4 sm:text-3xl`}
+                    style={{ color }}
                   />
                 )}
-                <p className="font-medium">{name}</p>
-                <p className="text-primary-muted text-sm">{handle}</p>
+                <p className="hidden font-medium sm:block">{name}</p>
+                <p className="hidden text-sm text-primary-muted sm:block">{handle}</p>
                 
               </Link>
             ))}

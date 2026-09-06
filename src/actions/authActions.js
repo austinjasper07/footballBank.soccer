@@ -2,7 +2,7 @@
 "use server";
 
 import { User, OtpToken } from "@/lib/schemas";
-import { sendOTPEmail } from "@/lib/email";
+import { sendOTPEmail, sendWelcomeEmail } from "@/lib/email";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
@@ -449,6 +449,12 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
     };
 
     const user = await User.create(userData);
+
+    try {
+      await sendWelcomeEmail({ to: user.email, firstName: user.firstName });
+    } catch (welcomeError) {
+      console.error("Welcome email failed:", welcomeError);
+    }
 
     user.subscribed = false;
     await user.save();

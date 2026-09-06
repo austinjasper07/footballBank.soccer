@@ -13,11 +13,27 @@ import { getClientDictionary } from "@/lib/client-dictionaries";
 export default function Header({ lang = "en" }) {
   const [dict, setDict] = useState(null);
   const [mounted, setMounted] = useState(false);
+  const [canSubmitProfile, setCanSubmitProfile] = useState(true);
+  const { isAuthenticated, loading: isLoading, logout } = useAuth();
+  const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const isShopPage = false;
 
   useEffect(() => {
     setMounted(true);
     getClientDictionary(lang).then(setDict);
   }, [lang]);
+
+  useEffect(() => {
+    if (!mounted || !isAuthenticated) {
+      setCanSubmitProfile(true);
+      return;
+    }
+    fetch("/api/profile/submission-status", { credentials: "include" })
+      .then((response) => response.ok ? response.json() : { canSubmit: true })
+      .then((data) => setCanSubmitProfile(data.canSubmit !== false))
+      .catch(() => setCanSubmitProfile(true));
+  }, [isAuthenticated, mounted]);
 
   // Fallback navigation with default English labels to prevent empty header
   const defaultNavLinks = [
@@ -54,11 +70,6 @@ export default function Header({ lang = "en" }) {
         ]
       : defaultNavLinks;
 
-  const { isAuthenticated, loading: isLoading, logout } = useAuth();
-  const pathname = usePathname();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const isShopPage = false;
-
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
@@ -73,7 +84,7 @@ export default function Header({ lang = "en" }) {
             >
               <div className="flex items-center gap-2">
                 <Image
-                  src="/logo/logo-1.png"
+                  src="/logo/logo3.svg"
                   alt="FootballBank Logo"
                   width={60}
                   height={60}
@@ -124,7 +135,7 @@ export default function Header({ lang = "en" }) {
             {mounted && <LanguageSwitcher currentLang={lang} />}
 
             {/* Submit Profile CTA - Hidden on shop pages */}
-            {!isShopPage && (
+            {!isShopPage && canSubmitProfile && (
               <Link
                 href={`/${lang}/submit-profile`}
                 className="hidden md:block bg-primary-action hover:bg-primary-action-hover text-white px-3 lg:px-4 py-2 rounded-md font-medium text-nowrap transition-all duration-200 shadow-sm hover:shadow-md text-sm lg:text-base"

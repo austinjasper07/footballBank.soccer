@@ -5,15 +5,9 @@ import { Player, PlayerProfileView, Post, User } from "@/lib/schemas";
 import { getAuthUser } from "@/lib/oauth";
 import { sendEmail } from "@/lib/email";
 import { notifyAdmins } from "@/lib/adminNotifications";
+import { brandedEmail, escapeEmailHtml } from "@/lib/emailTemplates";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://footballbank.soccer";
-
-const escapeHtml = (value = "") => String(value)
-  .replaceAll("&", "&amp;")
-  .replaceAll("<", "&lt;")
-  .replaceAll(">", "&gt;")
-  .replaceAll('"', "&quot;")
-  .replaceAll("'", "&#039;");
 
 export async function incrementPostView(postId) {
   await dbConnect();
@@ -44,11 +38,20 @@ export async function trackPlayerProfileView(playerId, locale = "en") {
   const profileUrl = `${siteUrl}/${locale}/players/${playerId}`;
 
   try {
+    const playerEmail = brandedEmail({
+      preheader: `${viewerName} viewed your FootballBank profile`,
+      title: "Someone viewed your profile",
+      greeting: `Hello ${playerName},`,
+      body: `<p><strong>${escapeEmailHtml(viewerName)}</strong> (${escapeEmailHtml(viewerRecord.email)}) viewed your player profile on FootballBank International.</p>`,
+      ctaLabel: "View your profile",
+      ctaUrl: profileUrl,
+      footerNote: "This notification is limited to one email per registered viewer each day.",
+    });
     await sendEmail({
       to: player.email,
       subject: `${viewerName} viewed your FootballBank profile`,
-      text: `${viewerName} (${viewerRecord.email}) viewed your FootballBank profile. View your profile: ${profileUrl}`,
-      html: `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#0b1220;max-width:600px;margin:auto"><h2>Someone viewed your profile</h2><p>Hello ${escapeHtml(playerName)},</p><p><strong>${escapeHtml(viewerName)}</strong> (${escapeHtml(viewerRecord.email)}) viewed your player profile on FootballBank International.</p><p><a href="${profileUrl}">View your profile</a></p><p>This notification is limited to one email per registered viewer each day.</p></div>`,
+      text: playerEmail.text,
+      html: playerEmail.html,
     });
   } catch (error) {
     console.error("Player profile view notification failed:", error);

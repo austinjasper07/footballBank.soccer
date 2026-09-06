@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 export default function UserProfilePage() {
   const { user, isAuthenticated, loading: authLoading, logout } = useAuth();
   const [profile, setProfile] = useState(null);
+  const [canSubmitProfile, setCanSubmitProfile] = useState(true);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
@@ -22,16 +23,18 @@ export default function UserProfilePage() {
     }
 
     if (isAuthenticated && user) {
-      fetch("/api/profile/user", { credentials: "include" })
-        .then((response) => {
+      Promise.all([
+        fetch("/api/profile/user", { credentials: "include" }).then((response) => {
           if (!response.ok) throw new Error("Profile request failed");
           return response.json();
-        })
-        .then((data) => {
+        }),
+        fetch("/api/profile/submission-status", { credentials: "include" }).then((response) => response.ok ? response.json() : { canSubmit: true }),
+      ]).then(([data, submissionStatus]) => {
           if (data?.role === "player") {
             router.replace(`/${lang}/player-profile`);
             return;
           }
+          setCanSubmitProfile(submissionStatus.canSubmit !== false);
           setProfile(data);
         })
         .catch(() => setProfile(user))
@@ -78,7 +81,7 @@ export default function UserProfilePage() {
 
         <section className="mt-6 border border-divider bg-primary-card p-6 sm:p-9"><div className="flex items-center gap-3 border-b border-divider pb-5"><MapPin className="size-5 text-primary-action" /><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary-action">Contact location</p><h2 className="mt-2 font-heading text-2xl font-semibold">Registered address</h2></div></div><div className="mt-6 grid gap-6 text-sm sm:grid-cols-2 lg:grid-cols-4"><div><p className="text-primary-muted">Street</p><p className="mt-1 font-medium">{address.street || "Not provided"}</p></div><div><p className="text-primary-muted">City</p><p className="mt-1 font-medium">{address.city || "Not provided"}</p></div><div><p className="text-primary-muted">State / region</p><p className="mt-1 font-medium">{address.state || "Not provided"}</p></div><div><p className="text-primary-muted">Country</p><p className="mt-1 font-medium">{address.country || "Not provided"}</p></div></div></section>
 
-        <section className="mt-6 flex flex-col gap-5 border-t border-divider pt-7 sm:flex-row sm:items-center sm:justify-between"><div><p className="font-heading text-2xl font-semibold">Keep your football profile current.</p><p className="mt-2 text-sm text-primary-muted">Update your account details or submit your player profile when you are ready.</p></div><div className="flex flex-wrap gap-3"><Button variant="action" asChild><Link href={`/${lang}/submit-profile`}>Submit player profile<ArrowUpRight className="size-4" /></Link></Button><Button variant="outline" onClick={() => logout(true)}><LogOut className="size-4" />Sign out</Button></div></section>
+        <section className="mt-6 flex flex-col gap-5 border-t border-divider pt-7 sm:flex-row sm:items-center sm:justify-between"><div><p className="font-heading text-2xl font-semibold">Keep your football profile current.</p><p className="mt-2 text-sm text-primary-muted">Update your account details or submit your player profile when you are ready.</p></div><div className="flex flex-wrap gap-3">{canSubmitProfile && <Button variant="action" asChild><Link href={`/${lang}/submit-profile`}>Submit player profile<ArrowUpRight className="size-4" /></Link></Button>}<Button variant="outline" onClick={() => logout(true)}><LogOut className="size-4" />Sign out</Button></div></section>
       </div>
     </main>
   );

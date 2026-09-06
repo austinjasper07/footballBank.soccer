@@ -7,7 +7,7 @@ import ResumeRequestForm from "./ResumeRequestForm";
 
 export default function PlayerMedia({ player, canViewDetails, canDownloadResume, lang }) {
   const [selectedImage, setSelectedImage] = useState(null);
-  const images = player.imageUrl?.length ? player.imageUrl : ["/logo/logo-1.png"];
+  const images = player.imageUrl?.length ? player.imageUrl : ["/logo/logo3.svg"];
   const videos = [player.videoPrimary, ...(player.videoAdditional || [])].filter(Boolean);
 
   return (

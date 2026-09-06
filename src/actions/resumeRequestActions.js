@@ -6,18 +6,12 @@ import { requireAuth, requireRole } from "@/lib/oauth";
 import { sendEmail } from "@/lib/email";
 import { generatePlayerResumePdf } from "@/lib/playerResume";
 import { notifyAdmins } from "@/lib/adminNotifications";
+import { brandedEmail, escapeEmailHtml } from "@/lib/emailTemplates";
 import { revalidatePath } from "next/cache";
 
 const toPlain = (value) => JSON.parse(JSON.stringify(value));
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://footballbank.soccer";
-
-const escapeHtml = (value = "") => String(value)
-  .replaceAll("&", "&amp;")
-  .replaceAll("<", "&lt;")
-  .replaceAll(">", "&gt;")
-  .replaceAll('"', "&quot;")
-  .replaceAll("'", "&#039;");
 
 async function sendRequestEmail({ request, type, reason, player }) {
   const requesterName = `${request.requester.firstName} ${request.requester.lastName}`;
@@ -48,11 +42,21 @@ async function sendRequestEmail({ request, type, reason, player }) {
     }];
   }
 
+  const email = brandedEmail({
+    preheader: message,
+    title: subject,
+    greeting: `Hello ${requesterName},`,
+    body: `<p>${escapeEmailHtml(message)}</p><p><strong>Reason provided:</strong> ${escapeEmailHtml(request.reason)}</p>`,
+    ctaLabel: type === "approved" ? "View approved player profile" : undefined,
+    ctaUrl: type === "approved" ? `${siteUrl}/${locale}/players/${request.playerId}` : undefined,
+    footerNote: "This message was sent because you submitted a FootballBank request.",
+  });
+
   await sendEmail({
     to: request.requester.email,
     subject,
-    text: `Hello ${requesterName}, ${message}${type === "approved" ? ` ${siteUrl}/${locale}/players/${request.playerId}` : ""}`,
-    html: `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#0b1220;max-width:600px;margin:auto"><h2 style="color:#0b1220">FootballBank International</h2><p>Hello ${escapeHtml(requesterName)},</p><p>${escapeHtml(message)}</p><p><strong>Reason provided:</strong> ${escapeHtml(request.reason)}</p>${link}<p>Thank you,<br />FootballBank International</p></div>`,
+    text: email.text,
+    html: email.html,
     attachments,
   });
 }
@@ -113,6 +117,22 @@ export async function createResumeRequest(playerId, locale = "en", reason, reque
     });
   } catch (notificationError) {
     console.error("Admin resume request notification failed:", notificationError);
+  }
+  if (requestType === "PROFILE" && player.email && player.userId?.toString() !== user._id.toString()) {
+    try {
+      const playerEmail = brandedEmail({
+        preheader: `${user.firstName} ${user.lastName} requested access to your profile`,
+        title: "Someone requested your full profile",
+        greeting: `Hello ${player.firstName},`,
+        body: `<p>${escapeEmailHtml(user.firstName)} ${escapeEmailHtml(user.lastName)} (${escapeEmailHtml(user.email)}) requested access to your full player profile.</p><p><strong>Reason provided:</strong> ${escapeEmailHtml(reason.trim())}</p>`,
+        ctaLabel: "Open your player profile",
+        ctaUrl: `${siteUrl}/${locale}/player-profile`,
+        footerNote: "This notification was sent because a registered user requested your player profile.",
+      });
+      await sendEmail({ to: player.email, subject: `${user.firstName} requested your full player profile`, html: playerEmail.html, text: playerEmail.text });
+    } catch (playerNotificationError) {
+      console.error("Player profile request notification failed:", playerNotificationError);
+    }
   }
 
   revalidatePath(`/players/${playerId}`);

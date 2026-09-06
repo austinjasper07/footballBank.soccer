@@ -116,6 +116,12 @@ export default function PlayerSubmissionForm() {
 
       // Auth + sub okay → fetch user
       const u = await getUserById(user.id);
+      const submissionStatusResponse = await fetch("/api/profile/submission-status", { credentials: "include" });
+      const submissionStatus = submissionStatusResponse.ok ? await submissionStatusResponse.json() : { canSubmit: true };
+      if (submissionStatus.canSubmit === false) {
+        router.replace(`/${lang}/${u?.role === "player" ? "player-profile" : "profile"}`);
+        return;
+      }
       setSubmittingUser(u);
       const registeredCountry = u?.address?.country || "";
       const registeredCountryCode = countries.find(

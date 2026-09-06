@@ -4,6 +4,7 @@ import { User, Post, Player, Message, Submission, Agent } from "@/lib/schemas";
 import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongodb";
 import mongoose from "mongoose";
+import { sendPlayerSubmissionDecisionEmail, sendWelcomeEmail } from "@/lib/email";
 
 // 🔧 Helper: safely convert any Mongoose doc(s) to plain JSON and convert _id to id
 const toPlain = (data) => {
@@ -61,7 +62,13 @@ export async function createUser(data) {
     const existingUser = await User.findOne({ email: data.email });
     if (existingUser) throw new Error("User with this email already exists");
 
-    const createdUser = await User.create(data);
+    const { password: _password, ...passwordlessData } = data;
+    const createdUser = await User.create({ ...passwordlessData, isVerified: false });
+    try {
+      await sendWelcomeEmail({ to: createdUser.email, firstName: createdUser.firstName });
+    } catch (welcomeError) {
+      console.error("Admin-created user welcome email failed:", welcomeError);
+    }
     return toPlain(createdUser);
   } catch (err) {
     console.error("Error creating user:", err);
@@ -72,7 +79,7 @@ export async function createUser(data) {
 export async function updateUser(userId, data) {
   await dbConnect();
   try {
-    const { id, createdAt, updatedAt, ...updateData } = data;
+    const { id, createdAt, updatedAt, password: _password, ...updateData } = data;
 
     if (updateData.email) {
       const existingUser = await User.findOne({
@@ -201,7 +208,31 @@ export async function createPlayer(data) {
     const existingPlayer = await Player.findOne({ email: data.email });
     if (existingPlayer) throw new Error("Player with this email already exists");
 
-    const player = await Player.create(data);
+    const normalizedEmail = data.email.trim().toLowerCase();
+    let user = await User.findOne({ email: normalizedEmail });
+    if (!user) {
+      user = await User.create({
+        email: normalizedEmail,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        role: "player",
+        isVerified: false,
+        subscribed: false,
+      });
+      try {
+        await sendWelcomeEmail({ to: user.email, firstName: user.firstName });
+      } catch (welcomeError) {
+        console.error("Admin-created player welcome email failed:", welcomeError);
+      }
+    } else {
+      user.firstName = data.firstName;
+      user.lastName = data.lastName;
+      user.role = "player";
+      user.updatedAt = new Date();
+      await user.save();
+    }
+
+    const player = await Player.create({ ...data, email: normalizedEmail, userId: user._id });
     return toPlain(player);
   } catch (err) {
     console.error("Error creating player:", err);
@@ -344,6 +375,16 @@ export async function approveSubmission(submissionId) {
     if (userId) {
       await User.findByIdAndUpdate(userId, { role: "player", updatedAt: new Date() });
     }
+    try {
+      await sendPlayerSubmissionDecisionEmail({
+        to: submissionData.email,
+        firstName: submissionData.firstName,
+        playerName: `${submissionData.firstName} ${submissionData.lastName}`,
+        approved: true,
+      });
+    } catch (notificationError) {
+      console.error("Player approval email failed:", notificationError);
+    }
     
     revalidatePath("/admin/submissions");
     return toPlain(approvedSubmission);
@@ -361,6 +402,19 @@ export async function rejectSubmission(id, reason) {
       { status: "REJECTED", rejectionReason: reason },
       { new: true }
     );
+    if (rejected?.email) {
+      try {
+        await sendPlayerSubmissionDecisionEmail({
+          to: rejected.email,
+          firstName: rejected.firstName,
+          playerName: `${rejected.firstName} ${rejected.lastName}`,
+          approved: false,
+          reason,
+        });
+      } catch (notificationError) {
+        console.error("Player rejection email failed:", notificationError);
+      }
+    }
     revalidatePath("/admin/submissions");
     return toPlain(rejected);
   } catch (err) {

@@ -69,7 +69,8 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
         {/* Structured Data - Organization */}
-        <script
+        <Script
+          id="organization-structured-data"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(generateStructuredData("organization"))
@@ -77,7 +78,8 @@ export default function RootLayout({ children }) {
         />
         
         {/* Structured Data - Website */}
-        <script
+        <Script
+          id="website-structured-data"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(generateStructuredData("website"))
@@ -85,7 +87,9 @@ export default function RootLayout({ children }) {
         />
         
         {/* Font Awesome Configuration */}
-        <script
+        <Script
+          id="font-awesome-config"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `window.FontAwesomeConfig = { autoReplaceSvg: 'nest' };`,
           }}

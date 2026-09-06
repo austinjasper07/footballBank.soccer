@@ -545,7 +545,7 @@ export default async function HomePage({ params }) {
                         post.imageUrl.length > 0 &&
                         post.imageUrl[0]
                           ? post.imageUrl[0]
-                          : "/logo/logo-1.png"
+                          : "/logo/logo3.svg"
                       }
                       alt={post.title}
                       width={400}
