@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,7 @@ import {
   Shield,
 } from "lucide-react";
 import Link from "next/link";
+import OtpInput from "@/components/auth/OtpInput";
 
 export default function ForgotPasswordPage() {
   const [step, setStep] = useState("email"); // "email", "otp", or "password"
@@ -28,6 +29,7 @@ export default function ForgotPasswordPage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const otpFormRef = useRef(null);
 
   const handleSendResetOTP = async (e) => {
     e.preventDefault();
@@ -104,7 +106,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-bg via-blue-50 to-indigo-50 flex items-center justify-center px-4 pt-4 pb-8">
+    <div className="flex min-h-screen items-center justify-center bg-primary-bg px-4 py-8">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-6">
@@ -112,8 +114,8 @@ export default function ForgotPasswordPage() {
             <ArrowLeft className="w-4 h-4" />
             Back to Login
           </Link>
-          <div className="w-16 h-16 bg-gradient-to-r from-accent-red to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Shield className="w-8 h-8 text-white" />
+          <div className="mx-auto mb-4 flex size-14 items-center justify-center bg-primary-navy">
+            <Shield className="size-7 text-primary-accent" />
           </div>
           <h1 className="text-3xl font-bold text-primary-text mb-2">
             Reset Password
@@ -192,24 +194,12 @@ export default function ForgotPasswordPage() {
 
             {/* OTP Step */}
             {step === "otp" && (
-              <form onSubmit={(e) => { e.preventDefault(); setStep("password"); }} className="space-y-4">
+              <form ref={otpFormRef} onSubmit={(e) => { e.preventDefault(); setStep("password"); }} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="otp" className="text-sm font-medium">
                     Verification Code
                   </Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
-                    <Input
-                      id="otp"
-                      type="text"
-                      placeholder="Enter 6-digit code"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                      className="pl-10"
-                      maxLength={6}
-                      required
-                    />
-                  </div>
+                  <OtpInput value={otp} onChange={setOtp} onComplete={() => otpFormRef.current?.requestSubmit()} disabled={loading} />
                 </div>
 
                 <Button

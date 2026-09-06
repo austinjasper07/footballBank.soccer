@@ -5,6 +5,7 @@ import { Player, ResumeRequest, User } from "@/lib/schemas";
 import { requireAuth, requireRole } from "@/lib/oauth";
 import { sendEmail } from "@/lib/email";
 import { generatePlayerResumePdf } from "@/lib/playerResume";
+import { notifyAdmins } from "@/lib/adminNotifications";
 import { revalidatePath } from "next/cache";
 
 const toPlain = (value) => JSON.parse(JSON.stringify(value));
@@ -102,6 +103,16 @@ export async function createResumeRequest(playerId, locale = "en", reason, reque
     await sendRequestEmail({ request: plainRequest, type: "submitted" });
   } catch (error) {
     console.error("Resume request confirmation email failed:", error);
+  }
+  try {
+    await notifyAdmins({
+      subject: `New ${requestType === "CV" ? "resume download" : "profile access"} request for ${player.firstName} ${player.lastName}`,
+      title: "New player access request",
+      message: `${user.firstName} ${user.lastName} (${user.email}) requested ${requestType === "CV" ? "a professional resume" : "full profile access"} for ${player.firstName} ${player.lastName}. Reason: ${reason.trim()}`,
+      link: "/en/admin",
+    });
+  } catch (notificationError) {
+    console.error("Admin resume request notification failed:", notificationError);
   }
 
   revalidatePath(`/players/${playerId}`);

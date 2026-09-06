@@ -4,6 +4,7 @@ import dbConnect from "@/lib/mongodb";
 import { Player, PlayerProfileView, Post, User } from "@/lib/schemas";
 import { getAuthUser } from "@/lib/oauth";
 import { sendEmail } from "@/lib/email";
+import { notifyAdmins } from "@/lib/adminNotifications";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://footballbank.soccer";
 
@@ -51,6 +52,17 @@ export async function trackPlayerProfileView(playerId, locale = "en") {
     });
   } catch (error) {
     console.error("Player profile view notification failed:", error);
+  }
+
+  try {
+    await notifyAdmins({
+      subject: `${viewerName} viewed ${playerName}'s profile`,
+      title: "Registered user viewed a player profile",
+      message: `${viewerName} (${viewerRecord.email}) viewed ${playerName}'s FootballBank profile.`,
+      link: "/en/admin",
+    });
+  } catch (error) {
+    console.error("Admin player view notification failed:", error);
   }
 
   return { tracked: true };

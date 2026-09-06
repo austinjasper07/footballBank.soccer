@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { sendLoginOTP, verifyLoginOTP } from "@/actions/authActions";
+import OtpInput from "@/components/auth/OtpInput";
 
 import "aos/dist/aos.css";
 
@@ -35,6 +36,7 @@ function LoginPageContent() {
   const [error, setError] = useState("");
   const [redirectUrl, setRedirectUrl] = useState("/profile");
   const searchParams = useSearchParams();
+  const otpFormRef = useRef(null);
 
   useEffect(() => {
     // Get redirect URL from query parameters
@@ -347,26 +349,12 @@ function LoginPageContent() {
 
             {/* OTP Step */}
             {step === "otp" && (
-              <form onSubmit={handleVerifyOTP} className="space-y-4">
+              <form ref={otpFormRef} onSubmit={handleVerifyOTP} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="otp" className="text-sm font-medium mb-2">
                     Verification Code
                   </Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
-                    <Input
-                      id="otp"
-                      type="text"
-                      autoFocus
-                      inputMode="numeric"
-                      placeholder="Enter 6-digit code"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                      className="pl-10 text-center text-2xl tracking-widest font-mono"
-                      maxLength={6}
-                      required
-                    />
-                  </div>
+                  <OtpInput value={otp} onChange={setOtp} onComplete={() => otpFormRef.current?.requestSubmit()} disabled={loading} />
                   <p className="text-xs text-primary-muted">
                     Code sent to {email}
                   </p>

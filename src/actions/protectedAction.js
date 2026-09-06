@@ -2,6 +2,7 @@
 
 import { Submission, PaymentMethod } from "@/lib/schemas";
 import dbConnect from "@/lib/mongodb";
+import { notifyAdmins } from "@/lib/adminNotifications";
 
 // Helper: recursively convert Mongoose values, including nested ObjectIds, to plain JSON values.
 const normalize = (doc) => {
@@ -24,6 +25,16 @@ export async function createSubmission(data) {
   try {
     // console.log("Creating submission with data:", data);
     const submission = await Submission.create(data);
+    try {
+      await notifyAdmins({
+        subject: `New player profile submission: ${data.firstName} ${data.lastName}`,
+        title: "New player profile submission",
+        message: `${data.firstName} ${data.lastName} submitted a player profile for review. Position: ${data.position || "Not provided"}.`,
+        link: "/en/admin",
+      });
+    } catch (notificationError) {
+      console.error("Admin submission notification failed:", notificationError);
+    }
     return normalize(submission.toObject()); // ✅ plain JSON-safe object
   } catch (error) {
     console.error("Error creating submission:", error);
