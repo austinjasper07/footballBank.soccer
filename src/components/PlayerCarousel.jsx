@@ -25,7 +25,7 @@ export default function PlayerCarousel({ images, interval = 5000 }) {
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {images.map((image, index) => (
-          <div key={index} className="w-full h-full flex-shrink-0 relative">
+          <div key={index} className="w-full h-full shrink-0 relative">
             <Image
               src={image}
               alt={`Player image ${index + 1}`}
