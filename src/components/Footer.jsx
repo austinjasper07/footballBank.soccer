@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -18,13 +19,10 @@ export default function Footer({ lang = "en" }) {
       <div className=" mx-auto px-4 max-w-8xl">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div>
-            <div className="flex flex-col mb-4 ">
-              <Link
-                href={`/${lang}`}
-                className="font-bold text-2xl inline-block cursor-pointer text-white "
-              >
-                FootballBank
-                <span className="text-primary-accent text-base">.soccer</span>
+            <div className="mb-4 flex flex-col">
+              <Link href={`/${lang}`} className="inline-flex items-center gap-3 text-white">
+                <Image src="/logo/logo3.svg" alt="FootballBank International" width={48} height={48} className="size-12 object-contain" />
+                <span className="font-heading text-2xl font-semibold tracking-tight">FootballBank</span>
               </Link>
               <div>
                 <span className="text-primary-muted text-[12px]">

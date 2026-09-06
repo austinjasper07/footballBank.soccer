@@ -45,7 +45,7 @@ const truncateText = (text, maxLength = 100) => {
   return text.substring(0, maxLength).trim() + '...';
 };
 
-export default function PlayersView() {
+export default function PlayersView({ refreshPulse = 0 }) {
   const { toast } = useToast();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -73,7 +73,7 @@ export default function PlayersView() {
       }
     };
     fetchPlayers();
-  }, []);
+  }, [refreshPulse]);
 
   const filteredPlayers = useMemo(() => {
     return players.filter((player) => {

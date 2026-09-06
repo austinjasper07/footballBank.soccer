@@ -28,7 +28,7 @@ import {
 import { calculateAge, formatFullDate } from "@/utils/dateHelper";
 import LoadingSplash from "@/components/ui/loading-splash";
 
-export default function SubmissionsView() {
+export default function SubmissionsView({ refreshPulse = 0 }) {
   const { toast } = useToast();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,7 +54,7 @@ export default function SubmissionsView() {
       }
     };
     fetchSubmissions();
-  }, []);
+  }, [refreshPulse]);
 
   const filtered = useMemo(() => {
     const list = Array.isArray(submissions) ? submissions : [];

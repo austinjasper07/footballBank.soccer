@@ -61,7 +61,7 @@ async function sendRequestEmail({ request, type, reason, player }) {
   });
 }
 
-export async function createResumeRequest(playerId, locale = "en", reason, requestType = "PROFILE") {
+export async function createResumeRequest(playerId, locale = "en", reason, requestType = "PROFILE", phone = "") {
   if (!reason?.trim()) throw new Error("Please provide a reason for this request");
   const authUser = await requireAuth();
   await dbConnect();
@@ -87,6 +87,7 @@ export async function createResumeRequest(playerId, locale = "en", reason, reque
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      phone: phone.trim(),
       role: user.role,
       isVerified: user.isVerified,
       address: user.address,
@@ -112,7 +113,7 @@ export async function createResumeRequest(playerId, locale = "en", reason, reque
     await notifyAdmins({
       subject: `New ${requestType === "CV" ? "resume download" : "profile access"} request for ${player.firstName} ${player.lastName}`,
       title: "New player access request",
-      message: `${user.firstName} ${user.lastName} (${user.email}) requested ${requestType === "CV" ? "a professional resume" : "full profile access"} for ${player.firstName} ${player.lastName}. Reason: ${reason.trim()}`,
+      message: `${user.firstName} ${user.lastName} (${user.email}, phone: ${phone.trim() || "Not provided"}) requested ${requestType === "CV" ? "a professional resume" : "full profile access"} for ${player.firstName} ${player.lastName}. Reason: ${reason.trim()}`,
       link: "/en/admin",
     });
   } catch (notificationError) {

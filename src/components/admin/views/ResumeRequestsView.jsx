@@ -13,7 +13,7 @@ import LoadingSplash from "@/components/ui/loading-splash";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-export default function ResumeRequestsView() {
+export default function ResumeRequestsView({ refreshPulse = 0 }) {
   const { toast } = useToast();
   const [requests, setRequests] = useState([]);
   const [activeStatus, setActiveStatus] = useState("PENDING");
@@ -32,7 +32,7 @@ export default function ResumeRequestsView() {
         }),
       )
       .finally(() => setLoading(false));
-  }, [toast]);
+  }, [refreshPulse, toast]);
 
   const filtered = useMemo(
     () =>
@@ -245,6 +245,10 @@ export default function ResumeRequestsView() {
                 </dd>
               </div>
               <div>
+                <dt className="text-primary-muted">Phone</dt>
+                <dd className="font-semibold">{selected.requester?.phone || "Not provided"}</dd>
+              </div>
+              <div>
                 <dt className="text-primary-muted">Account role</dt>
                 <dd>{selected.requester?.role || "user"}</dd>
               </div>
@@ -263,6 +267,10 @@ export default function ResumeRequestsView() {
                 <dd>{selected.player?.position || "-"}</dd>
               </div>
             </dl>
+            <div className="mt-5 border-t border-divider pt-4 text-sm">
+              <p className="text-primary-muted">Request reason</p>
+              <p className="mt-1 whitespace-pre-wrap">{selected.reason}</p>
+            </div>
             {selected.requester?.address && (
               <div className="mt-5 border-t border-divider pt-4 text-sm">
                 <p className="text-primary-muted">Registered address</p>

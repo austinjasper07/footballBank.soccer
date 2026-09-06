@@ -1,706 +1,76 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft, ArrowRight, Award, Calendar, Camera, Edit3, FileText, Footprints, Mail, MapPin, Maximize2, Phone, Play, Ruler, Shield, TrendingUp, User, Weight, X } from "lucide-react";
 import { useAuth } from "@/context/NewAuthContext";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  User,
-  Mail,
-  Phone,
-  MapPin,
-  Calendar,
-  Ruler,
-  Weight,
-  Footprints,
-  Trophy,
-  Target,
-  Users,
-  Star,
-  Download,
-  Edit,   
-  Share2,
-  Heart,
-  MessageCircle,
-  Award,
-  TrendingUp,
-  Clock,
-  Shield,
-  Camera,
-  Video,
-  FileText,
-  ExternalLink,
-  RefreshCw,
-  Eye,
- 
-} from "lucide-react";
-import Link from "next/link";
-import "aos/dist/aos.css";
+
+const tabs = ["overview", "stats", "career", "media", "contact"];
 
 export default function PlayerProfilePage() {
-  const { user, isAuthenticated, loading: isLoading } = useAuth();
-  const [playerData, setPlayerData] = useState(null);
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isLiked, setIsLiked] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     if (isAuthenticated && user) {
-      fetchPlayerData();
+      fetch("/api/profile/player", { credentials: "include" })
+        .then((response) => response.json())
+        .then((data) => setPlayer(data?.error ? null : data))
+        .catch(() => setPlayer(null))
+        .finally(() => setLoading(false));
     }
   }, [isAuthenticated, user]);
 
-  const fetchPlayerData = async () => {
-    try {
-      const response = await fetch("/api/profile/player");
-      const data = await response.json();
-      setPlayerData(data);
-    } catch (error) {
-      console.error("Error fetching player data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (authLoading || loading) return <main className="flex min-h-screen items-center justify-center bg-primary-bg"><p className="text-sm text-primary-muted">Loading player profile...</p></main>;
+  if (!isAuthenticated) return <EmptyState icon={Shield} title="Authentication required" copy="Please sign in to access your player profile." action="Sign in" href="/en/auth/login" />;
+  if (!player) return <EmptyState icon={User} title="No player profile found" copy="Your approved player profile will appear here." action="Return home" href="/en" />;
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+  const fullName = `${player.firstName} ${player.lastName}`;
+  const images = player.imageUrl?.length ? player.imageUrl : ["/logo/logo3.svg"];
+  const videos = [player.videoPrimary, ...(player.videoAdditional || [])].filter(Boolean);
+  const age = player.dob ? calculateAge(player.dob) : "-";
 
-  const getAge = (dob) => {
-    const today = new Date();
-    const birthDate = new Date(dob);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
-
-  const getPositionColor = (position) => {
-    const colors = {
-      "Goalkeeper": "bg-primary-action/10 text-primary-action",
-      "Defender": "bg-primary-accent/15 text-primary-text",
-      "Midfielder": "bg-primary-action/10 text-primary-action",
-      "Forward": "bg-primary-accent/15 text-primary-text",
-      "Striker": "bg-primary-accent/15 text-primary-text",
-    };
-    return colors[position] || "bg-primary-surface text-primary-text";
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Available":
-        return "bg-emerald-100 text-emerald-800";
-      case "Under Contract":
-        return "bg-primary-action/10 text-primary-action";
-      case "On Trial":
-        return "bg-primary-accent/20 text-primary-text";
-      default:
-        return "bg-primary-surface text-primary-text";
-    }
-  };
-
-  if (isLoading || loading) {
-    return (
-      <div className="min-h-screen bg-primary-bg flex items-center justify-center">
-        <div className="text-center">
-          <RefreshCw className="w-8 h-8 animate-spin text-primary-action mx-auto mb-4" />
-          <p className="text-primary-muted">Loading player profile...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-primary-bg flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto px-4">
-          <Shield className="w-16 h-16 text-primary-action mx-auto mb-6" />
-          <h1 className="text-2xl font-bold text-primary-text mb-4">
-            Authentication Required
-          </h1>
-          <p className="text-primary-muted mb-6">
-            Please log in to access your player profile.
-          </p>
-          <Button asChild>
-            <Link href="/api/auth/login">Sign In</Link>
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!playerData) {
-    return (
-      <div className="min-h-screen bg-primary-bg flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto px-4">
-          <User className="w-16 h-16 text-primary-muted mx-auto mb-6" />
-          <h1 className="text-2xl font-bold text-primary-text mb-4">
-            No Player Profile Found
-          </h1>
-          <p className="text-primary-muted mb-6">
-            You don't have a player profile yet. Submit your profile to get started.
-          </p>
-          <Button asChild>
-            <Link href="/submit-profile">Submit Profile</Link>
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-primary-bg">
-      {/* Hero Section */}
-      <div className="bg-linear-to-br from-primary-action to-primary-action-hover text-white">
-        <div className="container mx-auto px-4 py-12">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-6">
-              <div className="relative">
-                {playerData.imageUrl && playerData.imageUrl.length > 0 ? (
-                  <img
-                    src={playerData.imageUrl[0]}
-                    alt={`${playerData.firstName} ${playerData.lastName}`}
-                    className="w-24 h-24 rounded-2xl object-cover border-4 border-white/20"
-                  />
-                ) : (
-                  <div className="w-24 h-24 rounded-2xl bg-white/20 flex items-center justify-center">
-                    <User className="w-12 h-12 text-white" />
-                  </div>
-                )}
-                {playerData.featured && (
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
-                    <Star className="w-4 h-4 text-yellow-900" />
-                  </div>
-                )}
-              </div>
-              <div>
-                <h1 className="text-4xl font-bold mb-2">
-                  {playerData.firstName} {playerData.lastName}
-                </h1>
-                <div className="flex items-center gap-4 mb-3">
-                  <Badge className="bg-white/20 text-white border-white/30">
-                    {playerData.position}
-                  </Badge>
-                  <Badge className="bg-white/20 text-white border-white/30">
-                    {playerData.country}
-                  </Badge>
-                  <Badge className="bg-white/20 text-white border-white/30">
-                    Age {getAge(playerData.dob)}
-                  </Badge>
-                </div>
-                <p className="text-red-100 text-lg">
-                  {playerData.description || "Professional Football Player"}
-                </p>
-              </div>
+  return <main className="min-h-screen bg-primary-bg text-primary-text">
+    <section className="bg-primary-navy text-primary-text-inverse">
+      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-10 lg:px-12 lg:py-14">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="flex items-center gap-5 sm:gap-7">
+            <div className="relative size-24 shrink-0 overflow-hidden bg-primary-text-inverse/10 sm:size-32">
+              {images[0] ? <Image src={images[0]} alt={fullName} fill sizes="128px" className="object-cover" /> : <User className="m-auto size-10" />}
             </div>
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20"
-                onClick={() => setIsLiked(!isLiked)}
-              >
-                <Heart className={`w-4 h-4 mr-2 ${isLiked ? "fill-current" : ""}`} />
-                {isLiked ? "Liked" : "Like"}
-              </Button>
-              <Button
-                variant="outline"
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20"
-              >
-                <Share2 className="w-4 h-4 mr-2" />
-                Share
-              </Button>
-              <Button
-                variant="outline"
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20"
-                asChild
-              >
-                <Link href="/player-profile/edit">
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit Profile
-                </Link>
-              </Button>
-            </div>
+            <div><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-accent">Player profile</p><h1 className="mt-3 font-heading text-4xl font-semibold leading-none tracking-tight sm:text-6xl">{fullName}</h1><p className="mt-3 text-base text-primary-text-inverse/65">{player.position} <span className="mx-2 text-primary-accent">/</span> {player.country}</p></div>
           </div>
-
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-1">{playerData.height}</div>
-              <div className="text-red-100">Height</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-1">{playerData.weight}</div>
-              <div className="text-red-100">Weight</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-1">{playerData.foot}</div>
-              <div className="text-red-100">Preferred Foot</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-1">
-                {playerData.contractStatus || "Available"}
-              </div>
-              <div className="text-red-100">Status</div>
-            </div>
-          </div>
+          <Button variant="onNavy" asChild><Link href="/en/player-profile/edit"><Edit3 className="size-4" />Edit profile</Link></Button>
         </div>
+        <div className="mt-10 grid grid-cols-2 border-t border-primary-text-inverse/15 pt-6 sm:grid-cols-4">{[["Age", age], ["Height", player.height], ["Weight", player.weight], ["Preferred foot", player.foot]].map(([label, value]) => <div key={label} className="border-r border-primary-text-inverse/15 px-4 first:pl-0 last:border-0 sm:px-6"><p className="text-xs uppercase tracking-[0.14em] text-primary-text-inverse/50">{label}</p><p className="mt-2 font-heading text-xl font-semibold sm:text-2xl">{value || "-"}</p></div>)}</div>
       </div>
+    </section>
 
-      <div className="container mx-auto px-4 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="stats">Statistics</TabsTrigger>
-            <TabsTrigger value="career">Career</TabsTrigger>
-            <TabsTrigger value="media">Media</TabsTrigger>
-            <TabsTrigger value="contact">Contact</TabsTrigger>
-          </TabsList>
+    <div className="mx-auto max-w-7xl px-5 py-8 sm:px-10 lg:px-12 lg:py-12">
+      <nav className="flex gap-2 overflow-x-auto border-b border-divider" aria-label="Player profile sections">{tabs.map((tab) => <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`shrink-0 border-b-2 px-4 py-3 text-sm font-semibold capitalize transition-colors ${activeTab === tab ? "border-primary-action text-primary-action" : "border-transparent text-primary-muted hover:text-primary-text"}`}>{tab}</button>)}</nav>
 
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Personal Information */}
-              <Card className="lg:col-span-2">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="w-5 h-5 text-primary-action" />
-                    Personal Information
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex items-center gap-3">
-                      <Mail className="w-5 h-5 text-primary-muted" />
-                      <div>
-                        <div className="text-sm text-primary-muted">Email</div>
-                        <div className="font-medium text-primary-text">
-                          {playerData.email}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Phone className="w-5 h-5 text-primary-muted" />
-                      <div>
-                        <div className="text-sm text-primary-muted">Phone</div>
-                        <div className="font-medium text-primary-text">
-                          {playerData.phone}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <MapPin className="w-5 h-5 text-primary-muted" />
-                      <div>
-                        <div className="text-sm text-primary-muted">Country</div>
-                        <div className="font-medium text-primary-text">
-                          {playerData.country}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Calendar className="w-5 h-5 text-primary-muted" />
-                      <div>
-                        <div className="text-sm text-primary-muted">Date of Birth</div>
-                        <div className="font-medium text-primary-text">
-                          {formatDate(playerData.dob)}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+      {activeTab === "overview" && <section className="mt-10 grid gap-10 lg:grid-cols-[1.25fr_0.75fr]"><div><p className="eyebrow">About the player</p><h2 className="mt-5 font-heading text-3xl font-semibold sm:text-4xl">A profile built for the next opportunity.</h2><p className="mt-6 max-w-2xl text-base leading-8 text-primary-muted">{player.description || "Your player biography will appear here once it has been added to your profile."}</p></div><div className="border-l border-divider pl-6 sm:pl-8"><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary-action">Availability</p><dl className="mt-5 space-y-5 text-sm"><div><dt className="text-primary-muted">Contract status</dt><dd className="mt-1 font-semibold">{player.contractStatus || "Available"}</dd></div><div><dt className="text-primary-muted">Available from</dt><dd className="mt-1 font-semibold">{player.availableFrom || "Immediately"}</dd></div><div><dt className="text-primary-muted">Preferred leagues</dt><dd className="mt-1 font-semibold">{player.preferredLeagues || "Open to all"}</dd></div></dl></div></section>}
 
-              {/* Physical Attributes */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="w-5 h-5 text-primary-action" />
-                    Physical Attributes
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Ruler className="w-4 h-4 text-primary-muted" />
-                      <span className="text-primary-muted">Height</span>
-                    </div>
-                    <span className="font-medium text-primary-text">
-                      {playerData.height}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Weight className="w-4 h-4 text-primary-muted" />
-                      <span className="text-primary-muted">Weight</span>
-                    </div>
-                    <span className="font-medium text-primary-text">
-                      {playerData.weight}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Footprints className="w-4 h-4 text-primary-muted" />
-                      <span className="text-primary-muted">Preferred Foot</span>
-                    </div>
-                    <span className="font-medium text-primary-text">
-                      {playerData.foot}
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+      {activeTab === "stats" && <section className="mt-10"><SectionHeading icon={TrendingUp} eyebrow="Performance" title="Statistics without the clutter." /><div className="mt-8 grid gap-10 md:grid-cols-3">{Object.entries(player.stats || {}).map(([group, values]) => <div key={group} className="border-t border-divider pt-5"><h3 className="font-heading text-2xl font-semibold capitalize">{group}</h3><dl className="mt-5 divide-y divide-divider">{Object.entries(values || {}).map(([label, value]) => <div key={label} className="flex justify-between gap-4 py-3 text-sm"><dt className="text-primary-muted">{label.replace(/([A-Z])/g, " $1")}</dt><dd className="font-semibold">{value || "-"}</dd></div>)}</dl></div>)}</div>{!Object.keys(player.stats || {}).length && <EmptyInline icon={TrendingUp} text="Statistics have not been added yet." />}</section>}
 
-            {/* Availability & Preferences */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-primary-action" />
-                  Availability & Preferences
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <div className="text-sm text-primary-muted mb-2">Contract Status</div>
-                    <Badge className={getStatusColor(playerData.contractStatus)}>
-                      {playerData.contractStatus}
-                    </Badge>
-                  </div>
-                  <div>
-                    <div className="text-sm text-primary-muted mb-2">Available From</div>
-                    <div className="font-medium text-primary-text">
-                      {playerData.availableFrom || "Immediately"}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-sm text-primary-muted mb-2">Preferred Leagues</div>
-                    <div className="font-medium text-primary-text">
-                      {playerData.preferredLeagues || "Open to all"}
-                    </div>
-                  </div>
-                </div>
-                {playerData.salaryExpectation && (
-                  <div className="mt-4 pt-4 border-t border-divider">
-                    <div className="text-sm text-primary-muted mb-2">Salary Expectation</div>
-                    <div className="font-medium text-primary-text">
-                      {playerData.salaryExpectation}
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
+      {activeTab === "career" && <section className="mt-10"><SectionHeading icon={Award} eyebrow="Career path" title="Club history and progression." /><div className="mt-8 border-l-2 border-primary-action pl-6 sm:pl-8">{player.clubHistory?.length ? player.clubHistory.map((club, index) => <div key={index} className="relative border-b border-divider pb-6 pt-1 last:border-0"><span className="absolute left-[-2.05rem] top-1 size-3 rounded-full bg-primary-action ring-4 ring-primary-bg" /><p className="text-xs font-bold uppercase tracking-[0.14em] text-primary-action">{club.startDate || ""} - {club.endDate || "Present"}</p><h3 className="mt-2 font-heading text-2xl font-semibold">{club.clubName}</h3><p className="mt-1 text-sm text-primary-muted">{club.position || player.position}</p></div>) : <EmptyInline icon={Award} text="Club history has not been added yet." />}</div></section>}
 
-          {/* Statistics Tab */}
-          <TabsContent value="stats" className="space-y-6">
-            {playerData.stats ? (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Career Stats */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Trophy className="w-5 h-5 text-primary-action" />
-                      Career Statistics
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {Object.entries(playerData.stats.career || {}).map(([key, value]) => (
-                        <div key={key} className="flex items-center justify-between">
-                          <span className="text-primary-muted capitalize">
-                            {key.replace(/([A-Z])/g, " $1").trim()}
-                          </span>
-                          <span className="font-medium text-primary-text">{value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+      {activeTab === "media" && <section className="mt-10"><SectionHeading icon={Camera} eyebrow="Your media" title="Photos and footage." /><div className="mt-8 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">{images.map((image, index) => <button key={`${image}-${index}`} type="button" onClick={() => setSelectedImage(index)} className="group relative aspect-square overflow-hidden bg-primary-navy"><Image src={image} alt={`${fullName} photo ${index + 1}`} fill sizes="(max-width: 640px) 33vw, 16vw" className="object-cover transition-transform group-hover:scale-105" /></button>)}</div>{videos.length > 0 && <div className="mt-12 grid gap-6 lg:grid-cols-2">{videos.map((video, index) => <div key={video} className="overflow-hidden border border-divider bg-primary-card"><video src={video} controls className="aspect-video w-full bg-primary-navy" /><p className="p-4 text-sm font-semibold">{index === 0 ? "Primary highlights" : `Additional video ${index}`}</p></div>)}</div>}</section>}
 
-                {/* Season Stats */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5 text-primary-action" />
-                      Current Season
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {Object.entries(playerData.stats.season || {}).map(([key, value]) => (
-                        <div key={key} className="flex items-center justify-between">
-                          <span className="text-primary-muted capitalize">
-                            {key.replace(/([A-Z])/g, " $1").trim()}
-                          </span>
-                          <span className="font-medium text-primary-text">{value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            ) : (
-              <Card>
-                <CardContent className="text-center py-12">
-                  <Trophy className="w-16 h-16 text-primary-muted mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-primary-text mb-2">
-                    No Statistics Available
-                  </h3>
-                  <p className="text-primary-muted mb-6">
-                    Statistics will appear here once they are added to your profile.
-                  </p>
-                  <Button asChild>
-                    <Link href="/player-profile/edit">
-                      <Edit className="w-4 h-4 mr-2" />
-                      Add Statistics
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
-
-          {/* Career Tab */}
-          <TabsContent value="career" className="space-y-6">
-            {playerData.clubHistory && playerData.clubHistory.length > 0 ? (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Award className="w-5 h-5 text-primary-action" />
-                    Club History
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {playerData.clubHistory.map((club, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between p-4 bg-primary-bg rounded-lg"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-linear-to-r from-primary-action to-primary-action-hover rounded-lg flex items-center justify-center">
-                            <Trophy className="w-6 h-6 text-white" />
-                          </div>
-                          <div>
-                            <div className="font-semibold text-primary-text">
-                              {club.clubName}
-                            </div>
-                            <div className="text-sm text-primary-muted">
-                              {club.position} • {club.startDate} - {club.endDate || "Present"}
-                            </div>
-                          </div>
-                        </div>
-                        <Badge className={getPositionColor(club.position)}>
-                          {club.position}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card>
-                <CardContent className="text-center py-12">
-                  <Award className="w-16 h-16 text-primary-muted mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-primary-text mb-2">
-                    No Career History
-                  </h3>
-                  <p className="text-primary-muted mb-6">
-                    Your club history will appear here once added to your profile.
-                  </p>
-                  <Button asChild>
-                    <Link href="/player-profile/edit">
-                      <Edit className="w-4 h-4 mr-2" />
-                      Add Career History
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
-
-          {/* Media Tab */}
-          <TabsContent value="media" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Photos */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Camera className="w-5 h-5 text-primary-action" />
-                    Photos
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {playerData.imageUrl && playerData.imageUrl.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-4">
-                      {playerData.imageUrl.map((image, index) => (
-                        <div
-                          key={index}
-                          className="relative group cursor-pointer"
-                          onClick={() => setCurrentImageIndex(index)}
-                        >
-                          <img
-                            src={image}
-                            alt={`${playerData.firstName} ${playerData.lastName} - Photo ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-lg"
-                          />
-                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                            <Eye className="w-6 h-6 text-white" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8">
-                      <Camera className="w-12 h-12 text-primary-muted mx-auto mb-4" />
-                      <p className="text-primary-muted">No photos available</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Videos */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Video className="w-5 h-5 text-primary-action" />
-                    Videos
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {playerData.videoPrimary || (playerData.videoAdditional && playerData.videoAdditional.length > 0) ? (
-                    <div className="space-y-4">
-                      {playerData.videoPrimary && (
-                        <div className="relative">
-                          <video
-                            src={playerData.videoPrimary}
-                            controls
-                            className="w-full h-48 object-cover rounded-lg"
-                          />
-                          <div className="absolute top-2 left-2">
-                            <Badge className="bg-primary-action text-white">Primary</Badge>
-                          </div>
-                        </div>
-                      )}
-                      {playerData.videoAdditional && playerData.videoAdditional.map((video, index) => (
-                        <div key={index} className="relative">
-                          <video
-                            src={video}
-                            controls
-                            className="w-full h-32 object-cover rounded-lg"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8">
-                      <Video className="w-12 h-12 text-primary-muted mx-auto mb-4" />
-                      <p className="text-primary-muted">No videos available</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* CV Download */}
-            {playerData.cvUrl && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-primary-action" />
-                    Resume
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between p-4 bg-primary-bg rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-linear-to-r from-primary-action to-primary-action-hover rounded-lg flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <div className="font-medium text-primary-text">
-                          Player Resume
-                        </div>
-                        <div className="text-sm text-primary-muted">
-                          PDF Document
-                        </div>
-                      </div>
-                    </div>
-                    <Button variant="outline" size="sm" asChild>
-                      <a href={playerData.cvUrl} download target="_blank" rel="noopener noreferrer">
-                        <Download className="w-4 h-4 mr-2" />
-                        Download
-                      </a>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
-
-          {/* Contact Tab */}
-          <TabsContent value="contact" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-primary-action" />
-                  Contact Information
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex items-center gap-3">
-                    <Mail className="w-5 h-5 text-primary-action" />
-                    <div>
-                      <div className="text-sm text-primary-muted">Email</div>
-                      <div className="font-medium text-primary-text">
-                        {playerData.email}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Phone className="w-5 h-5 text-primary-action" />
-                    <div>
-                      <div className="text-sm text-primary-muted">Phone</div>
-                      <div className="font-medium text-primary-text">
-                        {playerData.phone}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-divider">
-                  <h3 className="font-semibold text-primary-text mb-4">
-                    Interested in this player?
-                  </h3>
-                  <div className="flex gap-3">
-                    <Button asChild>
-                      <Link href={`/contact?player=${playerData.id}`}>
-                        <MessageCircle className="w-4 h-4 mr-2" />
-                        Send Message
-                      </Link>
-                    </Button>
-                    <Button variant="outline" asChild>
-                      <Link href={`/contact?player=${playerData.id}&type=inquiry`}>
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        Make Inquiry
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+      {activeTab === "contact" && <section className="mt-10 max-w-2xl"><SectionHeading icon={Mail} eyebrow="Representation" title="Keep your contact details ready." /><div className="mt-8 grid gap-5 border-t border-divider pt-6 sm:grid-cols-2"><Info icon={Mail} label="Email" value={player.email} /><Info icon={Phone} label="Phone" value={player.phone} /><Info icon={MapPin} label="Country" value={player.country} /><Info icon={Calendar} label="Date of birth" value={player.dob ? new Date(player.dob).toLocaleDateString() : "-"} /></div></section>}
     </div>
-  );
+
+    {selectedImage !== null && <div className="fixed inset-0 z-9999 flex items-center justify-center bg-primary-navy/95 p-5" role="dialog" aria-modal="true" aria-label="Player photo gallery"><button type="button" onClick={() => setSelectedImage(null)} className="absolute top-5 right-5 z-10 text-primary-text-inverse hover:text-primary-accent" aria-label="Close gallery"><X className="size-8" /></button><button type="button" onClick={() => setSelectedImage((selectedImage - 1 + images.length) % images.length)} className="absolute left-4 z-10 text-primary-text-inverse hover:text-primary-accent" aria-label="Previous photo"><ArrowLeft className="size-8" /></button><div className="relative h-[80vh] w-full max-w-5xl"><Image src={images[selectedImage]} alt={`${fullName} photo ${selectedImage + 1}`} fill sizes="100vw" className="object-contain" priority /></div><button type="button" onClick={() => setSelectedImage((selectedImage + 1) % images.length)} className="absolute right-4 z-10 text-primary-text-inverse hover:text-primary-accent" aria-label="Next photo"><ArrowRight className="size-8" /></button></div>}
+  </main>;
 }
+
+function calculateAge(date) { const birth = new Date(date); const now = new Date(); let age = now.getFullYear() - birth.getFullYear(); if (now.getMonth() < birth.getMonth() || (now.getMonth() === birth.getMonth() && now.getDate() < birth.getDate())) age -= 1; return age; }
+function SectionHeading({ icon: Icon, eyebrow, title }) { return <div><p className="eyebrow flex items-center gap-3"><Icon className="size-4" />{eyebrow}</p><h2 className="mt-5 font-heading text-3xl font-semibold sm:text-4xl">{title}</h2></div>; }
+function Info({ icon: Icon, label, value }) { return <div className="flex items-start gap-3"><Icon className="mt-0.5 size-4 text-primary-action" /><div><p className="text-xs uppercase tracking-[0.14em] text-primary-muted">{label}</p><p className="mt-1 font-medium">{value || "-"}</p></div></div>; }
+function EmptyInline({ icon: Icon, text }) { return <div className="mt-8 border-t border-divider pt-8 text-center"><Icon className="mx-auto size-10 text-primary-muted" /><p className="mt-3 text-sm text-primary-muted">{text}</p></div>; }
+function EmptyState({ icon: Icon, title, copy, action, href }) { return <main className="flex min-h-screen items-center justify-center bg-primary-bg px-5"><div className="max-w-md text-center"><Icon className="mx-auto size-14 text-primary-action" /><h1 className="mt-5 font-heading text-3xl font-semibold">{title}</h1><p className="mt-3 text-primary-muted">{copy}</p><Button className="mt-6" variant="action" asChild><Link href={href}>{action}</Link></Button></div></main>; }

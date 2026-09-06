@@ -77,23 +77,23 @@ const AdminDashboard = () => {
   const renderView = () => {
     switch (activeView) {
       case "dashboard":
-        return <DashboardView key={`dashboard-${refreshPulse}`} />;
+        return <DashboardView refreshPulse={refreshPulse} />;
       case "players":
-        return <PlayersView key={`players-${refreshPulse}`} />;
+        return <PlayersView refreshPulse={refreshPulse} />;
       case "users":
-        return <UsersView key={`users-${refreshPulse}`} />;
+        return <UsersView refreshPulse={refreshPulse} />;
       case "subscriptions":
         return <DashboardView />;
       case "submissions":
-        return <SubmissionsView key={`submissions-${refreshPulse}`} />;
+        return <SubmissionsView refreshPulse={refreshPulse} />;
       case "resume-requests":
-        return <ResumeRequestsView key={`resume-requests-${refreshPulse}`} />;
+        return <ResumeRequestsView refreshPulse={refreshPulse} />;
       case "shop":
         return <DashboardView />;
       case "orders":
         return <DashboardView />;
       case "blog":
-        return <AdminBlogView key={`blog-${refreshPulse}`} />;
+        return <AdminBlogView refreshPulse={refreshPulse} />;
       case "agent":
         return <AgentView />;
       case "settings":

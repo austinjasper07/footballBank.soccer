@@ -28,7 +28,7 @@ import { formatFullDate } from "@/utils/dateHelper";
 import { useToast } from "@/hooks/use-toast";
 import LoadingSplash from "@/components/ui/loading-splash";
 
-export function DashboardView() {
+export function DashboardView({ refreshPulse = 0 }) {
   const [users, setUsers] = useState([]);
   const [players, setPlayers] = useState([]);
   const [posts, setPosts] = useState([]);
@@ -67,7 +67,7 @@ export function DashboardView() {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshPulse, toast]);
 
   const getVariantClasses = (variant) => {
     switch (variant) {

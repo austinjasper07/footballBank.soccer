@@ -24,7 +24,7 @@ import { updatePost, deletePost } from "@/actions/adminActions";
 
 const ITEMS_PER_PAGE = 5;
 
-export default function AdminBlogView() {
+export default function AdminBlogView({ refreshPulse = 0 }) {
   const { toast } = useToast();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -36,7 +36,7 @@ export default function AdminBlogView() {
 
   useEffect(() => {
     loadPosts();
-  }, []);
+  }, [refreshPulse]);
 
   const loadPosts = async () => {
     try {

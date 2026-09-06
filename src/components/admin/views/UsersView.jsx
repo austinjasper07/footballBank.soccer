@@ -42,7 +42,7 @@ const truncateText = (text, maxLength = 100) => {
   return text.substring(0, maxLength).trim() + '...';
 };
 
-export default function UsersView() {
+export default function UsersView({ refreshPulse = 0 }) {
   const { toast } = useToast();
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,7 +68,7 @@ export default function UsersView() {
       }
     };
     fetchUsers();
-  }, []);
+  }, [refreshPulse]);
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
