@@ -111,8 +111,8 @@ export default async function HomePage({ params }) {
         />
         <div className="absolute inset-0 bg-linear-to-r from-primary-navy via-primary-navy/85 to-primary-navy/20" />
 
-        <div className="relative mx-auto max-w-7xl flex items-center md:justify-between px-6 py-24 lg:py-18">
-          <div className="">
+        <div className="relative mx-auto flex max-w-7xl flex-col gap-10 px-6 py-16 sm:py-20 md:flex-row md:items-center md:justify-between lg:py-18">
+          <div className="min-w-0 px-1 py-2 sm:px-2 md:w-1/2 md:px-0 md:py-0">
             <p className="eyebrow">
               Representation · Recruitment · Opportunity
             </p>
@@ -144,7 +144,7 @@ export default async function HomePage({ params }) {
           {/* PLAYER OF THE WEEK */}
           {playerOfTheWeek && (
             <section
-              className="w-full lg:w-1/2 flex items-center justify-center"
+              className="flex w-full min-w-0 items-center justify-center md:w-1/2"
             >
               <Link href={`/${lang}/players/${playerOfTheWeek.id}`}>
                 <div className="group relative w-full max-w-sm lg:max-w-md bg-primary-navy/60 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-primary-accent/20 hover:border-primary-accent/40 transition-all duration-300 transform">
@@ -336,7 +336,7 @@ export default async function HomePage({ params }) {
                     width={800}
                     height={900}
                     loading="lazy"
-                    className="h-72 w-full object-cover"
+                    className="h-52 w-full object-cover"
                   />
                   <span className="absolute top-4 left-4 rounded-sm bg-primary-navy/90 px-2.5 py-1 text-[0.6rem] tracking-[0.18em] text-primary-text-inverse uppercase">
                     {player.position}
@@ -346,11 +346,11 @@ export default async function HomePage({ params }) {
                   </span>
                 </div>
 
-                <div className="p-6">
+                <div className="p-4">
                   <p className="text-[0.6rem] tracking-[0.18em] text-primary-muted uppercase">
                     {player.country}
                   </p>
-                  <h3 className="mt-2 font-heading text-2xl">
+                  <h3 className="mt-2 font-heading text-xl">
                     {player.firstName} {player.lastName}
                   </h3>
 
@@ -367,7 +367,7 @@ export default async function HomePage({ params }) {
                   <p className="mt-2 text-[0.7rem] text-primary-muted">
                     Club &amp; availability on confirmation
                   </p>
-                  <div className="mt-6 flex items-center justify-between border-t border-divider pt-4">
+                  <div className="mt-4 flex items-center justify-between border-t border-divider pt-3">
                     <Link
                       href={`/${lang}/players/${player.id}`}
                       className="inline-flex items-center gap-1.5 text-sm font-medium text-primary-action hover:underline"

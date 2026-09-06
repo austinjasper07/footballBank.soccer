@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { X, Cookie, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import CookieSettings from "@/components/CookieSettings";
 import { 
   getCookieConsent, 
@@ -17,9 +17,11 @@ export default function CookieConsent() {
 
   useEffect(() => {
     // Check if user has already given consent
-    const hasConsented = getCookieConsent();
-    if (!hasConsented) {
-      // Show consent banner after a short delay for better UX
+    const consent = getCookieConsent();
+    if (consent) {
+      initializeAnalytics();
+      initializeFunctionalCookies();
+    } else {
       const timer = setTimeout(() => {
         setShowConsent(true);
         setIsVisible(true);
@@ -65,51 +67,46 @@ export default function CookieConsent() {
         isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
       }`}
     >
-      <div className="bg-gray-200 border-t border-gray-300 shadow-lg">
-        <div className="container mx-auto px-4 py-4 max-w-7xl">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            {/* Cookie Icon and Message */}
-            <div className="flex items-start gap-3 flex-1">
-              <div className="flex-shrink-0 mt-1">
-                <Cookie className="w-5 h-5 text-accent-red" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 mb-1">
-                  We use cookies to enhance your experience
-                </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  This website uses cookies to improve functionality, analyze traffic, and provide personalized content. 
-                  By continuing to use our site, you consent to our use of cookies. 
-                  <a 
-                    href="/privacy-policy" 
-                    className="text-accent-red hover:underline ml-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Learn more in our Privacy Policy
-                  </a>
-                </p>
-              </div>
+      <div className="border-t border-primary-text-inverse/15 bg-primary-navy shadow-[0_-12px_35px_rgba(0,0,0,0.18)]">
+        <div className="mx-auto max-w-7xl px-5 py-5 sm:px-8">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-accent">
+                Privacy choices
+              </p>
+              <h3 className="mt-2 font-heading text-xl font-semibold text-primary-text-inverse sm:text-2xl">
+                Cookies, on your terms
+              </h3>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-primary-text-inverse/65">
+                We use essential cookies to keep FootballBank secure and optional cookies to understand usage and improve the experience. You can accept all, reject optional cookies, or choose what works for you.
+                <a
+                  href="/privacy-policy"
+                  className="ml-1 text-primary-accent underline-offset-4 hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Privacy Policy
+                </a>
+              </p>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
+            <div className="flex shrink-0 flex-wrap gap-2">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={declineCookies}
-                className="border-gray-300 text-gray-700"
+                className="border-primary-text-inverse/30 bg-transparent text-primary-text-inverse hover:bg-primary-text-inverse/10 hover:text-primary-text-inverse"
               >
-                Decline
+                Reject optional
               </Button>
-              <CookieSettings 
+              <CookieSettings
                 trigger={
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border-gray-300 text-gray-700 gap-1"
+                    className="gap-2 border-primary-text-inverse/30 bg-transparent text-primary-text-inverse hover:bg-primary-text-inverse/10 hover:text-primary-text-inverse"
                   >
-                    <Settings className="w-3 h-3" />
+                    <Settings className="size-3.5" />
                     Customize
                   </Button>
                 }
@@ -117,7 +114,7 @@ export default function CookieConsent() {
               <Button
                 size="sm"
                 onClick={acceptCookies}
-                className="bg-accent-red hover:bg-red-700 text-white"
+                className="bg-primary-action text-primary-text-inverse hover:bg-primary-action-hover"
               >
                 Accept All
               </Button>
@@ -134,8 +131,7 @@ export function useCookieConsent() {
   const [hasConsented, setHasConsented] = useState(null);
 
   useEffect(() => {
-    const consent = localStorage.getItem("cookie-consent");
-    setHasConsented(consent === "accepted");
+    setHasConsented(Boolean(getCookieConsent()));
   }, []);
 
   return hasConsented;

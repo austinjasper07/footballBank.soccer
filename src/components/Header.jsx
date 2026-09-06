@@ -9,6 +9,7 @@ import Image from "next/image";
 import { UserHeader } from "./UserHeader";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { getClientDictionary } from "@/lib/client-dictionaries";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 export default function Header({ lang = "en" }) {
   const [dict, setDict] = useState(null);
@@ -18,6 +19,7 @@ export default function Header({ lang = "en" }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const isShopPage = false;
+  useBodyScrollLock(menuOpen);
 
   useEffect(() => {
     setMounted(true);
@@ -173,8 +175,8 @@ export default function Header({ lang = "en" }) {
       {/* Mobile Menu */}
       {mounted && (
         <div
-          className={`fixed top-0 right-0 h-full w-72 sm:w-80 bg-primary-navy z-50 shadow-lg transform transition-transform duration-300 ease-in-out border-l border-white/10 ${
-            menuOpen ? "translate-x-0" : "translate-x-full"
+          className={`fixed top-0 left-0 right-auto h-full w-72 sm:w-80 bg-primary-navy z-50 shadow-lg transform transition-transform duration-300 ease-in-out border-r border-white/10 ${
+            menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <div className="flex flex-col p-4 sm:p-6 space-y-3 sm:space-y-4 pt-20 sm:pt-24">

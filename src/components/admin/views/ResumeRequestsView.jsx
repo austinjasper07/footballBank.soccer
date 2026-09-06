@@ -9,6 +9,7 @@ import {
   deleteResumeRequest,
 } from "@/actions/resumeRequestActions";
 import { useToast } from "@/hooks/use-toast";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import LoadingSplash from "@/components/ui/loading-splash";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +21,7 @@ export default function ResumeRequestsView({ refreshPulse = 0 }) {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
+  useBodyScrollLock(selected !== null);
 
   const refresh = async () => setRequests(await getAllResumeRequests());
   useEffect(() => {

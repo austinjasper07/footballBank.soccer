@@ -22,7 +22,12 @@ export function getCookiePreferences() {
   try {
     const saved = localStorage.getItem(COOKIE_PREFERENCES_KEY);
     if (saved) {
-      return { ...defaultPreferences, ...JSON.parse(saved) };
+      const parsed = JSON.parse(saved);
+      return {
+        essential: true,
+        analytics: parsed.analytics === true,
+        functional: parsed.functional === true,
+      };
     }
   } catch (error) {
     console.error("Error parsing cookie preferences:", error);
@@ -38,7 +43,14 @@ export function setCookieConsent(status, preferences = null) {
   localStorage.setItem(COOKIE_CONSENT_KEY, status);
   
   if (preferences) {
-    localStorage.setItem(COOKIE_PREFERENCES_KEY, JSON.stringify(preferences));
+    localStorage.setItem(
+      COOKIE_PREFERENCES_KEY,
+      JSON.stringify({
+        essential: true,
+        analytics: preferences.analytics === true,
+        functional: preferences.functional === true,
+      }),
+    );
   }
 }
 

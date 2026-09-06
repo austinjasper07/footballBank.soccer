@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/NewAuthContext";
 import { Button } from "@/components/ui/button";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 const tabs = ["overview", "stats", "career", "media", "contact"];
 
@@ -38,6 +39,7 @@ export default function PlayerProfilePage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedImage, setSelectedImage] = useState(null);
+  useBodyScrollLock(selectedImage !== null);
 
   useEffect(() => {
     if (isAuthenticated && user) {

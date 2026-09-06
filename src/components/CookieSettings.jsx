@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Cookie, Settings, Shield, BarChart3, Zap } from "lucide-react";
+import { Settings, Shield, BarChart3, Zap } from "lucide-react";
 import { 
   getCookiePreferences, 
   setCookieConsent, 
@@ -114,10 +114,7 @@ export default function CookieSettings({ trigger }) {
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Cookie className="w-5 h-5 text-accent-red" />
-            Cookie Preferences
-          </DialogTitle>
+          <DialogTitle>Cookie Preferences</DialogTitle>
           <DialogDescription>
             Customize your cookie preferences. You can change these settings at any time.
           </DialogDescription>

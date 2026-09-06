@@ -78,7 +78,7 @@ export default async function RepresentationPage({ params }) {
               alt={`${agentName} portrait`}
               fill
               sizes="(max-width: 1024px) 100vw, 30vw"
-              className="object-cover"
+              className="object-cover object-left"
             />
           </div>
           <h1 className="mt-4 font-heading text-3xl font-semibold leading-none tracking-tight sm:text-4xl">

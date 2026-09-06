@@ -201,29 +201,29 @@ export default function Footer({ lang = "en" }) {
           </div>
         </div>
 
-        <div className="container mx-auto px-6 text-center mb-6">
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-            <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white rounded-lg p-2">
+        <div className="container mx-auto px-2 text-center mb-6 sm:px-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5 md:gap-12">
+            <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white rounded-lg p-1 sm:p-2">
               <img
                 src="/partners/crown-fc-nigeria-logo.png"
                 alt="Crown FC"
-                className="h-8 md:h-10 object-contain"
+                className="h-6 sm:h-8 md:h-10 object-contain"
               />
             </div>
 
-            <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white rounded-lg p-2">
+            <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white rounded-lg p-1 sm:p-2">
               <img
                 src="/partners/Concacaf_logo.svg"
                 alt="CONCACAF"
-                className="h-12 md:h-14 object-contain"
+                className="h-8 sm:h-10 md:h-14 object-contain"
               />
             </div>
 
-            <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white rounded-lg p-2">
+            <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white rounded-lg p-1 sm:p-2">
               <img
                 src="/partners/fifa.png"
                 alt="FIFA"
-                className="h-10 md:h-12 object-contain"
+                className="h-7 sm:h-9 md:h-12 object-contain"
               />
             </div>
 
@@ -231,15 +231,15 @@ export default function Footer({ lang = "en" }) {
               <img
                 src="/partners/future-hero-football-academy.jpg"
                 alt="Future Hero Football Academy"
-                className="h-10 md:h-12 object-contain"
+                className="h-7 sm:h-9 md:h-12 object-contain"
               />
             </div>
 
-            <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white/5 rounded-lg p-2">
+            <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white/5 rounded-lg p-1 sm:p-2">
               <img
                 src="/partners/unknow.jpg"
                 alt="Unknown Partner"
-                className="h-10 md:h-14 object-contain grayscale hover:grayscale-0"
+                className="h-7 sm:h-10 md:h-14 object-contain grayscale hover:grayscale-0"
               />
             </div>
           </div>

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongodb";
 import mongoose from "mongoose";
 import { sendPlayerSubmissionDecisionEmail, sendWelcomeEmail } from "@/lib/email";
+import { deletePlayerMedia } from "@/lib/firebaseStorageCleanup";
 
 // 🔧 Helper: safely convert any Mongoose doc(s) to plain JSON and convert _id to id
 const toPlain = (data) => {
@@ -255,6 +256,13 @@ export async function updatePlayer(playerId, data) {
 export async function deletePlayer(id) {
   await dbConnect();
   try {
+    const player = await Player.findById(id).select("email").lean();
+
+    if (!player) {
+      throw new Error("Player not found");
+    }
+
+    await deletePlayerMedia(player.email);
     await Player.findByIdAndDelete(id);
     revalidatePath("/admin/players");
     return { success: true };
