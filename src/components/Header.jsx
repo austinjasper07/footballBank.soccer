@@ -149,8 +149,8 @@ export default function Header({ lang = "en" }) {
             {/* Shop/cart shortcut disabled */}
             {mounted &&
               !isLoading &&
-              (isAuthenticated ? (
-                <UserHeader slug={"Dashboard"} href={"/admin"} />
+                (isAuthenticated ? (
+                <UserHeader slug={"Dashboard"} href={"/admin"} lang={lang} />
               ) : (
                 <Link
                   href={`/${lang}/auth/login`}

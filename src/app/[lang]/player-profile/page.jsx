@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Award, Calendar, Camera, Edit3, FileText, Footprints, Mail, MapPin, Maximize2, Phone, Play, Ruler, Shield, TrendingUp, User, Weight, X } from "lucide-react";
@@ -11,6 +12,8 @@ const tabs = ["overview", "stats", "career", "media", "contact"];
 
 export default function PlayerProfilePage() {
   const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const pathname = usePathname();
+  const lang = pathname?.split("/")[1] || "en";
   const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
@@ -45,7 +48,7 @@ export default function PlayerProfilePage() {
             </div>
             <div><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-accent">Player profile</p><h1 className="mt-3 font-heading text-4xl font-semibold leading-none tracking-tight sm:text-6xl">{fullName}</h1><p className="mt-3 text-base text-primary-text-inverse/65">{player.position} <span className="mx-2 text-primary-accent">/</span> {player.country}</p></div>
           </div>
-          <Button variant="onNavy" asChild><Link href="/en/player-profile/edit"><Edit3 className="size-4" />Edit profile</Link></Button>
+          <Button variant="onNavy" asChild><Link href={`/${lang}/profile/settings`}><Edit3 className="size-4" />Edit profile</Link></Button>
         </div>
         <div className="mt-10 grid grid-cols-2 border-t border-primary-text-inverse/15 pt-6 sm:grid-cols-4">{[["Age", age], ["Height", player.height], ["Weight", player.weight], ["Preferred foot", player.foot]].map(([label, value]) => <div key={label} className="border-r border-primary-text-inverse/15 px-4 first:pl-0 last:border-0 sm:px-6"><p className="text-xs uppercase tracking-[0.14em] text-primary-text-inverse/50">{label}</p><p className="mt-2 font-heading text-xl font-semibold sm:text-2xl">{value || "-"}</p></div>)}</div>
       </div>

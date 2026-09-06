@@ -379,9 +379,7 @@ export default function PlayerSubmissionForm() {
               <Label>Contract Status</Label>
               <Select
                 value={formData.contractStatus}
-                onValueChange={(val) =>
-                  setFormData({ ...formData, contractStatus: val })
-                }
+                onValueChange={(val) => setFormData({ ...formData, contractStatus: val, availableFrom: val === "Unavailable" ? formData.availableFrom : "" })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select contract status" />
@@ -394,11 +392,12 @@ export default function PlayerSubmissionForm() {
             </div>
             <InputField
               label="Available From"
-              type="date"
+              type="month"
               value={formData.availableFrom}
               onChange={(val) =>
                 setFormData({ ...formData, availableFrom: val })
               }
+              disabled={formData.contractStatus !== "Unavailable"}
             />
             <div>
               <Label>Preferred Leagues</Label>
@@ -421,7 +420,7 @@ export default function PlayerSubmissionForm() {
               </Select>
             </div>
             <div className="md:col-span-2">
-              <Label>Description</Label>
+              <Label>Bio</Label>
               <Textarea
                 rows={3}
                 value={formData.description}
@@ -454,7 +453,7 @@ export default function PlayerSubmissionForm() {
             ))}
             <div>
               <div className="mb-3 flex items-end justify-between gap-4"><div><h3 className="font-heading text-lg font-semibold">Club history</h3><p className="text-sm text-primary-muted">Optional previous clubs and playing periods.</p></div><Button type="button" variant="outline" onClick={() => setFormData((previous) => ({ ...previous, clubHistory: [...previous.clubHistory, { clubName: "", startDate: "", endDate: "", position: "" }] }))}>+ Add club</Button></div>
-              <div className="space-y-4">{formData.clubHistory.map((club, index) => <div key={index} className="grid gap-4 border-t border-divider pt-4 sm:grid-cols-2 lg:grid-cols-4"><InputField label="Club name" value={club.clubName} onChange={(value) => updateClubHistory(index, "clubName", value)} /><InputField label="Start date" type="date" value={club.startDate} onChange={(value) => updateClubHistory(index, "startDate", value)} /><InputField label="End date" type="date" value={club.endDate} onChange={(value) => updateClubHistory(index, "endDate", value)} /><div><Label>Position</Label><Select value={club.position} onValueChange={(value) => updateClubHistory(index, "position", value)}><SelectTrigger><SelectValue placeholder="Select position" /></SelectTrigger><SelectContent>{["Goalkeeper", "Defender", "Midfielder", "Forward"].map((position) => <SelectItem key={position} value={position}>{position}</SelectItem>)}</SelectContent></Select></div></div>)}</div>
+              <div className="space-y-4">{formData.clubHistory.map((club, index) => <div key={index} className="grid gap-4 border-t border-divider pt-4 sm:grid-cols-2 lg:grid-cols-4"><InputField label="Club name" value={club.clubName} onChange={(value) => updateClubHistory(index, "clubName", value)} /><InputField label="Start month" type="month" value={club.startDate} onChange={(value) => updateClubHistory(index, "startDate", value)} /><InputField label="End month" type="month" value={club.endDate} onChange={(value) => updateClubHistory(index, "endDate", value)} /><div><Label>Position</Label><Select value={club.position} onValueChange={(value) => updateClubHistory(index, "position", value)}><SelectTrigger><SelectValue placeholder="Select position" /></SelectTrigger><SelectContent>{["Goalkeeper", "Defender", "Midfielder", "Forward"].map((position) => <SelectItem key={position} value={position}>{position}</SelectItem>)}</SelectContent></Select></div></div>)}</div>
             </div>
           </div>
           <div className="mt-8 flex justify-between"><Button variant="outline" onClick={prevStep}>Back</Button><Button onClick={nextStep}>Continue to media</Button></div>
@@ -600,13 +599,14 @@ function ProgressBar({ progress }) {
 }
 
 // Reusable input field
-function InputField({ label, value, onChange, type = "text" }) {
+function InputField({ label, value, onChange, type = "text", disabled = false }) {
   return (
     <div>
       <Label>{label}</Label>
       <Input
         type={type}
         value={value}
+        disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
       />
     </div>

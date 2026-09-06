@@ -264,35 +264,38 @@ export default function SettingsPage() {
             <form onSubmit={handleSaveProfile} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="firstName">First Name</Label>
+                  <Label htmlFor="firstName">First Name <span className="text-xs font-normal text-primary-muted">(cannot be changed)</span></Label>
                   <Input
                     id="firstName"
                     name="firstName"
                     value={formData.firstName}
-                    onChange={handleInputChange}
-                    required
+                    readOnly
+                    disabled
+                    className="bg-primary-surface text-primary-muted"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="lastName">Last Name <span className="text-xs font-normal text-primary-muted">(cannot be changed)</span></Label>
                   <Input
                     id="lastName"
                     name="lastName"
                     value={formData.lastName}
-                    onChange={handleInputChange}
-                    required
+                    readOnly
+                    disabled
+                    className="bg-primary-surface text-primary-muted"
                   />
                 </div>
               </div>
               <div>
-                <Label htmlFor="email">Email Address</Label>
+                  <Label htmlFor="email">Email Address <span className="text-xs font-normal text-primary-muted">(cannot be changed)</span></Label>
                 <Input
                   id="email"
                   name="email"
                   type="email"
                   value={formData.email}
                   disabled
-                  className="bg-gray-50"
+                  readOnly
+                  className="bg-primary-surface text-primary-muted"
                 />
                 <p className="text-sm text-primary-muted mt-1">
                   Email cannot be changed. Contact support if needed.

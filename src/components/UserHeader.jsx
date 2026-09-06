@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 
 
-export function UserHeader({slug, href}) {
+export function UserHeader({ slug, href, lang = "en" }) {
   const { role, isAuthenticated, user, logout } = useAuth();
   const [open, setOpen] = useState(false);
 
@@ -19,10 +19,10 @@ export function UserHeader({slug, href}) {
   const closeDropdown = () => setOpen(false);
 
   const getDashboardLink = () => {
-    if (isAdmin) return "/admin";
-    if (isPlayer) return "/player-profile";
-    if (isEditor) return "/editor";
-    return "/profile";
+    if (isAdmin) return `/${lang}/admin`;
+    if (isPlayer) return `/${lang}/player-profile`;
+    if (isEditor) return `/${lang}/editor`;
+    return `/${lang}/profile`;
   };
 
   const getDashboardLabel = () => {
@@ -59,7 +59,7 @@ export function UserHeader({slug, href}) {
       </Link>
 
       <Link
-        href="/profile"
+        href={getDashboardLink()}
         className="group flex items-center gap-3 px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
         onClick={closeDropdown}
       >

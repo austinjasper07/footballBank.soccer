@@ -1,7 +1,7 @@
 "use server";
 
 import dbConnect from "@/lib/mongodb";
-import { Player, PlayerProfileView, Post, User } from "@/lib/schemas";
+import { Player, PlayerProfileView, Post, ResumeRequest, User } from "@/lib/schemas";
 import { getAuthUser } from "@/lib/oauth";
 import { sendEmail } from "@/lib/email";
 import { notifyAdmins } from "@/lib/adminNotifications";
@@ -26,6 +26,14 @@ export async function trackPlayerProfileView(playerId, locale = "en") {
   ]);
   if (!player || !viewerRecord || !player.email) return { tracked: false, reason: "missing-record" };
   if (player.userId?.toString() === viewer.id) return { tracked: false, reason: "owner" };
+
+  const approvedProfileRequest = await ResumeRequest.exists({
+    playerId,
+    requesterId: viewer.id,
+    requestType: "PROFILE",
+    status: "APPROVED",
+  });
+  if (!approvedProfileRequest) return { tracked: false, reason: "no-approved-profile-request" };
 
   const dayStart = new Date();
   dayStart.setHours(0, 0, 0, 0);

@@ -18,10 +18,11 @@ import {
 
 export default function ProfileNavigation({ userRole = "user", onItemClick }) {
   const pathname = usePathname();
+  const lang = pathname?.split("/")[1] || "en";
 
   const userNavItems = [
     {
-      href: "/profile",
+      href: `/${lang}/profile`,
       label: "Overview",
       icon: Home,
       description: "Account overview and quick stats",
@@ -39,7 +40,7 @@ export default function ProfileNavigation({ userRole = "user", onItemClick }) {
     //   description: "Manage your subscriptions",
     // },
     {
-      href: "/profile/settings",
+      href: `/${lang}/profile/settings`,
       label: "Settings",
       icon: Settings,
       description: "Account and privacy settings",
@@ -48,13 +49,13 @@ export default function ProfileNavigation({ userRole = "user", onItemClick }) {
 
   const playerNavItems = [
     {
-      href: "/profile",
+      href: `/${lang}/profile`,
       label: "Overview",
       icon: Home,
       description: "Account overview and quick stats",
     },
     {
-      href: "/player-profile",
+      href: `/${lang}/player-profile`,
       label: "Player Profile",
       icon: User,
       description: "View and manage your player profile",
@@ -72,7 +73,7 @@ export default function ProfileNavigation({ userRole = "user", onItemClick }) {
     //   description: "Manage your subscriptions",
     // },
     {
-      href: "/profile/settings",
+      href: `/${lang}/profile/settings`,
       label: "Settings",
       icon: Settings,
       description: "Account and privacy settings",

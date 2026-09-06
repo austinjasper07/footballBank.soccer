@@ -13,6 +13,7 @@ const COLORS = {
 
 const PAGE = { width: 595.28, height: 841.89, left: 48, right: 48, top: 48, bottom: 54 };
 const CONTENT_WIDTH = PAGE.width - PAGE.left - PAGE.right;
+const PLATFORM_PHONE = "+(844) 362-9881 (Toll Free)";
 const valueOrUnavailable = (value) => value || "Not provided";
 const fullName = (player) => `${player.firstName || ""} ${player.lastName || ""}`.trim();
 
@@ -24,7 +25,7 @@ function drawFooter(document, pageNumber, pageCount) {
   const y = PAGE.height - 32;
   document.save().strokeColor(COLORS.divider).lineWidth(0.6).moveTo(PAGE.left, y - 10).lineTo(PAGE.width - PAGE.right, y - 10).stroke();
   document.font("Helvetica").fontSize(7.5).fillColor(COLORS.muted).text("FootballBank International", PAGE.left, y, { width: 180 });
-  document.text("contact@footballbank.soccer", PAGE.left + 180, y, { width: 170, align: "center" });
+  document.text(`contact@footballbank.soccer  |  ${PLATFORM_PHONE}`, PAGE.left + 180, y, { width: 170, align: "center", ellipsis: true });
   document.text(`${pageNumber} / ${pageCount}`, PAGE.width - PAGE.right - 80, y, { width: 80, align: "right" });
   document.restore();
 }
@@ -106,14 +107,14 @@ export function generatePlayerResumePdf(player) {
     document.font("Helvetica-Bold").fontSize(22).fillColor(COLORS.navy).text("FootballBank", 116, 53);
     document.font("Helvetica-Bold").fontSize(7.5).fillColor(COLORS.action).text("I N T E R N A T I O N A L", 117, 79);
     document.font("Helvetica").fontSize(8).fillColor(COLORS.muted).text("contact@footballbank.soccer", 370, 57, { width: 177, align: "right" });
-    document.font("Helvetica-Bold").fontSize(8).fillColor(COLORS.navy).text(valueOrUnavailable(player.phone), 370, 72, { width: 177, align: "right" });
+    document.font("Helvetica").fontSize(8).fillColor(COLORS.muted).text(PLATFORM_PHONE, 370, 72, { width: 177, align: "right" });
     document.strokeColor(COLORS.action).lineWidth(2).moveTo(PAGE.left, 119).lineTo(PAGE.width - PAGE.right, 119).stroke();
     document.y = 145;
 
     document.font("Helvetica-Bold").fontSize(8).fillColor(COLORS.action).text("PROFESSIONAL PLAYER RESUME", PAGE.left, document.y, { characterSpacing: 0.8 });
     document.moveDown(0.45).font("Helvetica-Bold").fontSize(29).fillColor(COLORS.navy).text(fullName(player), PAGE.left, document.y, { width: CONTENT_WIDTH });
     document.moveDown(0.25).font("Helvetica").fontSize(12).fillColor(COLORS.muted).text(`${valueOrUnavailable(player.position)} | ${valueOrUnavailable(player.country)}`);
-    document.moveDown(0.3).fontSize(8.5).fillColor(COLORS.body).text(`${valueOrUnavailable(player.email)}  |  ${valueOrUnavailable(player.phone)}  |  ${valueOrUnavailable(player.country)}`);
+    document.moveDown(0.3).fontSize(8.5).fillColor(COLORS.body).text(`Player contact: ${valueOrUnavailable(player.email)}  |  ${valueOrUnavailable(player.phone)}  |  ${valueOrUnavailable(player.country)}`);
 
     drawSectionTitle(document, "Player details");
     drawDetailRows(document, [

@@ -30,10 +30,6 @@ export default function UserProfilePage() {
         }),
         fetch("/api/profile/submission-status", { credentials: "include" }).then((response) => response.ok ? response.json() : { canSubmit: true }),
       ]).then(([data, submissionStatus]) => {
-          if (data?.role === "player") {
-            router.replace(`/${lang}/player-profile`);
-            return;
-          }
           setCanSubmitProfile(submissionStatus.canSubmit !== false);
           setProfile(data);
         })

@@ -34,7 +34,7 @@ function LoginPageContent() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [redirectUrl, setRedirectUrl] = useState("/profile");
+  const [redirectUrl, setRedirectUrl] = useState("");
   const searchParams = useSearchParams();
   const otpFormRef = useRef(null);
 
@@ -55,8 +55,7 @@ function LoginPageContent() {
           const data = await response.json();
           if (data.user) {
             // User is already authenticated, redirect to appropriate dashboard
-            const dashboardUrl = redirectUrl || (data.user.role === 'admin' ? '/admin' : 
-                              data.user.role === 'player' ? '/player-profile' : '/profile');
+            const dashboardUrl = redirectUrl || "/";
             window.location.href = dashboardUrl;
           }
         }
@@ -115,15 +114,7 @@ function LoginPageContent() {
         setTimeout(() => {
           let dashboardUrl = redirectUrl;
           
-          if (!dashboardUrl) {
-            if (data.user.role === 'admin') {
-              dashboardUrl = '/admin';
-            } else if (data.user.role === 'player') {
-              dashboardUrl = '/player-profile';
-            } else {
-              dashboardUrl = '/profile';
-            }
-          }
+          if (!dashboardUrl) dashboardUrl = '/';
           
           // console.log("🔐 Redirecting to:", dashboardUrl);
           window.location.href = dashboardUrl;
@@ -153,16 +144,7 @@ function LoginPageContent() {
         setTimeout(() => {
           let dashboardUrl = redirectUrl;
           
-          // If no redirect URL specified, determine based on user role
-          if (!dashboardUrl) {
-            if (result.user.role === 'admin') {
-              dashboardUrl = '/admin';
-            } else if (result.user.role === 'player') {
-              dashboardUrl = '/player-profile';
-            } else {
-              dashboardUrl = '/profile';
-            }
-          }
+          if (!dashboardUrl) dashboardUrl = '/';
           
           // console.log("🔐 Redirecting to:", dashboardUrl);
           window.location.href = dashboardUrl;
