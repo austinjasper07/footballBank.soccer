@@ -6,7 +6,8 @@ import { getAgentInfo } from "@/actions/adminActions";
 import { getAuthUser } from "@/lib/oauth";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { getDictionary } from "@/lib/dictionaries";
-import { formatTimeAgo } from "@/utils/dateHelper";import { ArrowUpRight, Globe2, Play, ShieldCheck, Target } from "lucide-react";
+import { formatTimeAgo } from "@/utils/dateHelper";
+import { ArrowUpRight, Globe2, Play, ShieldCheck, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export async function generateMetadata({ params }) {
@@ -99,152 +100,6 @@ export default async function HomePage({ params }) {
   return (
     <div className="min-h-screen bg-primary-bg">
       {/* HERO SECTION */}
-      {/* <div className="relative min-h-[calc(100vh+100px)] md:h-[calc(100vh+100px)] w-full overflow-hidden pt-8 pb-16 lg:pb-2 lg:pt-0 px-6 lg:px-12 flex flex-col lg:flex-row justify-between gap-12 items-center"> */}
-      {/* Background Carousel */}
-      {/* <HeroBackground /> */}
-
-      {/* LEFT CONTENT */}
-      {/* <section className="relative z-10 w-full lg:w-[50%] h-full flex items-center justify-center lg:justify-start text-center lg:text-left">
-          <div className="max-w-2xl space-y-6 h-1/2">
-            <p
-              className="uppercase tracking-widest text-primary-accent font-semibold text-sm md:text-base"
-              data-aos="fade-up"
-            >
-              {dict.homepage.hero.eyebrow || "FootballBank International"}
-            </p>
-            <h1
-              className="font-bold text-[clamp(2.5rem,3.5vw,4rem)] leading-tight tracking-tight text-white drop-shadow-lg"
-              data-aos="fade-up"
-            >
-              {dict.homepage.hero.title
-                .split(dict.homepage.hero.titleHighlight)
-                .map((part, index) => (
-                  <span key={index}>
-                    {part}
-                    {index <
-                      dict.homepage.hero.title.split(
-                        dict.homepage.hero.titleHighlight,
-                      ).length -
-                        1 && (
-                      <span className="text-primary-accent">
-                        {dict.homepage.hero.titleHighlight}
-                      </span>
-                    )}
-                  </span>
-                ))}
-            </h1>
-            <p
-              className="text-white/90 text-[clamp(1rem,2.5vw,1.25rem)] drop-shadow-md"
-              data-aos="fade-up"
-              data-aos-delay="100"
-            >
-              {dict.homepage.hero.subtitle}
-            </p>
-            <div
-              className=" flex sm:flex-row gap-2 md:gap-4 justify-center lg:justify-start pt-8"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              <Link href={`/${lang}/submit-profile`}>
-                <span className="text-nowrap bg-primary-action text-white text-sm md:text-base px-2 sm:px-4 py-2 md:px-6 md:py-3 rounded-md font-medium text-center transition-all hover:bg-primary-action-hover shadow-lg">
-                  {dict.homepage.hero.submitProfile}
-                </span>
-              </Link>
-              <Link href={`/${lang}/players`}>
-                <span className="text-nowrap border-2 border-primary-action text-primary-action text-sm md:text-base px-2 sm:px-4 py-2 md:px-6 md:py-3 rounded-md font-medium text-center transition hover:bg-primary-action hover:text-white hover:border-primary-action shadow-sm">
-                  {dict.homepage.hero.browsePlayers}
-                </span>
-              </Link>
-            </div>
-          </div>
-        </section> */}
-
-      {/* PLAYER OF THE WEEK */}
-
-      {/* {playerOfTheWeek && (
-          <section
-            className="w-full lg:w-1/2 flex items-center justify-center"
-            data-aos="zoom-in"
-            data-aos-delay="100"
-          >
-            <Link href={`/${lang}/players/${playerOfTheWeek.id}`}>
-              <div className="group relative w-full max-w-sm lg:max-w-md bg-primary-navy/60 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-primary-accent/20 hover:border-primary-accent/40 transition-all duration-300 transform hover:scale-105">
-                <div className="absolute top-4 right-4 z-20 bg-linear-to-r from-primary-accent to-amber-500 text-primary-text px-3 py-1 text-xs sm:text-sm font-semibold rounded-full shadow-lg">
-                  {dict.homepage.hero.starOnTheRise}
-                </div>
-
-                <div className="relative">
-                  <Image
-                    src={playerOfTheWeek?.imageUrl?.[0] || "/placeholder.jpg"}
-                    alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
-                    width={500}
-                    height={400}
-                    className="object-cover w-full h-56 sm:h-56 lg:h-80"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
-                </div>
-
-                <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
-                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
-                    {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName}
-                  </h3>
-
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="bg-white/10 rounded-lg p-2backdrop-blur-sm">
-                      <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
-                        {dict.playerProfile.position}
-                      </div>
-                      <div className="text-white font-semibold text-sm sm:text-base">
-                        {playerOfTheWeek?.position}
-                      </div>
-                    </div>
-                    <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
-                      <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
-                        {dict.playerProfile.age}
-                      </div>
-                      <div className="text-white font-semibold text-sm sm:text-base">
-                        {age}
-                      </div>
-                    </div>
-                    <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
-                      <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
-                        {dict.playerProfile.foot}
-                      </div>
-                      <div className="text-white font-semibold text-sm sm:text-base">
-                        {playerOfTheWeek?.foot}
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-blue-100 text-xs sm:text-sm leading-relaxed line-clamp-3 sm:line-clamp-4">
-                    {playerOfTheWeek?.description ||
-                      dict.pricing.playerOfTheWeek.description}
-                  </p>
-
-                  <div className="pt-2">
-                    <span className="inline-flex items-center text-white text-xs sm:text-sm font-medium group-hover:text-primary-accent transition-colors">
-                      {dict.pricing.playerOfTheWeek.viewProfile}
-                      <svg
-                        className="ml-2 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </section>
-        )} */}
-      {/* </div> */}
 
       <section className="relative overflow-hidden bg-navy">
         <img
@@ -255,37 +110,126 @@ export default async function HomePage({ params }) {
           className="absolute inset-0 h-full w-full object-cover opacity-70"
         />
         <div className="absolute inset-0 bg-linear-to-r from-primary-navy via-primary-navy/85 to-primary-navy/20" />
-        <div className="relative mx-auto max-w-7xl px-6 py-24 lg:py-32">
-          <p className="eyebrow">Representation · Recruitment · Opportunity</p>
-          <h1 className="mt-6 max-w-2xl font-heading text-5xl leading-[1.05] text-primary-text-inverse uppercase sm:text-6xl lg:text-7xl">
-            Connecting football talent with{" "}
-            <span className="text-primary-accent">global opportunity.</span>
-          </h1>
-          <p className="mt-7 max-w-xl text-sm leading-relaxed text-primary-text-inverse/70">
-            FootballBank International identifies, represents and positions
-            football talent for opportunities with clubs and football
-            organizations across international markets.
-          </p>
-          <div className="mt-9 flex flex-wrap items-center gap-3">
-            <Button variant="action" size="lg">
-              View players <ArrowUpRight />
-            </Button>
-            <Button variant="onNavy" size="lg">
-              Request a player <ArrowUpRight />
-            </Button>
+
+        <div className="relative mx-auto max-w-7xl flex items-center md:justify-between px-6 py-24 lg:py-18">
+          <div className="">
+            <p className="eyebrow">
+              Representation · Recruitment · Opportunity
+            </p>
+            <h1 className="mt-6 max-w-2xl font-heading text-5xl leading-[1.05] text-primary-text-inverse uppercase sm:text-6xl lg:text-7xl">
+              Connecting football talent with{" "}
+              <span className="text-primary-accent">global opportunity.</span>
+            </h1>
+            <p className="mt-7 max-w-xl text-sm leading-relaxed text-primary-text-inverse/70">
+              FootballBank International identifies, represents and positions
+              football talent for opportunities with clubs and football
+              organizations across international markets.
+            </p>
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <Button variant="action" size="lg">
+                View players <ArrowUpRight />
+              </Button>
+              <Button variant="onNavy" size="lg">
+                Request a player <ArrowUpRight />
+              </Button>
+            </div>
+            <a
+              href="#"
+              className="mt-8 inline-flex items-center gap-2 text-xs text-primary-text-inverse/60 transition-colors hover:text-primary-accent"
+            >
+              Seeking representation? <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
           </div>
-          <a
-            href="#"
-            className="mt-8 inline-flex items-center gap-2 text-xs text-primary-text-inverse/60 transition-colors hover:text-primary-accent"
-          >
-            Seeking representation? <ArrowUpRight className="h-3.5 w-3.5" />
-          </a>
+
+          {/* PLAYER OF THE WEEK */}
+          {playerOfTheWeek && (
+            <section
+              className="w-full lg:w-1/2 flex items-center justify-center"
+            >
+              <Link href={`/${lang}/players/${playerOfTheWeek.id}`}>
+                <div className="group relative w-full max-w-sm lg:max-w-md bg-primary-navy/60 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-primary-accent/20 hover:border-primary-accent/40 transition-all duration-300 transform">
+                  <div className="absolute top-4 right-4 z-20 bg-linear-to-r from-primary-accent to-amber-500 text-primary-text px-3 py-1 text-xs sm:text-sm font-semibold rounded-full shadow-lg">
+                    {dict.homepage.hero.starOnTheRise}
+                  </div>
+
+                  <div className="relative">
+                    <Image
+                      src={playerOfTheWeek?.imageUrl?.[0] || "/placeholder.jpg"}
+                      alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
+                      width={500}
+                      height={400}
+                      className="object-cover w-full h-56 sm:h-56 lg:h-80"
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
+                  </div>
+
+                  <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
+                      {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName}
+                    </h3>
+
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="bg-white/10 rounded-lg p-2backdrop-blur-sm">
+                        <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
+                          {dict.playerProfile.position}
+                        </div>
+                        <div className="text-white font-semibold text-sm sm:text-base">
+                          {playerOfTheWeek?.position}
+                        </div>
+                      </div>
+                      <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
+                        <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
+                          {dict.playerProfile.age}
+                        </div>
+                        <div className="text-white font-semibold text-sm sm:text-base">
+                          {age}
+                        </div>
+                      </div>
+                      <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
+                        <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
+                          {dict.playerProfile.foot}
+                        </div>
+                        <div className="text-white font-semibold text-sm sm:text-base">
+                          {playerOfTheWeek?.foot}
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-blue-100 text-xs sm:text-sm leading-relaxed line-clamp-3 sm:line-clamp-4">
+                      {playerOfTheWeek?.description ||
+                        dict.pricing.playerOfTheWeek.description}
+                    </p>
+
+                    <div className="pt-2">
+                      <span className="inline-flex items-center text-white text-xs sm:text-sm font-medium group-hover:text-primary-accent transition-colors">
+                        {dict.pricing.playerOfTheWeek.viewProfile}
+                        <svg
+                          className="ml-2 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </section>
+          )}
         </div>
+
         <div className="relative border-t border-primary-text-inverse/10 bg-primary-navy/80">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 text-[0.65rem] tracking-[0.18em] text-primary-text-inverse/50 uppercase">
             <span>FootballBank International / Talent in focus</span>
             <span className="hidden items-center gap-2 sm:flex">
-              Shola Mufta · Winger <ArrowUpRight className="h-3 w-3" />
+              {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName} · {playerOfTheWeek?.position} <ArrowUpRight className="h-3 w-3" />
             </span>
           </div>
         </div>
@@ -418,12 +362,7 @@ export default async function HomePage({ params }) {
                           new Date(player.dob).getFullYear()
                         : "N/A"}
                     </span>
-                    {player.foot && (
-                        <span>
-                          Foot: {" "}
-                        {player.foot}
-                      </span>
-                    )}
+                    {player.foot && <span>Foot: {player.foot}</span>}
                   </div>
                   <p className="mt-2 text-[0.7rem] text-primary-muted">
                     Club &amp; availability on confirmation
@@ -585,9 +524,7 @@ export default async function HomePage({ params }) {
           <div className="mt-14 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
             {DIRECTION.map((d) => (
               <div key={d.n} className="rule-divider pt-5">
-                <span className="text-[0.7rem] text-primary-muted">
-                  {d.n}
-                </span>
+                <span className="text-[0.7rem] text-primary-muted">{d.n}</span>
                 <h3 className="mt-6 text-base font-medium">{d.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-primary-muted">
                   {d.copy}
@@ -616,7 +553,9 @@ export default async function HomePage({ params }) {
               <h2 className="mt-5 font-heading text-4xl leading-tight text-primary-text-inverse uppercase">
                 Licensed representation.
                 <br />
-                <span className="text-primary-accent">Personal commitment.</span>
+                <span className="text-primary-accent">
+                  Personal commitment.
+                </span>
               </h2>
               <p className="mt-5 max-w-lg text-sm leading-relaxed text-primary-text-inverse/70">
                 Ayodeji Fatade is a United States-based FIFA-licensed football
