@@ -4,6 +4,7 @@
 import { User, OtpToken } from "@/lib/schemas";
 import { sendOTPEmail, sendWelcomeEmail } from "@/lib/email";
 import bcrypt from "bcryptjs";
+import { getCountryCallingCode } from "libphonenumber-js";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import dbConnect from "@/lib/mongodb";
@@ -417,7 +418,7 @@ export async function verifyLoginOTP(email, otp) {
 }
 
 // Verify signup OTP and create user
-export async function verifySignupOTP(email, otp, firstName, lastName, address, shippingAddress, password = "") {
+export async function verifySignupOTP(email, otp, firstName, lastName, phone, phoneCountryCode, address, shippingAddress, password = "") {
   await dbConnect();
   try {
     const normalizedEmail = email?.trim().toLowerCase();
@@ -436,10 +437,16 @@ export async function verifySignupOTP(email, otp, firstName, lastName, address, 
     await otpRecord.save();
 
     // ✅ Create new user
+    const normalizedPhone = `+${getCountryCallingCode(phoneCountryCode)}${phone || ""}`.replace(/\s+/g, "").trim();
+    if (!phone?.trim() || !phoneCountryCode) {
+      return { success: false, error: "A phone number and country calling code are required." };
+    }
+
     const userData = {
       email: normalizedEmail,
       firstName,
       lastName,
+      phone: normalizedPhone,
       role: "user",
       isVerified: true,
       ...(password ? { password: await bcrypt.hash(password, 12) } : {}),

@@ -22,6 +22,8 @@ import { getUserById } from "@/actions/adminActions";
 import { countries } from "@/data/countries&code";
 import { footballLeagues } from "@/data/footballLeagues";
 import Link from "next/link";
+import { getCountryCallingCode } from "libphonenumber-js";
+import { PhoneField } from "@/components/ui/PhoneField";
 
 export default function PlayerSubmissionForm() {
   const { toast } = useToast();
@@ -49,6 +51,7 @@ export default function PlayerSubmissionForm() {
     weight: "",
     email: "",
     phone: "",
+    phoneCountryCode: "US",
     description: "",
     contractStatus: "",
     availableFrom: "",
@@ -213,6 +216,7 @@ export default function PlayerSubmissionForm() {
       try {
         await createSubmission({
           ...formData,
+          phone: `+${getCountryCallingCode(formData.phoneCountryCode)}${formData.phone}`.replace(/\s+/g, ""),
           submittedAt: new Date(),
         });
         setSubmitted(true);
@@ -284,7 +288,6 @@ export default function PlayerSubmissionForm() {
               { label: "Last Name", field: "lastName" },
               { label: "Date of Birth", field: "dob", type: "date" },
               { label: "Email", field: "email", type: "email" },
-              { label: "Phone", field: "phone" },
             ].map(({ label, field, type }) => (
               <InputField
                 key={field}
@@ -294,6 +297,12 @@ export default function PlayerSubmissionForm() {
                 onChange={(val) => setFormData({ ...formData, [field]: val })}
               />
             ))}
+            <PhoneField
+              countryCode={formData.phoneCountryCode}
+              phone={formData.phone}
+              onCountryCodeChange={(value) => setFormData({ ...formData, phoneCountryCode: value })}
+              onPhoneChange={(value) => setFormData({ ...formData, phone: value })}
+            />
             <div>
               <Label>Country *</Label>
               <Select

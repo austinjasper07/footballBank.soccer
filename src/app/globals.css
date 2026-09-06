@@ -134,6 +134,12 @@
     font-family: var(--font-heading);
   }
 
+  input:focus, textarea:focus, select:focus {
+    outline: 2px solid var(--color-primary-action) !important;
+    outline-offset: 2px;
+    border-color: var(--color-primary-action) !important;
+  }
+
   ::-webkit-scrollbar {
     display: none;
   }

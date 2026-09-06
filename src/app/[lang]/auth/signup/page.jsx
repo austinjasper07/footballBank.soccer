@@ -34,6 +34,7 @@ import {
 import Link from "next/link";
 import { sendSignupOTP, verifySignupOTP } from "@/actions/authActions";
 import OtpInput from "@/components/auth/OtpInput";
+import { PhoneField } from "@/components/ui/PhoneField";
 import {
   countryList,
   countryListAllIsoData,
@@ -48,6 +49,8 @@ function SignupPageContent() {
     firstName: "",
     lastName: "",
     email: "",
+    phone: "",
+    phoneCountryCode: "US",
     password: "",
     confirmPassword: "",
     address: {
@@ -117,7 +120,9 @@ function SignupPageContent() {
     if (
       !formData.firstName.trim() ||
       !formData.lastName.trim() ||
-      !formData.email.trim()
+      !formData.email.trim() ||
+      !formData.phone.trim() ||
+      !formData.phoneCountryCode
     ) {
       setError("Please fill in all required fields");
       setLoading(false);
@@ -202,6 +207,8 @@ function SignupPageContent() {
         otp,
         formData.firstName,
         formData.lastName,
+        formData.phone,
+        formData.phoneCountryCode,
         formData.address,
         formData.shippingAddress,
         signupMethod === "password" ? formData.password : ""
@@ -417,6 +424,13 @@ function SignupPageContent() {
                       />
                     </div>
                   </div>
+
+                  <PhoneField
+                    countryCode={formData.phoneCountryCode}
+                    phone={formData.phone}
+                    onCountryCodeChange={(value) => setFormData({ ...formData, phoneCountryCode: value })}
+                    onPhoneChange={(value) => setFormData({ ...formData, phone: value })}
+                  />
 
                   {/* Password Fields - Only show for password signup method */}
                   {signupMethod === "password" && (

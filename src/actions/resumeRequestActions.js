@@ -72,6 +72,7 @@ export async function createResumeRequest(playerId, locale = "en", reason, reque
   ]);
   if (!user) throw new Error("Registered user account not found");
   if (!player) throw new Error("Player not found");
+  const requesterPhone = user.phone || phone.trim();
 
   const existing = await ResumeRequest.findOne({
     requesterId: user._id,
@@ -87,7 +88,7 @@ export async function createResumeRequest(playerId, locale = "en", reason, reque
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      phone: phone.trim(),
+      phone: requesterPhone,
       role: user.role,
       isVerified: user.isVerified,
       address: user.address,
@@ -113,7 +114,7 @@ export async function createResumeRequest(playerId, locale = "en", reason, reque
     await notifyAdmins({
       subject: `New ${requestType === "CV" ? "resume download" : "profile access"} request for ${player.firstName} ${player.lastName}`,
       title: "New player access request",
-      message: `${user.firstName} ${user.lastName} (${user.email}, phone: ${phone.trim() || "Not provided"}) requested ${requestType === "CV" ? "a professional resume" : "full profile access"} for ${player.firstName} ${player.lastName}. Reason: ${reason.trim()}`,
+      message: `${user.firstName} ${user.lastName} (${user.email}, phone: ${requesterPhone || "Not provided"}) requested ${requestType === "CV" ? "a professional resume" : "full profile access"} for ${player.firstName} ${player.lastName}. Reason: ${reason.trim()}`,
       link: "/en/admin",
     });
   } catch (notificationError) {
