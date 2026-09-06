@@ -5,8 +5,6 @@ import { cn } from "@/lib/utils";
 import {
   User,
   UserCheck,
-  ShoppingBag,
-  Crown,
   Settings,
   Home,
   Trophy,
@@ -27,18 +25,6 @@ export default function ProfileNavigation({ userRole = "user", onItemClick }) {
       icon: Home,
       description: "Account overview and quick stats",
     },
-    // {
-      // href: "/profile/__orders",
-    //   label: "Orders",
-    //   icon: ShoppingBag,
-    //   description: "Order history and management",
-    // },
-    // {
-    //  href: "/profile/__subscriptions",
-    //   label: "Subscriptions",
-    //   icon: Crown,
-    //   description: "Manage your subscriptions",
-    // },
     {
       href: `/${lang}/profile/settings`,
       label: "Settings",
@@ -60,18 +46,6 @@ export default function ProfileNavigation({ userRole = "user", onItemClick }) {
       icon: User,
       description: "View and manage your player profile",
     },
-    // {
-      // href: "/profile/__orders",
-    //   label: "Orders",
-    //   icon: ShoppingBag,
-    //   description: "Order history and management",
-    // },
-    // {
-      // href: "/profile/__subscriptions",
-    //   label: "Subscriptions",
-    //   icon: Crown,
-    //   description: "Manage your subscriptions",
-    // },
     {
       href: `/${lang}/profile/settings`,
       label: "Settings",

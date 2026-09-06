@@ -90,8 +90,6 @@ const AdminDashboard = () => {
         return <ResumeRequestsView refreshPulse={refreshPulse} />;
       case "shop":
         return <DashboardView />;
-      case "orders":
-        return <DashboardView />;
       case "blog":
         return <AdminBlogView refreshPulse={refreshPulse} />;
       case "agent":
@@ -127,7 +125,6 @@ const AdminDashboard = () => {
         subtitle: "Review registered user requests for player information",
       },
       shop: { title: "Shop", subtitle: "Manage products and inventory" },
-      orders: { title: "Orders", subtitle: "View and process customer orders" },
       blog: { title: "Blog", subtitle: "Create and manage blog content" },
       agent: {
         title: "Agent Management",
