@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getPlayerById } from "@/actions/publicActions";
 import { getPlayerAccess } from "@/actions/resumeRequestActions";
+import { trackPlayerProfileView } from "@/actions/viewTrackingActions";
 import { getDictionary } from "@/lib/dictionaries";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import PlayerMedia from "./PlayerMedia";
@@ -23,6 +24,8 @@ export default async function PlayerPage({ params }) {
   const { id, lang } = await params;
   const player = await getPlayerById(id);
   if (!player) notFound();
+
+  await trackPlayerProfileView(id, lang);
 
   let access = { profileAccess: false, cvAccess: false };
   try {

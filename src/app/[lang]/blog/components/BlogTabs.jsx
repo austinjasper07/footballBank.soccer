@@ -11,8 +11,8 @@ export default function BlogTabs({ categories, active, onChange }) {
           onClick={() => onChange(cat)}
           className={`${
             cat === active
-              ? 'bg-accent-red text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-primary-action text-primary-text-inverse'
+              : 'bg-secondary-bg-alt text-primary-text hover:bg-primary-action/10'
           } px-4 py-2 rounded text-sm font-medium transition-colors`}
         >
           {cat}

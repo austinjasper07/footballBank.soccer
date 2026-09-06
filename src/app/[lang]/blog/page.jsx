@@ -94,24 +94,24 @@ export default async function BlogPage({ params }) {
         className="w-full h-64 relative py-16 overflow-hidden bg-cover bg-center bg-no-repeat bg-[url('/blog-breadcrumb.jpg')] " 
       >
         {/* Background overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-primary-navy/55"></div>
         
         {/* Content */}
         <div className="relative z-10">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="breadcrumb-content-main">
-                <h1 className="text-4xl font-bold text-white mb-6">{dict.blog.title}</h1>
+                <h1 className="mb-6 text-4xl font-bold text-primary-text-inverse">{dict.blog.title}</h1>
                 <div className="breadcrumb-links">
                   <div className="content-inner">
                     <nav className="breadcrumb" aria-labelledby="system-breadcrumb">
-                      <ol className="flex items-center gap-2 text-sm text-white">
+                      <ol className="flex items-center gap-2 text-sm text-primary-text-inverse">
                         <li>
-                          <Link href={`/${lang}`} className="hover:text-blue-300">{dict.navigation.home}</Link>
+                          <Link href={`/${lang}`} className="hover:text-primary-accent">{dict.navigation.home}</Link>
                           <span className="mx-2">-</span>
                         </li>
                         <li>
-                          <span className="text-white">{dict.blog.title}</span>
+                          <span className="text-primary-text-inverse">{dict.blog.title}</span>
                         </li>
                       </ol>
                     </nav>

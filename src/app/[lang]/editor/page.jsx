@@ -115,7 +115,7 @@ const EditorDashboard = () => {
   };
 
   return (
-    <div className="flex h-screen bg-[hsl(var(--background))] overflow-hidden">
+    <div className="flex h-screen overflow-hidden bg-primary-bg text-primary-text">
       {/* Sidebar - only visible on desktop */}
       <EditorSidebar
         activeView={activeView}
@@ -134,7 +134,7 @@ const EditorDashboard = () => {
           title={getViewTitle().title}
           subtitle={getViewTitle().subtitle}
         />
-        <main className="flex-1 overflow-auto p-6">{renderView()}</main>
+        <main className="flex-1 overflow-auto p-5 lg:p-8">{renderView()}</main>
       </div>
 
       {/* Mobile */}

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/pagination";
 import { SearchBar } from "@/components/admin/SearchBar";
 import { DeleteConfirmationModal } from "@/components/admin/dialogs/DeleteConfirmationModal";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { getAllPosts } from "@/actions/publicActions";
 import { updatePost, deletePost } from "@/actions/adminActions";
@@ -120,55 +121,55 @@ export default function AdminBlogView() {
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center gap-4">
-              <div className="h-8 w-8 bg-primary-action rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">T</span>
+        <Card className="border border-divider bg-primary-card shadow-sm">
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex size-7 items-center justify-center rounded-full bg-primary-action/10">
+                <span className="text-xs font-bold text-primary-action">T</span>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Posts</p>
-                <p className="text-2xl font-bold">{stats.total}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-primary-muted">Total Posts</p>
+                <p className="font-heading text-xl font-semibold">{stats.total}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center gap-4">
-              <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">P</span>
+        <Card className="border border-divider bg-primary-card shadow-sm">
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex size-7 items-center justify-center rounded-full bg-primary-action/10">
+                <span className="text-xs font-bold text-primary-action">P</span>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Published</p>
-                <p className="text-2xl font-bold">{stats.published}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-primary-muted">Published</p>
+                <p className="font-heading text-xl font-semibold">{stats.published}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-sm" >
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <div className="h-8 w-8 bg-yellow-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">D</span>
+        <Card className="border border-divider bg-primary-card shadow-sm">
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex size-7 items-center justify-center rounded-full bg-primary-accent/30">
+                <span className="text-xs font-bold text-primary-navy">D</span>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Drafts</p>
-                <p className="text-2xl font-bold">{stats.drafts}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-primary-muted">Drafts</p>
+                <p className="font-heading text-xl font-semibold">{stats.drafts}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center gap-4">
-              <Eye className="h-8 w-8 text-purple-500" />
+        <Card className="border border-divider bg-primary-card shadow-sm">
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex items-center gap-3">
+              <Eye className="size-7 text-primary-action" />
               <div>
-                <p className="text-sm text-muted-foreground">Total Views</p>
-                <p className="text-2xl font-bold">{stats.views.toLocaleString()}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-primary-muted">Total Views</p>
+                <p className="font-heading text-xl font-semibold">{stats.views.toLocaleString()}</p>
               </div>
             </div>
           </CardContent>
@@ -178,7 +179,6 @@ export default function AdminBlogView() {
       {/* Table Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-          <h2 className="text-xl font-semibold">Blog Posts</h2>
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
@@ -200,63 +200,35 @@ export default function AdminBlogView() {
       </div>
 
       {/* Blog Posts Table */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Title
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Author
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Views
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Created
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+      <Card className="overflow-hidden border border-divider bg-primary-card shadow-sm"><CardContent className="p-0"><Table><TableHeader><TableRow>
+                <TableHead>Title</TableHead><TableHead>Author</TableHead><TableHead>Status</TableHead><TableHead>Views</TableHead><TableHead>Created</TableHead><TableHead>Actions</TableHead>
+              </TableRow></TableHeader><TableBody>
               {paginatedPosts.map((post) => (
-                <tr key={post.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
+                <TableRow key={post.id}>
+                  <TableCell className="max-w-[18rem]">
                     <div className="flex items-center">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">
-                          {post.title}
+                        <div className="truncate text-sm font-semibold text-primary-text" title={post.title}>
+                          {post.title.substring(0, 40)}{post.title.length > 40 ? "..." : ""}
                         </div>
-                        <div className="text-sm text-gray-500 truncate max-w-xs">
+                        <div className="max-w-[18rem] truncate text-sm text-primary-muted">
                         {post.summary || post.content.replace(/<[^>]*>/g, '').substring(0, 100)}...
                         </div>
                       </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  </TableCell><TableCell>
                     {post.author}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  </TableCell><TableCell>
                     <Badge
                       variant={post.status === "Published" ? "default" : "secondary"}
                     >
                       {post.status}
                     </Badge>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  </TableCell><TableCell>
                     {post.views || 0}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  </TableCell><TableCell className="text-primary-muted">
                     {new Date(post.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  </TableCell><TableCell>
                     {/* Mobile Layout */}
                     <div className="block sm:hidden">
                       <div className="flex gap-2">
@@ -282,7 +254,7 @@ export default function AdminBlogView() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleDeletePost(post)}
-                          className="flex-1 text-red-600 hover:text-red-700"
+                          className="flex-1 text-accent-red hover:border-accent-red hover:bg-accent-red/10 hover:text-accent-red"
                         >
                           <Trash2 className="h-4 w-4 mr-1" />
                           <span className="text-xs">Delete</span>
@@ -313,19 +285,16 @@ export default function AdminBlogView() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleDeletePost(post)}
-                        className="text-red-600 hover:text-red-700"
+                        className="text-accent-red hover:border-accent-red hover:bg-accent-red/10 hover:text-accent-red"
                       >
                         <Trash2 className="h-4 w-4 mr-1" />
                         Delete
                       </Button>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            </TableBody></Table></CardContent></Card>
 
       {/* Pagination */}
       {totalPages > 1 && (

@@ -66,7 +66,7 @@ const normalize = (doc) => {
 export async function getAllPosts() {
   await dbConnect();
   try {
-    const posts = await Post.find({}).lean().sort({ createdAt: -1 });
+    const posts = await Post.find({ status: "Published" }).lean().sort({ createdAt: -1 });
     return posts.map(normalize);
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -77,7 +77,7 @@ export async function getAllPosts() {
 export async function getFeaturedPosts() {
   await dbConnect();
   try {
-    const posts = await Post.find({ featured: true }).lean().sort({ createdAt: -1 });
+    const posts = await Post.find({ featured: true, status: "Published" }).lean().sort({ createdAt: -1 });
     return posts.map(normalize);
   } catch (error) {
     console.error("Error fetching featured posts:", error);
@@ -88,7 +88,7 @@ export async function getFeaturedPosts() {
 export async function getPostById(id) {
   await dbConnect();
   try {
-    const post = await Post.findById(id).lean();
+    const post = await Post.findOne({ _id: id, status: "Published" }).lean();
     return post ? normalize(post) : null;
   } catch (error) {
     console.error("Error fetching post by ID:", error);

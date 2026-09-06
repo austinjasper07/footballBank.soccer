@@ -39,8 +39,8 @@ export function UserHeader({slug, href}) {
         className="focus:outline-none flex items-center gap-2"
         aria-label="User menu"
       >
-        <FaUser size={20} className="text-white"/>
-        <ChevronDownIcon className="w-4 h-4 text-white" />
+        <FaUser size={20} className="text-primary-muted"/>
+        <ChevronDownIcon className="w-4 h-4 text-primary-muted" />
       </button>
 
       {open && (

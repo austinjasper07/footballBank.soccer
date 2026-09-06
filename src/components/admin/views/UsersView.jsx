@@ -24,6 +24,7 @@ import { SearchBar } from '@/components/admin/SearchBar';
 import { useToast } from '@/hooks/use-toast';
 import { UserDialog } from '@/components/admin/dialogs/UserDialog';
 import { DeleteConfirmationModal } from '@/components/admin/dialogs/DeleteConfirmationModal';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import LoadingSplash from '@/components/ui/loading-splash';
 import {
   getAllUsers,
@@ -199,32 +200,21 @@ export default function UsersView() {
         </Button>
       </div>
 
-      <Card className="border-0 shadow-md">
+          <Card className="overflow-hidden border border-divider bg-primary-card shadow-sm">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-sm">
-              <thead className="bg-muted/50">
-                <tr>
-                  <th className="text-left p-4 font-medium">Name</th>
-                  <th className="text-left p-4 font-medium">Email</th>
-                  <th className="text-left p-4 font-medium">Role</th>
-                  <th className="text-left p-4 font-medium">Subscribed</th>
-                  <th className="text-left p-4 font-medium">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table><TableHeader><TableRow>
+                  <TableHead>Name</TableHead><TableHead>Email</TableHead><TableHead>Role</TableHead><TableHead>Subscribed</TableHead><TableHead>Actions</TableHead>
+              </TableRow></TableHeader><TableBody>
                 {paginatedUsers.map((user) => (
-                  <tr key={user.id} className="border-t border-border hover:bg-muted/40">
-                    <td className="p-4" title={`${user.firstName} ${user.lastName}`}>
+                  <TableRow key={user.id}>
+                    <TableCell title={`${user.firstName} ${user.lastName}`}>
                       <span className="hidden sm:inline">{user.firstName} {user.lastName}</span>
                       <span className="sm:hidden">{truncateText(`${user.firstName} ${user.lastName}`, 100)}</span>
-                    </td>
-                    <td className="p-4" title={user.email}>
+                    </TableCell><TableCell title={user.email}>
                       <span className="hidden sm:inline">{user.email}</span>
                       <span className="sm:hidden">{truncateText(user.email, 100)}</span>
-                    </td>
-                    <td className="p-4 capitalize">{user.role}</td>
-                    <td className="p-4">
+                    </TableCell><TableCell className="capitalize">{user.role}</TableCell><TableCell>
                       <Badge
                         className={
                           user.subscribed
@@ -234,25 +224,24 @@ export default function UsersView() {
                       >
                         {user.subscribed ? 'Yes' : 'No'}
                       </Badge>
-                    </td>
-                    <td className="p-4">
+                    </TableCell><TableCell>
                       {/* Mobile Layout */}
                       <div className="block sm:hidden">
                         <div className="flex gap-2">
                           <Button 
-                            variant="ghost" 
+                            variant="outline"
                             size="sm" 
                             onClick={() => handleEditUser(user)}
-                            className="flex-1"
+                            className="flex-1 hover:border-primary-action hover:bg-primary-action/10 hover:text-primary-action"
                           >
                             <Edit className="h-4 w-4 mr-1" />
                             <span className="text-xs">Edit</span>
                           </Button>
                           <Button 
-                            variant="ghost" 
+                            variant="outline"
                             size="sm" 
                             onClick={() => handleDeleteUser(user.id)}
-                            className="flex-1"
+                            className="flex-1 hover:border-accent-red hover:bg-accent-red/10 hover:text-accent-red"
                           >
                             <Trash2 className="h-4 w-4 mr-1" />
                             <span className="text-xs">Delete</span>
@@ -262,18 +251,17 @@ export default function UsersView() {
 
                       {/* Desktop Layout */}
                       <div className="hidden sm:flex items-center gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => handleEditUser(user)}>
+                        <Button variant="outline" size="sm" onClick={() => handleEditUser(user)} className="hover:border-primary-action hover:bg-primary-action/10 hover:text-primary-action">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm" onClick={() => handleDeleteUser(user.id)}>
+                        <Button variant="outline" size="sm" onClick={() => handleDeleteUser(user.id)} className="hover:border-accent-red hover:bg-accent-red/10 hover:text-accent-red">
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody></Table>
           </div>
         </CardContent>
       </Card>

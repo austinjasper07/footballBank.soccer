@@ -32,9 +32,9 @@ export function DashboardView() {
   const [users, setUsers] = useState([]);
   const [players, setPlayers] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [orders, setOrders] = useState([]);
+  // const [orders, setOrders] = useState([]);
   const [submissions, setSubmissions] = useState([]);
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -45,16 +45,16 @@ export function DashboardView() {
         const playersRes = await getAllPlayers();
         const usersRes = await getAllUsers();
         const postsRes = await getAllPosts();
-        const ordersRes = await getAllOrders();
+        // const ordersRes = await getAllOrders();
         const submissionsRes = await getAllSubmissions();
-        const productsRes = await getAllProducts();
+        // const productsRes = await getAllProducts();
 
         setPlayers(playersRes);
         setUsers(usersRes);
         setPosts(postsRes);
-        setOrders(ordersRes);
+        // setOrders(ordersRes);
         setSubmissions(submissionsRes);
-        setProducts(productsRes);
+        // setProducts(productsRes);
         setLoading(false);
       } catch (error) {
         toast({
@@ -101,9 +101,9 @@ export function DashboardView() {
     }, 0);
   };
 
-  const currentRevenue = getMonthlyRevenue(orders, 0);
-  const lastMonthRevenue = getMonthlyRevenue(orders, 1);
-  const revenueGrowth = lastMonthRevenue === 0 ? 0 : ((currentRevenue - lastMonthRevenue) / lastMonthRevenue) * 100;
+  // const currentRevenue = getMonthlyRevenue(orders, 0);
+  // const lastMonthRevenue = getMonthlyRevenue(orders, 1);
+  // const revenueGrowth = lastMonthRevenue === 0 ? 0 : ((currentRevenue - lastMonthRevenue) / lastMonthRevenue) * 100;
 
   const currentPostCount = getMonthlyCount(posts, 0);
   const lastPostCount = getMonthlyCount(posts, 1);
@@ -113,9 +113,9 @@ export function DashboardView() {
   const lastPlayerCount = getMonthlyCount(players, 1);
   const playerGrowth = lastPlayerCount === 0 ? 0 : ((currentPlayerCount - lastPlayerCount) / lastPlayerCount) * 100;
 
-  const currentProductCount = getMonthlyCount(products, 0);
-  const lastProductCount = getMonthlyCount(products, 1);
-  const productGrowth = lastProductCount === 0 ? 0 : ((currentProductCount - lastProductCount) / lastProductCount) * 100;
+  // const currentProductCount = getMonthlyCount(products, 0);
+  // const lastProductCount = getMonthlyCount(products, 1);
+  // const productGrowth = lastProductCount === 0 ? 0 : ((currentProductCount - lastProductCount) / lastProductCount) * 100;
 
   const currentUserCount = getMonthlyCount(users, 0);
   const lastUserCount = getMonthlyCount(users, 1);
@@ -136,22 +136,6 @@ export function DashboardView() {
       icon: UserPlus,
       change: `${playerGrowth >= 0 ? "+" : ""}${playerGrowth.toFixed(1)}% from last month`,
       positive: playerGrowth >= 0,
-      variant: "green"
-    },
-    {
-      title: "Total Products",
-      value: products.length.toLocaleString(),
-      icon: Package,
-      change: `${productGrowth >= 0 ? "+" : ""}${productGrowth.toFixed(1)}% from last month`,
-      positive: productGrowth >= 0,
-      variant: "amber"
-    },
-    {
-      title: "Monthly Revenue",
-      value: `$${currentRevenue.toLocaleString()}`,
-      icon: DollarSign,
-      change: `${revenueGrowth >= 0 ? "+" : ""}${revenueGrowth.toFixed(1)}% from last month`,
-      positive: revenueGrowth >= 0,
       variant: "green"
     },
     {
@@ -197,18 +181,18 @@ export function DashboardView() {
       : [];
 
     // Order activities
-    const orderActivity = Array.isArray(orders)
-      ? orders
-          .filter((order) => new Date(order.createdAt) >= oneWeekAgo)
-          .map((order) => ({
-            icon: ShoppingCart,
-            variant: "blue",
-            title: "New order placed",
-            description: `Order #${order.id} – $${order.items.reduce((sum, i) => sum + i.price * i.quantity, 0)}`,
-            time: formatDistanceToNow(new Date(order.createdAt), { addSuffix: true }),
-            createdAt: new Date(order.createdAt)
-          }))
-      : [];
+    // const orderActivity = Array.isArray(orders)
+    //   ? orders
+    //       .filter((order) => new Date(order.createdAt) >= oneWeekAgo)
+    //       .map((order) => ({
+    //         icon: ShoppingCart,
+    //         variant: "blue",
+    //         title: "New order placed",
+    //         description: `Order #${order.id} – $${order.items.reduce((sum, i) => sum + i.price * i.quantity, 0)}`,
+    //         time: formatDistanceToNow(new Date(order.createdAt), { addSuffix: true }),
+    //         createdAt: new Date(order.createdAt)
+    //       }))
+    //   : [];
 
     // Post activities
     const postActivity = Array.isArray(posts)
@@ -225,18 +209,18 @@ export function DashboardView() {
       : [];
 
     // Product activities
-    const productActivity = Array.isArray(products)
-      ? products
-          .filter((product) => new Date(product.createdAt) >= oneWeekAgo)
-          .map((product) => ({
-            icon: Package,
-            variant: "green",
-            title: "New product added",
-            description: `${product.name} – $${product.price}`,
-            time: formatDistanceToNow(new Date(product.createdAt), { addSuffix: true }),
-            createdAt: new Date(product.createdAt)
-          }))
-      : [];
+        // const productActivity = Array.isArray(products)
+        //   ? products
+        //       .filter((product) => new Date(product.createdAt) >= oneWeekAgo)
+        //       .map((product) => ({
+        //         icon: Package,
+        //         variant: "green",
+        //         title: "New product added",
+        //         description: `${product.name} – $${product.price}`,
+        //         time: formatDistanceToNow(new Date(product.createdAt), { addSuffix: true }),
+        //         createdAt: new Date(product.createdAt)
+        //       }))
+        //   : [];
 
     // Submission activities
     const submissionActivity = Array.isArray(submissions)
@@ -255,14 +239,14 @@ export function DashboardView() {
     return [
       ...playerActivity, 
       ...userActivity, 
-      ...orderActivity, 
+      // ...orderActivity,
       ...postActivity, 
-      ...productActivity, 
+      // ...productActivity,
       ...submissionActivity
     ]
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .slice(0, 8);
-  }, [orders, players, posts, users, products, submissions]);
+  }, [ players, posts, users, submissions]);
 
 
   return (

@@ -17,7 +17,7 @@ export default function BlogGrid({
 
   if (!posts || posts.length === 0) {
     return (
-      <div className="w-full h-48 flex items-center justify-center mx-auto text-gray-500">
+      <div className="mx-auto flex h-48 w-full items-center justify-center text-primary-muted">
         No posts available
       </div>
     );
@@ -57,7 +57,7 @@ export default function BlogGrid({
           {posts.map((post) => (
             <article
               key={post?.id}
-              className="bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-300"
+              className="border border-divider bg-primary-card transition-shadow duration-300 hover:shadow-lg"
             >
               <div className="relative h-48 overflow-hidden">
                 <ImageCarousel
@@ -67,22 +67,22 @@ export default function BlogGrid({
                 />
               </div>
               <div className="p-6">
-                <div className="flex items-center gap-2 mb-3 text-sm text-gray-500">
-                  <span className="bg-gray-100 px-2 py-1 rounded text-xs font-medium">
+                <div className="mb-3 flex items-center gap-2 text-sm text-primary-muted">
+                  <span className="rounded bg-secondary-bg-alt px-2 py-1 text-xs font-medium text-primary-text">
                     {post.category || "Sport"}
                   </span>
-                  <span className="text-gray-400">-</span>
+                  <span className="text-primary-muted">-</span>
                   <span>{formatTimeAgo(post.createdAt)}</span>
                 </div>
-                <h3 className="text-lg font-semibold mb-3 text-gray-900 leading-tight">
+                <h3 className="mb-3 text-lg font-semibold leading-tight text-primary-text">
                   {post.title}
                 </h3>
-                <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                <p className="mb-4 text-sm leading-relaxed text-primary-muted">
                   {post.summary || post.content.replace(/<[^>]*>/g, "").slice(0, 100)}...
                 </p>
                 <Link
                   href={`/blog/${post.id}`}
-                  className="text-accent-red hover:text-accent-red text-sm font-medium"
+                  className="text-sm font-medium text-primary-action hover:text-primary-action-hover"
                   onClick={(e) => {
                     const link = e.currentTarget;
                     link.style.pointerEvents = "none";
@@ -98,7 +98,7 @@ export default function BlogGrid({
           ))}
         </div>
       ) : (
-        <div className="w-full h-48 flex items-center justify-center mx-auto text-gray-500">
+        <div className="mx-auto flex h-48 w-full items-center justify-center text-primary-muted">
           No posts found
         </div>
       )}
@@ -109,7 +109,7 @@ export default function BlogGrid({
           <button
             onClick={() => changePage(1)}
             disabled={currentPage === 1}
-            className="px-3 py-2 text-sm text-gray-500 hover:text-gray-700 border border-gray-300 rounded disabled:opacity-50"
+            className="rounded border border-divider px-3 py-2 text-sm text-primary-muted hover:border-primary-action hover:text-primary-action disabled:opacity-50"
             aria-label="First page"
           >
             « First
@@ -118,7 +118,7 @@ export default function BlogGrid({
           <button
             onClick={() => changePage(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-3 py-2 text-sm text-gray-500 hover:text-gray-700 border border-gray-300 rounded disabled:opacity-50"
+            className="rounded border border-divider px-3 py-2 text-sm text-primary-muted hover:border-primary-action hover:text-primary-action disabled:opacity-50"
             aria-label="Previous page"
           >
             ‹ Prev
@@ -131,8 +131,8 @@ export default function BlogGrid({
               aria-current={p === currentPage ? "page" : undefined}
               className={`px-3 py-2 text-sm border rounded ${
                 p === currentPage
-                  ? "bg-accent-red text-white border-accent-red"
-                  : "text-gray-500 hover:text-gray-700 border-gray-300"
+                  ? "border-primary-action bg-primary-action text-primary-text-inverse"
+                  : "border-divider text-primary-muted hover:border-primary-action hover:text-primary-action"
               }`}
             >
               {p}
@@ -142,7 +142,7 @@ export default function BlogGrid({
           <button
             onClick={() => changePage(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-3 py-2 text-sm text-gray-500 hover:text-gray-700 border border-gray-300 rounded disabled:opacity-50"
+            className="rounded border border-divider px-3 py-2 text-sm text-primary-muted hover:border-primary-action hover:text-primary-action disabled:opacity-50"
             aria-label="Next page"
           >
             Next ›
@@ -151,7 +151,7 @@ export default function BlogGrid({
           <button
             onClick={() => changePage(totalPages)}
             disabled={currentPage === totalPages}
-            className="px-3 py-2 text-sm text-gray-500 hover:text-gray-700 border border-gray-300 rounded disabled:opacity-50"
+            className="rounded border border-divider px-3 py-2 text-sm text-primary-muted hover:border-primary-action hover:text-primary-action disabled:opacity-50"
             aria-label="Last page"
           >
             Last »

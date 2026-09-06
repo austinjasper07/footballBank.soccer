@@ -248,7 +248,10 @@ export async function getAllPosts() {
 export async function createPost(data) {
   await dbConnect();
   try {
-    const post = await Post.create(data);
+    const post = await Post.create({
+      ...data,
+      status: data.status === "Published" ? "Published" : "Draft",
+    });
     return toPlain(post);
   } catch (err) {
     console.error("Error creating post:", err);
@@ -260,7 +263,11 @@ export async function updatePost(postId, data) {
   await dbConnect();
   try {
     const { id, createdAt, updatedAt, ...updateData } = data;
-    const updatedPost = await Post.findByIdAndUpdate(postId, updateData, { new: true });
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { ...updateData, status: updateData.status === "Published" ? "Published" : "Draft" },
+      { new: true, runValidators: true },
+    );
     return toPlain(updatedPost);
   } catch (err) {
     console.error("Error updating post:", err);

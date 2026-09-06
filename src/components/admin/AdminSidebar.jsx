@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const navigationItems = [
   { id: 'dashboard', icon: BarChart3, label: 'Dashboard' },
@@ -112,6 +113,7 @@ export function AdminSidebar({ activeView, onViewChange, collapsed, onToggleColl
             })}
           </ul>
         </nav>
+        
       </aside>
     </>
   );

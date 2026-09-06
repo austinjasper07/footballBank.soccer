@@ -215,6 +215,12 @@ const resumeRequestSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
+const playerProfileViewSchema = new mongoose.Schema({
+  playerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Player', required: true },
+  viewerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  viewedAt: { type: Date, default: Date.now },
+});
+
 // Agent Schema for managing agent profile information
 const agentSchema = new mongoose.Schema({
   name: { type: String, required: true, default: "Ayodeji Fatade" },
@@ -236,4 +242,5 @@ export const PaymentMethod = mongoose.models.PaymentMethod || mongoose.model('Pa
 export const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
 export const Submission = mongoose.models.Submission || mongoose.model('Submission', submissionSchema);
 export const ResumeRequest = mongoose.models.ResumeRequest || mongoose.model('ResumeRequest', resumeRequestSchema);
+export const PlayerProfileView = mongoose.models.PlayerProfileView || mongoose.model('PlayerProfileView', playerProfileViewSchema);
 export const Agent = mongoose.models.Agent || mongoose.model('Agent', agentSchema);

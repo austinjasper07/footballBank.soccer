@@ -227,59 +227,11 @@ export default function BlogView() {
     <div className="space-y-6">
       {/* Blog Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {/* <Card className="border-0 shadow-sm">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <Edit className="h-8 w-8 text-blue-500" />
-              <div>
-                <p className="text-sm text-muted-foreground">Total Posts</p>
-                <p className="text-2xl font-bold">{total}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <Eye className="h-8 w-8 text-green-500" />
-              <div>
-                <p className="text-sm text-muted-foreground">Published</p>
-                <p className="text-2xl font-bold">{published}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <Edit className="h-8 w-8 text-yellow-500" />
-              <div>
-                <p className="text-sm text-muted-foreground">Drafts</p>
-                <p className="text-2xl font-bold">{drafts}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <Eye className="h-8 w-8 text-purple-500" />
-              <div>
-                <p className="text-sm text-muted-foreground">Total Views</p>
-                <p className="text-2xl font-bold">{views.toLocaleString()}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card> */}
       </div>
 
       {/* Table Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-          <h2 className="text-xl font-semibold">Blog Posts</h2>
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}

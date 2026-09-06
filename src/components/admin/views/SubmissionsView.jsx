@@ -60,8 +60,8 @@ export default function SubmissionsView() {
     const list = Array.isArray(submissions) ? submissions : [];
     return list.filter((s) =>
       [s.firstName, s.lastName, s.country, s.position, s.email].some((field) =>
-        field?.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+        field?.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
     );
   }, [submissions, searchQuery]);
 
@@ -83,7 +83,7 @@ export default function SubmissionsView() {
         });
       }
     },
-    [toast]
+    [toast],
   );
 
   const handleReject = useCallback(
@@ -103,7 +103,7 @@ export default function SubmissionsView() {
         });
       }
     },
-    [toast]
+    [toast],
   );
 
   const handleDeleteSubmission = useCallback(
@@ -112,36 +112,33 @@ export default function SubmissionsView() {
       setSubmissionToDelete(submission);
       setDeleteDialogOpen(true);
     },
-    [submissions]
+    [submissions],
   );
 
-  const confirmDeleteSubmission = useCallback(
-    async () => {
-      if (!submissionToDelete) return;
+  const confirmDeleteSubmission = useCallback(async () => {
+    if (!submissionToDelete) return;
 
-      try {
-        setIsDeleting(true);
-        await deleteSubmission(submissionToDelete.id);
-        toast({
-          title: "Submission Deleted",
-          description: "The submission has been removed successfully.",
-        });
-        const updated = await getAllSubmissions();
-        setSubmissions(updated);
-        setDeleteDialogOpen(false);
-        setSubmissionToDelete(null);
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to delete submission.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsDeleting(false);
-      }
-    },
-    [submissionToDelete, toast]
-  );
+    try {
+      setIsDeleting(true);
+      await deleteSubmission(submissionToDelete.id);
+      toast({
+        title: "Submission Deleted",
+        description: "The submission has been removed successfully.",
+      });
+      const updated = await getAllSubmissions();
+      setSubmissions(updated);
+      setDeleteDialogOpen(false);
+      setSubmissionToDelete(null);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete submission.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  }, [submissionToDelete, toast]);
 
   const handleViewDetails = async (id) => {
     const data = await getSubmissionsById(id);
@@ -283,10 +280,6 @@ export default function SubmissionsView() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">Submissions</h2>
-          <p className="text-muted-foreground">Manage player profile submissions</p>
-        </div>
         <SearchBar
           value={searchQuery}
           onChange={setSearchQuery}
@@ -296,9 +289,9 @@ export default function SubmissionsView() {
       </div>
 
       <Card className="border-0 shadow-sm">
-        <CardHeader>
+        {/* <CardHeader>
           <CardTitle>All Submissions</CardTitle>
-        </CardHeader>
+        </CardHeader> */}
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList>

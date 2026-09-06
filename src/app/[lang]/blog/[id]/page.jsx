@@ -13,6 +13,7 @@ import Head from "next/head";
 import ImageCarousel from "@/components/ui/ImageCarousel";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import dbConnect from "@/lib/mongodb";
+import { incrementPostView } from "@/actions/viewTrackingActions";
 
 // Dynamic metadata generation
 export async function generateMetadata({ params }) {
@@ -63,7 +64,7 @@ export default async function BlogArticlePage({ params }) {
   
   let post;
   try {
-    post = await Post.findById(postId);
+    post = await Post.findOne({ _id: postId, status: "Published" });
     if (!post) {
       notFound();
     }
@@ -71,10 +72,12 @@ export default async function BlogArticlePage({ params }) {
     notFound();
   }
 
+  await incrementPostView(postId);
+
   // Fetch additional data for sidebar
   let allPosts = [];
   try {
-    allPosts = await Post.find({}).sort({ createdAt: -1 }).lean();
+    allPosts = await Post.find({ status: "Published" }).sort({ createdAt: -1 }).lean();
   } catch (error) {
     console.error('Error fetching all posts:', error);
     allPosts = [];

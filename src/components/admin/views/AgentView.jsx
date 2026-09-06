@@ -152,35 +152,28 @@ export default function AgentView() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-primary-text">Agent Management</h2>
-        <p className="text-primary-muted">Manage agent profile information and photo</p>
-      </div>
+      {/* <div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary-action">Public representative</p><h2 className="mt-2 font-heading text-3xl font-semibold tracking-tight">Agent profile</h2><p className="mt-2 max-w-xl text-sm leading-6 text-primary-muted">Shape the public representative profile shown across FootballBank International.</p></div> */}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Agent Profile</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="grid gap-6 xl:grid-cols-[0.7fr_1.3fr]">
+      <Card className="overflow-hidden border-0 bg-primary-navy text-primary-text-inverse shadow-lg">
+        <CardContent className="p-6 sm:p-8">
+          <div className="relative mx-auto aspect-4/5 max-w-xs overflow-hidden bg-primary-text-inverse/10">
+            {agentInfo?.profilePhoto && <Image src={agentInfo.profilePhoto} alt="Agent profile" fill className="object-cover" />}
+          </div>
+          <p className="mt-6 text-xs font-bold uppercase tracking-[0.18em] text-primary-accent">FootballBank International</p>
+          <h3 className="mt-3 font-heading text-3xl font-semibold">{agentInfo?.name || "Your agent"}</h3>
+          <p className="mt-2 text-sm text-primary-text-inverse/65">{agentInfo?.credentials || "Professional representative"}</p>
+          <div className="mt-6 border-t border-primary-text-inverse/15 pt-5 text-sm text-primary-text-inverse/70">{agentInfo?.location || "United States"}</div>
+        </CardContent>
+      </Card>
+
+      <Card className="border border-divider bg-primary-card shadow-sm">
+        <CardHeader className="border-b border-divider px-6 py-5 sm:px-8"><CardTitle className="font-heading text-2xl">Profile details</CardTitle></CardHeader>
+        <CardContent className="px-6 py-6 sm:px-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Current Profile Photo */}
             <div className="space-y-4">
-              <Label>Current Profile Photo</Label>
-              {agentInfo?.profilePhoto && (
-                <div className="relative w-32 h-40 border rounded-lg overflow-hidden">
-                  <Image
-                    src={agentInfo.profilePhoto}
-                    alt="Agent profile"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Image Upload */}
-            <div className="space-y-4">
-              <Label htmlFor="profilePhoto">Update Profile Photo</Label>
+              <Label htmlFor="profilePhoto">Profile photo</Label>
               <Input
                 id="profilePhoto"
                 type="file"
@@ -194,7 +187,7 @@ export default function AgentView() {
               />
               {uploading && (
                 <div className="space-y-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-secondary-bg-alt">
                     <div
                       className="bg-primary-action h-2 rounded-full transition-all duration-300"
                       style={{ width: `${uploadProgress}%` }}
@@ -205,9 +198,7 @@ export default function AgentView() {
                   </p>
                 </div>
               )}
-              <p className="text-sm text-primary-muted">
-                Maximum file size: 5MB. Supported formats: JPG, PNG, GIF
-              </p>
+              <p className="text-xs text-primary-muted">Maximum 5MB · JPG, PNG, or GIF</p>
             </div>
 
             {/* Hidden input for profile photo URL */}
@@ -218,7 +209,7 @@ export default function AgentView() {
             />
 
             {/* Agent Information Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <Label htmlFor="name">Agent Name</Label>
                 <Input
@@ -264,14 +255,15 @@ export default function AgentView() {
               />
             </div>
 
-            <div className="flex justify-end">
-              <Button type="submit" disabled={saving || uploading}>
+            <div className="flex justify-end border-t border-divider pt-5">
+              <Button type="submit" variant="action" disabled={saving || uploading}>
                 {saving ? "Saving..." : "Update Agent Information"}
               </Button>
             </div>
           </form>
         </CardContent>
       </Card>
+      </div>
 
       <UpdateConfirmationModal
         open={updateDialogOpen}
