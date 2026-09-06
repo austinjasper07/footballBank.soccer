@@ -21,6 +21,7 @@ import { createSubmission } from "@/actions/protectedAction";
 import { getUserById } from "@/actions/adminActions";
 import { countries } from "@/data/countries&code";
 import { footballLeagues } from "@/data/footballLeagues";
+import Link from "next/link";
 
 export default function PlayerSubmissionForm() {
   const { toast } = useToast();
@@ -52,7 +53,6 @@ export default function PlayerSubmissionForm() {
     contractStatus: "",
     availableFrom: "",
     preferredLeagues: "",
-    salaryExpectation: "",
     stats: {
       career: { Appearances: "", Goals: "", Assists: "", Trophies: "" },
       season: { Appearances: "", Goals: "", Assists: "", Minutes: "" },
@@ -64,7 +64,6 @@ export default function PlayerSubmissionForm() {
     imageUrl: [],
     videoPrimary: "",
     videoAdditional: [],
-    cvUrl: "",
   });
 
   const uploading = Object.values(uploadProgress).some(
@@ -118,6 +117,20 @@ export default function PlayerSubmissionForm() {
       // Auth + sub okay → fetch user
       const u = await getUserById(user.id);
       setSubmittingUser(u);
+      const registeredCountry = u?.address?.country || "";
+      const registeredCountryCode = countries.find(
+        (country) => country.name.toLowerCase() === registeredCountry.toLowerCase(),
+      )?.code || "";
+      setFormData((previous) => ({
+        ...previous,
+        firstName: u?.firstName || previous.firstName,
+        lastName: u?.lastName || previous.lastName,
+        email: u?.email || previous.email,
+        country: registeredCountry || previous.country,
+        countryCode: registeredCountryCode || previous.countryCode,
+        address: u?.address || previous.address,
+        shippingAddress: u?.shippingAddress || previous.shippingAddress,
+      }));
       setLoading(false);
     };
 
@@ -155,9 +168,11 @@ export default function PlayerSubmissionForm() {
         "email",
         "phone",
       ].forEach((k) => !formData[k] && errs.push(k));
+      if (submittingUser?.email && formData.email.trim().toLowerCase() !== submittingUser.email.trim().toLowerCase()) {
+        errs.push("emailMatch");
+      }
     }
-    if (step === 2) {
-      if (!formData.cvUrl) errs.push("cvUrl");
+    if (step === 3) {
       if (formData.imageUrl.length === 0) errs.push("imageUrl");
     }
     setErrors(errs);
@@ -165,9 +180,26 @@ export default function PlayerSubmissionForm() {
   };
 
   const nextStep = () => {
-    if (validateStep()) setStep(step + 1);
+    if (validateStep()) {
+      setStep(step + 1);
+      return;
+    }
+    toast({
+      title: "Complete the required fields",
+      description: "Check the highlighted information before continuing.",
+      variant: "destructive",
+    });
   };
   const prevStep = () => setStep(step - 1);
+
+  const updateClubHistory = (index, field, value) => {
+    setFormData((previous) => ({
+      ...previous,
+      clubHistory: previous.clubHistory.map((club, clubIndex) =>
+        clubIndex === index ? { ...club, [field]: value } : club,
+      ),
+    }));
+  };
 
   const submitForm = async () => {
     const valid = await checkSubscription();
@@ -176,10 +208,9 @@ export default function PlayerSubmissionForm() {
         await createSubmission({
           ...formData,
           submittedAt: new Date(),
-          userId: submittingUser?.id,
         });
         setSubmitted(true);
-        setStep(3);
+        setStep(4);
         toast({
           title: "Success",
           description: "Profile submitted successfully.",
@@ -188,7 +219,7 @@ export default function PlayerSubmissionForm() {
         console.error("Submission error:", error);
         toast({
           title: "Error",
-          description: "Failed to submit profile.",
+          description: error?.message || "Failed to submit profile.",
           variant: "destructive",
         });
       }
@@ -208,7 +239,7 @@ export default function PlayerSubmissionForm() {
       {/* Step indicators */}
       <div className="mb-8 -mx-1 overflow-x-auto px-1 pb-2" aria-label="Profile submission progress">
         <div className="flex min-w-max items-center justify-center gap-3 sm:w-full sm:gap-4">
-          {["Details", "Uploads", "Complete"].map((l, i) => (
+          {["Details", "Stats & Career", "Media", "Complete"].map((l, i) => (
             <div key={l} className="flex shrink-0 items-center gap-3 sm:gap-4">
             <div
               className={`flex size-8 shrink-0 items-center justify-center rounded-full border text-sm font-semibold transition-colors sm:size-9 ${
@@ -226,7 +257,7 @@ export default function PlayerSubmissionForm() {
             >
               {l}
             </span>
-            {i < 2 && (
+            {i < 3 && (
               <div
                 className={`h-px w-8 sm:w-12 ${step > i + 1 ? "bg-primary-action" : "bg-divider"}`}
                 aria-hidden="true"
@@ -374,28 +405,6 @@ export default function PlayerSubmissionForm() {
                 </SelectContent>
               </Select>
             </div>
-            <div>
-              <Label>Salary Expectation (USD)</Label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-muted">
-                  $
-                </span>
-                <Input
-                  type="number"
-                  min="0"
-                  step="1000"
-                  value={formData.salaryExpectation}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      salaryExpectation: e.target.value,
-                    })
-                  }
-                  className="pl-8"
-                  placeholder="0"
-                />
-              </div>
-            </div>
             <div className="md:col-span-2">
               <Label>Description</Label>
               <Textarea
@@ -414,8 +423,33 @@ export default function PlayerSubmissionForm() {
       )}
 
       {step === 2 && (
-        <div className="bg-white shadow rounded-xl border border-divider p-8">
-          <h2 className="text-xl font-semibold mb-6">Uploads</h2>
+        <div className="rounded-xl border border-divider bg-primary-card p-5 shadow-sm sm:p-8">
+          <h2 className="mb-2 text-xl font-semibold">Stats &amp; career history</h2>
+          <p className="mb-6 text-sm text-primary-muted">Optional information. You can leave these fields blank and continue.</p>
+          <div className="space-y-8">
+            {Object.entries(formData.stats).map(([group, statSet]) => (
+              <div key={group}>
+                <h3 className="mb-3 font-heading text-lg font-semibold capitalize">{group} statistics</h3>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {Object.entries(statSet).map(([stat, value]) => (
+                    <InputField key={`${group}-${stat}`} label={stat} type="number" value={value} onChange={(nextValue) => setFormData((previous) => ({ ...previous, stats: { ...previous.stats, [group]: { ...previous.stats[group], [stat]: nextValue } } }))} />
+                  ))}
+                </div>
+              </div>
+            ))}
+            <div>
+              <div className="mb-3 flex items-end justify-between gap-4"><div><h3 className="font-heading text-lg font-semibold">Club history</h3><p className="text-sm text-primary-muted">Optional previous clubs and playing periods.</p></div><Button type="button" variant="outline" onClick={() => setFormData((previous) => ({ ...previous, clubHistory: [...previous.clubHistory, { clubName: "", startDate: "", endDate: "", position: "" }] }))}>+ Add club</Button></div>
+              <div className="space-y-4">{formData.clubHistory.map((club, index) => <div key={index} className="grid gap-4 border-t border-divider pt-4 sm:grid-cols-2 lg:grid-cols-4"><InputField label="Club name" value={club.clubName} onChange={(value) => updateClubHistory(index, "clubName", value)} /><InputField label="Start date" type="date" value={club.startDate} onChange={(value) => updateClubHistory(index, "startDate", value)} /><InputField label="End date" type="date" value={club.endDate} onChange={(value) => updateClubHistory(index, "endDate", value)} /><div><Label>Position</Label><Select value={club.position} onValueChange={(value) => updateClubHistory(index, "position", value)}><SelectTrigger><SelectValue placeholder="Select position" /></SelectTrigger><SelectContent>{["Goalkeeper", "Defender", "Midfielder", "Forward"].map((position) => <SelectItem key={position} value={position}>{position}</SelectItem>)}</SelectContent></Select></div></div>)}</div>
+            </div>
+          </div>
+          <div className="mt-8 flex justify-between"><Button variant="outline" onClick={prevStep}>Back</Button><Button onClick={nextStep}>Continue to media</Button></div>
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className="rounded-xl border border-divider bg-primary-card p-5 shadow-sm sm:p-8">
+          <h2 className="mb-2 text-xl font-semibold">Media uploads</h2>
+          <p className="mb-6 text-sm text-primary-muted">Add the photos and video clubs should review.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <Label>Upload Photos (max 3)</Label>
@@ -447,27 +481,6 @@ export default function PlayerSubmissionForm() {
                       progress={uploadProgress[`img-${i}`]}
                     />
                   )
-              )}
-            </div>
-
-            <div>
-              <Label>Upload CV (PDF/DOC)</Label>
-              <Input
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (!file) return;
-                  const path = `players/${formData.email}/cv/${file.name}`;
-                  uploadFileWithProgress(path, file, (p) => {
-                    setUploadProgress((prev) => ({ ...prev, cv: p }));
-                  }).then((url) =>
-                    setFormData((prev) => ({ ...prev, cvUrl: url }))
-                  );
-                }}
-              />
-              {uploadProgress.cv != null && (
-                <ProgressBar progress={uploadProgress.cv} />
               )}
             </div>
 
@@ -535,7 +548,7 @@ export default function PlayerSubmissionForm() {
         </div>
       )}
 
-      {step === 3 && submitted && (
+      {step === 4 && submitted && (
         <div className="bg-white shadow rounded-xl border border-divider p-8 text-center">
           <div className="text-3xl text-accent-green mb-4">
             <i className="fa-solid fa-check-circle"></i>

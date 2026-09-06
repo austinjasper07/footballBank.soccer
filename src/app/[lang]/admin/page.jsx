@@ -23,6 +23,7 @@ const AdminDashboard = () => {
   const router = useRouter();
   const { toast } = useToast();
   const [checkedAuth, setCheckedAuth] = useState(false);
+  const [refreshPulse, setRefreshPulse] = useState(0);
   const pathname = usePathname();
 
 
@@ -50,6 +51,24 @@ const AdminDashboard = () => {
     }
   }, [isAuthenticated, isLoading, role, pathname, router, toast]);
 
+  useEffect(() => {
+    if (!checkedAuth) return undefined;
+
+    const refresh = () => setRefreshPulse((pulse) => pulse + 1);
+    const interval = setInterval(() => {
+      if (document.visibilityState === "visible") refresh();
+    }, 30000);
+
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", refresh);
+    };
+  }, [checkedAuth]);
+
 
   if (isLoading || !checkedAuth) {
     return <SplashScreen />; // or return null
@@ -58,23 +77,23 @@ const AdminDashboard = () => {
   const renderView = () => {
     switch (activeView) {
       case "dashboard":
-        return <DashboardView />;
+        return <DashboardView key={`dashboard-${refreshPulse}`} />;
       case "players":
-        return <PlayersView />;
+        return <PlayersView key={`players-${refreshPulse}`} />;
       case "users":
-        return <UsersView />;
+        return <UsersView key={`users-${refreshPulse}`} />;
       case "subscriptions":
         return <DashboardView />;
       case "submissions":
-        return <SubmissionsView />;
+        return <SubmissionsView key={`submissions-${refreshPulse}`} />;
       case "resume-requests":
-        return <ResumeRequestsView />;
+        return <ResumeRequestsView key={`resume-requests-${refreshPulse}`} />;
       case "shop":
         return <DashboardView />;
       case "orders":
         return <DashboardView />;
       case "blog":
-        return <AdminBlogView />;
+        return <AdminBlogView key={`blog-${refreshPulse}`} />;
       case "agent":
         return <AgentView />;
       case "settings":

@@ -90,9 +90,11 @@ export async function getCurrentPlayerProfile() {
   await dbConnect();
   try {
     const user = await getAuthUser();
-    if (!user?.id || user.role !== "player") return null;
+    if (!user?.id) return null;
 
-    const player = await Player.findOne({ email: user.email }).lean();
+    const player = await Player.findOne({
+      $or: [{ userId: user.id }, { email: user.email }],
+    }).lean();
     if (!player) return null;
 
     return {

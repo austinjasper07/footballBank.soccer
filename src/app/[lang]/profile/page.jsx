@@ -27,7 +27,13 @@ export default function UserProfilePage() {
           if (!response.ok) throw new Error("Profile request failed");
           return response.json();
         })
-        .then(setProfile)
+        .then((data) => {
+          if (data?.role === "player") {
+            router.replace(`/${lang}/player-profile`);
+            return;
+          }
+          setProfile(data);
+        })
         .catch(() => setProfile(user))
         .finally(() => setLoading(false));
     }

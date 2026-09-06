@@ -1,8 +1,9 @@
 "use server";
 
-import { Submission, PaymentMethod } from "@/lib/schemas";
+import { Submission, PaymentMethod, Player } from "@/lib/schemas";
 import dbConnect from "@/lib/mongodb";
 import { notifyAdmins } from "@/lib/adminNotifications";
+import { requireAuth } from "@/lib/oauth";
 
 // Helper: recursively convert Mongoose values, including nested ObjectIds, to plain JSON values.
 const normalize = (doc) => {
@@ -21,10 +22,32 @@ const normalize = (doc) => {
 
 // 📨 Create Submission
 export async function createSubmission(data) {
+  const authUser = await requireAuth();
   await dbConnect();
   try {
+    const normalizedEmail = data.email?.trim().toLowerCase();
+    if (!normalizedEmail || normalizedEmail !== authUser.email.toLowerCase()) {
+      throw new Error("The player profile email must match the registered account email.");
+    }
+
+    const [existingPlayer, pendingSubmission] = await Promise.all([
+      Player.findOne({ email: normalizedEmail }).select("_id").lean(),
+      Submission.findOne({ email: normalizedEmail, status: "PENDING" }).select("_id").lean(),
+    ]);
+    if (existingPlayer) {
+      throw new Error("A player profile already exists for this email.");
+    }
+    if (pendingSubmission) {
+      throw new Error("A player profile submission is already under review for this email.");
+    }
+
     // console.log("Creating submission with data:", data);
-    const submission = await Submission.create(data);
+    const submission = await Submission.create({
+      ...data,
+      email: normalizedEmail,
+      userId: authUser.id,
+      salaryExpectation: undefined,
+    });
     try {
       await notifyAdmins({
         subject: `New player profile submission: ${data.firstName} ${data.lastName}`,

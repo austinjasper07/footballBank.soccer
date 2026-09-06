@@ -332,11 +332,18 @@ export async function approveSubmission(submissionId) {
       submittedAt,
       status,
       rejectionReason,
+      userId,
       ...submissionData
     } = approvedSubmission.toObject();
 
     // Create player from approved submission
-    const player = await Player.create(submissionData);
+    const player = await Player.create({
+      ...submissionData,
+      userId,
+    });
+    if (userId) {
+      await User.findByIdAndUpdate(userId, { role: "player", updatedAt: new Date() });
+    }
     
     revalidatePath("/admin/submissions");
     return toPlain(approvedSubmission);
