@@ -14,13 +14,18 @@ export async function GET() {
 
     // Get user with additional data
     const userData = await User.findById(user.id)
-      .select('firstName lastName email role isVerified createdAt updatedAt');
+      .select('firstName lastName email role isVerified address shippingAddress createdAt updatedAt')
+      .lean();
 
     if (!userData) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    return NextResponse.json(userData);
+    return NextResponse.json({
+      ...userData,
+      id: userData._id.toString(),
+      _id: undefined,
+    });
   } catch (error) {
     console.error("Error getting user profile:", error);
     return NextResponse.json(
@@ -66,7 +71,7 @@ export async function PATCH(request) {
         updatedAt: new Date()
       },
       { new: true }
-    ).select('firstName lastName email role isVerified createdAt updatedAt');
+    ).select('firstName lastName email role isVerified address shippingAddress createdAt updatedAt').lean();
 
     if (!updatedUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -75,7 +80,11 @@ export async function PATCH(request) {
     return NextResponse.json({
       success: true,
       message: "Profile updated successfully",
-      user: updatedUser
+      user: {
+        ...updatedUser,
+        id: updatedUser._id.toString(),
+        _id: undefined,
+      }
     });
   } catch (error) {
     console.error("Error updating user profile:", error);
