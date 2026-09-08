@@ -62,6 +62,21 @@ export default function OTPVerification({
   const handleInputChange = (index, value) => {
     if (!/^\d*$/.test(value)) return; // Only allow digits
 
+    const digits = value.slice(0, 6).split("");
+    if (digits.length > 1) {
+      const newOtp = [...otp];
+      digits.forEach((digit, offset) => {
+        if (index + offset < 6) newOtp[index + offset] = digit;
+      });
+      setOtp(newOtp);
+      const nextIndex = Math.min(index + digits.length, 5);
+      inputRefs.current[nextIndex]?.focus();
+      if (newOtp.every((digit) => digit !== "")) {
+        handleSubmit(newOtp.join(""));
+      }
+      return;
+    }
+
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
@@ -83,18 +98,25 @@ export default function OTPVerification({
       inputRefs.current[index - 1]?.focus();
     }
     
-    // Handle paste
-    if (e.key === "v" && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      navigator.clipboard.readText().then(text => {
-        const pastedDigits = text.replace(/\D/g, "").slice(0, 6);
-        if (pastedDigits.length === 6) {
-          const newOtp = pastedDigits.split("");
-          setOtp(newOtp);
-          inputRefs.current[5]?.focus();
-          handleSubmit(pastedDigits);
-        }
-      });
+  };
+
+  const handlePaste = (index, event) => {
+    event.preventDefault();
+    const pastedDigits = event.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 6 - index);
+    if (!pastedDigits) return;
+
+    const newOtp = [...otp];
+    pastedDigits.split("").forEach((digit, offset) => {
+      newOtp[index + offset] = digit;
+    });
+    setOtp(newOtp);
+    inputRefs.current[Math.min(index + pastedDigits.length, 5)]?.focus();
+
+    if (newOtp.every((digit) => digit !== "")) {
+      handleSubmit(newOtp.join(""));
     }
   };
 
@@ -180,6 +202,7 @@ export default function OTPVerification({
                 value={digit}
                 onChange={(e) => handleInputChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
+                onPaste={(e) => handlePaste(index, e)}
                 className="w-12 h-12 text-center text-2xl font-bold border-2 focus:border-accent-red focus:ring-accent-red/20"
                 disabled={loading}
               />

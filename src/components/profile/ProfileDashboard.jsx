@@ -3,18 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  TrendingUp,
-  ShoppingBag,
   Crown,
   Users,
   Trophy,
   Star,
-  Eye,
-  Download,
   Calendar,
-  Clock,
-  CheckCircle,
-  AlertCircle,
   Plus,
   Edit,
   MessageCircle,
@@ -24,7 +17,6 @@ import StatsCard from "./StatsCard";
 
 export default function ProfileDashboard({ 
   userData, 
-  orders = [], 
   subscriptions = [], 
   playerData = null,
   userRole = "user" 
@@ -37,40 +29,9 @@ export default function ProfileDashboard({
     });
   };
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount);
-  };
-
-  const getTotalSpent = () => {
-    if (!Array.isArray(orders)) return 0;
-    
-    // Use totalAmount from order if available, otherwise calculate from items
-    return orders
-      .filter(order => order.status === "completed")
-      .reduce((total, order) => {
-        // Use totalAmount if available, otherwise calculate from items
-        if (order.totalAmount) {
-          return total + order.totalAmount;
-        }
-        
-        // Fallback to calculating from items
-        return total + (order.items || []).reduce((sum, item) => {
-          return sum + ((item.price || 0) * (item.quantity || 0));
-        }, 0);
-      }, 0);
-  };
-
   const getActiveSubscriptions = () => {
     if (!Array.isArray(subscriptions)) return 0;
     return subscriptions.filter(sub => sub.isActive).length;
-  };
-
-  const getRecentOrders = () => {
-    if (!Array.isArray(orders) || orders.length === 0) return [];
-    return orders.slice(0, 3);
   };
 
   const getRecentSubscriptions = () => {
@@ -103,19 +64,7 @@ export default function ProfileDashboard({
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Quick Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <Card className="bg-primary-card border border-divider">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center justify-between">
-              <div className="min-w-0 flex-1">
-                <p className="text-xs sm:text-sm text-primary-muted truncate">Total Orders</p>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-primary-text">{orders.length}</p>
-              </div>
-              <ShoppingBag className="w-6 h-6 sm:w-8 sm:h-8 text-primary-action shrink-0" />
-            </div>
-          </CardContent>
-        </Card>
-
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4">
         <Card className="bg-primary-card border border-divider">
           <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
@@ -124,18 +73,6 @@ export default function ProfileDashboard({
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-primary-text">{getActiveSubscriptions()}</p>
               </div>
               <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-primary-action shrink-0" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-primary-card border border-divider">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center justify-between">
-              <div className="min-w-0 flex-1">
-                <p className="text-xs sm:text-sm text-primary-muted truncate">Total Spent</p>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-primary-text truncate">{formatCurrency(getTotalSpent())}</p>
-              </div>
-              <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-primary-action shrink-0" />
             </div>
           </CardContent>
         </Card>
@@ -199,44 +136,6 @@ export default function ProfileDashboard({
           </Card>
         </div>
       )}
-
-      {/* Recent Orders */}
-      <Card className="bg-primary-card border border-divider">
-        <CardHeader className="pb-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-              <ShoppingBag className="w-5 h-5 text-primary-action" />
-              Recent Orders
-            </CardTitle>
-            <Button variant="outline" size="sm" asChild className="self-start sm:self-auto">
-              <Link href="/profile/__orders">View All</Link>
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {getRecentOrders().length > 0 ? (
-            <div className="space-y-3">
-              {getRecentOrders().map((order, index) => (
-                <div key={order.id || `order-${index}`} className="p-4 rounded-lg border border-divider bg-primary-bg flex items-center justify-between gap-4">
-                  <div>
-                    <p className="font-medium text-primary-text">{order.id || order._id || "Order"}</p>
-                    <p className="text-sm text-primary-muted">{formatDate(order.createdAt)}</p>
-                  </div>
-                  <p className="font-semibold text-primary-text">{formatCurrency(order.totalAmount || 0)}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <ShoppingBag className="w-12 h-12 text-primary-muted mx-auto mb-4" />
-              <p className="text-primary-muted mb-4">No orders yet</p>
-              <Button asChild>
-                <Link href="#">Start Shopping</Link>
-              </Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
 
       {/* Recent Subscriptions */}
       <Card className="bg-primary-card border border-divider">

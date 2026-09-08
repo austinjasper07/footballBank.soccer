@@ -36,7 +36,6 @@ export async function getCurrentUserProfile() {
 
     return {
       ...normalize(userProfile),
-      orders: [],
       subscriptions: [],
       paymentMethods: paymentMethods.map((pm) => normalize(pm)),
       submissions: submissions.map((sub) => ({
@@ -50,11 +49,6 @@ export async function getCurrentUserProfile() {
     console.error("Error fetching user profile:", error);
     return null;
   }
-}
-
-// 📦 Get user's orders (with pagination)
-export async function getUserOrders(page = 1, limit = 10) {
-  return { orders: [], totalPages: 0, currentPage: page, totalCount: 0 };
 }
 
 // 💳 Get user subscriptions

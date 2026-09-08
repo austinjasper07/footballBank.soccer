@@ -23,7 +23,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useEffect, useMemo, useState } from "react";
 import { formatDistanceToNow, isSameMonth, parseISO } from "date-fns";
-import { getAllUsers, getAllPosts, getAllOrders, getAllPlayers, getAllSubmissions, getAllProducts } from "@/actions/adminActions";
+import { getAllUsers, getAllPosts, getAllPlayers, getAllSubmissions, getAllProducts } from "@/actions/adminActions";
 import { formatFullDate } from "@/utils/dateHelper";
 import { useToast } from "@/hooks/use-toast";
 import LoadingSplash from "@/components/ui/loading-splash";
@@ -32,7 +32,6 @@ export function DashboardView({ refreshPulse = 0 }) {
   const [users, setUsers] = useState([]);
   const [players, setPlayers] = useState([]);
   const [posts, setPosts] = useState([]);
-  // const [orders, setOrders] = useState([]);
   const [submissions, setSubmissions] = useState([]);
   // const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -45,14 +44,12 @@ export function DashboardView({ refreshPulse = 0 }) {
         const playersRes = await getAllPlayers();
         const usersRes = await getAllUsers();
         const postsRes = await getAllPosts();
-        // const ordersRes = await getAllOrders();
         const submissionsRes = await getAllSubmissions();
         // const productsRes = await getAllProducts();
 
         setPlayers(playersRes);
         setUsers(usersRes);
         setPosts(postsRes);
-        // setOrders(ordersRes);
         setSubmissions(submissionsRes);
         // setProducts(productsRes);
         setLoading(false);
