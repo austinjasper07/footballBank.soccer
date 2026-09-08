@@ -30,7 +30,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const NAV = ["Home", "About", "Players", "Clubs & Scouts", "Representation", "Contact"];
+const NAV = ["Home", "About", "Players", "Clubs & Partners", "Representation", "Contact"];
 
 const ASSURANCES = [
   { icon: ShieldCheck, label: "FIFA-licensed representation" },

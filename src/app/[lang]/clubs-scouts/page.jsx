@@ -31,8 +31,8 @@ function Eyebrow({ children, inverse = false }) {
 }
 
 export const metadata = {
-  title: "Clubs & Scouts | FootballBank",
-  description: "Focused football recruitment support for clubs and scouts.",
+  title: "Clubs & Partners | FootballBank International",
+  description: "Recruitment, representation, talent access and international opportunity for clubs and football organizations.",
 };
 
 
@@ -44,18 +44,18 @@ export default async function ClubsAndScoutsPage({ params }) {
       <section className="bg-primary-navy text-primary-text-inverse">
         <div className="mx-auto grid max-w-7xl gap-9 px-4 py-12 sm:gap-12 sm:px-10 sm:py-16 lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-12 lg:py-16">
           <div className="max-w-xl">
-            <Eyebrow inverse>For clubs &amp; scouts</Eyebrow>
+            <Eyebrow inverse>Clubs &amp; partners</Eyebrow>
             <h1 className="mt-6 font-heading text-[2rem] font-semibold leading-[1.02] tracking-tight sm:mt-7 sm:text-5xl lg:text-6xl">
-              Tell us what you need. <span className="text-primary-accent">We&apos;ll identify the right profile.</span>
+              Built to work with clubs.
             </h1>
             <p className="mt-5 max-w-lg text-[0.9375rem] leading-7 text-primary-text-inverse/75 sm:mt-6 sm:text-[1.0625rem]">
-              A direct pipeline to pre-screened football talent matched to your club&apos;s sporting requirements.
+              Recruitment. Representation. Talent access. International opportunity.
             </p>
             <Link
               href={`/${lang}/contact`}
               className="mt-6 inline-flex w-full items-center justify-center gap-3 bg-primary-action px-5 py-3.5 text-sm font-semibold text-primary-text-inverse transition-colors hover:bg-primary-action-hover sm:mt-8 sm:w-auto sm:gap-5"
             >
-              Submit a recruitment brief
+              Request a player
               <ArrowUpRight className="size-4" aria-hidden="true" />
             </Link>
           </div>
@@ -72,16 +72,16 @@ export default async function ClubsAndScoutsPage({ params }) {
               />
             </div>
             <figcaption className="bg-primary-navy px-5 py-4 text-[11px] font-bold uppercase tracking-[0.15em] text-primary-text-inverse/80">
-              The requirement comes first.
+              FootballBank International works with football clubs and organizations seeking structured support in player recruitment, talent identification, football partnerships and international market opportunities.
             </figcaption>
           </figure>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-10 sm:py-16 lg:px-12 lg:py-20">
-        <Eyebrow>A focused recruitment process</Eyebrow>
+        <Eyebrow>How we work</Eyebrow>
         <div className="mt-7 grid gap-7 sm:mt-9 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
-          {processSteps.map((step, index) => (
+          {[{ title: "Define the requirement", description: "Tell FootballBank exactly what your club needs." }, { title: "Build the solution", description: "FootballBank identifies appropriate players, markets, relationships or opportunities." }, { title: "Execute the mandate", description: "FootballBank coordinates the agreed activities. Where regulated football-agent services are required, those services are performed by the licensed football agent." }].map((step, index) => (
             <article key={step.title} className="border-t border-divider pt-5">
               <p className="text-xs font-medium text-primary-muted">0{index + 1}</p>
               <h2 className="mt-4 text-base font-semibold leading-6 tracking-tight sm:mt-5 sm:text-xl">{step.title}</h2>

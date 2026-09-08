@@ -29,15 +29,15 @@
     "hero": {
       "name": "Ayodeji Michael .F",
       "title": "Representing global football talents with vision, integrity, and developmental expertise.",
-      "description": "Ayodeji is a United State based FIFA licenced agent at FootballBank.soccer, an international organization dedicated to discovering, developing and representing talented players across the globe.",
+      "description": "Ayodeji Michael .F is a United States-based FIFA-licensed football agent providing licensed football-agent services through FootballBank International's wider sports management business.",
       "licence": {
-        "title": "FIFA Licenced Agent",
-        "id": "Licence ID: 202309-4469"
+        "title": "FIFA Licensed Football Agent",
+        "id": "License ID: 202309-4469"
       },
       "stats": {
         "experience": {
-          "title": "15+ Years Experience",
-          "subtitle": "In football industry"
+          "title": "15+ Years in Football",
+          "subtitle": "Football industry experience"
         },
         "certification": {
           "title": "PFSA Certified",
@@ -98,14 +98,14 @@
         "consultation": "Schedule Consultation",
         "profile": "Submit Your Profile"
       },
-      "trust": "Trusted by players worldwide • FIFA Licenced • 15+ Years Experience"
+      "trust": "FIFA Licensed Football Agent • 15+ Years in Football"
     }
   },
   "navigation": {
     "home": "Home",
     "about": "About",
     "players": "Players",
-    "clubsAndScouts": "Clubs & Scouts",
+    "clubsAndScouts": "Clubs & Partners",
     "agent": "Representation",
     "representation": "Representation",
     "pricing": "Pricing",
@@ -205,7 +205,7 @@
     "privacyPolicy": "Privacy Policy"
   },
   "footer": {
-    "description": "Empowering football talent worldwide through visibility and opportunity.",
+    "description": "Connecting football talent, clubs and organizations through sports management, recruitment, representation and international opportunity. Licensed football-agent services are provided by FIFA Licensed Football Agent Ayodeji Michael .F.",
     "quickLinks": "Quick Links",
     "resources": "Resources",
     "contact": "Contact",
@@ -333,7 +333,7 @@
     "email": "Email Address",
     "subject": "Subject",
     "message": "Message",
-    "send": "Send Message",
+    "send": "Send Enquiry",
     "sending": "Sending...",
     "success": "Message sent successfully!",
     "error": "Failed to send message. Please try again.",
@@ -342,8 +342,8 @@
     "contactInfo": "Contact Information",
     "address": "Address",
     "phone": "Phone",
-    "companyName": "Company Name",
-    "officialName": "Official Name",
+    "companyName": "FootballBank International",
+    "officialName": "Sports Management & Football Business",
     "ourInboxOpen": "Our inbox is always open",
     "mailingAddress": "Mailing Address",
     "globalBranches": "Global Branches",
@@ -354,13 +354,12 @@
     "connectSocialMedia": "Connect with us on social media to stay up to date with global football talent and opportunities.",
     "selectSubject": "Select a subject",
     "playerRepresentation": "Player Representation",
-    "trialRequest": "Trial Request",
-    "careerConsultation": "Career Consultation",
-    "businessInquiry": "Business Inquiry",
-    "scoutingInquiry": "Scouting Inquiry",
-    "transferInquiry": "Transfer Inquiry",
-    "partnershipOpportunity": "Partnership Opportunity",
-    "generalQuestion": "General Question",
+    "clubRecruitment": "Club Recruitment",
+    "requestAPlayer": "Request a Player",
+    "clubPartnership": "Club Partnership",
+    "talentScouting": "Talent / Scouting",
+    "mediaBusiness": "Media & Business",
+    "generalEnquiry": "General Enquiry",
     "namePlaceholder": "Your full name",
     "emailPlaceholder": "your@email.com",
     "messagePlaceholder": "Tell us about your goals, experience, and how we can help you...",

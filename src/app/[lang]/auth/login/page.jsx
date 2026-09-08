@@ -187,9 +187,9 @@ function LoginPageContent() {
   // No need for loading states - server-side layout handles authentication
 
   return (
-    <div className="min-h-screen bg-primary-bg px-4 py-8 sm:px-6 lg:grid lg:min-h-screen lg:grid-cols-[1.1fr_0.9fr] lg:gap-12 lg:px-12 lg:py-12">
+    <div className="min-h-screen bg-primary-bg px-4 py-8 sm:px-6 lg:grid lg:min-h-screen lg:grid-cols-[1.08fr_1fr] lg:gap-12 lg:px-12 lg:py-12">
       <div className="hidden min-h-full flex-col justify-between bg-primary-navy p-10 text-primary-text-inverse lg:flex">
-        <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-primary-accent">FootballBank International</p><h2 className="mt-8 max-w-lg font-heading text-6xl font-semibold leading-[1.02]">The next football opportunity starts with access.</h2><p className="mt-6 max-w-md text-sm leading-7 text-primary-text-inverse/70">Sign in to manage your profile, request player information, and continue your football journey.</p></div><p className="text-sm text-primary-text-inverse/50">Secure authentication · Built for the football community</p>
+        <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-primary-accent">FootballBank International</p><h2 className="mt-8 max-w-lg font-heading text-6xl font-semibold leading-[1.02]">The next football opportunity starts with access.</h2><p className="mt-6 max-w-md text-sm leading-7 text-primary-text-inverse/70">Sign in to manage your profile, access football opportunities, request player information and communicate with FootballBank.</p></div><p className="text-sm text-primary-text-inverse/50">Sports management · Talent · Club partnerships</p>
       </div>
       <div className="mx-auto flex w-full max-w-md flex-col justify-center">
         {/* Header */}

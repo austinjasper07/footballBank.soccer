@@ -63,7 +63,7 @@ export default async function Image() {
             lineHeight: 1.4,
           }}
         >
-          Empowering Football Talent Worldwide
+          Sports Management, Talent, Club Partnerships & Global Opportunity
         </div>
         <div
           style={{

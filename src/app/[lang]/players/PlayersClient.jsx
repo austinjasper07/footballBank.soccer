@@ -65,7 +65,7 @@ export default function PlayersClient({ lang, dict }) {
   return (
     <>
       <main className="relative z-10 min-h-screen w-full bg-primary-surface text-primary-text">
-        <div className="mx-auto max-w-7xl px-5 sm:px-10 lg:px-12">
+        <div className="mx-auto max-w-7xl bg-white px-5 sm:px-10 lg:px-12">
           {/* Page title */}
           <section className="border-b border-divider py-8 sm:py-10">
             <p className="eyebrow">The player collection</p>
@@ -91,7 +91,7 @@ export default function PlayersClient({ lang, dict }) {
                     className="w-[60%] rounded-md border border-divider bg-primary-card px-4 py-3 pr-10 text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
                   >
                     <option value="" className="bg-primary-card text-primary-text">
-                      All Countries
+                      Country
                     </option>
                     {countryList.map((country) => (
                       <option
@@ -113,7 +113,7 @@ export default function PlayersClient({ lang, dict }) {
                     className="w-[40%] rounded-md border border-divider bg-primary-card px-4 py-3 pr-10 text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
                   >
                     <option value="" className="bg-primary-card text-primary-text">
-                      All Positions
+                      Position
                     </option>
                     <option value="forward" className="bg-primary-card text-primary-text">
                       Forward
@@ -145,7 +145,7 @@ export default function PlayersClient({ lang, dict }) {
                     setSearch(e.target.value);
                     setCurrentPage(1);
                   }}
-                  placeholder="Search players..."
+                  placeholder="Search players"
                   className="w-full rounded-md border border-divider bg-primary-card px-4 py-3 pl-12 text-primary-text outline-none placeholder:text-primary-muted transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
                 />
                 <i className="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-primary-muted" />
@@ -154,7 +154,7 @@ export default function PlayersClient({ lang, dict }) {
           </section>
 
           {/* Main content */}
-          <section className=" bg-primary-bg py-5 sm:py-8">
+          <section className="bg-white py-5 sm:py-8">
             <div className="w-full">
               {loading ? (
                 <div className="text-center text-primary-muted">

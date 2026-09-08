@@ -3,10 +3,10 @@ import { ArrowUpRight } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 
 const services = [
-  { title: "Player representation", description: "A considered approach to career decisions, opportunities and representation." },
-  { title: "Talent identification", description: "Football profiles and footage assessed in the context of the next sporting step." },
-  { title: "Club recruitment", description: "Targeted player profiles shaped around your club's recruitment brief." },
-  { title: "Career development", description: "A long-term perspective on development, progression and the player's goals." },
+  { title: "Player representation", description: "Licensed representation and career support for professional and developing players." },
+  { title: "Talent identification", description: "Player identification, assessment and profiling according to sporting requirements." },
+  { title: "Club services & recruitment", description: "Targeted recruitment, player sourcing and football management support for clubs." },
+  { title: "Football partnerships", description: "Structured relationships with clubs, academies and football organizations across international markets." },
 ];
 
 function Eyebrow({ children, dark = false }) {
@@ -21,8 +21,8 @@ function Eyebrow({ children, dark = false }) {
 export default async function AboutPage({ params }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
-  const mission = dict.about?.missionText || "Identify, represent and position football talent for suitable club and career opportunities.";
-  const vision = dict.about?.visionText || "A football pathway where sporting potential is supported by clear information, responsible representation and the right relationships.";
+  const mission = "To connect football talent and organizations with credible opportunities through professional sports management, talent development, recruitment and international partnerships.";
+  const vision = "To build FootballBank into a trusted international football management platform connecting players, clubs and opportunities across global markets.";
 
   return (
     <div className="overflow-hidden bg-white text-[#0b1220]">
@@ -33,7 +33,7 @@ export default async function AboutPage({ params }) {
             Football ambition. International <span className="block">perspective.</span>
           </h1>
           <p className="mt-5 max-w-xl text-[0.9375rem] leading-7 text-slate-600 sm:mt-6 sm:text-[1.0625rem]">
-            FootballBank International connects player development, representation and club recruitment through a focused, relationship-led approach.
+            FootballBank International is a sports management company connecting player development, licensed representation, club recruitment and football partnerships across international markets.
           </p>
         </div>
       </section>
@@ -43,18 +43,15 @@ export default async function AboutPage({ params }) {
           <h2 className="max-w-md font-(family-name:--font-oswald) text-[1.75rem] font-semibold leading-[1.04] tracking-tight sm:text-4xl">
             Talent is the beginning.<br />Direction makes the difference.
           </h2>
-          <p className="mt-4 max-w-lg text-[0.9375rem] leading-7 text-slate-600 sm:mt-5 sm:text-base">We identify and present football talent with a clear purpose: helping clubs assess relevant players and helping players make informed career decisions.</p>
-          <p className="mt-4 max-w-lg text-[0.9375rem] leading-7 text-slate-600 sm:mt-5 sm:text-base">Based in New Jersey, United States, FootballBank works across international football markets. Our approach brings football information, footage and personal communication together.</p>
+          <p className="mt-4 max-w-lg text-[0.9375rem] leading-7 text-slate-600 sm:mt-5 sm:text-base">FootballBank International was created to connect football talent, clubs and opportunity through a structured, relationship-led approach. We work with players seeking career direction and football organizations seeking talent, representation and international market access.</p>
+          <p className="mt-4 max-w-lg text-[0.9375rem] leading-7 text-slate-600 sm:mt-5 sm:text-base">Based in New Jersey, United States, FootballBank operates across international football markets through relationships with players, clubs, academies and football professionals.</p>
+          <p className="mt-4 max-w-lg text-[0.9375rem] leading-7 text-slate-600 sm:mt-5 sm:text-base">Where an activity requires a licensed football agent, those services are performed by FIFA Licensed Football Agent Ayodeji Michael .F.</p>
           <Link href={`/${lang}/agent`} className="mt-6 inline-flex w-full items-center justify-center gap-3 bg-blue-600 px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 sm:mt-7 sm:w-auto">
             Our representation approach <ArrowUpRight className="size-4" aria-hidden="true" />
           </Link>
         </div>
-        <div className="relative aspect-4/3 overflow-hidden bg-slate-200 hidden md:inline-block">
-          <div className="absolute inset-0 bg-[linear-gradient(135deg,#d8e0e9_0%,#eef2f6_42%,#96aa78_43%,#748e5f_100%)]" />
-          <div className="absolute inset-x-0 bottom-0 h-[43%] border-t border-white/50 bg-emerald-900/15" />
-          <div className="absolute inset-0 grid place-items-center bg-slate-950/10 ">
-            <span className=" border border-white/70 bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-600">Image placeholder</span>
-          </div>
+        <div className="relative hidden aspect-4/3 overflow-hidden bg-slate-200 md:inline-block">
+          <img src="/heroPhotos/WhatsApp Image 2025-10-07 at 23.49.32_5d88ced2.jpg" alt="FootballBank football business setting" className="h-full w-full object-cover" />
         </div>
       </section>
 

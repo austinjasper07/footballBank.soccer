@@ -41,17 +41,17 @@ const BRIEF_STEPS = [
   {
     n: "01",
     title: "Define the requirement",
-    copy: "Position, playing level, timing and budget.",
+    copy: "Position, playing level, market and budget.",
   },
   {
     n: "02",
     title: "Review relevant profiles",
-    copy: "Football information and footage matched to your brief.",
+    copy: "FootballBank identifies and presents players aligned with the club's requirements.",
   },
   {
     n: "03",
     title: "Coordinate the next step",
-    copy: "Verified enquiries and communication through FootballBank.",
+    copy: "Verified enquiries, introductions and appropriate representation support.",
   },
 ];
 
@@ -59,22 +59,22 @@ const DIRECTION = [
   {
     n: "01",
     title: "Player representation",
-    copy: "A considered approach to career decisions, opportunities and representation.",
+    copy: "Career strategy, opportunities and representation through licensed football-agent services.",
   },
   {
     n: "02",
     title: "Talent identification",
-    copy: "Football profiles and footage assessed in the context of the next sporting step.",
+    copy: "Player assessment, profiling and opportunity matching.",
   },
   {
     n: "03",
     title: "Club recruitment",
-    copy: "Targeted player profiles shaped around your club's recruitment brief.",
+    copy: "Targeted player identification according to club requirements.",
   },
   {
     n: "04",
     title: "Career development",
-    copy: "A long-term perspective on development, progression and the player's goals.",
+    copy: "Long-term planning focused on progression and professional growth.",
   },
 ];
 
@@ -117,13 +117,12 @@ export default async function HomePage({ params }) {
               Representation · Recruitment · Opportunity
             </p>
             <h1 className="mt-5 max-w-2xl font-heading text-4xl leading-[1.02] text-primary-text-inverse uppercase sm:mt-6 sm:text-6xl lg:text-7xl">
-              Connecting football talent with{" "}
+              Connecting football<br />
+              talent, clubs &amp;<br />
               <span className="text-primary-accent">global opportunity.</span>
             </h1>
             <p className="mt-5 max-w-xl text-sm leading-6 text-primary-text-inverse/70 sm:mt-7 sm:leading-relaxed">
-              FootballBank International identifies, represents and positions
-              football talent for opportunities with clubs and football
-              organizations across international markets.
+              FootballBank International is a sports management company connecting players, clubs and football organizations through talent identification, recruitment, development, club partnerships and international football opportunities.
             </p>
             <div className="mt-7 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <Button
@@ -133,7 +132,7 @@ export default async function HomePage({ params }) {
                 className="w-full px-5 sm:w-auto sm:px-8"
               >
                 <Link href={`/${lang}/players`}>
-                  View players <ArrowUpRight />
+                  Explore players <ArrowUpRight />
                 </Link>
               </Button>
               <Button
@@ -143,7 +142,7 @@ export default async function HomePage({ params }) {
                 className="w-full px-5 sm:w-auto sm:px-8"
               >
                 <Link href={`/${lang}/clubs-scouts`}>
-                  Request a player <ArrowUpRight />
+                  Work with FootballBank <ArrowUpRight />
                 </Link>
               </Button>
             </div>
@@ -407,19 +406,17 @@ export default async function HomePage({ params }) {
         <section className="bg-secondary-bg-alt">
           <div className="mx-auto grid max-w-7xl gap-14 px-6 py-24 lg:grid-cols-2">
             <div>
-              <p className="eyebrow">For clubs &amp; scouts</p>
+              <p className="eyebrow">For clubs &amp; partners</p>
               <h2 className="mt-5 font-heading text-4xl leading-tight uppercase">
                 Your recruitment brief.
                 <br />
                 Our starting point.
               </h2>
               <p className="mt-5 max-w-md text-sm text-primary-muted">
-                Tell us what you need. We'll identify the right profile,
-                coordinate the conversation and keep your sporting requirements
-                at the centre.
+                Tell us the player profile, position, market, budget or sporting requirement. FootballBank will identify relevant talent and coordinate the next stage of the recruitment process.
               </p>
               <Button variant="default" size="lg" className="mt-8 ">
-                Recruit with FootballBank
+                Request a player
               </Button>
             </div>
             <div>
@@ -604,8 +601,7 @@ export default async function HomePage({ params }) {
             </div>
             <div>
               <p className="text-sm text-primary-text-inverse/70">
-                Recruiting for a club or ready for the next step in your career?
-                Start with FootballBank.
+                            Whether you&apos;re recruiting for a club, exploring a football partnership or planning the next stage of your career, start the conversation with FootballBank.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button variant="action" size="lg">

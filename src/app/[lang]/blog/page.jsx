@@ -84,7 +84,12 @@ export default async function BlogPage({ params }) {
 
   const categories = [
     "All",
-    ...Array.from(new Set(formattedPosts.map((p) => p.category))),
+    "Players",
+    "Clubs",
+    "Transfers",
+    "Recruitment",
+    "Football Business",
+    "Development",
   ]
 
   return (
@@ -124,7 +129,7 @@ export default async function BlogPage({ params }) {
       </section>
 
       {/* Blog Content */}
-      <section className="py-8">
+      <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <ClientSideFilterWrapper
