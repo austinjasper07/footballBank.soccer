@@ -116,26 +116,40 @@ export default async function HomePage({ params }) {
             <p className="eyebrow">
               Representation · Recruitment · Opportunity
             </p>
-            <h1 className="mt-6 max-w-2xl font-heading text-5xl leading-[1.05] text-primary-text-inverse uppercase sm:text-6xl lg:text-7xl">
+            <h1 className="mt-5 max-w-2xl font-heading text-4xl leading-[1.02] text-primary-text-inverse uppercase sm:mt-6 sm:text-6xl lg:text-7xl">
               Connecting football talent with{" "}
               <span className="text-primary-accent">global opportunity.</span>
             </h1>
-            <p className="mt-7 max-w-xl text-sm leading-relaxed text-primary-text-inverse/70">
+            <p className="mt-5 max-w-xl text-sm leading-6 text-primary-text-inverse/70 sm:mt-7 sm:leading-relaxed">
               FootballBank International identifies, represents and positions
               football talent for opportunities with clubs and football
               organizations across international markets.
             </p>
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <Button variant="action" size="lg">
-                View players <ArrowUpRight />
+            <div className="mt-7 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+              <Button
+                variant="action"
+                size="lg"
+                asChild
+                className="w-full px-5 sm:w-auto sm:px-8"
+              >
+                <Link href={`/${lang}/players`}>
+                  View players <ArrowUpRight />
+                </Link>
               </Button>
-              <Button variant="onNavy" size="lg">
-                Request a player <ArrowUpRight />
+              <Button
+                variant="onNavy"
+                size="lg"
+                asChild
+                className="w-full px-5 sm:w-auto sm:px-8"
+              >
+                <Link href={`/${lang}/clubs-scouts`}>
+                  Request a player <ArrowUpRight />
+                </Link>
               </Button>
             </div>
             <a
               href="#"
-              className="mt-8 inline-flex items-center gap-2 text-xs text-primary-text-inverse/60 transition-colors hover:text-primary-accent"
+              className="mt-6 inline-flex items-center gap-2 text-xs leading-5 text-primary-text-inverse/60 transition-colors hover:text-primary-accent sm:mt-8"
             >
               Seeking representation? <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
@@ -143,9 +157,7 @@ export default async function HomePage({ params }) {
 
           {/* PLAYER OF THE WEEK */}
           {playerOfTheWeek && (
-            <section
-              className="flex w-full min-w-0 items-center justify-center md:w-1/2"
-            >
+            <section className="flex w-full min-w-0 items-center justify-center md:w-1/2">
               <Link href={`/${lang}/players/${playerOfTheWeek.id}`}>
                 <div className="group relative w-full max-w-sm lg:max-w-md bg-primary-navy/60 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-primary-accent/20 hover:border-primary-accent/40 transition-all duration-300 transform">
                   <div className="absolute top-4 right-4 z-20 bg-linear-to-r from-primary-accent to-amber-500 text-primary-text px-3 py-1 text-xs sm:text-sm font-semibold rounded-full shadow-lg">
@@ -169,7 +181,7 @@ export default async function HomePage({ params }) {
                     </h3>
 
                     <div className="grid grid-cols-3 gap-3">
-                      <div className="bg-white/10 rounded-lg p-2backdrop-blur-sm">
+                      <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
                         <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
                           {dict.playerProfile.position}
                         </div>
@@ -229,7 +241,8 @@ export default async function HomePage({ params }) {
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 text-[0.65rem] tracking-[0.18em] text-primary-text-inverse/50 uppercase">
             <span>FootballBank International / Talent in focus</span>
             <span className="hidden items-center gap-2 sm:flex">
-              {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName} · {playerOfTheWeek?.position} <ArrowUpRight className="h-3 w-3" />
+              {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName} ·{" "}
+              {playerOfTheWeek?.position} <ArrowUpRight className="h-3 w-3" />
             </span>
           </div>
         </div>
@@ -434,7 +447,7 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* BLOG */}
-        <section className="py-16 " id="blog">
+        <section className="py-6 md:py-10 " id="blog">
           <div
             className="max-w-7xl mx-auto px-4 text-center"
             data-aos="fade-up"
@@ -492,14 +505,16 @@ export default async function HomePage({ params }) {
                       className="w-full h-48 object-cover"
                     />
                     <div className="p-6">
-                      <div className="text-sm text-primary-muted mb-2">
+                      <div className="text-xs md:text-sm text-primary-muted mb-2">
                         {formatTimeAgo(post.createdAt)}
                       </div>
                       <h3 className="text-lg font-semibold mb-2 text-primary-text">
-                        {post.title}
+                        {post.title.length > 30
+                          ? post.title.slice(0, 30) + "..."
+                          : post.title}
                       </h3>
                       <p className="text-sm text-primary-muted mb-4 line-clamp-3">
-                        {post.content.replace(/<[^>]*>/g, "").slice(0, 100)}...
+                        {post.content.replace(/<[^>]*>/g, "").slice(0, 50)}...
                       </p>
                       <Link href={`/${lang}/blog/${post.id}`}>
                         <span className="text-primary-action hover:underline text-sm font-medium">
@@ -516,12 +531,12 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* Direction */}
-        <section className="mx-auto max-w-7xl px-6 py-24">
+        <section className="mx-auto max-w-7xl px-6 py-10 md:py-16">
           <p className="eyebrow">Beyond the highlight reel</p>
           <h2 className="mt-5 font-heading text-4xl uppercase">
             A career deserves a clear direction.
           </h2>
-          <div className="mt-14 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
             {DIRECTION.map((d) => (
               <div key={d.n} className="rule-divider pt-5">
                 <span className="text-[0.7rem] text-primary-muted">{d.n}</span>
@@ -546,7 +561,7 @@ export default async function HomePage({ params }) {
               width={1008}
               height={1104}
               loading="lazy"
-              className="h-112 w-full rounded-lg object-cover"
+              className="h-112 w-full rounded-lg object-left object-cover md:object-center"
             />
             <div>
               <p className="eyebrow">The people behind the pathway</p>

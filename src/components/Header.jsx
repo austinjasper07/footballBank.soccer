@@ -75,7 +75,7 @@ export default function Header({ lang = "en" }) {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <header className="bg-primary-navy sticky top-0 z-50 border-b border-white/10 shadow-sm lg:h-28 h-16 md:h-20 flex items-center">
+    <header className="bg-primary-navy sticky top-0 z-50 border-b border-white/10 shadow-sm lg:h-24 h-16 md:h-18 flex items-center">
       <div className="max-w-full mx-auto px-3 sm:px-4 lg:px-12 w-full flex ">
         <div className="w-full flex items-center justify-between h-12 sm:h-14 md:h-16">
           {/* Logo - Fixed width */}
@@ -86,7 +86,7 @@ export default function Header({ lang = "en" }) {
             >
               <div className="flex items-center gap-2">
                 <Image
-                  src="/logo/logo3.svg"
+                  src="/logo/logo3.png"
                   alt="FootballBank Logo"
                   width={60}
                   height={60}
@@ -118,7 +118,7 @@ export default function Header({ lang = "en" }) {
                   <Link
                     key={path}
                     href={path}
-                    className={`transition-colors text-sm xl:text-lg ${
+                    className={`transition-colors text-sm xl:text-base ${
                       isActive
                         ? "text-primary-action font-semibold"
                         : "text-white hover:text-primary-action"

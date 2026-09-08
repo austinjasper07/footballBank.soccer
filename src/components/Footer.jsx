@@ -20,9 +20,25 @@ export default function Footer({ lang = "en" }) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div>
             <div className="mb-4 flex flex-col">
-              <Link href={`/${lang}`} className="inline-flex items-center gap-3 text-white">
-                <Image src="/logo/logo3.svg" alt="FootballBank International" width={48} height={48} className="size-12 object-contain" />
-                <span className="font-heading text-2xl font-semibold tracking-tight">FootballBank</span>
+              <Link
+                href={`/${lang}`}
+                className="inline-flex items-center gap-3 text-white"
+              >
+                <Image
+                  src="/logo/logo3.png"
+                  alt="FootballBank International"
+                  width={48}
+                  height={48}
+                  className="size-12 object-contain"
+                />
+                <div className="flex flex-col">
+                  <span className="font-heading text-2xl font-semibold tracking-tight">
+                    FootballBank
+                  </span>
+                  <h3 className="text-[8px] md:text-[10px] tracking-[0.15em] text-primary-accent">
+                    INTERNATIONAL
+                  </h3>
+                </div>
               </Link>
               <div>
                 <span className="text-primary-muted text-[12px]">
@@ -35,38 +51,9 @@ export default function Footer({ lang = "en" }) {
               </div>
             </div>
             <p className="text-gray-400 mb-6">{dict.footer.description}</p>
+
             <div className="flex space-x-4">
-              {/*
-                {
-                  name: "twitter",
-                  href: "https://x.com/footballbankhq?s=21&t=Ihzjw_SrtnHA4qE0nkgFfg",
-                // {
-                //   title: dict.footer.pricing,
-                //   href: `/${lang}/pricing`,
-                // },
-                },
-                {
-                  name: "facebook",
-                  href: "https://www.facebook.com/profile.php?id=61580081775450",
-                },
-                {
-                  name: "youtube",
-                  href: "http://www.youtube.com/@footballbank.soccer",
-                },
-                {
-                  name: "tiktok",
-                  href: "http://www.tiktok.com/@footballbank.soccer",
-                },
-              ].map((brand) => (
-                <Link
-                  href={brand.href}
-                  key={brand.name}
-                  className="text-gray-400 hover:text-primary-action transition-colors cursor-pointer"
-                >
-                  <i className={`fa-brands fa-${brand.name} text-xl`} />
-                </Link>
-              ))}
-              */}
+              {/** SOCIAL MEDIA LINKS */}
               <Link
                 href="https://x.com/footballbankhq?s=21&t=Ihzjw_SrtnHA4qE0nkgFfg"
                 className="text-gray-400 hover:text-primary-action transition-colors cursor-pointer"
@@ -141,11 +128,6 @@ export default function Footer({ lang = "en" }) {
               {[
                 { title: dict.footer.blog, href: `/${lang}/blog` },
                 { title: dict.footer.careerTips, href: `/${lang}/career-tips` },
-                // { title: dict.footer.shop, href: `/${lang}/shop/products` },
-                // {
-                //   title: dict.footer.pricing,
-                //   href: `/${lang}/pricing`,
-                // },
                 { title: dict.footer.faq, href: `/${lang}/faq` },
               ].map((link) => (
                 <Link

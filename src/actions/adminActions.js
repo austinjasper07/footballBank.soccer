@@ -134,33 +134,6 @@ export async function deleteUser(id) {
   }
 }
 
-// ORDERS
-export async function getAllOrders() {
-  return [];
-}
-
-export async function getOrderById(id) {
-  return null;
-}
-
-export async function updateOrderStatus(id, status) {
-  return { success: false, error: "Orders are disabled" };
-}
-
-export async function getOrderStats() {
-  return {
-    total: 0,
-    pending: 0,
-    fulfilled: 0,
-    completed: 0,
-    cancelled: 0,
-    paymentCompleted: 0,
-    paymentFailed: 0,
-    paymentPending: 0,
-    paymentRefunded: 0,
-  };
-}
-
 // SUBSCRIPTIONS
 export async function getAllSubscriptions() {
   return [];
