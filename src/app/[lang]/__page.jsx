@@ -298,7 +298,7 @@ function Index() {
         <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 py-24 lg:grid-cols-2">
           <img
             src={founder}
-            alt="Ayodeji Fatade, founder of FootballBank International"
+            alt="Ayodeji Michael .F, founder of FootballBank International"
             width={1008}
             height={1104}
             loading="lazy"
@@ -312,11 +312,11 @@ function Index() {
               <span className="text-accent">Personal commitment.</span>
             </h2>
             <p className="mt-5 max-w-lg text-sm leading-relaxed text-navy-foreground/70">
-              Ayodeji Fatade is a United States-based FIFA-licensed football agent and the founder of
+              Ayodeji Michael .F is a United States-based FIFA-licensed football agent and the founder of
               FootballBank International, focused on player representation, career development and
               international football opportunities.
             </p>
-            <p className="mt-8 font-heading text-lg text-navy-foreground">Ayodeji Fatade</p>
+            <p className="mt-8 font-heading text-lg text-navy-foreground">Ayodeji Michael .F</p>
             <p className="text-xs text-navy-foreground/60">
               Founder · FIFA-licensed Football Agent
             </p>
