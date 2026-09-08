@@ -35,6 +35,7 @@ export const metadata = {
   description: "Focused football recruitment support for clubs and scouts.",
 };
 
+
 export default async function ClubsAndScoutsPage({ params }) {
   const { lang } = await params;
 
