@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 /* @import 'tailwindcss/typography';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap'); */
@@ -31,31 +31,31 @@
    ========================== */
 @theme {
   /* Primary palette */
-  --color-primary-bg: #F9FAFB;
-  --color-primary-navy: #0B1220;
-  --color-primary-surface: #F9FAFB;
-  --color-primary-card: #FFFFFF;
-  --color-primary-text: #0B1220;
-  --color-primary-text-inverse: #FFFFFF;
-  --color-primary-muted: #9CA3AF;
+  --color-primary-bg: #f9fafb;
+  --color-primary-navy: #0b1220;
+  --color-primary-surface: #f9fafb;
+  --color-primary-card: #ffffff;
+  --color-primary-text: #0b1220;
+  --color-primary-text-inverse: #ffffff;
+  --color-primary-muted: #9ca3af;
   --color-secondary-bg: #172c53; /* Secondary background color for sections like CTA sections within a page */
   --color-secondary-bg-alt: #eef2f7;
   /* Brand actions */
-  --color-primary-action: #2563EB;  /* #2563EB; */
-  --color-primary-action-hover: #1D4ED8;
-  --color-primary-accent: #FBBF24;
-  --color-primary-accent-strong: #F59E0B;
+  --color-primary-action: #2563eb; /* #2563EB; */
+  --color-primary-action-hover: #1d4ed8;
+  --color-primary-accent: #fbbf24;
+  --color-primary-accent-strong: #f59e0b;
 
   --primary: 217 91% 60%; /* #2563EB */
-  --color-accent-blue: #2563EB;
-  --color-accent-green: #10B981;
-  --color-accent-amber: #FBBF24;
-  --color-accent-red: #EF4444;
-  --accent: #FBBF24;
-  --accent-foreground: #0B1220;
+  --color-accent-blue: #2563eb;
+  --color-accent-green: #10b981;
+  --color-accent-amber: #fbbf24;
+  --color-accent-red: #ef4444;
+  --accent: #fbbf24;
+  --accent-foreground: #0b1220;
 
   /* Functional system colors */
-  --color-divider: #E5E7EB;
+  --color-divider: #e5e7eb;
 
   /* UI surface tokens */
   --background: 0 0% 98%;
@@ -65,7 +65,7 @@
 
   --popover: 0 0% 100%;
   --popover-foreground: 222.2 84% 4.9%;
-  
+
   --primary-foreground: 0 0% 100%;
 
   --secondary: 210 40% 96.1%;
@@ -99,13 +99,12 @@
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-
 }
 @utility eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  font-size: 0.6875rem;
+  gap: 0.4rem;
+  font-size: 0.5rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -113,9 +112,19 @@
 
   &::before {
     content: "";
-    width: 1.75rem;
+    width: 1.25rem;
     height: 1px;
     background: currentColor;
+  }
+
+  @media screen and (min-width: 768px) {
+    gap: 0.6rem;
+    font-size: 0.6875rem;
+
+    &::before {
+      width: 1.75rem;
+      height: 1px;
+    }
   }
 }
 /* ==========================
@@ -126,15 +135,23 @@
     font-family: var(--font-body);
   }
 
-  html, body {
+  html,
+  body {
     @apply bg-primary-bg text-primary-text;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-heading);
   }
 
-  input:focus, textarea:focus, select:focus {
+  input:focus,
+  textarea:focus,
+  select:focus {
     outline: 2px solid var(--color-primary-action) !important;
     outline-offset: 2px;
     border-color: var(--color-primary-action) !important;

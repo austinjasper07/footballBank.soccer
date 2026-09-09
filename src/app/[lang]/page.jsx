@@ -7,7 +7,7 @@ import { getAuthUser } from "@/lib/oauth";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { getDictionary } from "@/lib/dictionaries";
 import { formatTimeAgo } from "@/utils/dateHelper";
-import { ArrowUpRight, Globe2, Play, ShieldCheck, Target } from "lucide-react";
+import { ArrowUpRight, Globe2, Globe2Icon, Play, Search, ShieldCheck, Target, TrendingUp, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export async function generateMetadata({ params }) {
@@ -103,26 +103,31 @@ export default async function HomePage({ params }) {
 
       <section className="relative overflow-hidden bg-navy">
         <img
-          src="/hero-player.jpg"
+          src="/heroPhotos/LLLL.png"
           alt="Footballer walking on the pitch"
           width={1600}
           height={1008}
-          className="absolute inset-0 h-full w-full object-cover opacity-70"
+          className="absolute inset-0 h-full w-full md:object-cover opacity-70"
         />
         <div className="absolute inset-0 bg-linear-to-r from-primary-navy via-primary-navy/85 to-primary-navy/20" />
 
-        <div className="relative mx-auto flex max-w-7xl flex-col gap-10 px-6 py-16 sm:py-20 md:flex-row md:items-center md:justify-between lg:py-18">
-          <div className="min-w-0 px-1 py-2 sm:px-2 md:w-1/2 md:px-0 md:py-0">
+        <div className="relative w-full flex flex-col md:flex-row items-center justify-center md:items-start md:justify-start gap-6 px-6 pb-10 pt-8 md:px-8 lg:px-12 lg:pb-14 lg:pt-12">
+          <section className="min-w-0 px-1 sm:px-2 w-full md:w-[48%] md:px-0 lg:w-[42%]">
             <p className="eyebrow">
               Representation · Recruitment · Opportunity
             </p>
-            <h1 className="mt-5 max-w-2xl font-heading text-4xl leading-[1.02] text-primary-text-inverse uppercase sm:mt-6 sm:text-6xl lg:text-7xl">
-              Connecting football<br />
-              talent, clubs &amp;<br />
+            <h1 className="mt-5 max-w-xl font-heading text-3xl leading-[1.2] text-primary-text-inverse uppercase sm:mt-6 sm:text-4xl lg:text-5xl lg:leading-[0.9]">
+              Connecting football
+              <br />
+              talent, clubs &amp;
+              <br />
               <span className="text-primary-accent">global opportunity.</span>
             </h1>
-            <p className="mt-5 max-w-xl text-sm leading-6 text-primary-text-inverse/70 sm:mt-7 sm:leading-relaxed">
-              FootballBank International is a sports management company connecting players, clubs and football organizations through talent identification, recruitment, development, club partnerships and international football opportunities.
+            <p className="mt-5 max-w-lg text-sm leading-6 text-primary-text-inverse/70 sm:mt-7 sm:leading-relaxed">
+              FootballBank International is a sports management company
+              connecting players, clubs and football organizations through
+              talent identification, recruitment, development, club partnerships
+              and international football opportunities.
             </p>
             <div className="mt-7 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <Button
@@ -152,91 +157,24 @@ export default async function HomePage({ params }) {
             >
               Seeking representation? <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
-          </div>
+          </section>
 
           {/* PLAYER OF THE WEEK */}
-          {playerOfTheWeek && (
-            <section className="flex w-full min-w-0 items-center justify-center md:w-1/2">
-              <Link href={`/${lang}/players/${playerOfTheWeek.id}`}>
-                <div className="group relative w-full max-w-sm lg:max-w-md bg-primary-navy/60 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-primary-accent/20 hover:border-primary-accent/40 transition-all duration-300 transform">
-                  <div className="absolute top-4 right-4 z-20 bg-linear-to-r from-primary-accent to-amber-500 text-primary-text px-3 py-1 text-xs sm:text-sm font-semibold rounded-full shadow-lg">
-                    {dict.homepage.hero.starOnTheRise}
-                  </div>
-
-                  <div className="relative">
-                    <Image
-                      src={playerOfTheWeek?.imageUrl?.[0] || "/placeholder.jpg"}
-                      alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
-                      width={500}
-                      height={400}
-                      className="object-cover w-full h-56 sm:h-56 lg:h-80"
-                    />
-                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
-                  </div>
-
-                  <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
-                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
-                      {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName}
-                    </h3>
-
-                    <div className="grid grid-cols-3 gap-3">
-                      <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
-                        <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
-                          {dict.playerProfile.position}
-                        </div>
-                        <div className="text-white font-semibold text-sm sm:text-base">
-                          {playerOfTheWeek?.position}
-                        </div>
-                      </div>
-                      <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
-                        <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
-                          {dict.playerProfile.age}
-                        </div>
-                        <div className="text-white font-semibold text-sm sm:text-base">
-                          {age}
-                        </div>
-                      </div>
-                      <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
-                        <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
-                          {dict.playerProfile.foot}
-                        </div>
-                        <div className="text-white font-semibold text-sm sm:text-base">
-                          {playerOfTheWeek?.foot}
-                        </div>
-                      </div>
-                    </div>
-
-                    <p className="text-blue-100 text-xs sm:text-sm leading-relaxed line-clamp-3 sm:line-clamp-4">
-                      {playerOfTheWeek?.description ||
-                        dict.pricing.playerOfTheWeek.description}
-                    </p>
-
-                    <div className="pt-2">
-                      <span className="inline-flex items-center text-white text-xs sm:text-sm font-medium group-hover:text-primary-accent transition-colors">
-                        {dict.pricing.playerOfTheWeek.viewProfile}
-                        <svg
-                          className="ml-2 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </section>
-          )}
+          <section className="md:absolute md:right-0 top-5 w-full items-center justify-center md:w-[52%] lg:w-[58%] h-[95%] hidden md:flex">
+            <div className=" w-full overflow-hidden md:h-full rounded-bl-4xl rounded-tl-4xl">
+              <Image
+                src="/heroPhotos/LLLL.png"
+                alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
+                width={900}
+                height={900}
+                className="h-80 w-full shadow-2xl sm:h-105 lg:h-full"
+              />
+              {/* <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div> */}
+            </div>
+          </section>
         </div>
 
-        <div className="relative border-t border-primary-text-inverse/10 bg-primary-navy/80">
+        {/* <div className="relative border-t border-primary-text-inverse/10 bg-primary-navy/80">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 text-[0.65rem] tracking-[0.18em] text-primary-text-inverse/50 uppercase">
             <span>FootballBank International / Talent in focus</span>
             <span className="hidden items-center gap-2 sm:flex">
@@ -244,81 +182,62 @@ export default async function HomePage({ params }) {
               {playerOfTheWeek?.position} <ArrowUpRight className="h-3 w-3" />
             </span>
           </div>
-        </div>
+        </div> */}
       </section>
 
       {/* Assurance strip */}
-      <section className="bg-secondary-bg">
-        <div className="mx-auto grid max-w-7xl gap-4 px-6 py-5 text-primary-text-inverse/80 sm:grid-cols-2 lg:grid-cols-4">
-          {ASSURANCES.map(({ icon: Icon, label }) => (
-            <div key={label} className="flex items-center gap-3 text-xs">
-              <Icon className="h-4 w-4 text-primary-accent" />
-              {label}
-            </div>
-          ))}
-          <div className="text-xs text-primary-text-inverse/60 lg:text-right">
-            New Jersey, United States
+
+      <div className="relative border-t border-white/10 bg-[#07182b]/90">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-white/10 sm:grid-cols-4">
+          <div className="flex items-center gap-3 px-5 py-4 sm:px-6">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
+              <UserRound className="h-3.5 w-3.5" />
+            </span>
+
+            <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
+              Player representation
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 px-5 py-4 sm:px-6">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
+              <Search className="h-3.5 w-3.5" />
+            </span>
+
+            <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
+              Club recruitment
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 px-5 py-4 sm:px-6">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
+              <Globe2Icon className="h-3.5 w-3.5" />
+            </span>
+
+            <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
+              International opportunities
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 px-5 py-4 sm:px-6">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
+              <TrendingUp className="h-3.5 w-3.5" />
+            </span>
+
+            <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
+              Career development
+            </span>
           </div>
         </div>
-      </section>
+      </div>
 
       <div className="w-full">
-        {/* WHY FOOTBALLBANK */}
-        {/* <section className="py-16 bg-primary-surface ">
-          <div
-            className="max-w-7xl mx-auto text-center px-4"
-            data-aos="fade-up"
-          >
-            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold  text-primary-text mb-4">
-              {dict.homepage.whyFootballBank.title}
-            </h2>
-            <div className="w-24 h-1 bg-primary-accent mx-auto mb-10" />
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  icon: "fa-certificate",
-                  title: dict.homepage.whyFootballBank.fifaCertified.title,
-                  desc: dict.homepage.whyFootballBank.fifaCertified.description,
-                },
-                {
-                  icon: "fa-globe",
-                  title: dict.homepage.whyFootballBank.globalNetwork.title,
-                  desc: dict.homepage.whyFootballBank.globalNetwork.description,
-                },
-                {
-                  icon: "fa-bolt",
-                  title: dict.homepage.whyFootballBank.rapidVisibility.title,
-                  desc: dict.homepage.whyFootballBank.rapidVisibility
-                    .description,
-                },
-              ].map(({ icon, title, desc }, i) => (
-                <div
-                  key={title}
-                  className="bg-white p-8 rounded-xl shadow-sm border border-divider text-center hover:shadow-md transition-all group"
-                  data-aos="fade-up"
-                  data-aos-delay={i * 150}
-                >
-                  <div className="w-16 h-16 bg-primary-navy rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary-action transition-colors">
-                    <i
-                      className={`fa-solid ${icon} text-primary-accent text-2xl`}
-                    />
-                  </div>
-                  <h3 className="text-xl  font-semibold text-primary-text mb-4">
-                    {title}
-                  </h3>
-                  <p className="text-primary-muted leading-relaxed">{desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section> */}
-
         {/* FEATURED PLAYERS */}
-        <section className="mx-auto max-w-7xl px-6 py-24">
+        <section className="mx-auto max-w-7xl px-6 py-16">
           <p className="eyebrow">The player collection</p>
           <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="font-heading text-4xl uppercase">
+              <h2 className="font-heading text-[1.6rem] md:text-4xl uppercase">
                 Talent worth a closer look.
               </h2>
 
@@ -401,19 +320,21 @@ export default async function HomePage({ params }) {
             pending confirmation.
           </p>
         </section>
-
+           
         {/* Recruitment brief */}
         <section className="bg-secondary-bg-alt">
           <div className="mx-auto grid max-w-7xl gap-14 px-6 py-24 lg:grid-cols-2">
             <div>
               <p className="eyebrow">For clubs &amp; partners</p>
-              <h2 className="mt-5 font-heading text-4xl leading-tight uppercase">
+              <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight uppercase">
                 Your recruitment brief.
                 <br />
                 Our starting point.
               </h2>
               <p className="mt-5 max-w-md text-sm text-primary-muted">
-                Tell us the player profile, position, market, budget or sporting requirement. FootballBank will identify relevant talent and coordinate the next stage of the recruitment process.
+                Tell us the player profile, position, market, budget or sporting
+                requirement. FootballBank will identify relevant talent and
+                coordinate the next stage of the recruitment process.
               </p>
               <Button variant="default" size="lg" className="mt-8 ">
                 Request a player
@@ -444,12 +365,12 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* BLOG */}
-        <section className="py-6 md:py-10 " id="blog">
+        <section className="py-8 md:py-16 " id="blog">
           <div
             className="max-w-7xl mx-auto px-4 text-center"
             data-aos="fade-up"
           >
-            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold mb-4 text-primary-text">
+            <h2 className="text-[1.6rem] md:text-4xl font-bold mb-4 text-primary-text">
               {dict.homepage.blog.title}
             </h2>
             <div className="w-24 h-1 bg-primary-accent mx-auto mb-4" />
@@ -479,7 +400,7 @@ export default async function HomePage({ params }) {
                 </Link>
               </div>
               <div
-                className="text-left grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 px-4 py-4 sm:px-6 lg:px-8 xl:px-12"
+                className="text-left grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 px-4 py-4 sm:px-6 lg:px-8 xl:px-12"
                 data-aos="fade-up"
               >
                 {featuredPosts.map((post) => (
@@ -506,12 +427,12 @@ export default async function HomePage({ params }) {
                         {formatTimeAgo(post.createdAt)}
                       </div>
                       <h3 className="text-lg font-semibold mb-2 text-primary-text">
-                        {post.title.length > 30
-                          ? post.title.slice(0, 30) + "..."
+                        {post.title.length > 50
+                          ? post.title.slice(0, 50) + "..."
                           : post.title}
                       </h3>
-                      <p className="text-sm text-primary-muted mb-4 line-clamp-3">
-                        {post.content.replace(/<[^>]*>/g, "").slice(0, 50)}...
+                      <p className="hidden lg:block text-sm text-primary-muted mb-4 line-clamp-3">
+                        {post.content.replace(/<[^>]*>/g, "").slice(0, 100)}...
                       </p>
                       <Link href={`/${lang}/blog/${post.id}`}>
                         <span className="text-primary-action hover:underline text-sm font-medium">
@@ -528,9 +449,9 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* Direction */}
-        <section className="mx-auto max-w-7xl px-6 py-10 md:py-16">
+        <section className="mx-auto max-w-7xl px-6 py-8 md:py-16">
           <p className="eyebrow">Beyond the highlight reel</p>
-          <h2 className="mt-5 font-heading text-4xl uppercase">
+          <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl uppercase">
             A career deserves a clear direction.
           </h2>
           <div className="mt-8 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
@@ -562,7 +483,7 @@ export default async function HomePage({ params }) {
             />
             <div>
               <p className="eyebrow">The people behind the pathway</p>
-              <h2 className="mt-5 font-heading text-4xl leading-tight text-primary-text-inverse uppercase">
+              <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight text-primary-text-inverse uppercase">
                 Licensed representation.
                 <br />
                 <span className="text-primary-accent">
@@ -570,10 +491,10 @@ export default async function HomePage({ params }) {
                 </span>
               </h2>
               <p className="mt-5 max-w-lg text-sm leading-relaxed text-primary-text-inverse/70">
-                Ayodeji Michael .F is a United States-based FIFA-licensed football
-                agent and the founder of FootballBank International, focused on
-                player representation, career development and international
-                football opportunities.
+                Ayodeji Michael .F is a United States-based FIFA-licensed
+                football agent and the founder of FootballBank International,
+                focused on player representation, career development and
+                international football opportunities.
               </p>
               <p className="mt-8 font-heading text-lg text-primary-text-inverse">
                 Ayodeji Michael .F
@@ -590,10 +511,10 @@ export default async function HomePage({ params }) {
 
         {/* CTA SECTION*/}
         <section className="bg-secondary-bg">
-          <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center">
+          <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-2 lg:items-center">
             <div>
               <p className="eyebrow">The next conversation matters</p>
-              <h2 className="mt-5 font-heading text-4xl leading-tight text-primary-text-inverse uppercase">
+              <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight text-primary-text-inverse uppercase">
                 The right talent.
                 <br />
                 The right opportunity.
@@ -601,13 +522,15 @@ export default async function HomePage({ params }) {
             </div>
             <div>
               <p className="text-sm text-primary-text-inverse/70">
-                            Whether you&apos;re recruiting for a club, exploring a football partnership or planning the next stage of your career, start the conversation with FootballBank.
+                Whether you&apos;re recruiting for a club, exploring a football
+                partnership or planning the next stage of your career, start the
+                conversation with FootballBank.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button variant="action" size="lg">
+                <Button variant="action" size="lg" className="w-full px-5 sm:w-auto sm:px-8">
                   Request a player <ArrowUpRight />
                 </Button>
-                <Button variant="onNavy" size="lg">
+                <Button variant="onNavy" size="lg" className="w-full px-5 sm:w-auto sm:px-8">
                   Seek representation <ArrowUpRight />
                 </Button>
               </div>

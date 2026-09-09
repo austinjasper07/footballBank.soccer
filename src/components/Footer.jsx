@@ -40,7 +40,7 @@ export default function Footer({ lang = "en" }) {
                   </h3>
                 </div>
               </Link>
-              <div>
+              {/* <div>
                 <span className="text-primary-muted text-[12px]">
                   {" "}
                   {dict.footer.poweredBy}{" "}
@@ -48,7 +48,7 @@ export default function Footer({ lang = "en" }) {
                 <span className="text-gray-400 font-bold text-sm inline-block cursor-pointer">
                   Dojoglo&Fam
                 </span>
-              </div>
+              </div> */}
             </div>
             <p className="text-gray-400 mb-6">{dict.footer.description}</p>
 
