@@ -7,7 +7,17 @@ import { getAuthUser } from "@/lib/oauth";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { getDictionary } from "@/lib/dictionaries";
 import { formatTimeAgo } from "@/utils/dateHelper";
-import { ArrowUpRight, Globe2, Globe2Icon, Play, Search, ShieldCheck, Target, TrendingUp, UserRound } from "lucide-react";
+import {
+  ArrowUpRight,
+  Globe2,
+  Globe2Icon,
+  Play,
+  Search,
+  ShieldCheck,
+  Target,
+  TrendingUp,
+  UserRound,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export async function generateMetadata({ params }) {
@@ -30,12 +40,6 @@ export async function generateMetadata({ params }) {
     url: "/",
   });
 }
-
-const ASSURANCES = [
-  { icon: ShieldCheck, label: "FIFA-licensed representation" },
-  { icon: Globe2, label: "International perspective" },
-  { icon: Target, label: "Club-focused recruitment" },
-];
 
 const BRIEF_STEPS = [
   {
@@ -189,7 +193,7 @@ export default async function HomePage({ params }) {
 
       <div className="relative border-t border-white/10 bg-[#07182b]/90">
         <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-white/10 sm:grid-cols-4">
-          <div className="flex items-center gap-3 px-5 py-4 sm:px-6">
+          <div className="flex items-center gap-3 px-5 py-3 sm:px-6">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
               <UserRound className="h-3.5 w-3.5" />
             </span>
@@ -199,7 +203,7 @@ export default async function HomePage({ params }) {
             </span>
           </div>
 
-          <div className="flex items-center gap-3 px-5 py-4 sm:px-6">
+          <div className="flex items-center gap-3 px-5 py-3 sm:px-6">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
               <Search className="h-3.5 w-3.5" />
             </span>
@@ -209,7 +213,7 @@ export default async function HomePage({ params }) {
             </span>
           </div>
 
-          <div className="flex items-center gap-3 px-5 py-4 sm:px-6">
+          <div className="flex items-center gap-3 px-5 py-3 sm:px-6">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
               <Globe2Icon className="h-3.5 w-3.5" />
             </span>
@@ -219,7 +223,7 @@ export default async function HomePage({ params }) {
             </span>
           </div>
 
-          <div className="flex items-center gap-3 px-5 py-4 sm:px-6">
+          <div className="flex items-center gap-3 px-5 py-3 sm:px-6">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
               <TrendingUp className="h-3.5 w-3.5" />
             </span>
@@ -233,7 +237,7 @@ export default async function HomePage({ params }) {
 
       <div className="w-full">
         {/* FEATURED PLAYERS */}
-        <section className="mx-auto max-w-7xl px-6 py-16">
+        <section className="mx-auto max-w-7xl px-6 py-14">
           <p className="eyebrow">The player collection</p>
           <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -320,10 +324,10 @@ export default async function HomePage({ params }) {
             pending confirmation.
           </p>
         </section>
-           
+
         {/* Recruitment brief */}
         <section className="bg-secondary-bg-alt">
-          <div className="mx-auto grid max-w-7xl gap-14 px-6 py-24 lg:grid-cols-2">
+          <div className="mx-auto grid max-w-7xl gap-14 px-6 py-14 lg:grid-cols-2">
             <div>
               <p className="eyebrow">For clubs &amp; partners</p>
               <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight uppercase">
@@ -337,7 +341,9 @@ export default async function HomePage({ params }) {
                 coordinate the next stage of the recruitment process.
               </p>
               <Button variant="default" size="lg" className="mt-8 ">
-                Request a player
+                <Link href={`/${lang}/players`}>
+                  Request a player
+                </Link>
               </Button>
             </div>
             <div>
@@ -365,7 +371,7 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* BLOG */}
-        <section className="py-8 md:py-16 " id="blog">
+        <section className="py-14 " id="blog">
           <div
             className="max-w-7xl mx-auto px-4 text-center"
             data-aos="fade-up"
@@ -444,12 +450,12 @@ export default async function HomePage({ params }) {
                 ))}
               </div>
             </div>
-            <div className="mt-10 flex justify-end"></div>
+            {/* <div className="mt-10 flex justify-end"></div> */}
           </div>
         </section>
 
         {/* Direction */}
-        <section className="mx-auto max-w-7xl px-6 py-8 md:py-16">
+        <section className="mx-auto max-w-7xl px-6 py-12">
           <p className="eyebrow">Beyond the highlight reel</p>
           <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl uppercase">
             A career deserves a clear direction.
@@ -469,7 +475,7 @@ export default async function HomePage({ params }) {
 
         {/* Founder */}
         <section className="bg-primary-navy">
-          <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 py-24 lg:grid-cols-2">
+          <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 py-16 lg:grid-cols-2">
             <img
               src={agentInfo?.profilePhoto || "/FootballBank_agent.jpg"}
               alt={
@@ -491,19 +497,24 @@ export default async function HomePage({ params }) {
                 </span>
               </h2>
               <p className="mt-5 max-w-lg text-sm leading-relaxed text-primary-text-inverse/70">
-                Ayodeji Michael .F is a United States-based FIFA-licensed
-                football agent and the founder of FootballBank International,
-                focused on player representation, career development and
-                international football opportunities.
+                Ayodeji Fatade is the founder of FootballBank International and
+                a FIFA Licensed Football Agent, providing licensed
+                football-agent services within FootballBank's wider sports
+                management and football business activities.
               </p>
               <p className="mt-8 font-heading text-lg text-primary-text-inverse">
                 Ayodeji Michael .F
               </p>
               <p className="text-xs text-primary-text-inverse/60">
-                Founder · FIFA-licensed Football Agent
+                Founder, FootballBank International 
+              </p>
+              <p className="text-xs text-primary-text-inverse/60">
+                FIFA Licensed Football Agent 
               </p>
               <Button variant="onNavy" size="lg" className="mt-7">
-                Meet your representative <ArrowUpRight />
+                <Link href={`/${lang}/agent`}>
+                  Meet our representative  <ArrowUpRight />
+                </Link>
               </Button>
             </div>
           </div>
@@ -511,7 +522,7 @@ export default async function HomePage({ params }) {
 
         {/* CTA SECTION*/}
         <section className="bg-secondary-bg">
-          <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-2 lg:items-center">
+          <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-2 lg:items-center">
             <div>
               <p className="eyebrow">The next conversation matters</p>
               <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight text-primary-text-inverse uppercase">
@@ -527,10 +538,18 @@ export default async function HomePage({ params }) {
                 conversation with FootballBank.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button variant="action" size="lg" className="w-full px-5 sm:w-auto sm:px-8">
-                  Request a player <ArrowUpRight />
+                <Button
+                  variant="action"
+                  size="lg"
+                  className="w-full px-5 sm:w-auto sm:px-8"
+                >
+                  Work with us <ArrowUpRight />
                 </Button>
-                <Button variant="onNavy" size="lg" className="w-full px-5 sm:w-auto sm:px-8">
+                <Button
+                  variant="onNavy"
+                  size="lg"
+                  className="w-full px-5 sm:w-auto sm:px-8"
+                >
                   Seek representation <ArrowUpRight />
                 </Button>
               </div>

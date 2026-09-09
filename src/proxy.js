@@ -76,6 +76,7 @@ export async function proxy(request) {
     // '/cancel',
     '/players',
     '/blog',
+    '/clubs-scouts', // Clubs & partners page should be public
     // '/shop',
     '/livescore',
     '/agent' // Agent page should be public
