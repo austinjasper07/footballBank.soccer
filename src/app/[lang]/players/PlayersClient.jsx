@@ -73,7 +73,8 @@ export default function PlayersClient({ lang, dict }) {
               {dict?.players?.title || "Find the profile. See the potential."}
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-primary-muted">
-              {dict?.players?.subtitle || "Explore player footage and football profiles. Request the full profile through FootballBank International"}
+              {dict?.players?.subtitle ||
+                "Explore player footage and football profiles. Request the full profile through FootballBank International"}
             </p>
           </section>
 
@@ -90,7 +91,10 @@ export default function PlayersClient({ lang, dict }) {
                     }}
                     className="w-[60%] rounded-md border border-divider bg-primary-card px-4 py-3 pr-10 text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
                   >
-                    <option value="" className="bg-primary-card text-primary-text">
+                    <option
+                      value=""
+                      className="bg-primary-card text-primary-text"
+                    >
                       Country
                     </option>
                     {countryList.map((country) => (
@@ -112,10 +116,16 @@ export default function PlayersClient({ lang, dict }) {
                     }}
                     className="w-[40%] rounded-md border border-divider bg-primary-card px-4 py-3 pr-10 text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
                   >
-                    <option value="" className="bg-primary-card text-primary-text">
+                    <option
+                      value=""
+                      className="bg-primary-card text-primary-text"
+                    >
                       Position
                     </option>
-                    <option value="forward" className="bg-primary-card text-primary-text">
+                    <option
+                      value="forward"
+                      className="bg-primary-card text-primary-text"
+                    >
                       Forward
                     </option>
                     <option
@@ -124,7 +134,10 @@ export default function PlayersClient({ lang, dict }) {
                     >
                       Goalkeeper
                     </option>
-                    <option value="defender" className="bg-primary-card text-primary-text">
+                    <option
+                      value="defender"
+                      className="bg-primary-card text-primary-text"
+                    >
                       Defender
                     </option>
                     <option
@@ -240,7 +253,7 @@ export default function PlayersClient({ lang, dict }) {
                   <Pagination className="my-12 w-full">
                     <PaginationContent className="gap-2">
                       <PaginationItem>
-                          <PaginationPrevious
+                        <PaginationPrevious
                           href="#"
                           className="border border-divider bg-primary-card text-primary-text hover:border-primary-action hover:bg-primary-action hover:text-primary-text-inverse transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={(e) => {
@@ -289,7 +302,6 @@ export default function PlayersClient({ lang, dict }) {
             </div>
           </section>
 
-
           {/* Animation styles */}
           <style jsx global>{`
             @keyframes dropdown {
@@ -309,33 +321,33 @@ export default function PlayersClient({ lang, dict }) {
         </div>
 
         {/* CTA SECTION*/}
-          <section className="bg-secondary-bg">
-            <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center">
-              <div className=" text-center lg:text-left">
-                <p className="eyebrow">The next conversation matters</p>
-                <h2 className="mt-5 font-heading text-4xl leading-tight text-primary-text-inverse uppercase">
-                  The right talent.
-                  <br />
-                  The right opportunity.
-                </h2>
-              </div>
+        <section className="bg-secondary-bg">
+          <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center">
+            <div className=" text-center lg:text-left">
+              <p className="eyebrow">The next conversation matters</p>
+              <h2 className="mt-5 font-heading text-4xl leading-tight text-primary-text-inverse uppercase">
+                The right talent.
+                <br />
+                The right opportunity.
+              </h2>
+            </div>
 
-              <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                <p className="text-sm text-primary-text-inverse/70">
-                  Recruiting for a club or ready for the next step in your
-                  career? Start with FootballBank.
-                </p>
-                <div className="mt-6 flex flex-col lg:flex-row gap-3">
-                  <Button variant="action" size="lg">
-                    Request a player <ArrowUpRight />
-                  </Button>
-                  <Button variant="onNavy" size="lg">
-                    Seek representation <ArrowUpRight />
-                  </Button>
-                </div>
+            <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+              <p className="text-sm text-primary-text-inverse/70">
+                Recruiting for a club or ready for the next step in your career?
+                Start with FootballBank.
+              </p>
+              <div className="mt-6 flex flex-col lg:flex-row gap-3">
+                <Button variant="action" size="lg">
+                  Request a player <ArrowUpRight />
+                </Button>
+                <Button variant="onNavy" size="lg">
+                  Seek representation <ArrowUpRight />
+                </Button>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
       </main>
     </>
   );

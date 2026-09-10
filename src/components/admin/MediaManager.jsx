@@ -40,9 +40,9 @@ export default function MediaManager({
     },
     {
       id: 2,
-      name: "logo.png",
+      name: "logo3.png",
       type: "image", 
-      url: "/logo.png",
+      url: "/logo/logo3.png",
       size: "45 KB",
       uploadedAt: "2024-01-14",
       dimensions: "512x512"
