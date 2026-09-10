@@ -92,7 +92,7 @@ export default function Footer({ lang = "en" }) {
             </h3>
             <ul className="flex flex-col space-y-2">
               {[
-                { title: dict.footer.home, href: `/${lang}` },
+                { title: dict.footer.aboutUs || "About", href: `/${lang}/about` },
                 { title: dict.footer.players, href: `/${lang}/players` },
                 {
                   title: dict.navigation.clubsAndScouts || "Clubs & Partners",
@@ -102,11 +102,7 @@ export default function Footer({ lang = "en" }) {
                   title: dict.navigation.representation || "Representation",
                   href: `/${lang}/agent`,
                 },
-                {
-                  title: dict.footer.submitProfile,
-                  href: `/${lang}/submit-profile`,
-                },
-                { title: dict.footer.aboutUs, href: `/${lang}/about` },
+                { title: dict.footer.contact, href: `/${lang}/contact` },
               ].map((link) => (
                 <Link
                   data-aos="fade-up"
@@ -126,9 +122,11 @@ export default function Footer({ lang = "en" }) {
             </h3>
             <ul className="flex flex-col space-y-2">
               {[
-                { title: dict.footer.blog, href: `/${lang}/blog` },
-                { title: dict.footer.careerTips, href: `/${lang}/career-tips` },
-                { title: dict.footer.faq, href: `/${lang}/faq` },
+                { title: "Football Blog", href: `/${lang}/blog` },
+                { title: dict.footer.submitProfile, href: `/${lang}/submit-profile` },
+                { title: "Request a Player", href: `/${lang}/contact` },
+                { title: dict.footer.privacyPolicy, href: `/${lang}/privacy-policy` },
+                { title: dict.footer.termsOfService, href: `/${lang}/terms-of-service` },
               ].map((link) => (
                 <Link
                   data-aos="fade-up"

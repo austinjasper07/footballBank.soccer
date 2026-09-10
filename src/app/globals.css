@@ -1,7 +1,5 @@
 @import "tailwindcss";
-/* @import 'tailwindcss/typography';
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap'); */
+
 @import "swiper/css";
 @import "swiper/css/navigation";
 @import "swiper/css/pagination";
@@ -91,7 +89,7 @@
   /* Fonts */
   /* Fonts are centrally controlled via next/font CSS variables set on <html> */
   --font-heading: var(--font-oswald);
-  --font-body: var(--font-inter);
+  --font-body: var(--font-manrope);
   --font-sans: var(--font-body);
 
   /* Radii */
@@ -155,6 +153,25 @@
     outline: 2px solid var(--color-primary-action) !important;
     outline-offset: 2px;
     border-color: var(--color-primary-action) !important;
+  }
+
+  select {
+    min-height: 2.5rem;
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    line-height: 1.4;
+  }
+
+  select option {
+    color: var(--color-primary-text);
+    background: white;
+  }
+
+  select option:checked,
+  select option:hover,
+  select option:focus {
+    background: linear-gradient(0deg, var(--color-primary-accent), var(--color-primary-accent));
+    color: var(--color-primary-text);
   }
 
   ::-webkit-scrollbar {

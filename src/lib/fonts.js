@@ -1,4 +1,4 @@
-import { Oswald, DM_Serif_Text } from "next/font/google";
+import { Manrope, Oswald } from "next/font/google";
 
 // Font configuration with fallbacks and error handling
 export const oswald = Oswald({
@@ -10,13 +10,12 @@ export const oswald = Oswald({
   preload: true,
 });
 
-export const dmSerifText = DM_Serif_Text({
+export const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-dm-serif-text",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-manrope",
   display: "swap",
-  fallback: ["Georgia", "Times New Roman", "serif"],
+  fallback: ["Arial", "Helvetica", "sans-serif"],
   preload: true,
 });
 
@@ -24,6 +23,6 @@ export const dmSerifText = DM_Serif_Text({
 export const fontVariables = `
   :root {
     --font-oswald: ${oswald.style.fontFamily};
-    --font-dm-serif-text: ${dmSerifText.style.fontFamily};
+    --font-manrope: ${manrope.style.fontFamily};
   }
 `;

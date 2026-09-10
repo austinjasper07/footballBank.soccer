@@ -16,9 +16,9 @@ export function PhoneField({ countryCode, phone, onCountryCodeChange, onPhoneCha
     <div className="space-y-2">
       <label htmlFor={id} className="text-sm font-medium">Phone number{required ? " *" : ""}</label>
       <div className="flex overflow-hidden rounded-md border border-divider bg-primary-card shadow-sm transition-all focus-within:border-primary-action focus-within:ring-2 focus-within:ring-primary-action/20">
-        <label className="relative flex min-w-29 items-center gap-2 border-r border-divider bg-primary-surface px-3 text-sm font-semibold text-primary-text">
-          <span className="text-primary-action">{selected?.dialCode}</span>
-          <ChevronDown className="size-4 text-primary-muted" aria-hidden="true" />
+        <label className="relative flex w-17 shrink-0 items-center justify-between gap-1 border-r border-divider bg-primary-surface px-2 text-xs font-semibold text-primary-text sm:text-sm">
+          <span className="truncate text-primary-action">{selected?.dialCode}</span>
+          <ChevronDown className="size-3.5 shrink-0 text-primary-muted sm:size-4" aria-hidden="true" />
           <select
             aria-label="Phone country calling code"
             value={selected?.code || "US"}
@@ -30,8 +30,8 @@ export function PhoneField({ countryCode, phone, onCountryCodeChange, onPhoneCha
             ))}
           </select>
         </label>
-        <div className="flex min-w-0 flex-1 items-center gap-2 px-3">
-          <Phone className="size-4 shrink-0 text-primary-muted" aria-hidden="true" />
+        <div className="flex min-w-0 flex-1 items-center gap-2 px-2.5 sm:px-3">
+          {/* <Phone className="size-4 shrink-0 text-primary-muted" aria-hidden="true" /> */}
           <input
             id={id}
             type="tel"
