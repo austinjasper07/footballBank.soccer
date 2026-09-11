@@ -95,6 +95,9 @@ const playerSchema = new mongoose.Schema({
   foot: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   phone: { type: String, required: true },
+  // New player media pattern: one registration headshot is the primary card image.
+  headshotUrl: { type: String },
+  // Legacy media pattern retained for existing galleries and historical records.
   imageUrl: [{ type: String }],
   cvUrl: { type: String },
   description: { type: String },
@@ -164,6 +167,9 @@ const submissionSchema = new mongoose.Schema({
   foot: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },
+  // New player media pattern: one registration headshot is the primary card image.
+  headshotUrl: { type: String },
+  // Legacy media pattern retained for existing galleries and historical records.
   imageUrl: [{ type: String }],
   cvUrl: { type: String },
   description: { type: String },

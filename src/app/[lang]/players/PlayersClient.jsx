@@ -226,7 +226,7 @@ export default function PlayersClient({ lang, dict }) {
                         >
                           <div className="relative">
                             <Image
-                              src={player.imageUrl?.[0] || "/logo/logo3.svg"}
+                              src={player.headshotUrl || player.imageUrl?.[0] || "/logo/logo3.svg"}
                               alt={fullName}
                               width={600}
                               height={800}

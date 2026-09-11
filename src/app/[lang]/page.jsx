@@ -266,7 +266,7 @@ export default async function HomePage({ params }) {
               >
                 <div className="relative">
                   <Image
-                    src={player.imageUrl[0]}
+                    src={player.headshotUrl || player.imageUrl?.[0] || "/logo/logo3.svg"}
                     alt={player.firstName}
                     width={800}
                     height={900}
@@ -511,9 +511,9 @@ export default async function HomePage({ params }) {
               <p className="text-xs text-primary-text-inverse/60">
                 FIFA Licensed Football Agent 
               </p>
-              <Button variant="onNavy" size="lg" className="mt-7">
-                <Link href={`/${lang}/agent`}>
-                  Meet our representative  <ArrowUpRight />
+              <Button variant="onNavy" size="lg" className="mt-7 px-5 sm:w-auto sm:px-8">
+                <Link href={`/${lang}/agent`} className="flex gap-2">
+                  Meet our representative <ArrowUpRight />
                 </Link>
               </Button>
             </div>

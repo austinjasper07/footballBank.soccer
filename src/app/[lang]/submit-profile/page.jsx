@@ -64,6 +64,8 @@ export default function PlayerSubmissionForm() {
     clubHistory: [{ clubName: "", startDate: "", endDate: "", position: "" }],
     featured: false,
     playerOfTheWeek: false,
+    headshotUrl: "",
+    // Legacy multi-photo gallery state retained for older submissions and records.
     imageUrl: [],
     videoPrimary: "",
     videoAdditional: [],
@@ -182,7 +184,7 @@ export default function PlayerSubmissionForm() {
       }
     }
     if (step === 3) {
-      if (formData.imageUrl.length === 0) errs.push("imageUrl");
+      if (!formData.headshotUrl) errs.push("headshotUrl");
     }
     setErrors(errs);
     return errs.length === 0;
@@ -463,39 +465,32 @@ export default function PlayerSubmissionForm() {
       {step === 3 && (
         <div className="rounded-xl border border-divider bg-primary-card p-5 shadow-sm sm:p-8">
           <h2 className="mb-2 text-xl font-semibold">Media uploads</h2>
-          <p className="mb-6 text-sm text-primary-muted">Add the photos and video clubs should review.</p>
+          <p className="mb-6 text-sm text-primary-muted">Upload one clear headshot for your player card, then add the videos clubs should review.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <Label>Upload Photos (max 3)</Label>
+              <Label>Player headshot *</Label>
               <Input
                 type="file"
-                accept="image/*"
-                multiple
+                accept="image/jpeg,image/png,image/webp"
                 onChange={(e) => {
-                  const files = Array.from(e.target.files || []).slice(0, 3);
-                  const uploaders = files.map((file, i) => {
-                    const ref = `players/${formData.email}/images/${file.name}`;
-                    return uploadFileWithProgress(ref, file, (p) => {
-                      setUploadProgress((prev) => ({
-                        ...prev,
-                        [`img-${i}`]: p,
-                      }));
-                    });
-                  });
-                  Promise.all(uploaders).then((urls) =>
-                    setFormData((prev) => ({ ...prev, imageUrl: urls }))
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const ref = `players/${formData.email}/headshot/${file.name}`;
+                  uploadFileWithProgress(ref, file, (p) => {
+                    setUploadProgress((prev) => ({ ...prev, headshot: p }));
+                  }).then((url) =>
+                    setFormData((prev) => ({ ...prev, headshotUrl: url }))
                   );
                 }}
               />
-              {[0, 1, 2].map(
-                (i) =>
-                  uploadProgress[`img-${i}`] != null && (
-                    <ProgressBar
-                      key={i}
-                      progress={uploadProgress[`img-${i}`]}
-                    />
-                  )
-              )}
+              {uploadProgress.headshot != null && <ProgressBar progress={uploadProgress.headshot} />}
+              {formData.headshotUrl && <p className="mt-2 text-xs text-primary-muted">Headshot uploaded successfully.</p>}
+
+              {/* Legacy multi-photo registration flow retained for historical submissions. */}
+              {/*
+              <Label>Upload Photos (max 3)</Label>
+              <Input type="file" accept="image/*" multiple onChange={...} />
+              */}
             </div>
 
             <div className="md:col-span-2">

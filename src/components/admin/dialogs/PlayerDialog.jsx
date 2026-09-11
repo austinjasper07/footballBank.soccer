@@ -49,6 +49,8 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
     email: player?.email || "",
     phone: player?.phone || "",
     cvUrl: player?.cvUrl || "",
+    headshotUrl: player?.headshotUrl || "",
+    // Legacy multi-photo gallery state retained for existing player records.
     imageUrl: player?.imageUrl || [],
     description: player?.description || "",
     videoPrimary: player?.videoPrimary || "",
@@ -89,6 +91,8 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
     email: player?.email || "",
     phone: player?.phone || "",
     cvUrl: player?.cvUrl || "",
+    headshotUrl: player?.headshotUrl || "",
+    // Legacy multi-photo gallery state retained for existing player records.
     imageUrl: player?.imageUrl || [],
     description: player?.description || "",
     videoPrimary: player?.videoPrimary || "",
@@ -176,6 +180,14 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
         }));
       });
     });
+  };
+
+  const handleHeadshotUpload = (file) => {
+    if (!file) return;
+    const path = `players/${formData.email || Date.now()}/headshot/${file.name}`;
+    uploadFileWithProgress(path, file, (p) =>
+      setUploadProgress((prev) => ({ ...prev, headshot: p }))
+    ).then((url) => setFormData((prev) => ({ ...prev, headshotUrl: url })));
   };
 
   const handleVideoPrimaryUpload = (file) => {
@@ -470,7 +482,19 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
 
         {/* Upload Sections */}
         <div className="mt-6 space-y-4 md:mt-8">
-          <Label>Upload Images (max 3)</Label>
+          <Label>Upload Player Headshot</Label>
+          <Input
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={(e) => handleHeadshotUpload(e.target.files?.[0])}
+          />
+          {uploadProgress.headshot != null && (
+            <ProgressBar progress={uploadProgress.headshot} />
+          )}
+
+          {/* Legacy admin multi-photo gallery upload retained for existing records. */}
+          {/*
+          <Label>Upload Images (max 3)</Label>
           <Input
             type="file"
             accept="image/jpeg,image/png"
@@ -486,6 +510,7 @@ export function PlayerDialog({ open, onOpenChange, player, onSave }) {
                 />
               )
           )}
+              */}
 
           <Label>Upload Primary Video *</Label>
           <Input

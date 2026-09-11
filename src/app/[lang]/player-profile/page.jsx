@@ -82,6 +82,7 @@ export default function PlayerProfilePage() {
   const images = player.imageUrl?.length
     ? player.imageUrl
     : ["/logo/logo3.svg"];
+  const headshot = player.headshotUrl || images[0];
   const videos = [
     player.videoPrimary,
     ...(player.videoAdditional || []),
@@ -97,7 +98,7 @@ export default function PlayerProfilePage() {
               <div className="relative size-24 shrink-0 overflow-hidden bg-primary-text-inverse/10 sm:size-32">
                 {images[0] ? (
                   <Image
-                    src={images[0]}
+                    src={headshot}
                     alt={fullName}
                     fill
                     sizes="128px"
