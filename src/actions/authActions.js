@@ -447,6 +447,7 @@ export async function verifySignupOTP(email, otp, firstName, lastName, phone, ph
       firstName,
       lastName,
       phone: normalizedPhone,
+      phoneCountryCode,
       role: "user",
       isVerified: true,
       ...(password ? { password: await bcrypt.hash(password, 12) } : {}),

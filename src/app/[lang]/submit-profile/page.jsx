@@ -131,7 +131,11 @@ export default function PlayerSubmissionForm() {
       const registeredCountry = u?.address?.country || "";
       const registeredCountryCode = countries.find(
         (country) => country.name.toLowerCase() === registeredCountry.toLowerCase(),
-      )?.code || "";
+      )?.code || u?.phoneCountryCode || "US";
+      const registeredDialCode = `+${getCountryCallingCode(registeredCountryCode)}`;
+      const registeredPhone = u?.phone?.startsWith(registeredDialCode)
+        ? u.phone.slice(registeredDialCode.length)
+        : u?.phone || "";
       setFormData((previous) => ({
         ...previous,
         firstName: u?.firstName || previous.firstName,
@@ -139,6 +143,8 @@ export default function PlayerSubmissionForm() {
         email: u?.email || previous.email,
         country: registeredCountry || previous.country,
         countryCode: registeredCountryCode || previous.countryCode,
+        phone: registeredPhone || previous.phone,
+        phoneCountryCode: registeredCountryCode || previous.phoneCountryCode,
         address: u?.address || previous.address,
         shippingAddress: u?.shippingAddress || previous.shippingAddress,
       }));
@@ -213,6 +219,22 @@ export default function PlayerSubmissionForm() {
   };
 
   const submitForm = async () => {
+    if (!formData.headshotUrl) {
+      toast({
+        title: "Headshot required",
+        description: "Please upload a player headshot before submitting.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (uploading) {
+      toast({
+        title: "Upload in progress",
+        description: "Please wait for all uploads to finish before submitting.",
+        variant: "destructive",
+      });
+      return;
+    }
     const valid = await checkSubscription();
     if (valid) {
       try {
@@ -552,7 +574,7 @@ export default function PlayerSubmissionForm() {
             <Button variant="outline" onClick={prevStep}>
               Back
             </Button>
-            <Button onClick={submitForm}>Submit</Button>
+            <Button onClick={submitForm} disabled={uploading || !formData.headshotUrl}>Submit</Button>
           </div>
         </div>
       )}

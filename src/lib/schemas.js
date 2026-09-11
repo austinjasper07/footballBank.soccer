@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   phone: { type: String },
+  phoneCountryCode: { type: String, default: "US" },
   password: { type: String },
   failedLoginAttempts: { type: Number, default: 0 },
   lockedUntil: { type: Date },
@@ -242,13 +243,28 @@ const agentSchema = new mongoose.Schema({
 });
 
 // Create models with proper error handling - use existing collection names from Prisma
-export const User = mongoose.models.User || mongoose.model('User', userSchema);
-export const OtpToken = mongoose.models.OtpToken || mongoose.model('OtpToken', otpTokenSchema);
-export const Player = mongoose.models.Player || mongoose.model('Player', playerSchema);
-export const Post = mongoose.models.Post || mongoose.model('Post', postSchema);
-export const PaymentMethod = mongoose.models.PaymentMethod || mongoose.model('PaymentMethod', paymentMethodSchema);
-export const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
-export const Submission = mongoose.models.Submission || mongoose.model('Submission', submissionSchema);
-export const ResumeRequest = mongoose.models.ResumeRequest || mongoose.model('ResumeRequest', resumeRequestSchema);
-export const PlayerProfileView = mongoose.models.PlayerProfileView || mongoose.model('PlayerProfileView', playerProfileViewSchema);
-export const Agent = mongoose.models.Agent || mongoose.model('Agent', agentSchema);
+// Guard against stale cached models: Next.js hot-reload can keep a previously
+// compiled schema alive in mongoose.models, silently dropping newly added fields
+// (e.g. headshotUrl) until the process restarts. Recompile when paths drift.
+function defineModel(name, schema) {
+  const existing = mongoose.models[name];
+  if (!existing) return mongoose.model(name, schema);
+
+  const isStale = Object.keys(schema.paths).some((path) => !existing.schema.paths[path]);
+  if (!isStale) return existing;
+
+  delete mongoose.models[name];
+  delete mongoose.connection.models[name];
+  return mongoose.model(name, schema);
+}
+
+export const User = defineModel('User', userSchema);
+export const OtpToken = defineModel('OtpToken', otpTokenSchema);
+export const Player = defineModel('Player', playerSchema);
+export const Post = defineModel('Post', postSchema);
+export const PaymentMethod = defineModel('PaymentMethod', paymentMethodSchema);
+export const Message = defineModel('Message', messageSchema);
+export const Submission = defineModel('Submission', submissionSchema);
+export const ResumeRequest = defineModel('ResumeRequest', resumeRequestSchema);
+export const PlayerProfileView = defineModel('PlayerProfileView', playerProfileViewSchema);
+export const Agent = defineModel('Agent', agentSchema);

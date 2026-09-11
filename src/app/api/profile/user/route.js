@@ -14,7 +14,7 @@ export async function GET() {
 
     // Get user with additional data
     const userData = await User.findById(user.id)
-      .select('firstName lastName email role isVerified address shippingAddress createdAt updatedAt')
+      .select('firstName lastName email phone role isVerified address shippingAddress createdAt updatedAt')
       .lean();
 
     if (!userData) {
@@ -71,7 +71,7 @@ export async function PATCH(request) {
         updatedAt: new Date()
       },
       { new: true }
-    ).select('firstName lastName email role isVerified address shippingAddress createdAt updatedAt').lean();
+    ).select('firstName lastName email phone role isVerified address shippingAddress createdAt updatedAt').lean();
 
     if (!updatedUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

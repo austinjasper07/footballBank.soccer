@@ -1,22 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ArrowUpRight, LockKeyhole } from "lucide-react";
 import { useAuth } from "@/context/NewAuthContext";
 import { createResumeRequest } from "@/actions/resumeRequestActions";
+import { getUserById } from "@/actions/adminActions";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { PhoneField } from "@/components/ui/PhoneField";
+import { getCountryCallingCode } from "libphonenumber-js";
 
 export default function ResumeRequestForm({ playerId, lang, requestType = "PROFILE" }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [requested, setRequested] = useState(false);
   const [reason, setReason] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneCountryCode, setPhoneCountryCode] = useState("US");
+
+  useEffect(() => {
+    if (!isAuthenticated || !user?.id) return;
+    getUserById(user.id).then((registeredUser) => {
+      const code = registeredUser?.phoneCountryCode || registeredUser?.address?.countryCode || "US";
+      const dialCode = `+${getCountryCallingCode(code)}`;
+      const registeredPhone = registeredUser?.phone || "";
+      setPhoneCountryCode(code);
+      setPhone(registeredPhone.startsWith(dialCode)
+        ? registeredPhone.slice(dialCode.length)
+        : registeredPhone);
+    });
+  }, [isAuthenticated, user?.id]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,7 +44,10 @@ export default function ResumeRequestForm({ playerId, lang, requestType = "PROFI
 
     try {
       setIsSubmitting(true);
-      await createResumeRequest(playerId, lang, reason, requestType, phone);
+      const normalizedPhone = phone
+        ? `+${getCountryCallingCode(phoneCountryCode)}${phone}`.replace(/\s+/g, "")
+        : "";
+      await createResumeRequest(playerId, lang, reason, requestType, normalizedPhone);
       setRequested(true);
       toast({ title: "Request received", description: "We have received your resume request and will respond by email." });
     } catch (error) {
@@ -42,5 +62,5 @@ export default function ResumeRequestForm({ playerId, lang, requestType = "PROFI
   }
 
   const isCvRequest = requestType === "CV";
-  return <form onSubmit={handleSubmit} className="border border-divider bg-primary-card p-6 sm:p-8"><div className="flex items-start gap-4"><LockKeyhole className="mt-1 size-5 shrink-0 text-primary-action" aria-hidden="true" /><div><h2 className="font-heading text-2xl font-semibold">{isCvRequest ? "Request professional resume" : "Request player information"}</h2><p className="mt-2 text-sm leading-6 text-primary-muted">{isCvRequest ? "Tell us why you need the player's professional resume. If approved, it will be sent to your registered email." : "Full player information is shared only with registered users after FootballBank approval."}</p></div></div><label className="mt-6 block text-sm font-semibold" htmlFor="request-phone">Phone number<input id="request-phone" type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} className="mt-2 h-11 w-full rounded-md border border-divider bg-primary-surface px-3 text-sm outline-none focus:border-primary-action focus:ring-2 focus:ring-primary-action/20" placeholder="Your best contact number" /></label><label className="mt-4 block text-sm font-semibold" htmlFor="request-reason">Reason for request<textarea id="request-reason" required minLength={10} maxLength={2000} value={reason} onChange={(event) => setReason(event.target.value)} className="mt-2 min-h-28 w-full resize-y rounded-md border border-divider bg-primary-surface p-3 text-sm outline-none focus:border-primary-action focus:ring-2 focus:ring-primary-action/20" placeholder="Please explain how you intend to use this information." /></label><Button type="submit" variant="action" size="lg" className="mt-6" disabled={loading || isSubmitting}>{loading ? "Checking account..." : isSubmitting ? "Sending request..." : isAuthenticated ? "Submit request" : "Sign in to request"}<ArrowUpRight /></Button></form>;
+  return <form onSubmit={handleSubmit} className="border border-divider bg-primary-card p-6 sm:p-8"><div className="flex items-start gap-4"><LockKeyhole className="mt-1 size-5 shrink-0 text-primary-action" aria-hidden="true" /><div><h2 className="font-heading text-2xl font-semibold">{isCvRequest ? "Request professional resume" : "Request player information"}</h2><p className="mt-2 text-sm leading-6 text-primary-muted">{isCvRequest ? "Tell us why you need the player's professional resume. If approved, it will be sent to your registered email." : "Full player information is shared only with registered users after FootballBank approval."}</p></div></div><div className="mt-6"><PhoneField countryCode={phoneCountryCode} phone={phone} onCountryCodeChange={setPhoneCountryCode} onPhoneChange={setPhone} required={false} /></div><label className="mt-4 block text-sm font-semibold" htmlFor="request-reason">Reason for request<textarea id="request-reason" required minLength={10} maxLength={2000} value={reason} onChange={(event) => setReason(event.target.value)} className="mt-2 min-h-28 w-full resize-y rounded-md border border-divider bg-primary-surface p-3 text-sm outline-none focus:border-primary-action focus:ring-2 focus:ring-primary-action/20" placeholder="Please explain how you intend to use this information." /></label><Button type="submit" variant="action" size="lg" className="mt-6" disabled={loading || isSubmitting}>{loading ? "Checking account..." : isSubmitting ? "Sending request..." : isAuthenticated ? "Submit request" : "Sign in to request"}<ArrowUpRight /></Button></form>;
 }

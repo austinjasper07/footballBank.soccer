@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowUpRight, CheckCircle2, Edit3, LogOut, Mail, MapPin, ShieldCheck, UserRound } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, Edit3, LogOut, Mail, MapPin, Phone, ShieldCheck, UserRound } from "lucide-react";
 import { useAuth } from "@/context/NewAuthContext";
 import { Button } from "@/components/ui/button";
 
@@ -71,7 +71,7 @@ export default function UserProfilePage() {
 
           <div className="border border-divider bg-primary-card p-6 sm:p-9">
             <div className="flex items-center justify-between gap-4 border-b border-divider pb-5"><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary-action">Personal information</p><h2 className="mt-2 font-heading text-2xl font-semibold">Your details</h2></div><UserRound className="size-6 text-primary-accent" aria-hidden="true" /></div>
-            <dl className="mt-7 grid gap-x-8 gap-y-6 sm:grid-cols-2"><div><dt className="text-xs uppercase tracking-[0.14em] text-primary-muted">First name</dt><dd className="mt-2 font-medium">{data?.firstName || "Not provided"}</dd></div><div><dt className="text-xs uppercase tracking-[0.14em] text-primary-muted">Last name</dt><dd className="mt-2 font-medium">{data?.lastName || "Not provided"}</dd></div><div className="sm:col-span-2"><dt className="text-xs uppercase tracking-[0.14em] text-primary-muted">Email address</dt><dd className="mt-2 flex items-center gap-2 break-all font-medium"><Mail className="size-4 shrink-0 text-primary-action" />{data?.email || "Not provided"}</dd></div></dl>
+            <dl className="mt-7 grid gap-x-8 gap-y-6 sm:grid-cols-2"><div><dt className="text-xs uppercase tracking-[0.14em] text-primary-muted">First name</dt><dd className="mt-2 font-medium">{data?.firstName || "Not provided"}</dd></div><div><dt className="text-xs uppercase tracking-[0.14em] text-primary-muted">Last name</dt><dd className="mt-2 font-medium">{data?.lastName || "Not provided"}</dd></div><div className="sm:col-span-2"><dt className="text-xs uppercase tracking-[0.14em] text-primary-muted">Email address</dt><dd className="mt-2 flex items-center gap-2 break-all font-medium"><Mail className="size-4 shrink-0 text-primary-action" />{data?.email || "Not provided"}</dd></div><div className="sm:col-span-2"><dt className="text-xs uppercase tracking-[0.14em] text-primary-muted">Phone number</dt><dd className="mt-2 flex items-center gap-2 font-medium"><Phone className="size-4 shrink-0 text-primary-action" />{data?.phone || "Not provided"}</dd></div></dl>
           </div>
         </section>
 

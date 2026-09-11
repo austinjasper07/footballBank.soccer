@@ -1,6 +1,6 @@
 // app/layout.tsx
 import "./globals.css";
-import { Manrope, Oswald } from "next/font/google";
+import localFont from "next/font/local";
 import Script from "next/script";
 import { NewAuthProvider } from "@/context/NewAuthContext";
 import { Analytics } from "@vercel/analytics/next";
@@ -8,17 +8,18 @@ import { CartProvider } from "@/context/CartContext";
 import AOSProvider from "@/components/AOSProvider";
 import { generateMetadata as generateSEOMetadata, generateStructuredData } from "@/lib/seo";
 
-const oswald = Oswald({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700"],
+// Self-hosted variable fonts avoid a live Google Fonts fetch at build time.
+const oswald = localFont({
+  src: "../fonts/Oswald-Variable.woff2",
+  weight: "200 700",
   variable: "--font-oswald",
   display: "swap",
   fallback: ["Arial", "sans-serif"],
 });
 
-const manrope = Manrope({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+const manrope = localFont({
+  src: "../fonts/Manrope-Variable.woff2",
+  weight: "400 800",
   variable: "--font-manrope",
   display: "swap",
   fallback: ["Arial", "sans-serif"],

@@ -180,6 +180,50 @@ export default function Footer({ lang = "en" }) {
             </ul>
           </div>
         </div>
+        
+        <div className="container mx-auto px-6 text-center mb-6">
+          <div className="flex items-center justify-center gap-2 md:gap-12">
+            {/* <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white rounded-lg p-2"> */}
+              <img
+                src="/partners/crown-fc-nigeria-logo.png"
+                alt="Crown FC"
+                className="h-6 md:h-12 object-contain"
+              />
+            {/* </div> */}
+
+            {/* <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white rounded-lg p-2"> */}
+              <img
+                src="/partners/Concacaf_logo.svg"
+                alt="CONCACAF"
+                className="h-6 md:h-12 object-contain"
+              />
+            {/* </div> */}  
+
+            {/* <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white rounded-lg p-2"> */}
+              <img
+                src="/partners/fifa.png"
+                alt="FIFA"
+                className="h-6 md:h-12 object-contain"
+              />
+            {/* </div> */}
+
+            {/* <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 rounded-xl overflow-hidden"> */}
+              <img
+                src="/partners/future-hero-football-academy.jpg"
+                alt="Future Hero Football Academy"
+                className="h-6 md:h-12 object-contain"
+              />
+            {/* </div> */}
+
+            {/* <div className="opacity-80 hover:opacity-100 transition-opacity duration-300 bg-white/5 rounded-lg p-2"> */}
+              <img
+                src="/partners/unknow.jpg"
+                alt="Unknown Partner"
+                className="h-6 md:h-14 object-contain grayscale hover:grayscale-0"
+              />
+            {/* </div> */}
+          </div>
+        </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-primary-muted text-sm">

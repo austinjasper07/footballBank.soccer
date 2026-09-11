@@ -285,7 +285,7 @@ export default async function HomePage({ params }) {
                   <p className="text-[0.6rem] tracking-[0.18em] text-primary-muted uppercase">
                     {player.country}
                   </p>
-                  <h3 className="mt-2 font-heading text-xl">
+                  <h3 className="mt-2 font-heading text-sm md:text-xl">
                     {player.firstName} {player.lastName}
                   </h3>
 
