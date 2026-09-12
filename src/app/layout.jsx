@@ -1,6 +1,6 @@
 // app/layout.tsx
 import "./globals.css";
-import { Inter, Oswald } from "next/font/google";
+import localFont from "next/font/local";
 import Script from "next/script";
 import { NewAuthProvider } from "@/context/NewAuthContext";
 import { Analytics } from "@vercel/analytics/next";
@@ -8,17 +8,19 @@ import { CartProvider } from "@/context/CartContext";
 import AOSProvider from "@/components/AOSProvider";
 import { generateMetadata as generateSEOMetadata, generateStructuredData } from "@/lib/seo";
 
-const oswald = Oswald({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700"],
+// Self-hosted variable fonts avoid a live Google Fonts fetch at build time.
+const oswald = localFont({
+  src: "../fonts/Oswald-Variable.woff2",
+  weight: "200 700",
   variable: "--font-oswald",
   display: "swap",
   fallback: ["Arial", "sans-serif"],
 });
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const manrope = localFont({
+  src: "../fonts/Manrope-Variable.woff2",
+  weight: "400 800",
+  variable: "--font-manrope",
   display: "swap",
   fallback: ["Arial", "sans-serif"],
 });
@@ -50,15 +52,15 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${oswald.variable} ${inter.variable}`}
+      className={`${oswald.variable} ${manrope.variable}`}
     >
       <head>
         {/* Favicon and Icons */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="icon" href="/favicon.ico?v=20260909" sizes="any" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260909" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=20260909" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=20260909" />
+        <link rel="manifest" href="/site.webmanifest?v=20260909" />
         
         {/* DNS Prefetch for Performance */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />

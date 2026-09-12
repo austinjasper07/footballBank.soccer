@@ -235,7 +235,7 @@ export default function PlayersView({ refreshPulse = 0 }) {
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <Image
-                          src={player.imageUrl?.[0]}
+                          src={player.headshotUrl || player.imageUrl?.[0] || "/logo/logo3.svg"}
                           alt={`${player.firstName} ${player.lastName}`}
                           width={40}
                           height={40}

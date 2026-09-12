@@ -136,7 +136,7 @@ export function generateStructuredData(type, data) {
         "@type": "Organization",
         name: siteConfig.name,
         url: siteConfig.url,
-        logo: `${siteConfig.url}/logo.png`,
+        logo: `${siteConfig.url}/logo/logo3.png`,
         description: siteConfig.description,
         contactPoint: {
           "@type": "ContactPoint",
@@ -186,7 +186,7 @@ export function generateStructuredData(type, data) {
           name: siteConfig.name,
           logo: {
             "@type": "ImageObject",
-            url: `${siteConfig.url}/logo.png`
+            url: `${siteConfig.url}/logo/logo3.png`
           }
         },
         datePublished: data.createdAt,

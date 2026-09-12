@@ -13,6 +13,7 @@ export default function PlayerMedia({ player, canViewDetails, canDownloadResume,
   const [selectedImage, setSelectedImage] = useState(null);
   useBodyScrollLock(selectedImage !== null);
   const images = player.imageUrl?.length ? player.imageUrl : ["/logo/logo3.svg"];
+  const headshot = player.headshotUrl || images[0];
   const videos = [player.videoPrimary, ...(player.videoAdditional || [])].filter(Boolean);
   const fullName = `${player.firstName} ${player.lastName}`;
 
@@ -22,7 +23,7 @@ export default function PlayerMedia({ player, canViewDetails, canDownloadResume,
         <div className="mx-auto max-w-7xl px-5 py-8 sm:px-10 sm:py-10 lg:px-12 lg:py-14">
           <div className="flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
             <div className="flex min-w-0 items-center gap-4 sm:gap-6">
-              <div className="relative size-20 shrink-0 overflow-hidden bg-primary-text-inverse/10 sm:size-28 lg:size-32"><Image src={images[0]} alt={fullName} fill sizes="(max-width: 640px) 80px, 128px" className="object-cover" /></div>
+              <div className="relative size-20 shrink-0 overflow-hidden bg-primary-text-inverse/10 sm:size-28 lg:size-32"><Image src={headshot} alt={fullName} fill sizes="(max-width: 640px) 80px, 128px" className="object-cover" /></div>
               <div className="min-w-0"><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-accent">Player profile</p><h1 className="mt-3 wrap-break-word font-heading text-3xl font-semibold leading-[0.98] tracking-tight sm:text-5xl lg:text-6xl">{fullName}</h1><p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-primary-text-inverse/65 sm:text-base"><span>{player.position}</span><span className="text-primary-accent">/</span><span>{player.country}</span></p></div>
             </div>
             <div className="flex items-center gap-2 text-sm text-primary-text-inverse/65"><ShieldCheck className="size-4 text-primary-accent" /> FootballBank talent collection</div>

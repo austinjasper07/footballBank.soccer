@@ -36,18 +36,18 @@ export default async function RepresentationPage({ params }) {
     },
     {
       icon: BadgeCheck,
-      title: dict.agentPage.hero.stats.certification.title,
-      description: dict.agentPage.hero.stats.certification.subtitle,
+      title: dict.agentPage.hero.stats.experience.title,
+      description: dict.agentPage.hero.stats.experience.subtitle,
     },
     {
       icon: UsersRound,
-      title: dict.agentPage.hero.stats.network.title,
-      description: dict.agentPage.hero.stats.network.subtitle,
+      title: dict.agentPage.capabilityPerspective?.title || "Global perspective",
+      description: dict.agentPage.capabilityPerspective?.subtitle || "International football markets",
     },
     {
       icon: GraduationCap,
-      title: "Career development",
-      description: "Guiding players with strategic planning and professional growth.",
+      title: dict.agentPage.capabilityDevelopment?.title || "Career development",
+      description: dict.agentPage.capabilityDevelopment?.subtitle || "Guiding players with strategic planning and professional growth.",
     },
   ];
 
@@ -65,7 +65,7 @@ export default async function RepresentationPage({ params }) {
         <div className="absolute inset-0 -z-10 bg-primary-navy/55" />
         <div className="mx-auto w-full max-w-7xl px-5 py-4 ">
           <p className="text-center font-heading text-4xl font-semibold leading-none tracking-tight text-primary-text-inverse sm:text-5xl">
-            Our Agent
+            {dict.agentPage.heroBanner || "Licensed Representation"}
           </p>
         </div>
       </section>
@@ -88,7 +88,7 @@ export default async function RepresentationPage({ params }) {
           <div className="mt-4 bg-primary-navy px-5 py-6 text-left text-primary-text-inverse">
             <div className="text-center">
               <BadgeCheck className="mx-auto size-6 text-primary-accent" aria-hidden="true" />
-              <h2 className="mt-2 font-heading text-2xl font-semibold leading-none">Direct contact</h2>
+              <h2 className="mt-2 font-heading text-2xl font-semibold leading-none">{dict.agentPage.directContact || "Direct contact"}</h2>
               <span className="mx-auto mt-3 block h-px w-24 bg-primary-accent" />
             </div>
             <div className="mt-5 space-y-3 text-sm">
@@ -105,7 +105,7 @@ export default async function RepresentationPage({ params }) {
               href={`/${lang}/contact`}
               className="mt-6 inline-flex w-full items-center justify-center gap-3 bg-primary-action px-4 py-3 text-sm font-semibold text-primary-text-inverse transition-colors hover:bg-primary-action-hover"
             >
-              Request consultation
+              {dict.agentPage.discussRepresentation || "Discuss representation"}
               <ArrowUpRight className="size-4" aria-hidden="true" />
             </Link>
           </div>
@@ -113,11 +113,12 @@ export default async function RepresentationPage({ params }) {
 
         <div>
           <h2 className="font-heading text-3xl font-semibold leading-[1.08] tracking-tight sm:text-4xl">
-            Meet our agent shaping modern football excellence
+            {dict.agentPage.pageHeadingLine1 || "Licensed representation."}<br />{dict.agentPage.pageHeadingLine2 || "Global perspective."}
           </h2>
           <div className="mt-5 border border-divider bg-primary-bg px-5 py-6 sm:px-8 sm:py-7">
             <p className="max-w-2xl text-lg leading-8 text-primary-text">
-              {dict.agentPage.hero.description} {dict.agentPage.hero.bio}
+              {dict.agentPage.bioParagraph ||
+                "Meet the licensed football agent behind FootballBank's representation services. Ayodeji Michael .F is a FIFA Licensed Football Agent and founder of FootballBank International, a United States-based sports management company working across player development, club recruitment, international partnerships and football opportunities."}
             </p>
 
             <div className="mt-8 space-y-6">

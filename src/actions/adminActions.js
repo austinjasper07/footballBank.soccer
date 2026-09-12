@@ -423,7 +423,7 @@ export async function getAgentInfo() {
     if (!agent) {
       // Create default agent if none exists
       agent = await Agent.create({
-        name: "Ayodeji Fatade",
+        name: "Ayodeji Michael .F",
         title: "United States Based Agent",
         profilePhoto: "/FootballBank_agent.jpg",
         bio: "Experienced football agent with a proven track record of helping players achieve their professional goals.",
@@ -446,7 +446,7 @@ export async function updateAgentInfo(formData) {
     let agent = await Agent.findOne();
     if (!agent) {
       agent = await Agent.create({
-        name: name || "Ayodeji Fatade",
+        name: name || "Ayodeji Michael .F",
         profilePhoto: profilePhoto || "/FootballBank_agent.jpg",
         bio: bio || "Experienced football agent with a proven track record of helping players achieve their professional goals.",
         credentials: credentials || "Licenced Agent",

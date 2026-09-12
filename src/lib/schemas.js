@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   phone: { type: String },
+  phoneCountryCode: { type: String, default: "US" },
   password: { type: String },
   failedLoginAttempts: { type: Number, default: 0 },
   lockedUntil: { type: Date },
@@ -95,6 +96,9 @@ const playerSchema = new mongoose.Schema({
   foot: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   phone: { type: String, required: true },
+  // New player media pattern: one registration headshot is the primary card image.
+  headshotUrl: { type: String },
+  // Legacy media pattern retained for existing galleries and historical records.
   imageUrl: [{ type: String }],
   cvUrl: { type: String },
   description: { type: String },
@@ -164,6 +168,9 @@ const submissionSchema = new mongoose.Schema({
   foot: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },
+  // New player media pattern: one registration headshot is the primary card image.
+  headshotUrl: { type: String },
+  // Legacy media pattern retained for existing galleries and historical records.
   imageUrl: [{ type: String }],
   cvUrl: { type: String },
   description: { type: String },
@@ -225,7 +232,7 @@ const playerProfileViewSchema = new mongoose.Schema({
 
 // Agent Schema for managing agent profile information
 const agentSchema = new mongoose.Schema({
-  name: { type: String, required: true, default: "Ayodeji Fatade" },
+  name: { type: String, required: true, default: "Ayodeji Michael .F" },
   profilePhoto: { type: String, default: "/FootballBank_agent.jpg" },
   bio: { type: String, default: "Experienced football agent with a proven track record of helping players achieve their professional goals." },
   credentials: { type: String, default: "Licenced Agent" },
@@ -236,13 +243,28 @@ const agentSchema = new mongoose.Schema({
 });
 
 // Create models with proper error handling - use existing collection names from Prisma
-export const User = mongoose.models.User || mongoose.model('User', userSchema);
-export const OtpToken = mongoose.models.OtpToken || mongoose.model('OtpToken', otpTokenSchema);
-export const Player = mongoose.models.Player || mongoose.model('Player', playerSchema);
-export const Post = mongoose.models.Post || mongoose.model('Post', postSchema);
-export const PaymentMethod = mongoose.models.PaymentMethod || mongoose.model('PaymentMethod', paymentMethodSchema);
-export const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
-export const Submission = mongoose.models.Submission || mongoose.model('Submission', submissionSchema);
-export const ResumeRequest = mongoose.models.ResumeRequest || mongoose.model('ResumeRequest', resumeRequestSchema);
-export const PlayerProfileView = mongoose.models.PlayerProfileView || mongoose.model('PlayerProfileView', playerProfileViewSchema);
-export const Agent = mongoose.models.Agent || mongoose.model('Agent', agentSchema);
+// Guard against stale cached models: Next.js hot-reload can keep a previously
+// compiled schema alive in mongoose.models, silently dropping newly added fields
+// (e.g. headshotUrl) until the process restarts. Recompile when paths drift.
+function defineModel(name, schema) {
+  const existing = mongoose.models[name];
+  if (!existing) return mongoose.model(name, schema);
+
+  const isStale = Object.keys(schema.paths).some((path) => !existing.schema.paths[path]);
+  if (!isStale) return existing;
+
+  delete mongoose.models[name];
+  delete mongoose.connection.models[name];
+  return mongoose.model(name, schema);
+}
+
+export const User = defineModel('User', userSchema);
+export const OtpToken = defineModel('OtpToken', otpTokenSchema);
+export const Player = defineModel('Player', playerSchema);
+export const Post = defineModel('Post', postSchema);
+export const PaymentMethod = defineModel('PaymentMethod', paymentMethodSchema);
+export const Message = defineModel('Message', messageSchema);
+export const Submission = defineModel('Submission', submissionSchema);
+export const ResumeRequest = defineModel('ResumeRequest', resumeRequestSchema);
+export const PlayerProfileView = defineModel('PlayerProfileView', playerProfileViewSchema);
+export const Agent = defineModel('Agent', agentSchema);

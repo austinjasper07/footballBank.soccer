@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -39,10 +39,21 @@ import {
   countryList,
   countryListAllIsoData,
 } from "@/lib/variousCountryListFormats";
+import { getClientDictionary } from "@/lib/client-dictionaries";
 
 import "aos/dist/aos.css";
 
 function SignupPageContent() {
+  const pathname = usePathname();
+  const lang = pathname?.split("/")[1] || "en";
+  const [dict, setDict] = useState(null);
+  const t = dict?.signupPage;
+  const a = dict?.auth;
+
+  useEffect(() => {
+    getClientDictionary(lang).then(setDict);
+  }, [lang]);
+
   const [step, setStep] = useState("form"); // "form" or "otp"
   const [signupMethod, setSignupMethod] = useState("otp"); // "otp" or "password"
   const [formData, setFormData] = useState({
@@ -180,7 +191,7 @@ function SignupPageContent() {
       const result = await sendSignupOTP(
         formData.email,
         formData.firstName,
-        formData.lastName
+        formData.lastName,
       );
 
       if (result.success) {
@@ -211,7 +222,7 @@ function SignupPageContent() {
         formData.phoneCountryCode,
         formData.address,
         formData.shippingAddress,
-        signupMethod === "password" ? formData.password : ""
+        signupMethod === "password" ? formData.password : "",
       );
 
       if (result.success) {
@@ -244,7 +255,7 @@ function SignupPageContent() {
       const result = await sendSignupOTP(
         formData.email,
         formData.firstName,
-        formData.lastName
+        formData.lastName,
       );
 
       if (result.success) {
@@ -262,8 +273,21 @@ function SignupPageContent() {
   return (
     <div className="min-h-screen bg-primary-bg px-4 py-8 sm:px-6 lg:grid lg:grid-cols-[0.85fr_1.15fr] lg:gap-12 lg:px-12 lg:py-12">
       <div className="hidden min-h-screen flex-col justify-between bg-primary-navy p-10 text-primary-text-inverse lg:flex">
-        <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-primary-accent">FootballBank International</p><h2 className="mt-8 max-w-sm font-heading text-5xl font-semibold leading-[1.02]">Build your place in the football network.</h2><p className="mt-6 max-w-sm text-sm leading-7 text-primary-text-inverse/70">Create a verified account to access player opportunities, submit profiles, and communicate with FootballBank.</p></div>
-        <p className="text-sm text-primary-text-inverse/50">Secure email verification · International football access</p>
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary-accent">
+            {t?.sidePanelEyebrow || "FootballBank International"}
+          </p>
+          <h2 className="mt-8 max-w-sm font-heading text-5xl font-semibold leading-[1.02]">
+            {t?.sidePanelTitle || "Build your place in the football network."}
+          </h2>
+          <p className="mt-6 max-w-sm text-sm leading-7 text-primary-text-inverse/70">
+            {t?.sidePanelSubtitle ||
+              "Create a verified account to access player opportunities, submit profiles, and communicate with FootballBank."}
+          </p>
+        </div>
+        <p className="text-sm text-primary-text-inverse/50">
+          {t?.sidePanelFooter || "Secure email verification · International football access"}
+        </p>
       </div>
       <div className="mx-auto w-full max-w-2xl lg:py-4">
         {/* Header */}
@@ -273,25 +297,25 @@ function SignupPageContent() {
             className="inline-flex items-center gap-2 text-primary-muted hover:text-primary-text transition-colors mb-6"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Home
+            {t?.backToHome || "Back to Home"}
           </Link>
-          <div className="mx-auto mb-4 flex size-14 items-center justify-center bg-primary-navy">
-            <Users className="size-7 text-primary-accent" />
+          <div className="mx-auto mb-4 flex size-10 md:size-14 items-center justify-center bg-primary-navy">
+            <Users className="size-5 md:size-6 text-primary-accent" />
           </div>
-          <h1 className="text-3xl font-bold text-primary-text mb-2">
-            Join FootballBank.soccer
+          <h1 className="text-lg md:text-3xl font-bold text-primary-text mb-2">
+            {t?.heading || "Join FootballBank International"}
           </h1>
           <p className="text-primary-muted">
             {step === "form"
-              ? "Create your account to get started"
-              : "Verify your email to complete registration"}
+              ? (t?.formStepSubtitle || "Create your account to get started")
+              : (t?.otpStepSubtitle || "Verify your email to complete registration")}
           </p>
         </div>
 
         <Card className="border border-divider bg-primary-card shadow-xl">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-xl">
-              {step === "form" ? "Create Account" : "Verify Email"}
+              {step === "form" ? (t?.createAccount || "Create Account") : (t?.verifyEmail || "Verify Email")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -320,7 +344,7 @@ function SignupPageContent() {
                 {/* Signup Method Selection */}
                 <div className="space-y-3">
                   <Label className="text-sm font-medium">
-                    Choose Signup Method
+                    {t?.chooseSignupMethod || "Choose Signup Method"}
                   </Label>
                   <div className="grid grid-cols-2 gap-3 mt-2">
                     <button
@@ -334,7 +358,7 @@ function SignupPageContent() {
                     >
                       <div className="text-center">
                         <Mail className="w-5 h-5 mx-auto mb-1" />
-                        <div className="text-xs font-medium">Email Code</div>
+                        <div className="text-xs font-medium">{t?.emailCode || "Email Code"}</div>
                       </div>
                     </button>
                     <button
@@ -348,7 +372,7 @@ function SignupPageContent() {
                     >
                       <div className="text-center">
                         <Lock className="w-5 h-5 mx-auto mb-1" />
-                        <div className="text-xs font-medium">Password</div>
+                        <div className="text-xs font-medium">{t?.password || "Password"}</div>
                       </div>
                     </button>
                   </div>
@@ -361,7 +385,7 @@ function SignupPageContent() {
                         htmlFor="firstName"
                         className="text-sm font-medium"
                       >
-                        First Name
+                        {a?.firstName || "First Name"}
                       </Label>
                       <div className="relative">
                         <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
@@ -383,7 +407,7 @@ function SignupPageContent() {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="lastName" className="text-sm font-medium">
-                        Last Name
+                        {a?.lastName || "Last Name"}
                       </Label>
                       <div className="relative">
                         <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
@@ -405,32 +429,38 @@ function SignupPageContent() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm font-medium">
-                      Email Address
-                    </Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="john@example.com"
-                        value={formData.email}
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
-                        className="pl-10"
-                        required
-                      />
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-sm font-medium">
+                        {a?.email || "Email Address"}
+                      </Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="john@example.com"
+                          value={formData.email}
+                          onChange={(e) =>
+                            setFormData({ ...formData, email: e.target.value })
+                          }
+                          className="pl-10"
+                          required
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <PhoneField
-                    countryCode={formData.phoneCountryCode}
-                    phone={formData.phone}
-                    onCountryCodeChange={(value) => setFormData({ ...formData, phoneCountryCode: value })}
-                    onPhoneChange={(value) => setFormData({ ...formData, phone: value })}
-                  />
+                    <PhoneField
+                      countryCode={formData.phoneCountryCode}
+                      phone={formData.phone}
+                      onCountryCodeChange={(value) =>
+                        setFormData({ ...formData, phoneCountryCode: value })
+                      }
+                      onPhoneChange={(value) =>
+                        setFormData({ ...formData, phone: value })
+                      }
+                    />
+                  </div>
 
                   {/* Password Fields - Only show for password signup method */}
                   {signupMethod === "password" && (
@@ -440,7 +470,7 @@ function SignupPageContent() {
                           htmlFor="password"
                           className="text-sm font-medium"
                         >
-                          Password
+                          {a?.password || "Password"}
                         </Label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
@@ -477,7 +507,7 @@ function SignupPageContent() {
                           htmlFor="confirmPassword"
                           className="text-sm font-medium"
                         >
-                          Confirm Password
+                          {a?.confirmPassword || "Confirm Password"}
                         </Label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
@@ -518,13 +548,13 @@ function SignupPageContent() {
                     <div className="flex items-center gap-2 mb-4">
                       <Home className="size-5 text-primary-action" />
                       <h3 className="text-lg font-semibold text-primary-text">
-                        Address
+                        {t?.addressSection || "Address"}
                       </h3>
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="street" className="text-sm font-medium">
-                        Street Address
+                        {a?.street || "Street Address"}
                       </Label>
                       <div className="relative">
                         <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
@@ -551,7 +581,7 @@ function SignupPageContent() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div className="space-y-2">
                         <Label htmlFor="city" className="text-sm font-medium">
-                          City
+                          {a?.city || "City"}
                         </Label>
                         <Input
                           id="city"
@@ -572,7 +602,7 @@ function SignupPageContent() {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="state" className="text-sm font-medium">
-                          State
+                          {a?.state || "State"}
                         </Label>
                         <Input
                           id="state"
@@ -599,7 +629,7 @@ function SignupPageContent() {
                           htmlFor="postalCode"
                           className="text-sm font-medium"
                         >
-                          Postal Code
+                          {a?.postalCode || "Postal Code"}
                         </Label>
                         <Input
                           id="postalCode"
@@ -623,13 +653,13 @@ function SignupPageContent() {
                           htmlFor="country"
                           className="text-sm font-medium"
                         >
-                          Country
+                          {a?.country || "Country"}
                         </Label>
                         <Select
                           value={formData.address.country}
                           onValueChange={(value) => {
                             const countryData = countryListAllIsoData.find(
-                              (c) => c.name === value
+                              (c) => c.name === value,
                             );
                             setFormData({
                               ...formData,
@@ -642,7 +672,7 @@ function SignupPageContent() {
                           }}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select country" />
+                            <SelectValue placeholder={t?.selectCountry || "Select country"} />
                           </SelectTrigger>
                           <SelectContent>
                             {countryListAllIsoData.map((country) => (
@@ -671,19 +701,19 @@ function SignupPageContent() {
                         htmlFor="terms"
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
-                        I agree to the{" "}
+                        {t?.agreeToTerms || "I agree to the"}{" "}
                         <Link
                           href="/terms-of-service"
                           className="text-primary-action hover:underline"
                         >
-                          Terms of Service
+                          {a?.termsOfService || "Terms of Service"}
                         </Link>{" "}
-                        and{" "}
+                        {t?.and || "and"}{" "}
                         <Link
                           href="/privacy-policy"
                           className="text-primary-action hover:underline"
                         >
-                          Privacy Policy
+                          {a?.privacyPolicy || "Privacy Policy"}
                         </Link>
                       </label>
                     </div>
@@ -699,7 +729,7 @@ function SignupPageContent() {
                     ) : (
                       <Shield className="w-4 h-4 mr-2" />
                     )}
-                    Create Account
+                    {t?.createAccountButton || "Create Account"}
                   </Button>
                 </form>
               </div>
@@ -707,17 +737,26 @@ function SignupPageContent() {
 
             {/* OTP Step */}
             {step === "otp" && (
-              <form ref={otpFormRef} onSubmit={handleVerifyOTP} className="space-y-4">
+              <form
+                ref={otpFormRef}
+                onSubmit={handleVerifyOTP}
+                className="space-y-4"
+              >
                 <div className="space-y-2">
                   <Label htmlFor="otp" className="text-sm font-medium">
-                    Verification Code
+                    {t?.verificationCode || "Verification Code"}
                   </Label>
-                  <OtpInput value={otp} onChange={setOtp} onComplete={() => otpFormRef.current?.requestSubmit()} disabled={loading} />
+                  <OtpInput
+                    value={otp}
+                    onChange={setOtp}
+                    onComplete={() => otpFormRef.current?.requestSubmit()}
+                    disabled={loading}
+                  />
                 </div>
 
                 <Button
                   type="submit"
-                    className="w-full bg-primary-action hover:bg-primary-action-hover"
+                  className="w-full bg-primary-action hover:bg-primary-action-hover"
                   disabled={loading || otp.length !== 6}
                 >
                   {loading ? (
@@ -725,7 +764,7 @@ function SignupPageContent() {
                   ) : (
                     <Shield className="w-4 h-4 mr-2" />
                   )}
-                  Verify & Create Account
+                  {t?.verifyAndCreateAccount || "Verify & Create Account"}
                 </Button>
 
                 <div className="text-center">
@@ -735,7 +774,7 @@ function SignupPageContent() {
                     disabled={loading}
                     className="text-sm text-primary-action hover:text-primary-action-hover disabled:opacity-50"
                   >
-                    Didn't receive code? Resend
+                    {t?.resendCode || "Didn't receive code? Resend"}
                   </button>
                 </div>
               </form>
@@ -744,12 +783,12 @@ function SignupPageContent() {
             {/* Sign Up Link */}
             <div className="text-center pt-4 border-t border-divider">
               <p className="text-sm text-primary-muted">
-                Already have an account?{" "}
+                {t?.alreadyHaveAccount || "Already have an account?"}{" "}
                 <Link
                   href="/auth/login"
                   className="font-medium text-primary-action hover:text-primary-action-hover"
                 >
-                  Sign in
+                  {t?.signIn || "Sign in"}
                 </Link>
               </p>
             </div>

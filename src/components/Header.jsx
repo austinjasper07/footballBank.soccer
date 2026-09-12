@@ -42,7 +42,7 @@ export default function Header({ lang = "en" }) {
     { label: "Home", path: `/${lang}` },
     { label: "About", path: `/${lang}/about` },
     { label: "Players", path: `/${lang}/players` },
-    { label: "Clubs & Scouts", path: `/${lang}/clubs-scouts` },
+    { label: "Clubs & Partners", path: `/${lang}/clubs-scouts` },
     { label: "Representation", path: `/${lang}/agent` },
     // { label: "Pricing", path: `/${lang}/pricing` },
     { label: "Blog", path: `/${lang}/blog` },
@@ -58,7 +58,7 @@ export default function Header({ lang = "en" }) {
           { label: dict.navigation.about, path: `/${lang}/about` },
           { label: dict.navigation.players, path: `/${lang}/players` },
           {
-            label: dict.navigation.clubsAndScouts || "Clubs & Scouts",
+            label: dict.navigation.clubsAndScouts || "Clubs & Partners",
             path: `/${lang}/clubs-scouts`,
           },
           {

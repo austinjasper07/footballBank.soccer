@@ -7,7 +7,18 @@ import { getAuthUser } from "@/lib/oauth";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { getDictionary } from "@/lib/dictionaries";
 import { formatTimeAgo } from "@/utils/dateHelper";
-import { ArrowUpRight, Globe2, Play, ShieldCheck, Target } from "lucide-react";
+import {
+  ArrowUpRight,
+  Globe2,
+  Globe2Icon,
+  Play,
+  Search,
+  ShieldCheck,
+  Star,
+  Target,
+  TrendingUp,
+  UserRound,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export async function generateMetadata({ params }) {
@@ -31,27 +42,21 @@ export async function generateMetadata({ params }) {
   });
 }
 
-const ASSURANCES = [
-  { icon: ShieldCheck, label: "FIFA-licensed representation" },
-  { icon: Globe2, label: "International perspective" },
-  { icon: Target, label: "Club-focused recruitment" },
-];
-
 const BRIEF_STEPS = [
   {
     n: "01",
     title: "Define the requirement",
-    copy: "Position, playing level, timing and budget.",
+    copy: "Position, playing level, market and budget.",
   },
   {
     n: "02",
     title: "Review relevant profiles",
-    copy: "Football information and footage matched to your brief.",
+    copy: "FootballBank identifies and presents players aligned with the club's requirements.",
   },
   {
     n: "03",
     title: "Coordinate the next step",
-    copy: "Verified enquiries and communication through FootballBank.",
+    copy: "Verified enquiries, introductions and appropriate representation support.",
   },
 ];
 
@@ -59,28 +64,31 @@ const DIRECTION = [
   {
     n: "01",
     title: "Player representation",
-    copy: "A considered approach to career decisions, opportunities and representation.",
+    copy: "Career strategy, opportunities and representation through licensed football-agent services.",
   },
   {
     n: "02",
     title: "Talent identification",
-    copy: "Football profiles and footage assessed in the context of the next sporting step.",
+    copy: "Player assessment, profiling and opportunity matching.",
   },
   {
     n: "03",
     title: "Club recruitment",
-    copy: "Targeted player profiles shaped around your club's recruitment brief.",
+    copy: "Targeted player identification according to club requirements.",
   },
   {
     n: "04",
     title: "Career development",
-    copy: "A long-term perspective on development, progression and the player's goals.",
+    copy: "Long-term planning focused on progression and professional growth.",
   },
 ];
 
 export default async function HomePage({ params }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
+  const home = dict?.homepage;
+  const briefSteps = home?.briefSteps || BRIEF_STEPS;
+  const directionItems = home?.directionItems || DIRECTION;
   try {
     const user = await getAuthUser();
     // User sync is now handled automatically by the authentication system
@@ -103,27 +111,30 @@ export default async function HomePage({ params }) {
 
       <section className="relative overflow-hidden bg-navy">
         <img
-          src="/hero-player.jpg"
+          src="/heroPhotos/LLLL.png"
           alt="Footballer walking on the pitch"
           width={1600}
           height={1008}
-          className="absolute inset-0 h-full w-full object-cover opacity-70"
+          className="absolute inset-0 h-full w-full md:object-cover opacity-70"
         />
         <div className="absolute inset-0 bg-linear-to-r from-primary-navy via-primary-navy/85 to-primary-navy/20" />
 
-        <div className="relative mx-auto flex max-w-7xl flex-col gap-10 px-6 py-16 sm:py-20 md:flex-row md:items-center md:justify-between lg:py-18">
-          <div className="min-w-0 px-1 py-2 sm:px-2 md:w-1/2 md:px-0 md:py-0">
+        <div className="relative mx-auto flex max-w-8xl flex-col items-stretch gap-4 px-4 py-4 md:flex-row">
+          
+          <section className="flex min-w-0 flex-col justify-center px-1 py-6 sm:px-2 w-full md:w-[48%] md:pl-16 md:py-18 lg:w-[46%]">
             <p className="eyebrow">
-              Representation · Recruitment · Opportunity
+              {home?.heroEyebrow || "Representation · Recruitment · Opportunity"}
             </p>
-            <h1 className="mt-5 max-w-2xl font-heading text-4xl leading-[1.02] text-primary-text-inverse uppercase sm:mt-6 sm:text-6xl lg:text-7xl">
-              Connecting football talent with{" "}
-              <span className="text-primary-accent">global opportunity.</span>
+            <h1 className="mt-5 max-w-xl font-heading text-3xl leading-[1.2] text-primary-text-inverse uppercase sm:mt-6 sm:text-4xl lg:text-6xl lg:leading-[1.2]">
+              {home?.heroTitleLine1 || "Connecting football"}
+              <br />
+              {home?.heroTitleLine2 || "talent, clubs &"}
+              <br />
+              <span className="text-primary-accent">{home?.heroTitleLine3 || "global opportunity."}</span>
             </h1>
-            <p className="mt-5 max-w-xl text-sm leading-6 text-primary-text-inverse/70 sm:mt-7 sm:leading-relaxed">
-              FootballBank International identifies, represents and positions
-              football talent for opportunities with clubs and football
-              organizations across international markets.
+            <p className="mt-5 max-w-lg text-sm md:text-base leading-6 text-primary-text-inverse/70 sm:mt-7 sm:leading-relaxed">
+              {home?.heroSubtitle ||
+                "FootballBank International is a sports management company connecting players, clubs and football organizations through talent identification, recruitment, development, club partnerships and international football opportunities."}
             </p>
             <div className="mt-7 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <Button
@@ -133,7 +144,7 @@ export default async function HomePage({ params }) {
                 className="w-full px-5 sm:w-auto sm:px-8"
               >
                 <Link href={`/${lang}/players`}>
-                  View players <ArrowUpRight />
+                  {home?.explorePlayers || "Explore players"} <ArrowUpRight />
                 </Link>
               </Button>
               <Button
@@ -143,101 +154,35 @@ export default async function HomePage({ params }) {
                 className="w-full px-5 sm:w-auto sm:px-8"
               >
                 <Link href={`/${lang}/clubs-scouts`}>
-                  Request a player <ArrowUpRight />
+                  {home?.workWithFootballBank || "Work with FootballBank"} <ArrowUpRight />
                 </Link>
               </Button>
             </div>
             <a
-              href="#"
+              href={`/${lang}/contact`}
               className="mt-6 inline-flex items-center gap-2 text-xs leading-5 text-primary-text-inverse/60 transition-colors hover:text-primary-accent sm:mt-8"
             >
-              Seeking representation? <ArrowUpRight className="h-3.5 w-3.5" />
+              {home?.seekingRepresentation || "Seeking representation?"} <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
-          </div>
+          </section>
 
           {/* PLAYER OF THE WEEK */}
-          {playerOfTheWeek && (
-            <section className="flex w-full min-w-0 items-center justify-center md:w-1/2">
-              <Link href={`/${lang}/players/${playerOfTheWeek.id}`}>
-                <div className="group relative w-full max-w-sm lg:max-w-md bg-primary-navy/60 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-primary-accent/20 hover:border-primary-accent/40 transition-all duration-300 transform">
-                  <div className="absolute top-4 right-4 z-20 bg-linear-to-r from-primary-accent to-amber-500 text-primary-text px-3 py-1 text-xs sm:text-sm font-semibold rounded-full shadow-lg">
-                    {dict.homepage.hero.starOnTheRise}
-                  </div>
-
-                  <div className="relative">
-                    <Image
-                      src={playerOfTheWeek?.imageUrl?.[0] || "/placeholder.jpg"}
-                      alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
-                      width={500}
-                      height={400}
-                      className="object-cover w-full h-56 sm:h-56 lg:h-80"
-                    />
-                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
-                  </div>
-
-                  <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
-                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
-                      {playerOfTheWeek?.firstName} {playerOfTheWeek?.lastName}
-                    </h3>
-
-                    <div className="grid grid-cols-3 gap-3">
-                      <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
-                        <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
-                          {dict.playerProfile.position}
-                        </div>
-                        <div className="text-white font-semibold text-sm sm:text-base">
-                          {playerOfTheWeek?.position}
-                        </div>
-                      </div>
-                      <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
-                        <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
-                          {dict.playerProfile.age}
-                        </div>
-                        <div className="text-white font-semibold text-sm sm:text-base">
-                          {age}
-                        </div>
-                      </div>
-                      <div className="bg-white/10 rounded-lg p-2 backdrop-blur-sm">
-                        <div className="text-primary-accent text-xs sm:text-sm font-medium mb-1">
-                          {dict.playerProfile.foot}
-                        </div>
-                        <div className="text-white font-semibold text-sm sm:text-base">
-                          {playerOfTheWeek?.foot}
-                        </div>
-                      </div>
-                    </div>
-
-                    <p className="text-blue-100 text-xs sm:text-sm leading-relaxed line-clamp-3 sm:line-clamp-4">
-                      {playerOfTheWeek?.description ||
-                        dict.pricing.playerOfTheWeek.description}
-                    </p>
-
-                    <div className="pt-2">
-                      <span className="inline-flex items-center text-white text-xs sm:text-sm font-medium group-hover:text-primary-accent transition-colors">
-                        {dict.pricing.playerOfTheWeek.viewProfile}
-                        <svg
-                          className="ml-2 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </section>
-          )}
+          <section className="relative hidden w-full items-center justify-center md:flex md:w-[52%] lg:w-[54%]">
+            <div className="h-full w-full overflow-hidden">
+              <Image
+                src="/heroPhotos/LLLL.png"
+                alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
+                width={900}
+                height={900}
+                className="h-full w-full  shadow-2xl rounded-4xl"
+              />
+              {/* <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div> */}
+            </div>
+            
+          </section>
         </div>
 
-        <div className="relative border-t border-primary-text-inverse/10 bg-primary-navy/80">
+        {/* <div className="relative border-t border-primary-text-inverse/10 bg-primary-navy/80">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 text-[0.65rem] tracking-[0.18em] text-primary-text-inverse/50 uppercase">
             <span>FootballBank International / Talent in focus</span>
             <span className="hidden items-center gap-2 sm:flex">
@@ -245,94 +190,75 @@ export default async function HomePage({ params }) {
               {playerOfTheWeek?.position} <ArrowUpRight className="h-3 w-3" />
             </span>
           </div>
-        </div>
+        </div> */}
       </section>
 
       {/* Assurance strip */}
-      <section className="bg-secondary-bg">
-        <div className="mx-auto grid max-w-7xl gap-4 px-6 py-5 text-primary-text-inverse/80 sm:grid-cols-2 lg:grid-cols-4">
-          {ASSURANCES.map(({ icon: Icon, label }) => (
-            <div key={label} className="flex items-center gap-3 text-xs">
-              <Icon className="h-4 w-4 text-primary-accent" />
-              {label}
-            </div>
-          ))}
-          <div className="text-xs text-primary-text-inverse/60 lg:text-right">
-            New Jersey, United States
+
+      <div className="relative border-t border-white/10 bg-[#07182b]/90">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-white/10 sm:grid-cols-4">
+          <div className="flex items-center gap-3 px-5 py-3 sm:px-6">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
+              <UserRound className="h-3.5 w-3.5" />
+            </span>
+
+            <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
+              {home?.assuranceStrip?.playerRepresentation || "Player representation"}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 px-5 py-3 sm:px-6">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
+              <Search className="h-3.5 w-3.5" />
+            </span>
+
+            <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
+              {home?.assuranceStrip?.clubRecruitment || "Club recruitment"}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 px-5 py-3 sm:px-6">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
+              <Globe2Icon className="h-3.5 w-3.5" />
+            </span>
+
+            <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
+              {home?.assuranceStrip?.internationalOpportunities || "International opportunities"}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 px-5 py-3 sm:px-6">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary-accent/40 text-primary-accent">
+              <TrendingUp className="h-3.5 w-3.5" />
+            </span>
+
+            <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
+              {home?.assuranceStrip?.careerDevelopment || "Career development"}
+            </span>
           </div>
         </div>
-      </section>
+      </div>
 
       <div className="w-full">
-        {/* WHY FOOTBALLBANK */}
-        {/* <section className="py-16 bg-primary-surface ">
-          <div
-            className="max-w-7xl mx-auto text-center px-4"
-            data-aos="fade-up"
-          >
-            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold  text-primary-text mb-4">
-              {dict.homepage.whyFootballBank.title}
-            </h2>
-            <div className="w-24 h-1 bg-primary-accent mx-auto mb-10" />
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  icon: "fa-certificate",
-                  title: dict.homepage.whyFootballBank.fifaCertified.title,
-                  desc: dict.homepage.whyFootballBank.fifaCertified.description,
-                },
-                {
-                  icon: "fa-globe",
-                  title: dict.homepage.whyFootballBank.globalNetwork.title,
-                  desc: dict.homepage.whyFootballBank.globalNetwork.description,
-                },
-                {
-                  icon: "fa-bolt",
-                  title: dict.homepage.whyFootballBank.rapidVisibility.title,
-                  desc: dict.homepage.whyFootballBank.rapidVisibility
-                    .description,
-                },
-              ].map(({ icon, title, desc }, i) => (
-                <div
-                  key={title}
-                  className="bg-white p-8 rounded-xl shadow-sm border border-divider text-center hover:shadow-md transition-all group"
-                  data-aos="fade-up"
-                  data-aos-delay={i * 150}
-                >
-                  <div className="w-16 h-16 bg-primary-navy rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary-action transition-colors">
-                    <i
-                      className={`fa-solid ${icon} text-primary-accent text-2xl`}
-                    />
-                  </div>
-                  <h3 className="text-xl  font-semibold text-primary-text mb-4">
-                    {title}
-                  </h3>
-                  <p className="text-primary-muted leading-relaxed">{desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section> */}
-
         {/* FEATURED PLAYERS */}
-        <section className="mx-auto max-w-7xl px-6 py-24">
-          <p className="eyebrow">The player collection</p>
+        <section className="mx-auto max-w-7xl px-6 py-14">
+          <p className="eyebrow">{home?.featuredSection?.eyebrow || "The player collection"}</p>
           <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="font-heading text-4xl uppercase">
-                Talent worth a closer look.
+              <h2 className="font-heading text-[1.6rem] md:text-4xl uppercase">
+                {home?.featuredSection?.title || "Talent worth a closer look."}
               </h2>
 
               <p className="mt-3 text-sm text-muted-foreground">
-                Individual profiles. Relevant football information. A direct
-                conversation with FootballBank.
+                {home?.featuredSection?.subtitle ||
+                  "Individual profiles. Relevant football information. A direct conversation with FootballBank."}
               </p>
             </div>
             <Link
               href={`/${lang}/players`}
               className="inline-flex items-center gap-2 text-sm font-medium text-primary-action hover:underline"
             >
-              Explore all players <ArrowUpRight className="h-4 w-4" />
+              {home?.featuredSection?.exploreAll || "Explore all players"} <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
 
@@ -344,7 +270,7 @@ export default async function HomePage({ params }) {
               >
                 <div className="relative">
                   <Image
-                    src={player.imageUrl[0]}
+                    src={player.headshotUrl || player.imageUrl?.[0] || "/logo/logo3.svg"}
                     alt={player.firstName}
                     width={800}
                     height={900}
@@ -363,22 +289,23 @@ export default async function HomePage({ params }) {
                   <p className="text-[0.6rem] tracking-[0.18em] text-primary-muted uppercase">
                     {player.country}
                   </p>
-                  <h3 className="mt-2 font-heading text-xl">
+                  <h3 className="mt-2 font-heading text-sm md:text-xl">
                     {player.firstName} {player.lastName}
                   </h3>
 
+
                   <div className="mt-4 grid grid-cols-3 gap-2 border-t border-divider pt-4 text-[0.7rem] text-primary-muted">
                     <span>
-                      Age:{" "}
+                      {home?.playerCard?.age || "Age"}:{" "}
                       {player.dob
                         ? new Date().getFullYear() -
                           new Date(player.dob).getFullYear()
                         : "N/A"}
                     </span>
-                    {player.foot && <span>Foot: {player.foot}</span>}
+                    {player.foot && <span>{home?.playerCard?.foot || "Foot"}: {player.foot}</span>}
                   </div>
                   <p className="mt-2 text-[0.7rem] text-primary-muted">
-                    Club &amp; availability on confirmation
+                    {home?.playerCard?.clubAvailability || "Club & availability on confirmation"}
                   </p>
                   <div className="mt-4 flex items-center justify-between border-t border-divider pt-3">
                     <Link
@@ -389,7 +316,7 @@ export default async function HomePage({ params }) {
                       <ArrowUpRight className="h-3.5 w-3.5" />
                     </Link>
                     <span className="inline-flex items-center gap-1.5 text-sm text-primary-text">
-                      <Play className="h-3.5 w-3.5" /> Watch highlights
+                      <Play className="h-3.5 w-3.5" /> {home?.playerCard?.watchHighlights || "Watch highlights"}
                     </span>
                   </div>
                 </div>
@@ -398,39 +325,40 @@ export default async function HomePage({ params }) {
           </div>
 
           <p className="mt-6 text-[0.7rem] text-muted-foreground">
-            Preview records use supplied footage. Detailed club information
-            pending confirmation.
+            {home?.previewNote ||
+              "Preview records use supplied footage. Detailed club information pending confirmation."}
           </p>
         </section>
 
         {/* Recruitment brief */}
         <section className="bg-secondary-bg-alt">
-          <div className="mx-auto grid max-w-7xl gap-14 px-6 py-24 lg:grid-cols-2">
+          <div className="mx-auto grid max-w-7xl gap-14 px-6 py-14 lg:grid-cols-2">
             <div>
-              <p className="eyebrow">For clubs &amp; scouts</p>
-              <h2 className="mt-5 font-heading text-4xl leading-tight uppercase">
-                Your recruitment brief.
+              <p className="eyebrow">{home?.recruitmentBrief?.eyebrow || "For clubs & partners"}</p>
+              <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight uppercase">
+                {home?.recruitmentBrief?.titleLine1 || "Your recruitment brief."}
                 <br />
-                Our starting point.
+                {home?.recruitmentBrief?.titleLine2 || "Our starting point."}
               </h2>
               <p className="mt-5 max-w-md text-sm text-primary-muted">
-                Tell us what you need. We'll identify the right profile,
-                coordinate the conversation and keep your sporting requirements
-                at the centre.
+                {home?.recruitmentBrief?.subtitle ||
+                  "Tell us the player profile, position, market, budget or sporting requirement. FootballBank will identify relevant talent and coordinate the next stage of the recruitment process."}
               </p>
               <Button variant="default" size="lg" className="mt-8 ">
-                Recruit with FootballBank
+                <Link href={`/${lang}/players`}>
+                  {home?.recruitmentBrief?.requestPlayer || "Request a player"}
+                </Link>
               </Button>
             </div>
             <div>
-              {BRIEF_STEPS.map((s) => (
+              {briefSteps.map((s, index) => (
                 <div
-                  key={s.n}
+                  key={s.title || index}
                   className="flex items-start justify-between gap-6 border-b border-divider py-6 first:border-t"
                 >
                   <div className="flex gap-5">
                     <span className="font-heading text-xs text-primary-accent-strong">
-                      {s.n}
+                      {s.n || BRIEF_STEPS[index]?.n || `0${index + 1}`}
                     </span>
                     <div>
                       <h3 className="text-base font-medium">{s.title}</h3>
@@ -447,13 +375,13 @@ export default async function HomePage({ params }) {
         </section>
 
         {/* BLOG */}
-        <section className="py-6 md:py-10 " id="blog">
+        <section className="py-14 " id="blog">
           <div
             className="max-w-7xl mx-auto px-4 text-center"
             data-aos="fade-up"
           >
-            <h2 className="text-[clamp(1.2rem,2.5vw,2.5rem)] font-bold mb-4 text-primary-text">
-              {dict.homepage.blog.title}
+            <h2 className="text-[1.6rem] md:text-4xl font-bold mb-4 text-primary-text">
+              {home?.blog?.title || dict.homepage.blog.title}
             </h2>
             <div className="w-24 h-1 bg-primary-accent mx-auto mb-4" />
 
@@ -482,7 +410,7 @@ export default async function HomePage({ params }) {
                 </Link>
               </div>
               <div
-                className="text-left grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 px-4 py-4 sm:px-6 lg:px-8 xl:px-12"
+                className="text-left grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 px-4 py-4 sm:px-6 lg:px-8 xl:px-12"
                 data-aos="fade-up"
               >
                 {featuredPosts.map((post) => (
@@ -509,12 +437,12 @@ export default async function HomePage({ params }) {
                         {formatTimeAgo(post.createdAt)}
                       </div>
                       <h3 className="text-lg font-semibold mb-2 text-primary-text">
-                        {post.title.length > 30
-                          ? post.title.slice(0, 30) + "..."
+                        {post.title.length > 50
+                          ? post.title.slice(0, 50) + "..."
                           : post.title}
                       </h3>
-                      <p className="text-sm text-primary-muted mb-4 line-clamp-3">
-                        {post.content.replace(/<[^>]*>/g, "").slice(0, 50)}...
+                      <p className="hidden lg:block text-sm text-primary-muted mb-4 line-clamp-3">
+                        {post.content.replace(/<[^>]*>/g, "").slice(0, 100)}...
                       </p>
                       <Link href={`/${lang}/blog/${post.id}`}>
                         <span className="text-primary-action hover:underline text-sm font-medium">
@@ -526,20 +454,20 @@ export default async function HomePage({ params }) {
                 ))}
               </div>
             </div>
-            <div className="mt-10 flex justify-end"></div>
+            {/* <div className="mt-10 flex justify-end"></div> */}
           </div>
         </section>
 
         {/* Direction */}
-        <section className="mx-auto max-w-7xl px-6 py-10 md:py-16">
-          <p className="eyebrow">Beyond the highlight reel</p>
-          <h2 className="mt-5 font-heading text-4xl uppercase">
-            A career deserves a clear direction.
+        <section className="mx-auto max-w-7xl px-6 py-12">
+          <p className="eyebrow">{home?.direction?.eyebrow || "Beyond the highlight reel"}</p>
+          <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl uppercase">
+            {home?.direction?.title || "A career deserves a clear direction."}
           </h2>
           <div className="mt-8 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-            {DIRECTION.map((d) => (
-              <div key={d.n} className="rule-divider pt-5">
-                <span className="text-[0.7rem] text-primary-muted">{d.n}</span>
+            {directionItems.map((d, index) => (
+              <div key={d.title || index} className="rule-divider pt-5">
+                <span className="text-[0.7rem] text-primary-muted">{DIRECTION[index]?.n || `0${index + 1}`}</span>
                 <h3 className="mt-6 text-base font-medium">{d.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-primary-muted">
                   {d.copy}
@@ -551,12 +479,12 @@ export default async function HomePage({ params }) {
 
         {/* Founder */}
         <section className="bg-primary-navy">
-          <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 py-24 lg:grid-cols-2">
+          <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 py-16 lg:grid-cols-2">
             <img
               src={agentInfo?.profilePhoto || "/FootballBank_agent.jpg"}
               alt={
                 agentInfo?.name ||
-                "Ayodeji Fatade, founder of FootballBank International"
+                "Ayodeji Michael .F, founder of FootballBank International"
               }
               width={1008}
               height={1104}
@@ -564,28 +492,31 @@ export default async function HomePage({ params }) {
               className="h-112 w-full rounded-lg object-left object-cover md:object-center"
             />
             <div>
-              <p className="eyebrow">The people behind the pathway</p>
-              <h2 className="mt-5 font-heading text-4xl leading-tight text-primary-text-inverse uppercase">
-                Licensed representation.
+              <p className="eyebrow">{home?.founder?.eyebrow || "The people behind the pathway"}</p>
+              <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight text-primary-text-inverse uppercase">
+                {home?.founder?.titleLine1 || "Licensed representation."}
                 <br />
                 <span className="text-primary-accent">
-                  Personal commitment.
+                  {home?.founder?.titleLine2 || "Personal commitment."}
                 </span>
               </h2>
               <p className="mt-5 max-w-lg text-sm leading-relaxed text-primary-text-inverse/70">
-                Ayodeji Fatade is a United States-based FIFA-licensed football
-                agent and the founder of FootballBank International, focused on
-                player representation, career development and international
-                football opportunities.
+                {home?.founder?.bio ||
+                  "Ayodeji Fatade is the founder of FootballBank International and a FIFA Licensed Football Agent, providing licensed football-agent services within FootballBank's wider sports management and football business activities."}
               </p>
               <p className="mt-8 font-heading text-lg text-primary-text-inverse">
-                Ayodeji Fatade
+                {home?.founder?.name || "Ayodeji Michael .F"}
               </p>
               <p className="text-xs text-primary-text-inverse/60">
-                Founder · FIFA-licensed Football Agent
+                {home?.founder?.role || "Founder, FootballBank International"}
               </p>
-              <Button variant="onNavy" size="lg" className="mt-7">
-                Meet your representative <ArrowUpRight />
+              <p className="text-xs text-primary-text-inverse/60">
+                {home?.founder?.credential || "FIFA Licensed Football Agent"}
+              </p>
+              <Button variant="onNavy" size="lg" className="mt-7 px-5 sm:w-auto sm:px-8">
+                <Link href={`/${lang}/agent`} className="flex gap-2">
+                  {home?.founder?.meetRepresentative || "Meet our representative"} <ArrowUpRight />
+                </Link>
               </Button>
             </div>
           </div>
@@ -593,26 +524,34 @@ export default async function HomePage({ params }) {
 
         {/* CTA SECTION*/}
         <section className="bg-secondary-bg">
-          <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center">
+          <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-2 lg:items-center">
             <div>
-              <p className="eyebrow">The next conversation matters</p>
-              <h2 className="mt-5 font-heading text-4xl leading-tight text-primary-text-inverse uppercase">
-                The right talent.
+              <p className="eyebrow">{home?.ctaSection?.eyebrow || "The next conversation matters"}</p>
+              <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight text-primary-text-inverse uppercase">
+                {home?.ctaSection?.titleLine1 || "The right talent."}
                 <br />
-                The right opportunity.
+                {home?.ctaSection?.titleLine2 || "The right opportunity."}
               </h2>
             </div>
             <div>
               <p className="text-sm text-primary-text-inverse/70">
-                Recruiting for a club or ready for the next step in your career?
-                Start with FootballBank.
+                {home?.ctaSection?.subtitle ||
+                  "Whether you're recruiting for a club, exploring a football partnership or planning the next stage of your career, start the conversation with FootballBank."}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button variant="action" size="lg">
-                  Request a player <ArrowUpRight />
+                <Button
+                  variant="action"
+                  size="lg"
+                  className="w-full px-5 sm:w-auto sm:px-8"
+                >
+                  {home?.ctaSection?.workWithUs || "Work with us"} <ArrowUpRight />
                 </Button>
-                <Button variant="onNavy" size="lg">
-                  Seek representation <ArrowUpRight />
+                <Button
+                  variant="onNavy"
+                  size="lg"
+                  className="w-full px-5 sm:w-auto sm:px-8"
+                >
+                  {home?.ctaSection?.seekRepresentation || "Seek representation"} <ArrowUpRight />
                 </Button>
               </div>
             </div>

@@ -95,11 +95,11 @@ export default function ContactClient({ lang = "en", dict }) {
           >
             {[
               {
-                title: dict?.contact?.companyName || "Company Name",
+                title: dict?.contact?.companyName || "FootballBank International",
                 icon: "fa-building",
                 color: "red",
-                text: "Dojoglo & Fam",
-                subtitle: dict?.contact?.officialName || "Our Official Name",
+                text: "FootballBank International",
+                subtitle: dict?.contact?.officialName || "Sports Management & Football Business",
               },
               {
                 title: dict?.contact?.email || "Email",
@@ -232,28 +232,23 @@ export default function ContactClient({ lang = "en", dict }) {
                       {dict?.contact?.playerRepresentation ||
                         "Player Representation"}
                     </SelectItem>
-                    <SelectItem value="Trial Request">
-                      {dict?.contact?.trialRequest || "Trial Request"}
+                    <SelectItem value="Club Recruitment">
+                      {dict?.contact?.clubRecruitment || "Club Recruitment"}
                     </SelectItem>
-                    <SelectItem value="Career Consultation">
-                      {dict?.contact?.careerConsultation ||
-                        "Career Consultation"}
+                    <SelectItem value="Request a Player">
+                      {dict?.contact?.requestAPlayer || "Request a Player"}
                     </SelectItem>
-                    <SelectItem value="Business Inquiry">
-                      {dict?.contact?.businessInquiry || "Business Inquiry"}
+                    <SelectItem value="Club Partnership">
+                      {dict?.contact?.clubPartnership || "Club Partnership"}
                     </SelectItem>
-                    <SelectItem value="Scouting Inquiry">
-                      {dict?.contact?.scoutingInquiry || "Scouting Inquiry"}
+                    <SelectItem value="Talent / Scouting">
+                      {dict?.contact?.talentScouting || "Talent / Scouting"}
                     </SelectItem>
-                    <SelectItem value="Transfer Inquiry">
-                      {dict?.contact?.transferInquiry || "Transfer Inquiry"}
+                    <SelectItem value="Media & Business">
+                      {dict?.contact?.mediaBusiness || "Media & Business"}
                     </SelectItem>
-                    <SelectItem value="Partnership Opportunity">
-                      {dict?.contact?.partnershipOpportunity ||
-                        "Partnership Opportunity"}
-                    </SelectItem>
-                    <SelectItem value="General Question">
-                      {dict?.contact?.generalQuestion || "General Question"}
+                    <SelectItem value="General Enquiry">
+                      {dict?.contact?.generalEnquiry || "General Enquiry"}
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -285,7 +280,7 @@ export default function ContactClient({ lang = "en", dict }) {
                 ) : (
                   <div className="flex items-center justify-center">
                     <i className="fa-solid fa-paper-plane mr-2" />
-                    {dict?.contact?.send || "Send Message"}
+                    {dict?.contact?.send || "Send Enquiry"}
                   </div>
                 )}
               </button>

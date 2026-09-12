@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   Pagination,
@@ -14,9 +13,8 @@ import {
 import { countryList } from "@/lib/variousCountryListFormats";
 import "aos/dist/aos.css";
 import { getAllPlayers } from "@/actions/publicActions";
-import { ArrowUpRight, Play } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export default function PlayersClient({ lang, dict }) {
   const [players, setPlayers] = useState([]);
@@ -25,9 +23,29 @@ export default function PlayersClient({ lang, dict }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedPosition, setSelectedPosition] = useState("");
-  const router = useRouter();
+  const [selectedAge, setSelectedAge] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   const perPage = 6;
+
+  const getPlayerAge = (player) => {
+    if (!player?.dob) return null;
+    const birthDate = new Date(player.dob);
+    if (Number.isNaN(birthDate.getTime())) return null;
+    const diff = new Date() - birthDate;
+    return Math.abs(new Date(diff).getUTCFullYear() - 1970);
+  };
+
+  const normalizeStatus = (value) => {
+    if (!value) return "available";
+    const normalized = value.toLowerCase();
+    if (normalized.includes("trial") || normalized.includes("trialist")) return "trial";
+    if (normalized.includes("loan")) return "loan";
+    if (normalized.includes("unavailable") || normalized.includes("not available")) return "unavailable";
+    if (normalized.includes("free") || normalized.includes("available") || normalized.includes("open")) return "available";
+    if (normalized.includes("contract")) return "contracted";
+    return normalized;
+  };
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -45,14 +63,37 @@ export default function PlayersClient({ lang, dict }) {
 
   const filteredPlayers = players.filter((p) => {
     const fullName = `${p.firstName} ${p.lastName}`;
-    const matchesSearch = fullName.toLowerCase().includes(search.toLowerCase());
+    const age = getPlayerAge(p);
+    const status = normalizeStatus(p.contractStatus || "Available");
+    const query = search.trim().toLowerCase();
+    const matchesSearch = !query
+      ? true
+      : [fullName, p.country, p.position, p.email].some((value) =>
+          (value || "").toLowerCase().includes(query),
+        );
     const matchesCountry = selectedCountry
-      ? p.country.toLowerCase() === selectedCountry
+      ? (p.country || "").toLowerCase() === selectedCountry
       : true;
     const matchesPosition = selectedPosition
-      ? p.position.toLowerCase() === selectedPosition
+      ? (p.position || "").toLowerCase() === selectedPosition
       : true;
-    return matchesSearch && matchesCountry && matchesPosition;
+    const matchesAge = selectedAge
+      ? (() => {
+          if (age === null) return false;
+          switch (selectedAge) {
+            case "u18": return age < 18;
+            case "18-21": return age >= 18 && age <= 21;
+            case "22-25": return age >= 22 && age <= 25;
+            case "26-30": return age >= 26 && age <= 30;
+            case "31plus": return age > 30;
+            default: return true;
+          }
+        })()
+      : true;
+    const matchesStatus = selectedStatus
+      ? status === selectedStatus
+      : true;
+    return matchesSearch && matchesCountry && matchesPosition && matchesAge && matchesStatus;
   });
 
   const totalPages = Math.ceil(filteredPlayers.length / perPage);
@@ -65,79 +106,87 @@ export default function PlayersClient({ lang, dict }) {
   return (
     <>
       <main className="relative z-10 min-h-screen w-full bg-primary-surface text-primary-text">
-        <div className="mx-auto max-w-7xl px-5 sm:px-10 lg:px-12">
+        <div className="mx-auto max-w-7xl bg-white px-5 sm:px-10 lg:px-12">
           {/* Page title */}
           <section className="border-b border-divider py-8 sm:py-10">
             <p className="eyebrow">The player collection</p>
-            <h1 className="mt-5 max-w-3xl font-heading text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
+            <h1 className="mt-5 max-w-3xl font-heading text-3xl md:text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
               {dict?.players?.title || "Find the profile. See the potential."}
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-primary-muted">
-              {dict?.players?.subtitle || "Explore player footage and football profiles. Request the full profile through FootballBank International"}
+              {dict?.players?.subtitle ||
+                "Explore player footage and football profiles. Request the full profile through FootballBank International"}
             </p>
           </section>
 
           {/* Filters */}
-          <section className="border-b border-divider py-2 lg:mb-3">
-            <div className="flex w-full flex-col items-center justify-between gap-4 lg:flex-row">
-              <div className="flex w-full flex-col gap-4 sm:flex-row lg:w-auto">
-                <div className="flex w-full gap-3 sm:mb-0">
-                  <select
-                    value={selectedCountry}
-                    onChange={(e) => {
-                      setSelectedCountry(e.target.value);
-                      setCurrentPage(1);
-                    }}
-                    className="w-[60%] rounded-md border border-divider bg-primary-card px-4 py-3 pr-10 text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
-                  >
-                    <option value="" className="bg-primary-card text-primary-text">
-                      All Countries
-                    </option>
-                    {countryList.map((country) => (
-                      <option
-                        key={country}
-                        value={country.toLowerCase()}
-                        className="bg-primary-card text-primary-text"
-                      >
-                        {country}
-                      </option>
-                    ))}
-                  </select>
+          <section className="border-b border-divider/80 py-4 lg:mb-3">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
+              <select
+                value={selectedCountry}
+                onChange={(e) => {
+                  setSelectedCountry(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="h-10 rounded-md border border-divider bg-white px-2.5 py-2 text-sm text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
+              >
+                <option value="">Country</option>
+                {countryList.map((country) => (
+                  <option key={country} value={country.toLowerCase()}>
+                    {country}
+                  </option>
+                ))}
+              </select>
 
-                  <select
-                    value={selectedPosition}
-                    onChange={(e) => {
-                      setSelectedPosition(e.target.value);
-                      setCurrentPage(1);
-                    }}
-                    className="w-[40%] rounded-md border border-divider bg-primary-card px-4 py-3 pr-10 text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
-                  >
-                    <option value="" className="bg-primary-card text-primary-text">
-                      All Positions
-                    </option>
-                    <option value="forward" className="bg-primary-card text-primary-text">
-                      Forward
-                    </option>
-                    <option
-                      value="goalkeeper"
-                      className="bg-primary-card text-primary-text"
-                    >
-                      Goalkeeper
-                    </option>
-                    <option value="defender" className="bg-primary-card text-primary-text">
-                      Defender
-                    </option>
-                    <option
-                      value="midfielder"
-                      className="bg-primary-card text-primary-text"
-                    >
-                      Midfielder
-                    </option>
-                  </select>
-                </div>
-              </div>
+              <select
+                value={selectedPosition}
+                onChange={(e) => {
+                  setSelectedPosition(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="h-10 rounded-md border border-divider bg-white px-2.5 py-2 text-sm text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
+              >
+                <option value="">Position</option>
+                <option value="forward">Forward</option>
+                <option value="goalkeeper">Goalkeeper</option>
+                <option value="defender">Defender</option>
+                <option value="midfielder">Midfielder</option>
+                <option value="winger">Winger</option>
+              </select>
 
-              <div className="relative w-full lg:w-80">
+              <select
+                value={selectedAge}
+                onChange={(e) => {
+                  setSelectedAge(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="h-10 rounded-md border border-divider bg-white px-2.5 py-2 text-sm text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
+              >
+                <option value="">Age</option>
+                <option value="u18">Under 18</option>
+                <option value="18-21">18 - 21</option>
+                <option value="22-25">22 - 25</option>
+                <option value="26-30">26 - 30</option>
+                <option value="31plus">31+</option>
+              </select>
+
+              <select
+                value={selectedStatus}
+                onChange={(e) => {
+                  setSelectedStatus(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="h-10 rounded-md border border-divider bg-white px-2.5 py-2 text-sm text-primary-text outline-none transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
+              >
+                <option value="">Status</option>
+                <option value="available">Available</option>
+                <option value="trial">Trial</option>
+                <option value="loan">Loan</option>
+                <option value="contracted">Contracted</option>
+                <option value="unavailable">Unavailable</option>
+              </select>
+
+              <div className="relative">
                 <input
                   type="text"
                   value={search}
@@ -145,8 +194,8 @@ export default function PlayersClient({ lang, dict }) {
                     setSearch(e.target.value);
                     setCurrentPage(1);
                   }}
-                  placeholder="Search players..."
-                  className="w-full rounded-md border border-divider bg-primary-card px-4 py-3 pl-12 text-primary-text outline-none placeholder:text-primary-muted transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
+                  placeholder="Search players"
+                  className="w-full rounded-md border border-divider bg-white px-3 py-3 pl-11 text-sm text-primary-text outline-none placeholder:text-primary-muted transition-colors focus:border-primary-action focus:ring-2 focus:ring-primary-action/20"
                 />
                 <i className="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-primary-muted" />
               </div>
@@ -154,7 +203,7 @@ export default function PlayersClient({ lang, dict }) {
           </section>
 
           {/* Main content */}
-          <section className=" bg-primary-bg py-5 sm:py-8">
+          <section className="bg-[#f5f7f8] py-5 sm:py-8">
             <div className="w-full">
               {loading ? (
                 <div className="text-center text-primary-muted">
@@ -166,58 +215,48 @@ export default function PlayersClient({ lang, dict }) {
                 </div>
               ) : (
                 <div>
-                  {/* Player cards */}
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
                     {paginatedPlayers.map((player) => {
                       const fullName = `${player.firstName} ${player.lastName}`;
-                      const playerAge = player.dob
-                        ? new Date().getFullYear() -
-                          new Date(player.dob).getFullYear()
-                        : "N/A";
+                      const playerAge = getPlayerAge(player);
                       return (
                         <article
                           key={player.id}
-                          className="group overflow-hidden rounded-lg border border-divider bg-primary-card"
+                          className="group overflow-hidden rounded-xl border border-divider bg-white shadow-sm transition-shadow hover:shadow-md"
                         >
                           <div className="relative">
                             <Image
-                              src={player.imageUrl[0]}
-                              alt={player.firstName}
+                              src={player.headshotUrl || player.imageUrl?.[0] || "/logo/logo3.svg"}
+                              alt={fullName}
                               width={600}
                               height={800}
                               loading="lazy"
-                              className="h-48 w-full object-scale-down bg-blue-100  rounded-t-md md:object-fill lg:object-cover sm:h-50 lg:h-54"
+                              className="h-52 w-full rounded-t-xl bg-slate-100 object-cover sm:h-56 lg:h-60"
                             />
                             <span className="absolute top-4 left-4 rounded-sm bg-primary-navy/90 px-2.5 py-1 text-[0.6rem] tracking-[0.18em] text-primary-text-inverse uppercase">
                               {player.position}
                             </span>
-                            <span className="absolute right-4 bottom-4 flex h-9 w-9 items-center justify-center rounded-full bg-primary-card text-primary-text transition-transform group-hover:-translate-y-1">
+                            <span className="absolute right-4 bottom-4 flex h-9 w-9 items-center justify-center rounded-full bg-white text-primary-text shadow-sm transition-transform group-hover:-translate-y-1">
                               <ArrowUpRight className="h-4 w-4" />
                             </span>
                           </div>
 
-                          <div className="px-5 py-2">
+                          <div className="px-5 py-4">
                             <p className="text-[0.6rem] tracking-[0.18em] text-primary-muted uppercase">
                               {player.country}
                             </p>
-                            <h3 className="mt-2 font-heading text-xl">
+                            <h3 className="mt-2 font-heading text-xl text-primary-text">
                               {player.firstName} {player.lastName}
                             </h3>
 
                             <div className="mt-4 grid grid-cols-2 gap-2 border-t border-divider pt-4 text-[0.7rem] text-primary-muted">
-                              <span>
-                                Age:{" "}
-                                {player.dob
-                                  ? new Date().getFullYear() -
-                                    new Date(player.dob).getFullYear()
-                                  : "N/A"}
-                              </span>
+                              <span>Age: {playerAge ?? "N/A"}</span>
                               {player.foot && <span>Foot: {player.foot}</span>}
                             </div>
-                            <p className="mt-2 text-[0.7rem] text-primary-muted">
-                              Club &amp; availability on confirmation
+                            <p className="mt-3 text-[0.72rem] text-primary-muted">
+                              {player.contractStatus || "Available"}
                             </p>
-                            <div className="mt-3 flex items-center justify-center border-t border-divider pt-2">
+                            <div className="mt-4 flex items-center justify-center border-t border-divider pt-3">
                               <Link
                                 href={`/${lang}/players/${player.id}`}
                                 className="inline-flex items-center gap-1.5 text-sm font-medium text-primary-action hover:underline"
@@ -225,10 +264,6 @@ export default function PlayersClient({ lang, dict }) {
                                 {dict.homepage.featuredPlayers.viewProfile}{" "}
                                 <ArrowUpRight className="h-3.5 w-3.5" />
                               </Link>
-                              {/* <span className="inline-flex items-center gap-1.5 text-sm text-primary-text">
-                                <Play className="h-3.5 w-3.5" /> Watch
-                                highlights
-                              </span> */}
                             </div>
                           </div>
                         </article>
@@ -240,7 +275,7 @@ export default function PlayersClient({ lang, dict }) {
                   <Pagination className="my-12 w-full">
                     <PaginationContent className="gap-2">
                       <PaginationItem>
-                          <PaginationPrevious
+                        <PaginationPrevious
                           href="#"
                           className="border border-divider bg-primary-card text-primary-text hover:border-primary-action hover:bg-primary-action hover:text-primary-text-inverse transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={(e) => {
@@ -289,7 +324,6 @@ export default function PlayersClient({ lang, dict }) {
             </div>
           </section>
 
-
           {/* Animation styles */}
           <style jsx global>{`
             @keyframes dropdown {
@@ -308,34 +342,6 @@ export default function PlayersClient({ lang, dict }) {
           `}</style>
         </div>
 
-        {/* CTA SECTION*/}
-          <section className="bg-secondary-bg">
-            <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center">
-              <div className=" text-center lg:text-left">
-                <p className="eyebrow">The next conversation matters</p>
-                <h2 className="mt-5 font-heading text-4xl leading-tight text-primary-text-inverse uppercase">
-                  The right talent.
-                  <br />
-                  The right opportunity.
-                </h2>
-              </div>
-
-              <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                <p className="text-sm text-primary-text-inverse/70">
-                  Recruiting for a club or ready for the next step in your
-                  career? Start with FootballBank.
-                </p>
-                <div className="mt-6 flex flex-col lg:flex-row gap-3">
-                  <Button variant="action" size="lg">
-                    Request a player <ArrowUpRight />
-                  </Button>
-                  <Button variant="onNavy" size="lg">
-                    Seek representation <ArrowUpRight />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </section>
       </main>
     </>
   );

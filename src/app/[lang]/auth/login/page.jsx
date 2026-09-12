@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,12 +20,22 @@ import {
 import Link from "next/link";
 import { sendLoginOTP, verifyLoginOTP } from "@/actions/authActions";
 import OtpInput from "@/components/auth/OtpInput";
+import { getClientDictionary } from "@/lib/client-dictionaries";
 
 import "aos/dist/aos.css";
 
 
 
 function LoginPageContent() {
+  const pathname = usePathname();
+  const lang = pathname?.split("/")[1] || "en";
+  const [dict, setDict] = useState(null);
+  const t = dict?.loginPage;
+
+  useEffect(() => {
+    getClientDictionary(lang).then(setDict);
+  }, [lang]);
+
   const [step, setStep] = useState("email"); // "email", "otp", or "password"
   const [loginMethod, setLoginMethod] = useState("otp"); // "otp" or "password"
   const [email, setEmail] = useState("");
@@ -187,25 +197,25 @@ function LoginPageContent() {
   // No need for loading states - server-side layout handles authentication
 
   return (
-    <div className="min-h-screen bg-primary-bg px-4 py-8 sm:px-6 lg:grid lg:min-h-screen lg:grid-cols-[1.1fr_0.9fr] lg:gap-12 lg:px-12 lg:py-12">
+    <div className="min-h-screen bg-primary-bg px-4 py-8 sm:px-6 lg:grid lg:min-h-screen lg:grid-cols-[1.08fr_1fr] lg:gap-12 lg:px-12 lg:py-12">
       <div className="hidden min-h-full flex-col justify-between bg-primary-navy p-10 text-primary-text-inverse lg:flex">
-        <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-primary-accent">FootballBank International</p><h2 className="mt-8 max-w-lg font-heading text-6xl font-semibold leading-[1.02]">The next football opportunity starts with access.</h2><p className="mt-6 max-w-md text-sm leading-7 text-primary-text-inverse/70">Sign in to manage your profile, request player information, and continue your football journey.</p></div><p className="text-sm text-primary-text-inverse/50">Secure authentication · Built for the football community</p>
+        <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-primary-accent">{t?.sidePanelEyebrow || "FootballBank International"}</p><h2 className="mt-8 max-w-lg font-heading text-6xl font-semibold leading-[1.02]">{t?.sidePanelTitle || "The next football opportunity starts with access."}</h2><p className="mt-6 max-w-md text-sm leading-7 text-primary-text-inverse/70">{t?.sidePanelSubtitle || "Sign in to manage your profile, access football opportunities, request player information and communicate with FootballBank."}</p></div><p className="text-sm text-primary-text-inverse/50">{t?.sidePanelFooter || "Sports management · Talent · Club partnerships"}</p>
       </div>
       <div className="mx-auto flex w-full max-w-md flex-col justify-center">
         {/* Header */}
         <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2 text-primary-muted hover:text-primary-text transition-colors mb-6">
             <ArrowLeft className="w-4 h-4" />
-            Back to Home
+            {t?.backToHome || "Back to Home"}
           </Link>
          
           <h1 className="text-3xl font-bold text-primary-text mb-2">
-            Welcome Back
+            {t?.welcomeBack || "Welcome Back"}
           </h1>
           <p className="text-primary-muted">
             {step === "email" 
-              ? "Enter your email to receive a login code"
-              : "Enter the 6-digit code sent to your email"
+              ? (t?.emailStepSubtitle || "Enter your email to receive a login code")
+              : (t?.otpStepSubtitle || "Enter the 6-digit code sent to your email")
             }
           </p>
         </div>
@@ -213,7 +223,7 @@ function LoginPageContent() {
         <Card className="border border-divider bg-primary-card shadow-xl">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-xl">
-              {step === "email" ? "Sign In" : "Verify Code"}
+              {step === "email" ? (t?.signIn || "Sign In") : (t?.verifyCode || "Verify Code")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -241,7 +251,7 @@ function LoginPageContent() {
               <div className="space-y-4">
                 {/* Login Method Selection */}
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium">Choose Login Method</Label>
+                  <Label className="text-sm font-medium">{t?.chooseLoginMethod || "Choose Login Method"}</Label>
                   <div className="grid grid-cols-2 gap-3 mt-2">
                     <button
                       type="button"
@@ -254,7 +264,7 @@ function LoginPageContent() {
                     >
                       <div className="text-center">
                         <Mail className="w-5 h-5 mx-auto mb-1" />
-                        <div className="text-xs font-medium">OTP</div>
+                        <div className="text-xs font-medium">{t?.otp || "OTP"}</div>
                       </div>
                     </button>
                     <button
@@ -268,7 +278,7 @@ function LoginPageContent() {
                     >
                       <div className="text-center">
                         <Lock className="w-5 h-5 mx-auto mb-1" />
-                        <div className="text-xs font-medium">Password</div>
+                        <div className="text-xs font-medium">{t?.password || "Password"}</div>
                       </div>
                     </button>
                   </div>
@@ -277,14 +287,14 @@ function LoginPageContent() {
                 <form onSubmit={loginMethod === "otp" ? handleSendOTP : handlePasswordLogin} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-sm font-medium mb-4">
-                      Email Address
+                      {t?.emailAddress || "Email Address"}
                     </Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
                       <Input
                         id="email"
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder={t?.emailPlaceholder || "Enter your email"}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="pl-10"
@@ -296,14 +306,14 @@ function LoginPageContent() {
                   {loginMethod === "password" && (
                     <div className="space-y-2">
                       <Label htmlFor="password" className="text-sm font-medium">
-                        Password
+                        {t?.password || "Password"}
                       </Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-muted" />
                         <Input
                           id="password"
                           type="password"
-                          placeholder="Enter your password"
+                          placeholder={t?.passwordPlaceholder || "Enter your password"}
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           className="pl-10"
@@ -323,7 +333,7 @@ function LoginPageContent() {
                     ) : (
                       <Lock className="w-4 h-4 mr-2" />
                     )}
-                    {loginMethod === "otp" ? "Send Login Code" : "Login with Password"}
+                    {loginMethod === "otp" ? (t?.sendLoginCode || "Send Login Code") : (t?.loginWithPassword || "Login with Password")}
                   </Button>
                 </form>
               </div>
@@ -334,11 +344,11 @@ function LoginPageContent() {
               <form ref={otpFormRef} onSubmit={handleVerifyOTP} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="otp" className="text-sm font-medium mb-2">
-                    Verification Code
+                    {t?.verificationCode || "Verification Code"}
                   </Label>
                   <OtpInput value={otp} onChange={setOtp} onComplete={() => otpFormRef.current?.requestSubmit()} disabled={loading} />
                   <p className="text-xs text-primary-muted">
-                    Code sent to {email}
+                    {t?.codeSentTo || "Code sent to"} {email}
                   </p>
                 </div>
 
@@ -352,7 +362,7 @@ function LoginPageContent() {
                   ) : (
                     <CheckCircle className="w-4 h-4 mr-2" />
                   )}
-                  Verify & Login
+                  {t?.verifyAndLogin || "Verify & Login"}
                 </Button>
 
                 <div className="text-center">
@@ -362,7 +372,7 @@ function LoginPageContent() {
                     disabled={loading}
                     className="text-sm text-primary-action hover:text-primary-action-hover disabled:opacity-50"
                   >
-                    Didn't receive code? Resend
+                    {t?.resendCode || "Didn't receive code? Resend"}
                   </button>
                 </div>
               </form>
@@ -377,7 +387,7 @@ function LoginPageContent() {
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
                     <span className="bg-primary-card px-2 text-primary-muted">
-                      Or continue with
+                      {t?.orContinueWith || "Or continue with"}
                     </span>
                   </div>
                 </div>
@@ -430,7 +440,7 @@ function LoginPageContent() {
                   onClick={() => setStep("email")}
                   className="text-sm text-primary-muted hover:text-primary-text"
                 >
-                  ← Back to email
+                  {t?.backToEmail || "← Back to email"}
                 </button>
               </div>
             )}
@@ -439,7 +449,7 @@ function LoginPageContent() {
             {step === "email" && (
               <div className="text-center">
                 <Link href="/auth/forgot-password" className="text-sm text-primary-muted hover:text-primary-text">
-                  Forgot your password?
+                  {t?.forgotPassword || "Forgot your password?"}
                 </Link>
               </div>
             )}
@@ -447,9 +457,9 @@ function LoginPageContent() {
             {/* Sign Up Link */}
             <div className="text-center pt-4 border-t border-divider">
               <p className="text-sm text-primary-muted">
-                Don't have an account?{" "}
+                {t?.noAccount || "Don't have an account?"}{" "}
                 <Link href="/auth/signup" className="text-primary-action hover:text-primary-action-hover font-medium">
-                  Sign up
+                  {t?.signUp || "Sign up"}
                 </Link>
               </p>
             </div>

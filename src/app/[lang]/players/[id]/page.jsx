@@ -14,7 +14,7 @@ export async function generateMetadata({ params }) {
   return generateSEOMetadata({
     title: `${player.firstName} ${player.lastName} | FootballBank`,
     description: `View photos and football footage for ${player.firstName} ${player.lastName}.`,
-    image: player.imageUrl?.[0],
+    image: player.headshotUrl || player.imageUrl?.[0],
     url: `/${lang}/players/${id}`,
     type: "profile",
   });

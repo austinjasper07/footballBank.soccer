@@ -12,22 +12,22 @@
   "categories": ["sports", "social", "entertainment"],
   "icons": [
     {
-      "src": "/favicon-16x16.png",
+      "src": "/favicon-16x16.png?v=20260909",
       "sizes": "16x16",
       "type": "image/png"
     },
     {
-      "src": "/favicon-32x32.png",
+      "src": "/favicon-32x32.png?v=20260909",
       "sizes": "32x32",
       "type": "image/png"
     },
     {
-      "src": "/apple-touch-icon.png",
+      "src": "/apple-touch-icon.png?v=20260909",
       "sizes": "180x180",
       "type": "image/png"
     },
     {
-      "src": "/logo.png",
+      "src": "/logo/logo3.png?v=20260909",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

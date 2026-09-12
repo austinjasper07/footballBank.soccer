@@ -28,18 +28,25 @@ import {
 import { useAuth } from "@/context/NewAuthContext";
 import { Button } from "@/components/ui/button";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { getClientDictionary } from "@/lib/client-dictionaries";
 
-const tabs = ["overview", "stats", "career", "media", "contact"];
+const tabKeys = ["overview", "stats", "career", "media", "contact"];
 
 export default function PlayerProfilePage() {
   const { user, isAuthenticated, loading: authLoading } = useAuth();
   const pathname = usePathname();
   const lang = pathname?.split("/")[1] || "en";
+  const [dict, setDict] = useState(null);
+  const t = dict?.playerProfilePage;
   const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedImage, setSelectedImage] = useState(null);
   useBodyScrollLock(selectedImage !== null);
+
+  useEffect(() => {
+    getClientDictionary(lang).then(setDict);
+  }, [lang]);
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -54,16 +61,16 @@ export default function PlayerProfilePage() {
   if (authLoading || loading)
     return (
       <main className="flex min-h-screen items-center justify-center bg-primary-bg">
-        <p className="text-sm text-primary-muted">Loading player profile...</p>
+        <p className="text-sm text-primary-muted">{t?.loading || "Loading player profile..."}</p>
       </main>
     );
   if (!isAuthenticated)
     return (
       <EmptyState
         icon={Shield}
-        title="Authentication required"
-        copy="Please sign in to access your player profile."
-        action="Sign in"
+        title={t?.authRequiredTitle || "Authentication required"}
+        copy={t?.authRequiredCopy || "Please sign in to access your player profile."}
+        action={t?.signIn || "Sign in"}
         href="/en/auth/login"
       />
     );
@@ -71,9 +78,9 @@ export default function PlayerProfilePage() {
     return (
       <EmptyState
         icon={User}
-        title="No player profile found"
-        copy="Your approved player profile will appear here."
-        action="Return home"
+        title={t?.notFoundTitle || "No player profile found"}
+        copy={t?.notFoundCopy || "Your approved player profile will appear here."}
+        action={t?.returnHome || "Return home"}
         href="/en"
       />
     );
@@ -82,6 +89,7 @@ export default function PlayerProfilePage() {
   const images = player.imageUrl?.length
     ? player.imageUrl
     : ["/logo/logo3.svg"];
+  const headshot = player.headshotUrl || images[0];
   const videos = [
     player.videoPrimary,
     ...(player.videoAdditional || []),
@@ -97,7 +105,7 @@ export default function PlayerProfilePage() {
               <div className="relative size-24 shrink-0 overflow-hidden bg-primary-text-inverse/10 sm:size-32">
                 {images[0] ? (
                   <Image
-                    src={images[0]}
+                    src={headshot}
                     alt={fullName}
                     fill
                     sizes="128px"
@@ -109,7 +117,7 @@ export default function PlayerProfilePage() {
               </div>
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-accent">
-                  Player profile
+                  {t?.playerProfileLabel || "Player profile"}
                 </p>
                 <h1 className="mt-3 font-heading text-4xl font-semibold leading-none tracking-tight sm:text-6xl">
                   {fullName}
@@ -124,16 +132,16 @@ export default function PlayerProfilePage() {
             <Button variant="onNavy" asChild>
               <Link href={`/${lang}/profile/settings`}>
                 <Edit3 className="size-4" />
-                Edit profile
+                {t?.editProfile || "Edit profile"}
               </Link>
             </Button>
           </div>
           <div className="mt-10 grid grid-cols-2 border-t border-primary-text-inverse/15 pt-6 sm:grid-cols-4">
             {[
-              ["Age", age],
-              ["Height", player.height],
-              ["Weight", player.weight],
-              ["Preferred foot", player.foot],
+              [t?.age || "Age", age],
+              [t?.height || "Height", player.height],
+              [t?.weight || "Weight", player.weight],
+              [t?.preferredFoot || "Preferred foot", player.foot],
             ].map(([label, value]) => (
               <div
                 key={label}
@@ -156,14 +164,14 @@ export default function PlayerProfilePage() {
           className="flex gap-2 overflow-x-auto border-b border-divider"
           aria-label="Player profile sections"
         >
-          {tabs.map((tab) => (
+          {tabKeys.map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
               className={`shrink-0 border-b-2 px-4 py-3 text-sm font-semibold capitalize transition-colors ${activeTab === tab ? "border-primary-action text-primary-action" : "border-transparent text-primary-muted hover:text-primary-text"}`}
             >
-              {tab}
+              {t?.tabs?.[tab] || tab}
             </button>
           ))}
         </nav>
@@ -171,36 +179,36 @@ export default function PlayerProfilePage() {
         {activeTab === "overview" && (
           <section className="mt-10 grid gap-10 lg:grid-cols-[1.25fr_0.75fr]">
             <div>
-              <p className="eyebrow">About the player</p>
+              <p className="eyebrow">{t?.aboutEyebrow || "About the player"}</p>
               <h2 className="mt-5 font-heading text-3xl font-semibold sm:text-4xl">
-                A profile built for the next opportunity.
+                {t?.aboutTitle || "A profile built for the next opportunity."}
               </h2>
               <p className="mt-6 max-w-2xl text-base leading-8 text-primary-muted">
                 {player.description ||
-                  "Your player biography will appear here once it has been added to your profile."}
+                  (t?.descriptionFallback || "Your player biography will appear here once it has been added to your profile.")}
               </p>
             </div>
             <div className="border-l border-divider pl-6 sm:pl-8">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary-action">
-                Availability
+                {t?.availability || "Availability"}
               </p>
               <dl className="mt-5 space-y-5 text-sm">
                 <div>
-                  <dt className="text-primary-muted">Contract status</dt>
+                  <dt className="text-primary-muted">{t?.contractStatus || "Contract status"}</dt>
                   <dd className="mt-1 font-semibold">
-                    {player.contractStatus || "Available"}
+                    {player.contractStatus || (t?.available || "Available")}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-primary-muted">Available from</dt>
+                  <dt className="text-primary-muted">{t?.availableFrom || "Available from"}</dt>
                   <dd className="mt-1 font-semibold">
-                    {player.availableFrom || "Immediately"}
+                    {player.availableFrom || (t?.immediately || "Immediately")}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-primary-muted">Preferred leagues</dt>
+                  <dt className="text-primary-muted">{t?.preferredLeagues || "Preferred leagues"}</dt>
                   <dd className="mt-1 font-semibold">
-                    {player.preferredLeagues || "Open to all"}
+                    {player.preferredLeagues || (t?.openToAll || "Open to all")}
                   </dd>
                 </div>
               </dl>
@@ -212,8 +220,8 @@ export default function PlayerProfilePage() {
           <section className="mt-10">
             <SectionHeading
               icon={TrendingUp}
-              eyebrow="Performance"
-              title="Statistics without the clutter."
+              eyebrow={t?.performanceEyebrow || "Performance"}
+              title={t?.statsTitle || "Statistics without the clutter."}
             />
             <div className="mt-8 grid gap-10 md:grid-cols-3">
               {Object.entries(player.stats || {}).map(([group, values]) => (
@@ -240,7 +248,7 @@ export default function PlayerProfilePage() {
             {!Object.keys(player.stats || {}).length && (
               <EmptyInline
                 icon={TrendingUp}
-                text="Statistics have not been added yet."
+                text={t?.statsEmpty || "Statistics have not been added yet."}
               />
             )}
           </section>
@@ -250,8 +258,8 @@ export default function PlayerProfilePage() {
           <section className="mt-10">
             <SectionHeading
               icon={Award}
-              eyebrow="Career path"
-              title="Club history and progression."
+              eyebrow={t?.careerEyebrow || "Career path"}
+              title={t?.careerTitle || "Club history and progression."}
             />
             <div className="mt-8 border-l-2 border-primary-action pl-6 sm:pl-8">
               {player.clubHistory?.length ? (
@@ -262,7 +270,7 @@ export default function PlayerProfilePage() {
                   >
                     <span className="absolute left-[-2.05rem] top-1 size-3 rounded-full bg-primary-action ring-4 ring-primary-bg" />
                     <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary-action">
-                      {club.startDate || ""} - {club.endDate || "Present"}
+                      {club.startDate || ""} - {club.endDate || (t?.present || "Present")}
                     </p>
                     <h3 className="mt-2 font-heading text-2xl font-semibold">
                       {club.clubName}
@@ -275,7 +283,7 @@ export default function PlayerProfilePage() {
               ) : (
                 <EmptyInline
                   icon={Award}
-                  text="Club history has not been added yet."
+                  text={t?.careerEmpty || "Club history has not been added yet."}
                 />
               )}
             </div>
@@ -286,8 +294,8 @@ export default function PlayerProfilePage() {
           <section className="mt-10">
             <SectionHeading
               icon={Camera}
-              eyebrow="Your media"
-              title="Photos and footage."
+              eyebrow={t?.mediaEyebrow || "Your media"}
+              title={t?.mediaTitle || "Photos and footage."}
             />
             <div className="mt-8 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
               {images.map((image, index) => (
@@ -321,8 +329,8 @@ export default function PlayerProfilePage() {
                     />
                     <p className="p-4 text-sm font-semibold">
                       {index === 0
-                        ? "Primary highlights"
-                        : `Additional video ${index}`}
+                        ? (t?.primaryHighlights || "Primary highlights")
+                        : `${t?.additionalVideo || "Additional video"} ${index}`}
                     </p>
                   </div>
                 ))}
@@ -335,16 +343,16 @@ export default function PlayerProfilePage() {
           <section className="mt-10 max-w-2xl">
             <SectionHeading
               icon={Mail}
-              eyebrow="Representation"
-              title="Keep your contact details ready."
+              eyebrow={t?.representationEyebrow || "Representation"}
+              title={t?.contactTitle || "Keep your contact details ready."}
             />
             <div className="mt-8 grid gap-5 border-t border-divider pt-6 sm:grid-cols-2">
-              <Info icon={Mail} label="Email" value={player.email} />
-              <Info icon={Phone} label="Phone" value={player.phone} />
-              <Info icon={MapPin} label="Country" value={player.country} />
+              <Info icon={Mail} label={t?.email || "Email"} value={player.email} />
+              <Info icon={Phone} label={t?.phone || "Phone"} value={player.phone} />
+              <Info icon={MapPin} label={t?.country || "Country"} value={player.country} />
               <Info
                 icon={Calendar}
-                label="Date of birth"
+                label={t?.dateOfBirth || "Date of birth"}
                 value={
                   player.dob ? new Date(player.dob).toLocaleDateString() : "-"
                 }
