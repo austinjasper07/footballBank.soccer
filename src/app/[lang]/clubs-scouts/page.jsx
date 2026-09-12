@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getDictionary } from "@/lib/dictionaries";
 
-const processSteps = [
+const defaultProcessSteps = [
   {
     title: "Share your brief",
     description:
@@ -26,7 +27,7 @@ const processSteps = [
   },
 ];
 
-const businessServices = [
+const defaultBusinessServices = [
   {
     title: "Player recruitment",
     description:
@@ -68,19 +69,22 @@ export const metadata = {
 
 export default async function ClubsAndScoutsPage({ params }) {
   const { lang } = await params;
+  const dict = await getDictionary(lang);
+  const page = dict?.clubsScoutsPage;
+  const processSteps = page?.processSteps || defaultProcessSteps;
+  const businessServices = page?.businessServices || defaultBusinessServices;
 
   return (
     <main className="bg-primary-surface text-primary-text">
       <section className="bg-primary-navy text-primary-text-inverse">
         <div className="mx-auto grid max-w-7xl gap-9 px-4 py-12 sm:gap-12 sm:px-10 sm:py-16 lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-12 lg:py-16">
           <div className="max-w-xl">
-            <Eyebrow inverse>Clubs &amp; partners</Eyebrow>
+            <Eyebrow inverse>{page?.eyebrow || "Clubs & partners"}</Eyebrow>
             <h1 className="mt-6 font-heading text-[2rem] font-semibold leading-[1.02] tracking-tight sm:mt-7 sm:text-5xl lg:text-6xl">
-              Built to work with clubs.
+              {page?.heroTitle || "Built to work with clubs."}
             </h1>
             <p className="mt-5 max-w-lg text-[0.9375rem] leading-7 text-primary-text-inverse/75 sm:mt-6 sm:text-[1.0625rem]">
-              Recruitment. Representation. Talent access. International
-              opportunity.
+              {page?.heroSubtitle || "Recruitment. Representation. Talent access. International opportunity."}
             </p>
             <div className="w-full mt-10 flex flex-wrap gap-3">
               <Button
@@ -90,7 +94,7 @@ export default async function ClubsAndScoutsPage({ params }) {
                 className="w-full px-5 sm:w-auto sm:px-8"
               >
                 <Link href={`/${lang}/players`}>
-                  Request a player
+                  {page?.requestPlayer || "Request a player"}
                   <ArrowUpRight className="size-4" aria-hidden="true" />
                 </Link>
               </Button>
@@ -102,7 +106,7 @@ export default async function ClubsAndScoutsPage({ params }) {
                 className="w-full px-5 sm:w-auto sm:px-8"
               >
                 <Link href={`/${lang}/contact`}>
-                  Discuss a Partnership
+                  {page?.discussPartnership || "Discuss a Partnership"}
                   <ArrowUpRight className="size-4" aria-hidden="true" />
                 </Link>
               </Button>
@@ -121,10 +125,8 @@ export default async function ClubsAndScoutsPage({ params }) {
               />
             </div>
             <figcaption className="bg-primary-navy px-5 py-4 text-[11px] font-bold uppercase tracking-[0.15em] text-primary-text-inverse/80">
-              FootballBank International works with football clubs and
-              organizations seeking structured support in player recruitment,
-              talent identification, football partnerships and international
-              market opportunities.
+              {page?.heroCaption ||
+                "FootballBank International works with football clubs and organizations seeking structured support in player recruitment, talent identification, football partnerships and international market opportunities."}
             </figcaption>
           </figure>
         </div>
@@ -132,7 +134,7 @@ export default async function ClubsAndScoutsPage({ params }) {
 
       <section className="bg-secondary-bg-alt">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-10 sm:py-8 lg:px-12 lg:py-10">
-          <Eyebrow>How we work</Eyebrow>
+          <Eyebrow>{page?.howWeWork || "How we work"}</Eyebrow>
           <div className="mt-5 grid gap-6 sm:mt-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             {processSteps.map((step, index) => (
               <article
@@ -155,9 +157,9 @@ export default async function ClubsAndScoutsPage({ params }) {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-10 sm:py-10 lg:px-12 lg:py-12">
-        <Eyebrow>Business services</Eyebrow>
+        <Eyebrow>{page?.businessServicesEyebrow || "Business services"}</Eyebrow>
         <h2 className="max-w-xl font-heading text-[1.75rem] font-semibold leading-[1.04] tracking-tight sm:text-4xl mt-5">
-          Focused support for clubs and partners.
+          {page?.businessServicesTitle || "Focused support for clubs and partners."}
         </h2>
         <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
           {businessServices.map((service, index) => (
@@ -183,27 +185,25 @@ export default async function ClubsAndScoutsPage({ params }) {
         <div className="mt-7 grid gap-6 border-t border-divider pt-7 sm:mt-8 sm:gap-7 sm:pt-8 lg:grid-cols-2 lg:gap-12">
           <div>
             <h2 className="max-w-md font-heading text-[1.75rem] font-semibold leading-[1.04] tracking-tight sm:text-4xl">
-              Relevant files. <br />
-              Coordinated conversations.
+              {page?.filesTitle || "Relevant files. Coordinated conversations."}
             </h2>
             <p className="mt-4 max-w-md text-[0.9375rem] leading-7 text-primary-muted sm:mt-5 sm:text-base">
-              Receive targeted player profiles based on your recruitment brief.
-              Representation status is verified before player information is
-              presented to clubs.
+              {page?.filesDescription ||
+                "Receive targeted player profiles based on your recruitment brief. Representation status is verified before player information is presented to clubs."}
             </p>
           </div>
           <div className="self-end">
             <p className="max-w-lg text-[0.9375rem] leading-7 text-primary-muted sm:text-base">
-              A dedicated FootballBank representative coordinates communication
-              throughout the recruitment process.
+              {page?.coordinatorText ||
+                "A dedicated FootballBank representative coordinates communication throughout the recruitment process."}
             </p>
             <p className="mt-4 max-w-lg text-[0.9375rem] leading-7 text-primary-muted sm:mt-5 sm:text-base">
-              Full files and sensitive information are shared privately after
-              the club or scout enquiry has been reviewed.
+              {page?.privacyText ||
+                "Full files and sensitive information are shared privately after the club or scout enquiry has been reviewed."}
             </p>
             <Button asChild size="lg" variant="action" className="mt-6">
               <Link href={`/${lang}/players`}>
-                Browse the player collection
+                {page?.browseCollection || "Browse the player collection"}
                 <ArrowUpRight />
               </Link>
             </Button>
@@ -214,30 +214,29 @@ export default async function ClubsAndScoutsPage({ params }) {
       <section className="bg-secondary-bg text-primary-text-inverse">
         <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:gap-8 sm:px-10 sm:py-10 lg:grid-cols-2 lg:items-end lg:px-12 lg:py-16">
           <div>
-            <Eyebrow inverse>The next conversation matters</Eyebrow>
+            <Eyebrow inverse>{page?.ctaEyebrow || "The next conversation matters"}</Eyebrow>
             <h2 className="mt-6 max-w-md font-heading text-[1.75rem] font-semibold leading-[1.04] tracking-tight sm:mt-7 sm:text-4xl">
-              The right talent. <br />
-              The right opportunity.
+              {page?.ctaTitle || "The right talent. The right opportunity."}
             </h2>
           </div>
           <div>
             <p className="max-w-md text-[0.9375rem] leading-7 text-primary-text-inverse/75 sm:text-base">
-              Recruiting for a club or ready for the next step in your career?
-              Start with FootballBank.
+              {page?.ctaSubtitle ||
+                "Recruiting for a club or ready for the next step in your career? Start with FootballBank."}
             </p>
             <div className="mt-5 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap">
               <Link
                 href={`/${lang}/submit-profile`}
                 className="inline-flex w-full items-center justify-center gap-3 bg-primary-action px-5 py-3.5 text-sm font-semibold transition-colors hover:bg-primary-action-hover sm:w-auto sm:gap-5"
               >
-                Request a player{" "}
+                {page?.ctaRequestPlayer || "Request a player"}{" "}
                 <ArrowUpRight className="size-4" aria-hidden="true" />
               </Link>
               <Link
                 href={`/${lang}/contact`}
                 className="inline-flex w-full items-center justify-center gap-3 border border-primary-text-inverse/70 px-5 py-3.5 text-sm font-semibold transition-colors hover:bg-primary-text-inverse hover:text-secondary-bg sm:w-auto sm:gap-5"
               >
-                Seek representation{" "}
+                {page?.ctaSeekRepresentation || "Seek representation"}{" "}
                 <ArrowUpRight className="size-4" aria-hidden="true" />
               </Link>
             </div>

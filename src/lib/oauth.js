@@ -2,6 +2,7 @@
 // lib/oauth.js
 import { cookies } from "next/headers";
 import { User } from "./schemas";
+import dbConnect from "./mongodb";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -40,7 +41,7 @@ export async function getAuthUser() {
       return null;
     }
 
-    // Verify JWT token directly (NO DATABASE QUERY)
+    // Verify JWT token directly (no DB query needed for auth validity)
     const decoded = jwt.verify(sessionToken, JWT_SECRET);
     
     // Validate required fields in JWT
@@ -54,12 +55,24 @@ export async function getAuthUser() {
       return null;
     }
 
+    // Role can change after the session token was issued (e.g. a submitted
+    // profile gets approved into a player account) — refresh it from the DB
+    // so a still-active session immediately reflects the new role.
+    let role = decoded.role;
+    try {
+      await dbConnect();
+      const dbUser = await User.findById(decoded.userId).select("role").lean();
+      if (dbUser?.role) role = dbUser.role;
+    } catch (roleError) {
+      console.error("Failed to refresh user role from DB:", roleError);
+    }
+
     return {
       id: decoded.userId,
       email: decoded.email,
       firstName: decoded.firstName,
       lastName: decoded.lastName,
-      role: decoded.role,
+      role,
       isVerified: decoded.isVerified,
       authMethod: decoded.authMethod,
     };

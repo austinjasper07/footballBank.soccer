@@ -14,6 +14,7 @@ import {
   Play,
   Search,
   ShieldCheck,
+  Star,
   Target,
   TrendingUp,
   UserRound,
@@ -85,6 +86,9 @@ const DIRECTION = [
 export default async function HomePage({ params }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
+  const home = dict?.homepage;
+  const briefSteps = home?.briefSteps || BRIEF_STEPS;
+  const directionItems = home?.directionItems || DIRECTION;
   try {
     const user = await getAuthUser();
     // User sync is now handled automatically by the authentication system
@@ -115,23 +119,22 @@ export default async function HomePage({ params }) {
         />
         <div className="absolute inset-0 bg-linear-to-r from-primary-navy via-primary-navy/85 to-primary-navy/20" />
 
-        <div className="relative w-full flex flex-col md:flex-row items-center justify-center md:items-start md:justify-start gap-6 px-6 pb-10 pt-8 md:px-8 lg:px-12 lg:pb-14 lg:pt-12">
-          <section className="min-w-0 px-1 sm:px-2 w-full md:w-[48%] md:px-0 lg:w-[42%]">
+        <div className="relative mx-auto flex max-w-8xl flex-col items-stretch gap-4 px-4 py-4 md:flex-row">
+          
+          <section className="flex min-w-0 flex-col justify-center px-1 py-6 sm:px-2 w-full md:w-[48%] md:pl-16 md:py-18 lg:w-[46%]">
             <p className="eyebrow">
-              Representation · Recruitment · Opportunity
+              {home?.heroEyebrow || "Representation · Recruitment · Opportunity"}
             </p>
-            <h1 className="mt-5 max-w-xl font-heading text-3xl leading-[1.2] text-primary-text-inverse uppercase sm:mt-6 sm:text-4xl lg:text-5xl lg:leading-[0.9]">
-              Connecting football
+            <h1 className="mt-5 max-w-xl font-heading text-3xl leading-[1.2] text-primary-text-inverse uppercase sm:mt-6 sm:text-4xl lg:text-6xl lg:leading-[1.2]">
+              {home?.heroTitleLine1 || "Connecting football"}
               <br />
-              talent, clubs &amp;
+              {home?.heroTitleLine2 || "talent, clubs &"}
               <br />
-              <span className="text-primary-accent">global opportunity.</span>
+              <span className="text-primary-accent">{home?.heroTitleLine3 || "global opportunity."}</span>
             </h1>
-            <p className="mt-5 max-w-lg text-sm leading-6 text-primary-text-inverse/70 sm:mt-7 sm:leading-relaxed">
-              FootballBank International is a sports management company
-              connecting players, clubs and football organizations through
-              talent identification, recruitment, development, club partnerships
-              and international football opportunities.
+            <p className="mt-5 max-w-lg text-sm md:text-base leading-6 text-primary-text-inverse/70 sm:mt-7 sm:leading-relaxed">
+              {home?.heroSubtitle ||
+                "FootballBank International is a sports management company connecting players, clubs and football organizations through talent identification, recruitment, development, club partnerships and international football opportunities."}
             </p>
             <div className="mt-7 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <Button
@@ -141,7 +144,7 @@ export default async function HomePage({ params }) {
                 className="w-full px-5 sm:w-auto sm:px-8"
               >
                 <Link href={`/${lang}/players`}>
-                  Explore players <ArrowUpRight />
+                  {home?.explorePlayers || "Explore players"} <ArrowUpRight />
                 </Link>
               </Button>
               <Button
@@ -151,30 +154,31 @@ export default async function HomePage({ params }) {
                 className="w-full px-5 sm:w-auto sm:px-8"
               >
                 <Link href={`/${lang}/clubs-scouts`}>
-                  Work with FootballBank <ArrowUpRight />
+                  {home?.workWithFootballBank || "Work with FootballBank"} <ArrowUpRight />
                 </Link>
               </Button>
             </div>
             <a
-              href="#"
+              href={`/${lang}/contact`}
               className="mt-6 inline-flex items-center gap-2 text-xs leading-5 text-primary-text-inverse/60 transition-colors hover:text-primary-accent sm:mt-8"
             >
-              Seeking representation? <ArrowUpRight className="h-3.5 w-3.5" />
+              {home?.seekingRepresentation || "Seeking representation?"} <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
           </section>
 
           {/* PLAYER OF THE WEEK */}
-          <section className="md:absolute md:right-0 top-5 w-full items-center justify-center md:w-[52%] lg:w-[58%] h-[95%] hidden md:flex">
-            <div className=" w-full overflow-hidden md:h-full rounded-bl-4xl rounded-tl-4xl">
+          <section className="relative hidden w-full items-center justify-center md:flex md:w-[52%] lg:w-[54%]">
+            <div className="h-full w-full overflow-hidden">
               <Image
                 src="/heroPhotos/LLLL.png"
                 alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
                 width={900}
                 height={900}
-                className="h-80 w-full shadow-2xl sm:h-105 lg:h-full"
+                className="h-full w-full  shadow-2xl rounded-4xl"
               />
               {/* <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div> */}
             </div>
+            
           </section>
         </div>
 
@@ -199,7 +203,7 @@ export default async function HomePage({ params }) {
             </span>
 
             <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
-              Player representation
+              {home?.assuranceStrip?.playerRepresentation || "Player representation"}
             </span>
           </div>
 
@@ -209,7 +213,7 @@ export default async function HomePage({ params }) {
             </span>
 
             <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
-              Club recruitment
+              {home?.assuranceStrip?.clubRecruitment || "Club recruitment"}
             </span>
           </div>
 
@@ -219,7 +223,7 @@ export default async function HomePage({ params }) {
             </span>
 
             <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
-              International opportunities
+              {home?.assuranceStrip?.internationalOpportunities || "International opportunities"}
             </span>
           </div>
 
@@ -229,7 +233,7 @@ export default async function HomePage({ params }) {
             </span>
 
             <span className="text-[9px] font-medium tracking-[0.12em] text-white/60 uppercase">
-              Career development
+              {home?.assuranceStrip?.careerDevelopment || "Career development"}
             </span>
           </div>
         </div>
@@ -238,23 +242,23 @@ export default async function HomePage({ params }) {
       <div className="w-full">
         {/* FEATURED PLAYERS */}
         <section className="mx-auto max-w-7xl px-6 py-14">
-          <p className="eyebrow">The player collection</p>
+          <p className="eyebrow">{home?.featuredSection?.eyebrow || "The player collection"}</p>
           <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
             <div>
               <h2 className="font-heading text-[1.6rem] md:text-4xl uppercase">
-                Talent worth a closer look.
+                {home?.featuredSection?.title || "Talent worth a closer look."}
               </h2>
 
               <p className="mt-3 text-sm text-muted-foreground">
-                Individual profiles. Relevant football information. A direct
-                conversation with FootballBank.
+                {home?.featuredSection?.subtitle ||
+                  "Individual profiles. Relevant football information. A direct conversation with FootballBank."}
               </p>
             </div>
             <Link
               href={`/${lang}/players`}
               className="inline-flex items-center gap-2 text-sm font-medium text-primary-action hover:underline"
             >
-              Explore all players <ArrowUpRight className="h-4 w-4" />
+              {home?.featuredSection?.exploreAll || "Explore all players"} <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
 
@@ -289,18 +293,19 @@ export default async function HomePage({ params }) {
                     {player.firstName} {player.lastName}
                   </h3>
 
+
                   <div className="mt-4 grid grid-cols-3 gap-2 border-t border-divider pt-4 text-[0.7rem] text-primary-muted">
                     <span>
-                      Age:{" "}
+                      {home?.playerCard?.age || "Age"}:{" "}
                       {player.dob
                         ? new Date().getFullYear() -
                           new Date(player.dob).getFullYear()
                         : "N/A"}
                     </span>
-                    {player.foot && <span>Foot: {player.foot}</span>}
+                    {player.foot && <span>{home?.playerCard?.foot || "Foot"}: {player.foot}</span>}
                   </div>
                   <p className="mt-2 text-[0.7rem] text-primary-muted">
-                    Club &amp; availability on confirmation
+                    {home?.playerCard?.clubAvailability || "Club & availability on confirmation"}
                   </p>
                   <div className="mt-4 flex items-center justify-between border-t border-divider pt-3">
                     <Link
@@ -311,7 +316,7 @@ export default async function HomePage({ params }) {
                       <ArrowUpRight className="h-3.5 w-3.5" />
                     </Link>
                     <span className="inline-flex items-center gap-1.5 text-sm text-primary-text">
-                      <Play className="h-3.5 w-3.5" /> Watch highlights
+                      <Play className="h-3.5 w-3.5" /> {home?.playerCard?.watchHighlights || "Watch highlights"}
                     </span>
                   </div>
                 </div>
@@ -320,8 +325,8 @@ export default async function HomePage({ params }) {
           </div>
 
           <p className="mt-6 text-[0.7rem] text-muted-foreground">
-            Preview records use supplied footage. Detailed club information
-            pending confirmation.
+            {home?.previewNote ||
+              "Preview records use supplied footage. Detailed club information pending confirmation."}
           </p>
         </section>
 
@@ -329,32 +334,31 @@ export default async function HomePage({ params }) {
         <section className="bg-secondary-bg-alt">
           <div className="mx-auto grid max-w-7xl gap-14 px-6 py-14 lg:grid-cols-2">
             <div>
-              <p className="eyebrow">For clubs &amp; partners</p>
+              <p className="eyebrow">{home?.recruitmentBrief?.eyebrow || "For clubs & partners"}</p>
               <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight uppercase">
-                Your recruitment brief.
+                {home?.recruitmentBrief?.titleLine1 || "Your recruitment brief."}
                 <br />
-                Our starting point.
+                {home?.recruitmentBrief?.titleLine2 || "Our starting point."}
               </h2>
               <p className="mt-5 max-w-md text-sm text-primary-muted">
-                Tell us the player profile, position, market, budget or sporting
-                requirement. FootballBank will identify relevant talent and
-                coordinate the next stage of the recruitment process.
+                {home?.recruitmentBrief?.subtitle ||
+                  "Tell us the player profile, position, market, budget or sporting requirement. FootballBank will identify relevant talent and coordinate the next stage of the recruitment process."}
               </p>
               <Button variant="default" size="lg" className="mt-8 ">
                 <Link href={`/${lang}/players`}>
-                  Request a player
+                  {home?.recruitmentBrief?.requestPlayer || "Request a player"}
                 </Link>
               </Button>
             </div>
             <div>
-              {BRIEF_STEPS.map((s) => (
+              {briefSteps.map((s, index) => (
                 <div
-                  key={s.n}
+                  key={s.title || index}
                   className="flex items-start justify-between gap-6 border-b border-divider py-6 first:border-t"
                 >
                   <div className="flex gap-5">
                     <span className="font-heading text-xs text-primary-accent-strong">
-                      {s.n}
+                      {s.n || BRIEF_STEPS[index]?.n || `0${index + 1}`}
                     </span>
                     <div>
                       <h3 className="text-base font-medium">{s.title}</h3>
@@ -377,7 +381,7 @@ export default async function HomePage({ params }) {
             data-aos="fade-up"
           >
             <h2 className="text-[1.6rem] md:text-4xl font-bold mb-4 text-primary-text">
-              {dict.homepage.blog.title}
+              {home?.blog?.title || dict.homepage.blog.title}
             </h2>
             <div className="w-24 h-1 bg-primary-accent mx-auto mb-4" />
 
@@ -456,14 +460,14 @@ export default async function HomePage({ params }) {
 
         {/* Direction */}
         <section className="mx-auto max-w-7xl px-6 py-12">
-          <p className="eyebrow">Beyond the highlight reel</p>
+          <p className="eyebrow">{home?.direction?.eyebrow || "Beyond the highlight reel"}</p>
           <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl uppercase">
-            A career deserves a clear direction.
+            {home?.direction?.title || "A career deserves a clear direction."}
           </h2>
           <div className="mt-8 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-            {DIRECTION.map((d) => (
-              <div key={d.n} className="rule-divider pt-5">
-                <span className="text-[0.7rem] text-primary-muted">{d.n}</span>
+            {directionItems.map((d, index) => (
+              <div key={d.title || index} className="rule-divider pt-5">
+                <span className="text-[0.7rem] text-primary-muted">{DIRECTION[index]?.n || `0${index + 1}`}</span>
                 <h3 className="mt-6 text-base font-medium">{d.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-primary-muted">
                   {d.copy}
@@ -488,32 +492,30 @@ export default async function HomePage({ params }) {
               className="h-112 w-full rounded-lg object-left object-cover md:object-center"
             />
             <div>
-              <p className="eyebrow">The people behind the pathway</p>
+              <p className="eyebrow">{home?.founder?.eyebrow || "The people behind the pathway"}</p>
               <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight text-primary-text-inverse uppercase">
-                Licensed representation.
+                {home?.founder?.titleLine1 || "Licensed representation."}
                 <br />
                 <span className="text-primary-accent">
-                  Personal commitment.
+                  {home?.founder?.titleLine2 || "Personal commitment."}
                 </span>
               </h2>
               <p className="mt-5 max-w-lg text-sm leading-relaxed text-primary-text-inverse/70">
-                Ayodeji Fatade is the founder of FootballBank International and
-                a FIFA Licensed Football Agent, providing licensed
-                football-agent services within FootballBank's wider sports
-                management and football business activities.
+                {home?.founder?.bio ||
+                  "Ayodeji Fatade is the founder of FootballBank International and a FIFA Licensed Football Agent, providing licensed football-agent services within FootballBank's wider sports management and football business activities."}
               </p>
               <p className="mt-8 font-heading text-lg text-primary-text-inverse">
-                Ayodeji Michael .F
+                {home?.founder?.name || "Ayodeji Michael .F"}
               </p>
               <p className="text-xs text-primary-text-inverse/60">
-                Founder, FootballBank International 
+                {home?.founder?.role || "Founder, FootballBank International"}
               </p>
               <p className="text-xs text-primary-text-inverse/60">
-                FIFA Licensed Football Agent 
+                {home?.founder?.credential || "FIFA Licensed Football Agent"}
               </p>
               <Button variant="onNavy" size="lg" className="mt-7 px-5 sm:w-auto sm:px-8">
                 <Link href={`/${lang}/agent`} className="flex gap-2">
-                  Meet our representative <ArrowUpRight />
+                  {home?.founder?.meetRepresentative || "Meet our representative"} <ArrowUpRight />
                 </Link>
               </Button>
             </div>
@@ -524,18 +526,17 @@ export default async function HomePage({ params }) {
         <section className="bg-secondary-bg">
           <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-2 lg:items-center">
             <div>
-              <p className="eyebrow">The next conversation matters</p>
+              <p className="eyebrow">{home?.ctaSection?.eyebrow || "The next conversation matters"}</p>
               <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight text-primary-text-inverse uppercase">
-                The right talent.
+                {home?.ctaSection?.titleLine1 || "The right talent."}
                 <br />
-                The right opportunity.
+                {home?.ctaSection?.titleLine2 || "The right opportunity."}
               </h2>
             </div>
             <div>
               <p className="text-sm text-primary-text-inverse/70">
-                Whether you&apos;re recruiting for a club, exploring a football
-                partnership or planning the next stage of your career, start the
-                conversation with FootballBank.
+                {home?.ctaSection?.subtitle ||
+                  "Whether you're recruiting for a club, exploring a football partnership or planning the next stage of your career, start the conversation with FootballBank."}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button
@@ -543,14 +544,14 @@ export default async function HomePage({ params }) {
                   size="lg"
                   className="w-full px-5 sm:w-auto sm:px-8"
                 >
-                  Work with us <ArrowUpRight />
+                  {home?.ctaSection?.workWithUs || "Work with us"} <ArrowUpRight />
                 </Button>
                 <Button
                   variant="onNavy"
                   size="lg"
                   className="w-full px-5 sm:w-auto sm:px-8"
                 >
-                  Seek representation <ArrowUpRight />
+                  {home?.ctaSection?.seekRepresentation || "Seek representation"} <ArrowUpRight />
                 </Button>
               </div>
             </div>

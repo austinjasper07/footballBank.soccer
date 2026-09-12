@@ -54,6 +54,20 @@
       },
       "bio": "Con un Certificado en Gestión de Fútbol (Reino Unido), es un agente experimentado enfocado en el crecimiento profesional, transferencias juveniles y representación transparente. Se asocia con clubes y academias en África, Europa, Asia, USA y Sudamérica para desbloquear oportunidades globales."
     },
+    "heroBanner": "Representación Licenciada",
+    "directContact": "Contacto directo",
+    "discussRepresentation": "Hablar sobre representación",
+    "pageHeadingLine1": "Representación licenciada.",
+    "pageHeadingLine2": "Perspectiva global.",
+    "bioParagraph": "Conoce al agente de fútbol licenciado detrás de los servicios de representación de FootballBank. Ayodeji Michael .F es un Agente de Fútbol Licenciado por la FIFA y fundador de FootballBank International, una empresa de gestión deportiva con sede en Estados Unidos que trabaja en el desarrollo de jugadores, el reclutamiento de clubes, las alianzas internacionales y las oportunidades futbolísticas.",
+    "capabilityPerspective": {
+      "title": "Perspectiva global",
+      "subtitle": "Mercados futbolísticos internacionales"
+    },
+    "capabilityDevelopment": {
+      "title": "Desarrollo profesional",
+      "subtitle": "Guiando a los jugadores con planificación estratégica y crecimiento profesional."
+    },
     "coreValues": {
       "title": "Nuestros Valores Fundamentales",
       "subtitle": "Los principios que guían nuestro enfoque para representar el talento futbolístico mundial",
@@ -157,6 +171,94 @@
       "title": "¿Club o Marca Buscando <span class=\"text-accent-red\">Colaborar</span>?",
       "subtitle": "Conectamos talento con organizaciones de confianza.",
       "getInTouch": "Ponte en Contacto"
+    },
+    "heroEyebrow": "Representación · Reclutamiento · Oportunidad",
+    "heroTitleLine1": "Conectando el talento",
+    "heroTitleLine2": "futbolístico, clubes y",
+    "heroTitleLine3": "oportunidades globales.",
+    "heroSubtitle": "FootballBank International es una empresa de gestión deportiva que conecta a jugadores, clubes y organizaciones futbolísticas a través de la identificación de talento, el reclutamiento, el desarrollo, las alianzas con clubes y las oportunidades futbolísticas internacionales.",
+    "explorePlayers": "Explorar jugadores",
+    "workWithFootballBank": "Trabaja con FootballBank",
+    "seekingRepresentation": "¿Buscas representación?",
+    "assuranceStrip": {
+      "playerRepresentation": "Representación de jugadores",
+      "clubRecruitment": "Reclutamiento de clubes",
+      "internationalOpportunities": "Oportunidades internacionales",
+      "careerDevelopment": "Desarrollo profesional"
+    },
+    "featuredSection": {
+      "eyebrow": "La colección de jugadores",
+      "title": "Talento que vale la pena mirar de cerca.",
+      "subtitle": "Perfiles individuales. Información futbolística relevante. Una conversación directa con FootballBank.",
+      "exploreAll": "Explorar todos los jugadores"
+    },
+    "playerCard": {
+      "age": "Edad",
+      "foot": "Pie",
+      "clubAvailability": "Club y disponibilidad pendientes de confirmación",
+      "watchHighlights": "Ver momentos destacados"
+    },
+    "previewNote": "Los registros de vista previa utilizan material proporcionado. Información detallada del club pendiente de confirmación.",
+    "recruitmentBrief": {
+      "eyebrow": "Para clubes y socios",
+      "titleLine1": "Tu solicitud de reclutamiento.",
+      "titleLine2": "Nuestro punto de partida.",
+      "subtitle": "Cuéntanos el perfil del jugador, la posición, el mercado, el presupuesto o el requisito deportivo. FootballBank identificará el talento relevante y coordinará la siguiente etapa del proceso de reclutamiento.",
+      "requestPlayer": "Solicitar un jugador"
+    },
+    "briefSteps": [
+      {
+        "title": "Define el requisito",
+        "copy": "Posición, nivel de juego, mercado y presupuesto."
+      },
+      {
+        "title": "Revisa los perfiles relevantes",
+        "copy": "FootballBank identifica y presenta jugadores alineados con los requisitos del club."
+      },
+      {
+        "title": "Coordina el siguiente paso",
+        "copy": "Consultas verificadas, presentaciones y apoyo de representación adecuado."
+      }
+    ],
+    "direction": {
+      "eyebrow": "Más allá del resumen de jugadas",
+      "title": "Una carrera merece una dirección clara."
+    },
+    "directionItems": [
+      {
+        "title": "Representación de jugadores",
+        "copy": "Estrategia de carrera, oportunidades y representación a través de servicios de agente de fútbol licenciado."
+      },
+      {
+        "title": "Identificación de talento",
+        "copy": "Evaluación de jugadores, perfilado y emparejamiento de oportunidades."
+      },
+      {
+        "title": "Reclutamiento de clubes",
+        "copy": "Identificación específica de jugadores según los requisitos del club."
+      },
+      {
+        "title": "Desarrollo profesional",
+        "copy": "Planificación a largo plazo enfocada en la progresión y el crecimiento profesional."
+      }
+    ],
+    "founder": {
+      "eyebrow": "Las personas detrás del camino",
+      "titleLine1": "Representación licenciada.",
+      "titleLine2": "Compromiso personal.",
+      "bio": "Ayodeji Fatade es el fundador de FootballBank International y Agente de Fútbol Licenciado por la FIFA, brindando servicios de agente de fútbol licenciado dentro de las actividades más amplias de gestión deportiva y negocios futbolísticos de FootballBank.",
+      "name": "Ayodeji Michael .F",
+      "role": "Fundador, FootballBank International",
+      "credential": "Agente de Fútbol Licenciado por la FIFA",
+      "meetRepresentative": "Conoce a nuestro representante"
+    },
+    "ctaSection": {
+      "eyebrow": "La próxima conversación importa",
+      "titleLine1": "El talento correcto.",
+      "titleLine2": "La oportunidad correcta.",
+      "subtitle": "Ya sea que estés reclutando para un club, explorando una alianza futbolística o planeando la siguiente etapa de tu carrera, comienza la conversación con FootballBank.",
+      "workWithUs": "Trabaja con nosotros",
+      "seekRepresentation": "Buscar representación"
     }
   },
   "playerProfile": {
@@ -204,8 +306,257 @@
     "termsOfService": "Términos de Servicio",
     "privacyPolicy": "Política de Privacidad"
   },
+  "clubsScoutsPage": {
+    "eyebrow": "Clubes y socios",
+    "heroTitle": "Diseñado para trabajar con clubes.",
+    "heroSubtitle": "Reclutamiento. Representación. Acceso al talento. Oportunidad internacional.",
+    "requestPlayer": "Solicitar un jugador",
+    "discussPartnership": "Hablar de una Alianza",
+    "heroCaption": "FootballBank International trabaja con clubes de fútbol y organizaciones que buscan apoyo estructurado en el reclutamiento de jugadores, la identificación de talento, alianzas futbolísticas y oportunidades en mercados internacionales.",
+    "howWeWork": "Cómo trabajamos",
+    "processSteps": [
+      {
+        "title": "Comparte tu solicitud",
+        "description": "Indícanos la posición, el perfil de juego, el nivel de competición y los tiempos que importan a tu club."
+      },
+      {
+        "title": "Identificamos el talento",
+        "description": "Nuestra red reduce la búsqueda a jugadores que cumplen con los requisitos deportivos y prácticos."
+      },
+      {
+        "title": "Revisa los archivos relevantes",
+        "description": "Recibe perfiles enfocados, imágenes y el contexto necesario para tomar una decisión informada."
+      },
+      {
+        "title": "Avanza la conversación",
+        "description": "Un representante dedicado coordina los siguientes pasos con discreción y claridad."
+      }
+    ],
+    "businessServicesEyebrow": "Servicios empresariales",
+    "businessServicesTitle": "Apoyo enfocado para clubes y socios.",
+    "businessServices": [
+      {
+        "title": "Reclutamiento de jugadores",
+        "description": "Identificación y presentación específica de jugadores según los requisitos deportivos y financieros de un club."
+      },
+      {
+        "title": "Representación de clubes",
+        "description": "Apoyo bajo mandatos acordados con el club que involucran representación futbolística adecuada y oportunidades internacionales."
+      },
+      {
+        "title": "Identificación de talento",
+        "description": "Acceso a perfiles de jugadores evaluados, imágenes e información futbolística relevante."
+      },
+      {
+        "title": "Alianzas internacionales",
+        "description": "Relaciones que conectan clubes, academias, jugadores y oportunidades futbolísticas en distintos mercados."
+      }
+    ],
+    "filesTitle": "Archivos relevantes. Conversaciones coordinadas.",
+    "filesDescription": "Recibe perfiles de jugadores específicos según tu solicitud de reclutamiento. El estado de representación se verifica antes de presentar la información del jugador a los clubes.",
+    "coordinatorText": "Un representante dedicado de FootballBank coordina la comunicación durante todo el proceso de reclutamiento.",
+    "privacyText": "Los archivos completos y la información sensible se comparten de forma privada después de revisar la consulta del club o del ojeador.",
+    "browseCollection": "Explorar la colección de jugadores",
+    "ctaEyebrow": "La próxima conversación importa",
+    "ctaTitle": "El talento correcto. La oportunidad correcta.",
+    "ctaSubtitle": "¿Estás reclutando para un club o listo para el siguiente paso en tu carrera? Comienza con FootballBank.",
+    "ctaRequestPlayer": "Solicitar un jugador",
+    "ctaSeekRepresentation": "Buscar representación"
+  },
+  "loginPage": {
+    "sidePanelEyebrow": "FootballBank International",
+    "sidePanelTitle": "La próxima oportunidad futbolística comienza con el acceso.",
+    "sidePanelSubtitle": "Inicia sesión para gestionar tu perfil, acceder a oportunidades futbolísticas, solicitar información de jugadores y comunicarte con FootballBank.",
+    "sidePanelFooter": "Gestión deportiva · Talento · Alianzas con clubes",
+    "backToHome": "Volver al Inicio",
+    "welcomeBack": "Bienvenido de Nuevo",
+    "emailStepSubtitle": "Ingresa tu correo para recibir un código de acceso",
+    "otpStepSubtitle": "Ingresa el código de 6 dígitos enviado a tu correo",
+    "signIn": "Iniciar Sesión",
+    "verifyCode": "Verificar Código",
+    "chooseLoginMethod": "Elige el Método de Acceso",
+    "otp": "Código OTP",
+    "password": "Contraseña",
+    "emailAddress": "Correo Electrónico",
+    "emailPlaceholder": "Ingresa tu correo",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "sendLoginCode": "Enviar Código de Acceso",
+    "loginWithPassword": "Iniciar Sesión con Contraseña",
+    "verificationCode": "Código de Verificación",
+    "codeSentTo": "Código enviado a",
+    "verifyAndLogin": "Verificar e Iniciar Sesión",
+    "resendCode": "¿No recibiste el código? Reenviar",
+    "orContinueWith": "O continúa con",
+    "backToEmail": "← Volver al correo",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes una cuenta?",
+    "signUp": "Regístrate",
+    "loading": "Cargando..."
+  },
+  "signupPage": {
+    "sidePanelEyebrow": "FootballBank International",
+    "sidePanelTitle": "Construye tu lugar en la red futbolística.",
+    "sidePanelSubtitle": "Crea una cuenta verificada para acceder a oportunidades de jugadores, enviar perfiles y comunicarte con FootballBank.",
+    "sidePanelFooter": "Verificación segura por correo · Acceso futbolístico internacional",
+    "backToHome": "Volver al Inicio",
+    "heading": "Únete a FootballBank International",
+    "formStepSubtitle": "Crea tu cuenta para comenzar",
+    "otpStepSubtitle": "Verifica tu correo para completar el registro",
+    "createAccount": "Crear Cuenta",
+    "verifyEmail": "Verificar Correo",
+    "chooseSignupMethod": "Elige el Método de Registro",
+    "emailCode": "Código por Correo",
+    "password": "Contraseña",
+    "addressSection": "Dirección",
+    "selectCountry": "Selecciona un país",
+    "agreeToTerms": "Acepto los",
+    "and": "y",
+    "createAccountButton": "Crear Cuenta",
+    "verificationCode": "Código de Verificación",
+    "verifyAndCreateAccount": "Verificar y Crear Cuenta",
+    "resendCode": "¿No recibiste el código? Reenviar",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
+    "loading": "Cargando..."
+  },
+  "playerProfilePage": {
+    "loading": "Cargando perfil de jugador...",
+    "authRequiredTitle": "Autenticación requerida",
+    "authRequiredCopy": "Inicia sesión para acceder a tu perfil de jugador.",
+    "signIn": "Iniciar sesión",
+    "notFoundTitle": "No se encontró un perfil de jugador",
+    "notFoundCopy": "Tu perfil de jugador aprobado aparecerá aquí.",
+    "returnHome": "Volver al inicio",
+    "playerProfileLabel": "Perfil de jugador",
+    "editProfile": "Editar perfil",
+    "age": "Edad",
+    "height": "Altura",
+    "weight": "Peso",
+    "preferredFoot": "Pie preferido",
+    "tabs": {
+      "overview": "resumen",
+      "stats": "estadísticas",
+      "career": "carrera",
+      "media": "medios",
+      "contact": "contacto"
+    },
+    "aboutEyebrow": "Sobre el jugador",
+    "aboutTitle": "Un perfil construido para la próxima oportunidad.",
+    "descriptionFallback": "Tu biografía de jugador aparecerá aquí una vez que se agregue a tu perfil.",
+    "availability": "Disponibilidad",
+    "contractStatus": "Estado del contrato",
+    "available": "Disponible",
+    "availableFrom": "Disponible desde",
+    "immediately": "Inmediatamente",
+    "preferredLeagues": "Ligas preferidas",
+    "openToAll": "Abierto a todas",
+    "performanceEyebrow": "Rendimiento",
+    "statsTitle": "Estadísticas sin complicaciones.",
+    "statsEmpty": "Aún no se han agregado estadísticas.",
+    "careerEyebrow": "Trayectoria profesional",
+    "careerTitle": "Historial de clubes y progresión.",
+    "present": "Presente",
+    "careerEmpty": "Aún no se ha agregado historial de clubes.",
+    "mediaEyebrow": "Tus medios",
+    "mediaTitle": "Fotos e imágenes.",
+    "primaryHighlights": "Mejores momentos principales",
+    "additionalVideo": "Video adicional",
+    "representationEyebrow": "Representación",
+    "contactTitle": "Mantén tus datos de contacto listos.",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "country": "País",
+    "dateOfBirth": "Fecha de nacimiento"
+  },
+  "accountProfilePage": {
+    "loading": "Cargando tu perfil...",
+    "eyebrow": "Perfil de cuenta",
+    "welcome": "Bienvenido",
+    "defaultName": "de nuevo",
+    "subtitle": "Tu identidad en FootballBank, datos de contacto y acceso a la cuenta en un solo lugar.",
+    "editProfile": "Editar perfil",
+    "defaultMemberName": "Miembro de FootballBank",
+    "registeredMember": "Miembro registrado",
+    "accountStatus": "Estado de la cuenta",
+    "emailVerified": "Correo verificado",
+    "verificationPending": "Verificación pendiente",
+    "personalInformation": "Información personal",
+    "yourDetails": "Tus datos",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "emailAddress": "Correo electrónico",
+    "phoneNumber": "Número de teléfono",
+    "notProvided": "No proporcionado",
+    "contactLocation": "Ubicación de contacto",
+    "registeredAddress": "Dirección registrada",
+    "street": "Calle",
+    "city": "Ciudad",
+    "stateRegion": "Estado / región",
+    "country": "País",
+    "keepProfileCurrentTitle": "Mantén tu perfil futbolístico actualizado.",
+    "keepProfileCurrentSubtitle": "Actualiza los datos de tu cuenta o envía tu perfil de jugador cuando estés listo.",
+    "submitPlayerProfile": "Enviar perfil de jugador",
+    "signOut": "Cerrar sesión"
+  },
+  "submitProfilePage": {
+    "stepDetails": "Datos",
+    "stepStats": "Estadísticas y Carrera",
+    "stepMedia": "Medios",
+    "stepComplete": "Completado",
+    "step1Title": "Información Personal y Disponibilidad",
+    "dateOfBirth": "Fecha de Nacimiento",
+    "selectCountry": "Selecciona un país",
+    "position": "Posición",
+    "selectPosition": "Selecciona una posición",
+    "preferredFoot": "Pie Preferido",
+    "selectFoot": "Selecciona el pie",
+    "heightCm": "Altura (cm)",
+    "weightKg": "Peso (kg)",
+    "contractStatus": "Estado del Contrato",
+    "selectContractStatus": "Selecciona el estado del contrato",
+    "available": "Disponible",
+    "unavailable": "No disponible",
+    "availableFrom": "Disponible Desde",
+    "preferredLeagues": "Ligas Preferidas",
+    "selectPreferredLeague": "Selecciona la liga preferida",
+    "bio": "Biografía",
+    "next": "Siguiente",
+    "step2Title": "Estadísticas e historial de carrera",
+    "step2Subtitle": "Información opcional. Puedes dejar estos campos en blanco y continuar.",
+    "statistics": "estadísticas",
+    "clubHistory": "Historial de clubes",
+    "clubHistorySubtitle": "Clubes anteriores y periodos de juego, de forma opcional.",
+    "addClub": "+ Agregar club",
+    "clubName": "Nombre del club",
+    "startMonth": "Mes de inicio",
+    "endMonth": "Mes de fin",
+    "back": "Atrás",
+    "continueToMedia": "Continuar a medios",
+    "step3Title": "Carga de medios",
+    "step3Subtitle": "Sube una foto clara para tu carné de jugador y luego agrega los videos que los clubes deben revisar.",
+    "playerHeadshot": "Foto del jugador *",
+    "headshotUploaded": "Foto subida correctamente.",
+    "primaryVideo": "Video Principal",
+    "additionalVideos": "Videos Adicionales (máx. 3)",
+    "submit": "Enviar",
+    "submittedTitle": "Enviado con Éxito",
+    "submittedSubtitle": "Nuestro equipo se pondrá en contacto contigo pronto.",
+    "submitAnother": "Enviar Otro",
+    "goToHome": "Ir al Inicio",
+    "headshotRequiredTitle": "Foto requerida",
+    "headshotRequiredDescription": "Sube una foto del jugador antes de enviar.",
+    "uploadInProgressTitle": "Carga en progreso",
+    "uploadInProgressDescription": "Espera a que terminen todas las cargas antes de enviar.",
+    "completeFieldsTitle": "Completa los campos requeridos",
+    "completeFieldsDescription": "Revisa la información resaltada antes de continuar.",
+    "successTitle": "Éxito",
+    "successDescription": "Perfil enviado correctamente.",
+    "errorTitle": "Error",
+    "errorDescription": "No se pudo enviar el perfil.",
+    "subscriptionRequired": "Necesitas una suscripción activa para enviar tu perfil."
+  },
   "footer": {
-    "description": "Empoderando el talento futbolístico mundial a través de la visibilidad y las oportunidades.",
+    "description": "Conectando el talento futbolístico, clubes y organizaciones a través de la gestión deportiva, el reclutamiento, la representación y las oportunidades internacionales. Los servicios de agente de fútbol licenciado son proporcionados por el Agente de Fútbol Licenciado por la FIFA Ayodeji Michael .F.",
     "quickLinks": "Enlaces Rápidos",
     "resources": "Recursos",
     "contact": "Contacto",
@@ -325,6 +676,38 @@
         "learnMore": "Aprender Más"
       }
     }
+  },
+  "aboutPageContent": {
+    "heroTitle": "Ambición futbolística. Perspectiva <span class=\"block\">internacional.</span>",
+    "heroSubtitle": "FootballBank International es una empresa de gestión deportiva que conecta el desarrollo de jugadores, la representación licenciada, el reclutamiento de clubes y las alianzas futbolísticas en mercados internacionales.",
+    "directionTitle": "El talento es el comienzo.<br />La dirección marca la diferencia.",
+    "directionParagraph1": "FootballBank International fue creada para conectar el talento futbolístico, los clubes y las oportunidades a través de un enfoque estructurado basado en relaciones. Trabajamos con jugadores que buscan dirección profesional y organizaciones futbolísticas que buscan talento, representación y acceso a mercados internacionales.",
+    "directionParagraph2": "Con sede en Nueva Jersey, Estados Unidos, FootballBank opera en mercados futbolísticos internacionales a través de relaciones con jugadores, clubes, academias y profesionales del fútbol.",
+    "directionParagraph3": "Cuando una actividad requiere un agente de fútbol licenciado, esos servicios son realizados por el Agente de Fútbol Licenciado por la FIFA Ayodeji Michael .F.",
+    "representationApproach": "Nuestro enfoque de representación",
+    "purposeEyebrow": "Nuestro propósito",
+    "ourMission": "Nuestra misión",
+    "ourVision": "Nuestra visión",
+    "mission": "Conectar el talento futbolístico y las organizaciones con oportunidades creíbles a través de la gestión deportiva profesional, el desarrollo de talento, el reclutamiento y las alianzas internacionales.",
+    "vision": "Construir FootballBank como una plataforma internacional de gestión futbolística de confianza que conecte a jugadores, clubes y oportunidades en mercados globales.",
+    "whatWeDoEyebrow": "Qué hacemos",
+    "whatWeDoTitle": "Un enfoque conectado.",
+    "services": [
+      { "title": "Representación de jugadores", "description": "Representación licenciada y apoyo profesional para jugadores profesionales y en desarrollo." },
+      { "title": "Identificación de talento", "description": "Identificación, evaluación y perfilado de jugadores según los requisitos deportivos." },
+      { "title": "Servicios y reclutamiento para clubes", "description": "Reclutamiento específico, búsqueda de jugadores y apoyo en la gestión futbolística para clubes." },
+      { "title": "Alianzas futbolísticas", "description": "Relaciones estructuradas con clubes, academias y organizaciones futbolísticas en mercados internacionales." }
+    ],
+    "pillars": {
+      "communication": "Integridad en la comunicación.",
+      "representation": "Cuidado en la representación.",
+      "development": "Propósito en el desarrollo."
+    },
+    "ctaEyebrow": "La próxima conversación importa",
+    "ctaTitle": "El talento correcto.<br />La oportunidad correcta.",
+    "ctaSubtitle": "¿Estás reclutando para un club o listo para el siguiente paso en tu carrera? Comienza con FootballBank.",
+    "ctaRequestPlayer": "Solicitar un Jugador",
+    "ctaSeekRepresentation": "Buscar Representación"
   },
   "contact": {
     "title": "Contáctanos",
