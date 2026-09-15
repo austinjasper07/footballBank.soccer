@@ -44,7 +44,18 @@ export default async function PlayerPage({ params }) {
     videoPrimary: player.videoPrimary,
     videoAdditional: player.videoAdditional || [],
   };
-  const approvedPlayer = access.profileAccess || access.cvAccess ? { ...publicPlayer, ...player } : publicPlayer;
+  const approvedPlayer =
+    access.profileAccess || access.cvAccess
+      ? { ...publicPlayer, ...player }
+      : publicPlayer;
 
-  return <PlayerMedia player={approvedPlayer} canViewDetails={access.profileAccess} canDownloadResume={access.cvAccess} lang={lang} />;
+  return (
+    <PlayerMedia
+      player={approvedPlayer}
+      canViewDetails={access.profileAccess}
+      canDownloadResume={access.cvAccess}
+      lang={lang}
+      id={"highlights"}
+    />
+  );
 }
