@@ -22,6 +22,8 @@ export async function generateMetadata({ params }) {
   };
 }
 
+
+
 export default async function RepresentationPage({ params }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
@@ -50,6 +52,7 @@ export default async function RepresentationPage({ params }) {
       description: dict.agentPage.capabilityDevelopment?.subtitle || "Guiding players with strategic planning and professional growth.",
     },
   ];
+  console.log(agentInfo);
 
   return (
     <main className="bg-primary-card text-primary-text">

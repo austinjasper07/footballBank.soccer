@@ -6,25 +6,25 @@ import { getDictionary } from "@/lib/dictionaries";
 
 const defaultProcessSteps = [
   {
-    title: "Share your brief",
+    title: "Define the Requirements",
     description:
-      "Tell us the position, playing profile, competition level and timing that matter to your club.",
+      "Tell FootballBank exactly what your club needs in terms of position, playing profile, competition level, and timing.",
   },
   {
-    title: "We identify talent",
+    title: "Build the Solution",
     description:
-      "Our network narrows the search to players who match the sporting and practical requirements.",
+      "FootballBank identifies appropriate players, markets, relationships, and opportunities to meet the club's needs.",
   },
   {
-    title: "Review relevant files",
+    title: "Execute the Mandate",
     description:
-      "Receive focused profiles, footage and the context required to make an informed decision.",
+      "FootballBank coordinates the agreed activities. Where regulated football-agent services are required, those services are performed by the licenced football agent.",
   },
-  {
-    title: "Move the conversation forward",
-    description:
-      "A dedicated representative coordinates the next steps with discretion and clarity.",
-  },
+  // {
+  //   title: "Move the conversation forward",
+  //   description:
+  //     "A dedicated representative coordinates the next steps with discretion and clarity.",
+  // },
 ];
 
 const defaultBusinessServices = [
@@ -71,7 +71,8 @@ export default async function ClubsAndScoutsPage({ params }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
   const page = dict?.clubsScoutsPage;
-  const processSteps = page?.processSteps || defaultProcessSteps;
+  // const processSteps = page?.processSteps || defaultProcessSteps;
+  const processSteps = defaultProcessSteps;
   const businessServices = page?.businessServices || defaultBusinessServices;
 
   return (

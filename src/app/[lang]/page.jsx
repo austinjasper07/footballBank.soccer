@@ -121,7 +121,7 @@ export default async function HomePage({ params }) {
 
         <div className="relative mx-auto flex max-w-8xl flex-col items-stretch gap-4 px-4 py-4 md:flex-row">
           
-          <section className="flex min-w-0 flex-col justify-center px-1 py-6 sm:px-2 w-full md:w-[48%] md:pl-16 md:py-18 lg:w-[46%]">
+          <section className="flex min-w-0 flex-col justify-center px-1 py-6 sm:px-2 w-full md:w-[48%] md:pl-16 md:py-12 lg:w-[46%]">
             <p className="eyebrow">
               {home?.heroEyebrow || "Representation · Recruitment · Opportunity"}
             </p>
@@ -167,14 +167,14 @@ export default async function HomePage({ params }) {
           </section>
 
           {/* PLAYER OF THE WEEK */}
-          <section className="relative hidden w-full items-center justify-center md:flex md:w-[52%] lg:w-[54%]">
-            <div className="h-full w-full overflow-hidden">
+          <section className=" relative hidden w-full items-center justify-center md:flex md:w-[52%] lg:w-[54%]">
+            <div className=" h-full w-full overflow-hidden">
               <Image
                 src="/heroPhotos/LLLL.png"
                 alt={`${playerOfTheWeek?.firstName} ${playerOfTheWeek?.lastName}`}
                 width={900}
                 height={900}
-                className="h-full w-full  shadow-2xl rounded-4xl"
+                className="h-[95%] w-full shadow-2xl rounded-4xl"
               />
               {/* <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div> */}
             </div>
@@ -286,23 +286,33 @@ export default async function HomePage({ params }) {
                 </div>
 
                 <div className="p-4">
-                  <p className="text-[0.6rem] tracking-[0.18em] text-primary-muted uppercase">
+                  <div className="flex items-center justify-between text-[0.7rem] text-primary-muted">
+                    <p className=" uppercase">
                     {player.country}
                   </p>
-                  <h3 className="mt-2 font-heading text-sm md:text-xl">
-                    {player.firstName} {player.lastName}
-                  </h3>
-
-
-                  <div className="mt-4 grid grid-cols-3 gap-2 border-t border-divider pt-4 text-[0.7rem] text-primary-muted">
-                    <span>
+                  <span>
                       {home?.playerCard?.age || "Age"}:{" "}
                       {player.dob
                         ? new Date().getFullYear() -
                           new Date(player.dob).getFullYear()
                         : "N/A"}
                     </span>
-                    {player.foot && <span>{home?.playerCard?.foot || "Foot"}: {player.foot}</span>}
+                  </div>
+                  
+                  <h3 className="mt-2 font-heading text-sm md:text-xl">
+                    {player.firstName} {player.lastName}
+                  </h3>
+
+
+                  <div className="mt-4 grid grid-cols-3 gap-2 border-t border-divider pt-4 text-[0.7rem] text-primary-muted">
+                    {/* <span>
+                      {home?.playerCard?.age || "Age"}:{" "}
+                      {player.dob
+                        ? new Date().getFullYear() -
+                          new Date(player.dob).getFullYear()
+                        : "N/A"}
+                    </span> */}
+                    {/* {player.foot && <span>{home?.playerCard?.foot || "Foot"}: {player.foot}</span>} */}
                   </div>
                   <p className="mt-2 text-[0.7rem] text-primary-muted">
                     {home?.playerCard?.clubAvailability || "Club & availability on confirmation"}
@@ -315,9 +325,9 @@ export default async function HomePage({ params }) {
                       {dict.homepage.featuredPlayers.viewProfile}{" "}
                       <ArrowUpRight className="h-3.5 w-3.5" />
                     </Link>
-                    <span className="inline-flex items-center gap-1.5 text-sm text-primary-text">
+                    <Link href={`/${lang}/players/${player.id}#highlights`} className="inline-flex items-center gap-1.5 text-sm text-primary-text">
                       <Play className="h-3.5 w-3.5" /> {home?.playerCard?.watchHighlights || "Watch highlights"}
-                    </span>
+                    </Link>
                   </div>
                 </div>
               </article>

@@ -17,7 +17,7 @@ export default function Footer({ lang = "en" }) {
   return (
     <footer className="bg-primary-navy max-w-full px-4 lg:px-12 pt-10  pb-8 border-t border-white/10">
       <div className=" mx-auto px-4 max-w-8xl">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div>
             <div className="mb-4 flex flex-col">
               <Link
@@ -86,6 +86,7 @@ export default function Footer({ lang = "en" }) {
               </Link>
             </div>
           </div>
+          
           <div>
             <h3 className=" font-semibold text-lg mb-4 text-white">
               {dict.footer.quickLinks}
@@ -161,22 +162,6 @@ export default function Footer({ lang = "en" }) {
                   +(844) 362-9881 (Toll Free)
                 </a>
               </li>
-              <li>
-                <Link
-                  href={`/${lang}/privacy-policy`}
-                  className="text-gray-400 hover:text-primary-action transition-colors"
-                >
-                  {dict.footer.privacyPolicy}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={`/${lang}/terms-of-service`}
-                  className="text-gray-400 hover:text-primary-action transition-colors"
-                >
-                  {dict.footer.termsOfService}
-                </Link>
-              </li>
             </ul>
           </div>
         </div>
@@ -187,7 +172,7 @@ export default function Footer({ lang = "en" }) {
               <img
                 src="/partners/crown-fc-nigeria-logo.png"
                 alt="Crown FC"
-                className="h-6 md:h-12 object-contain"
+                className="h-6 md:h-10 object-contain"
               />
             {/* </div> */}
 
@@ -195,7 +180,7 @@ export default function Footer({ lang = "en" }) {
               <img
                 src="/partners/Concacaf_logo.svg"
                 alt="CONCACAF"
-                className="h-6 md:h-12 object-contain"
+                className="h-6 md:h-10 object-contain"
               />
             {/* </div> */}  
 
@@ -203,7 +188,7 @@ export default function Footer({ lang = "en" }) {
               <img
                 src="/partners/fifa.png"
                 alt="FIFA"
-                className="h-6 md:h-12 object-contain"
+                className="h-6 md:h-10 object-contain rounded-full"
               />
             {/* </div> */}
 
@@ -211,7 +196,7 @@ export default function Footer({ lang = "en" }) {
               <img
                 src="/partners/future-hero-football-academy.jpg"
                 alt="Future Hero Football Academy"
-                className="h-6 md:h-12 object-contain"
+                className="h-6 md:h-10 object-contain rounded-full"
               />
             {/* </div> */}
 
@@ -219,7 +204,7 @@ export default function Footer({ lang = "en" }) {
               <img
                 src="/partners/unknow.jpg"
                 alt="Unknown Partner"
-                className="h-6 md:h-14 object-contain grayscale hover:grayscale-0"
+                className="h-6 md:h-10 object-contain "
               />
             {/* </div> */}
           </div>
