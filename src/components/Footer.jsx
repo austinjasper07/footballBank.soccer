@@ -156,10 +156,10 @@ export default function Footer({ lang = "en" }) {
               </li>
               <li className="text-gray-400">
                 <a
-                  href="tel:+18443629881"
+                  href="tel:+18623402213"
                   className="hover:text-primary-action transition-colors"
                 >
-                  +(844) 362-9881 (Toll Free)
+                  +1 (862) 340-2213
                 </a>
               </li>
             </ul>

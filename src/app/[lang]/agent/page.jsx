@@ -95,9 +95,9 @@ export default async function RepresentationPage({ params }) {
               <span className="mx-auto mt-3 block h-px w-24 bg-primary-accent" />
             </div>
             <div className="mt-5 space-y-3 text-sm">
-              <a href="tel:+18443629881" className="flex items-center gap-3 transition-colors hover:text-primary-accent">
+              <a href="tel:+18623402213" className="flex items-center gap-3 transition-colors hover:text-primary-accent">
                 <Phone className="size-4 shrink-0 text-primary-accent" aria-hidden="true" />
-                +1 (844) 362-9881
+                +1 (862) 340-2213
               </a>
               <a href="mailto:contact@footballbank.soccer" className="flex items-center gap-3 break-all transition-colors hover:text-primary-accent">
                 <Mail className="size-4 shrink-0 text-primary-accent" aria-hidden="true" />

@@ -121,7 +121,8 @@ export default async function HomePage({ params }) {
 
         <div className="relative mx-auto flex max-w-8xl flex-col items-stretch gap-4 px-4 py-4 md:flex-row">
           
-          <section className="flex min-w-0 flex-col justify-center px-1 py-6 sm:px-2 w-full md:w-[48%] md:pl-16 md:py-12 lg:w-[46%]">
+          <section 
+            className="flex min-w-0 flex-col justify-center px-1 py-6 sm:px-2 w-full md:w-[48%] md:pl-16 md:py-12 lg:w-[46%]" >
             <p className="eyebrow">
               {home?.heroEyebrow || "Representation · Recruitment · Opportunity"}
             </p>
@@ -176,7 +177,7 @@ export default async function HomePage({ params }) {
                 height={900}
                 className="h-[95%] w-full shadow-2xl rounded-4xl"
               />
-              {/* <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div> */}
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
             </div>
             
           </section>
@@ -490,17 +491,27 @@ export default async function HomePage({ params }) {
         {/* Founder */}
         <section className="bg-primary-navy">
           <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 py-16 lg:grid-cols-2">
-            <img
+            <div className="relative w-[80%] aspect-4/3 overflow-hidden">
+              <Image
+                src={agentInfo?.profilePhoto || "/FootballBank_agent.jpg"}
+                alt={`${agentInfo?.name || "Ayodeji Michael F."} portrait`}
+                loading="lazy"
+                fill
+                sizes="(max-width: 1024px) 100vw, 30vw"
+                className="rounded-lg object-left object-cover"
+              />
+            </div>
+            {/* <img
               src={agentInfo?.profilePhoto || "/FootballBank_agent.jpg"}
               alt={
                 agentInfo?.name ||
-                "Ayodeji Michael .F, founder of FootballBank International"
+                "Ayodeji Michael F."
               }
               width={1008}
               height={1104}
               loading="lazy"
               className="h-112 w-full rounded-lg object-left object-cover md:object-center"
-            />
+            /> */}
             <div>
               <p className="eyebrow">{home?.founder?.eyebrow || "The people behind the pathway"}</p>
               <h2 className="mt-5 font-heading text-[1.6rem] md:text-4xl leading-tight text-primary-text-inverse uppercase">
@@ -516,9 +527,6 @@ export default async function HomePage({ params }) {
               </p>
               <p className="mt-8 font-heading text-lg text-primary-text-inverse">
                 {home?.founder?.name || "Ayodeji Michael .F"}
-              </p>
-              <p className="text-xs text-primary-text-inverse/60">
-                {home?.founder?.role || "Founder, FootballBank International"}
               </p>
               <p className="text-xs text-primary-text-inverse/60">
                 {home?.founder?.credential || "FIFA Licensed Football Agent"}
