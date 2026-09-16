@@ -177,7 +177,7 @@ export default async function HomePage({ params }) {
                 height={900}
                 className="h-[95%] w-full shadow-2xl rounded-4xl"
               />
-              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
+              {/* <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div> */}
             </div>
             
           </section>
